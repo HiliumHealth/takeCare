@@ -39,7 +39,7 @@ export function ActivityTable({ records = [], onDelete, onView, deletingId }: Ac
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="mx-6 mt-4 mb-20 overflow-hidden rounded-[2.5rem] border border-black/5 bg-white shadow-medical lg:mx-0 flex flex-col"
+      className="mx-0 lg:mx-0 mt-4 mb-20 overflow-hidden rounded-[2.5rem] border border-black/5 bg-white shadow-medical flex flex-col"
     >
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-black/5 bg-black/1 px-8 py-7 gap-4">
         <div className="flex flex-col gap-1">
@@ -142,69 +142,69 @@ export function ActivityTable({ records = [], onDelete, onView, deletingId }: Ac
               </Table>
             </div>
 
-            {/* Mobile Card View */}
-            <div className="md:hidden flex flex-col divide-y divide-black/5">
-              {records.map((record, idx) => (
-                <div key={record.id || idx} className="p-6 flex flex-col gap-4 bg-white active:bg-black/2 transition-colors">
-                  <div className="flex justify-between items-start">
-                    <div className="flex flex-col gap-1">
-                      <span className="text-[10px] font-black uppercase tracking-widest text-black/30">
-                        {new Date(record.createdAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
-                      </span>
-                      <h4 className="font-outfit text-lg font-extrabold text-primary leading-tight">{record.fileName}</h4>
-                    </div>
-                    <Badge className={cn(
-                      "rounded-full font-black text-[8px] px-2.5 py-0.5 uppercase tracking-wider border-none shadow-sm",
-                      record.analysis ? "bg-emerald-500/10 text-emerald-600" : 
-                      record.type === "CLINICAL_ASSESSMENT" ? "bg-blue-500/10 text-blue-600" :
-                      record.type === "CLINICAL_NOTE" ? "bg-primary/10 text-primary" :
-                      "bg-amber-500/10 text-amber-600"
-                    )}>
-                      {record.analysis ? "Verified" : 
-                       record.type === "CLINICAL_ASSESSMENT" ? "Evidence" : 
-                       record.type === "CLINICAL_NOTE" ? "Assessment" : "Pending"}
-                    </Badge>
-                  </div>
-                  
-                  <div className="bg-black/2 p-4 rounded-2xl border border-black/5">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-black/30 mb-2">Details:</p>
-                    <p className="text-sm font-bold text-black leading-relaxed">
-                      {truncateWords(record.analysis?.summary || record.fallbackSummary || "Status is pending...", 29)}
-                    </p>
-                    {(record.analysis?.summary || record.fallbackSummary)?.split(/\s+/).length > 29 && (
-                      <button 
-                        onClick={() => onView?.(record)}
-                        className="text-[10px] font-black text-primary uppercase tracking-widest mt-2 block"
-                      >
-                        Read More
-                      </button>
-                    )}
-                  </div>
-
-                  <div className="flex items-center justify-between mt-2">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-black/20 italic">{record.type}</span>
-                    <div className="flex items-center gap-2">
-                      <Button 
-                        onClick={() => onView?.(record)}
-                        variant="outline" 
-                        size="sm" 
-                        className="h-10 px-6 rounded-xl border-black/5 font-black text-[10px] uppercase tracking-widest hover:bg-primary hover:text-white transition-all cursor-pointer"
-                      >
-                        View Results
-                      </Button>
-                      <Button 
-                        onClick={(e) => onDelete?.(e, record.id, record.type)}
-                        disabled={deletingId === record.id}
-                        variant="outline" 
-                        size="sm" 
-                        className="h-10 w-10 p-0 rounded-xl border-red-100 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all cursor-pointer"
-                      >
-                        {deletingId === record.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              ))}
+            {/* Mobile Table View (Horizontal Scroll) */}
+            <div className="md:hidden overflow-x-auto no-scrollbar">
+              <Table className="min-w-[700px]">
+                <TableHeader className="bg-black/3">
+                  <TableRow className="hover:bg-transparent border-none">
+                    <TableHead className="py-5 pl-6 font-black text-black/40 uppercase tracking-[0.2em] text-[9px]">Date</TableHead>
+                    <TableHead className="py-5 font-black text-black/40 uppercase tracking-[0.2em] text-[9px]">Source Record</TableHead>
+                    <TableHead className="py-5 font-black text-black/40 uppercase tracking-[0.2em] text-[9px]">Status</TableHead>
+                    <TableHead className="py-5 font-black text-black/40 uppercase tracking-[0.2em] text-[9px]">Summary</TableHead>
+                    <TableHead className="py-5 pr-6 font-black text-black/40 uppercase tracking-[0.2em] text-[9px] text-right">Action</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {records.map((record, idx) => (
+                    <TableRow key={record.id || idx} className="active:bg-black/2 border-black/5 transition-all">
+                      <TableCell className="py-6 pl-6 font-bold text-xs">
+                        {new Date(record.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                      </TableCell>
+                      <TableCell className="py-6 font-black text-xs text-primary/80">
+                        <div className="flex flex-col gap-0.5">
+                          <span>{record.fileName}</span>
+                          <span className="text-[8px] font-medium text-black/30 italic uppercase">{record.type}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="py-6">
+                        <Badge className={cn(
+                          "rounded-full font-black text-[7px] px-2 py-0.5 uppercase tracking-wider border-none shadow-sm",
+                          record.analysis ? "bg-emerald-500/10 text-emerald-600" : 
+                          "bg-amber-500/10 text-amber-600"
+                        )}>
+                          {record.analysis ? "Verified" : "Pending"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="py-6">
+                        <span className="font-bold text-black text-xs line-clamp-1 max-w-[150px]">
+                          {record.analysis?.summary || record.fallbackSummary || "Analyzing..."}
+                        </span>
+                      </TableCell>
+                      <TableCell className="py-6 pr-6 text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <Button 
+                            onClick={() => onView?.(record)}
+                            variant="ghost" 
+                            size="icon" 
+                            className="h-8 w-8 rounded-xl bg-primary text-white shadow-md shadow-primary/20"
+                          >
+                            <FileText className="h-4 w-4" />
+                          </Button>
+                          <Button 
+                            onClick={(e) => onDelete?.(e, record.id, record.type)}
+                            disabled={deletingId === record.id}
+                            variant="ghost" 
+                            size="icon" 
+                            className="h-8 w-8 rounded-xl bg-red-500 text-white shadow-md shadow-red-500/20"
+                          >
+                            {deletingId === record.id ? <Loader2 className="h-3 w-3 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
           </>
         )}

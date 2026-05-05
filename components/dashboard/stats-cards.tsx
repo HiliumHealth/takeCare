@@ -27,7 +27,7 @@ function StatCard({ title, value, subtitle, icon: Icon, delay = 0, colorClass = 
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative overflow-hidden rounded-[2.5rem] border border-black/[0.04] bg-white p-6 md:p-8 transition-all duration-700 hover:-translate-y-2"
+      className="group relative overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] border border-black/[0.04] bg-white p-5 md:p-8 transition-all duration-700 hover:-translate-y-2"
       style={{
         boxShadow: `
           0 10px 30px -5px rgba(0,0,0,0.03),
@@ -103,7 +103,7 @@ export function StatsCards({ stats }: StatsCardsProps) {
   const healthScore = stats?.healthScore ?? 0;
 
   return (
-    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 px-6 lg:px-0">
+    <div className="grid grid-cols-1 gap-4 md:gap-8 md:grid-cols-2 lg:grid-cols-3 px-0 lg:px-0">
       <StatCard
         title="Network"
         value={doctorsCount.toString()}

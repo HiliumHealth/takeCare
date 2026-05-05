@@ -65,6 +65,7 @@ import { getVapiConfiguration } from "@/app/actions/vapi";
 import { getMyMedicalHistory } from "@/app/actions/medical";
 import { useSession } from "next-auth/react";
 import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import { ChatbotView } from "./smart-care/chatbot-view";
 
 
@@ -81,6 +82,7 @@ export function SmartCareSection({ userName = "Patient" }: { userName?: string }
   const [allRecords, setAllRecords] = useState<any[]>([]);
   const [selectedRecordId, setSelectedRecordId] = useState<string | null>(null);
   const [patientId, setPatientId] = useState<string | null>(null);
+  const [showSelection, setShowSelection] = useState(true);
 
   const { data: session, status } = useSession();
 
@@ -98,19 +100,30 @@ export function SmartCareSection({ userName = "Patient" }: { userName?: string }
     },
   ], [userName]);
 
-  // useChat v6 API: returns sendMessage (not append!) which accepts { text: string }
-  const { messages, sendMessage: sdkSendMessage, status: chatStatus, setMessages } = useChat({
+  // useChat v6: simpler configuration
+  const { messages, sendMessage: sdkSendMessage, append: sdkAppend, status: chatStatus, setMessages } = useChat({
     id: "smart-care-chat",
-    api: "/api/smart-care/chat",
+    api: "/api/chat",
     initialMessages: initialChatMessages,
     onError: (error) => {
-      console.error("useChat SDK Error:", error);
-      toast.error(`Chat Error: ${error.message || "Something went wrong"}`);
+      console.error("useChat SDK Error Details:", error);
+      toast.error(`Chat Communication Error: ${error.message || "Something went wrong"}`);
     },
   });
 
-  // sdkSendMessage already accepts { text: string } — pass it directly
-  const sendMessage = sdkSendMessage;
+  const sendMessage = async (data: any) => {
+    const text = typeof data === 'string' ? data : data?.text;
+    if (!text) return;
+
+    try {
+      console.log("SmartCareSection: Sending message:", text);
+      // AI SDK v6: sendMessage expects an object with a 'text' property
+      await sdkSendMessage({ text });
+    } catch (err: any) {
+      console.error("Failed to send message:", err);
+      toast.error(`Failed to send: ${err.message}`);
+    }
+  };
 
   // Automatically load the extracted context from the database
   useEffect(() => {
@@ -145,84 +158,158 @@ export function SmartCareSection({ userName = "Patient" }: { userName?: string }
 
 
   return (
-    <div className="px-6 lg:px-12 mt-2 flex flex-col gap-4 flex-1 min-h-0">
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex-1 flex flex-col min-h-0">
-        <TabsList className="bg-black/[0.03] backdrop-blur-3xl p-1.5 rounded-[2rem] w-full lg:w-fit h-auto flex gap-1.5 mb-4 border border-black/[0.05] shadow-sm self-center lg:self-start shrink-0">
-          {SMART_CARE_TABS.map((tab) => (
-            <TabsTrigger
-              key={tab.id}
-              value={tab.id}
-              className={cn(
-                "rounded-[1.75rem] px-5 py-2.5 md:px-10 md:py-3 transition-all duration-500 cursor-pointer flex-1 lg:flex-none relative group overflow-hidden",
-                activeTab === tab.id ? "text-white" : "text-black/60",
-                "data-[state=inactive]:hover:text-black/90 data-[state=inactive]:hover:bg-black/5",
-                "flex items-center justify-center gap-2.5 md:gap-4 font-outfit font-black text-[11px] md:text-sm capitalize tracking-tight z-0"
-              )}
-            >
-              <tab.icon className={cn(
-                "h-4 w-4 md:h-5 md:w-5 transition-all duration-500 group-hover:scale-110 relative z-10",
-                activeTab === tab.id ? "text-white" : "text-black/60"
-              )} />
-              <span className={cn(
-                "relative z-10",
-                activeTab === tab.id ? "text-white" : ""
-              )}>{tab.label}</span>
-              {activeTab === tab.id && (
+    <div className="px-6 lg:px-12 mt-2 flex flex-col gap-4 flex-1 min-h-0 relative">
+      <AnimatePresence mode="wait">
+        {showSelection ? (
+          <motion.div 
+            key="selection"
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.02 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="flex-1 flex flex-col items-center justify-center min-h-[75vh] w-full"
+          >
+            <div className="text-center mb-20 max-w-3xl mx-auto px-4">
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1, duration: 0.8 }}
+              >
+                <div className="flex justify-center mb-8">
+                  <Badge className="bg-primary/10 text-primary border-primary/20 px-4 py-1.5 text-xs font-black uppercase tracking-widest rounded-full">
+                    Smart Care Assistant
+                  </Badge>
+                </div>
+                
+                <h2 className="text-4xl md:text-7xl font-bricolage font-black tracking-tight text-black mb-8">
+                  How can I help you <span className="text-primary">today?</span>
+                </h2>
+                
+                <p className="text-black/40 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
+                  Select a specialized AI tool to interact with your medical data, analysis records, or speak directly with our clinical agent.
+                </p>
+              </motion.div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl mx-auto px-4">
+              {SMART_CARE_TABS.map((tab, idx) => (
                 <motion.div
-                  layoutId="smart-active-pill"
-                  className="absolute inset-0 bg-primary -z-10 shadow-xl shadow-primary/40"
-                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                />
-              )}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+                  key={tab.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 + (idx * 0.1) }}
+                  whileHover={{ scale: 1.03, translateY: -8 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    setActiveTab(tab.id);
+                    setShowSelection(false);
+                  }}
+                  className="relative flex flex-col items-start p-10 rounded-[3rem] cursor-pointer transition-all duration-500 overflow-hidden group bg-white border border-black/5 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_40px_80px_-20px_rgba(var(--primary-rgb),0.15)] hover:border-primary/20"
+                >
+                  <div className="h-20 w-20 rounded-3xl bg-black/5 text-black/40 flex items-center justify-center mb-8 transition-all duration-500 group-hover:bg-primary group-hover:text-white group-hover:rotate-6 group-hover:shadow-lg group-hover:shadow-primary/20">
+                    <tab.icon className="h-10 w-10 stroke-[1.5]" />
+                  </div>
 
-        <AnimatePresence mode="wait">
-          <TabsContent value="talk" key="talk">
-            <VoiceAgentView
-              medicalContext={medicalContext}
-              userName={userName}
-              allConsultations={allRecords.filter(r => r.analysis || r.type === "CLINICAL_NOTE")}
-              onSelectionChange={(record: any) => {
-                setSelectedRecordId(record.id);
-                if (record.analysis) {
-                  setMedicalContext(record.analysis.rawJson);
-                  setAnalysisResult(record.analysis.summary);
-                } else if (record.type === "CLINICAL_NOTE") {
-                  // For clinical notes, we use the extracted text as the analysis summary
-                  setAnalysisResult(record.extractedText);
-                  setMedicalContext(null); // Or some default context
-                }
-              }}
-              selectedRecordId={selectedRecordId}
-            />
-          </TabsContent>
+                  <div className="relative z-10 text-left">
+                    <h3 className="text-2xl md:text-3xl font-bricolage font-black tracking-tight text-black mb-4">
+                      {tab.label}
+                    </h3>
+                    <p className="text-sm md:text-base text-black/40 font-medium leading-relaxed group-hover:text-black/60 transition-colors">
+                      {tab.description}
+                    </p>
+                  </div>
 
-          <TabsContent value="text" key="text">
-            <ChatbotView 
-              userName={userName} 
-              messages={messages}
-              sendMessage={sendMessage}
-              status={chatStatus}
-              setMessages={setMessages}
-            />
-          </TabsContent>
-          <TabsContent value="analyze" key="analyze">
-            <AnalysisView
-              medicalContext={medicalContext}
-              userName={userName}
-              onContextUpdate={setMedicalContext}
-              analysisResult={analysisResult}
-              setAnalysisResult={setAnalysisResult}
-              patientId={patientId}
-              allRecords={allRecords}
-            />
-          </TabsContent>
+                  <div className="mt-8 flex items-center gap-2 text-primary font-bold text-sm opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-[-10px] group-hover:translate-x-0">
+                    Get Started <ArrowRight className="h-4 w-4" />
+                  </div>
 
+                  {/* Decorative background element */}
+                  <div className="absolute -right-8 -bottom-8 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-all duration-700" />
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div 
+            key="content"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="w-full flex-1 flex flex-col min-h-0"
+          >
+            {/* Context Header / Back Button */}
+            <div className="flex items-center justify-between mb-8 shrink-0">
+              <Button
+                variant="ghost"
+                onClick={() => setShowSelection(true)}
+                className="group flex items-center gap-3 px-6 py-6 rounded-2xl hover:bg-black/5 transition-all text-black/60 hover:text-black"
+              >
+                <div className="h-10 w-10 rounded-xl bg-black/5 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
+                  <ArrowLeft className="h-5 w-5" />
+                </div>
+                <span className="font-bricolage font-black text-lg">Back to Selection</span>
+              </Button>
 
-        </AnimatePresence>
-      </Tabs>
+              <div className="flex items-center gap-4">
+                <div className="text-right hidden md:block">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-black/30">Active Mode</p>
+                  <p className="text-lg font-bricolage font-black text-black">
+                    {SMART_CARE_TABS.find(t => t.id === activeTab)?.label}
+                  </p>
+                </div>
+                <div className="h-12 w-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+                  {React.createElement(SMART_CARE_TABS.find(t => t.id === activeTab)?.icon || Sparkles, { className: "h-6 w-6" })}
+                </div>
+              </div>
+            </div>
+
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex-1 flex flex-col min-h-0">
+              <AnimatePresence mode="wait">
+                <TabsContent value="talk" key="talk" className="flex-1 m-0 focus-visible:ring-0">
+                  <VoiceAgentView
+                    medicalContext={medicalContext}
+                    userName={userName}
+                    allConsultations={allRecords.filter(r => r.analysis || r.type === "CLINICAL_NOTE")}
+                    onSelectionChange={(record: any) => {
+                      setSelectedRecordId(record.id);
+                      if (record.analysis) {
+                        setMedicalContext(record.analysis.rawJson);
+                        setAnalysisResult(record.analysis.summary);
+                      } else if (record.type === "CLINICAL_NOTE") {
+                        setAnalysisResult(record.extractedText);
+                        setMedicalContext(null);
+                      }
+                    }}
+                    selectedRecordId={selectedRecordId}
+                  />
+                </TabsContent>
+
+                <TabsContent value="text" key="text" className="flex-1 m-0 focus-visible:ring-0">
+                  <ChatbotView 
+                    userName={userName} 
+                    messages={messages}
+                    sendMessage={sendMessage}
+                    status={chatStatus}
+                    setMessages={setMessages}
+                  />
+                </TabsContent>
+
+                <TabsContent value="analyze" key="analyze" className="flex-1 m-0 focus-visible:ring-0">
+                  <AnalysisView
+                    medicalContext={medicalContext}
+                    userName={userName}
+                    onContextUpdate={setMedicalContext}
+                    analysisResult={analysisResult}
+                    setAnalysisResult={setAnalysisResult}
+                    patientId={patientId}
+                    allRecords={allRecords}
+                  />
+                </TabsContent>
+              </AnimatePresence>
+            </Tabs>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -1059,43 +1146,43 @@ function AnalysisView({
 
   return (
     <div className="relative">
-      <div className="flex flex-row overflow-x-auto no-scrollbar gap-2 mb-6 md:mb-10 bg-white/40 backdrop-blur-xl p-1.5 rounded-2xl md:rounded-3xl w-full sm:w-fit border border-black/5 shadow-lg shadow-black/[0.01]">
+      <div className="flex flex-row overflow-x-auto no-scrollbar gap-2 mb-6 md:mb-10 bg-black/[0.04] p-1.5 rounded-xl w-full sm:w-fit border border-black/[0.03] shadow-none">
         <button
           onClick={() => setAnalysisTab("upload")}
           className={cn(
-            "px-6 md:px-8 py-3 md:py-3 rounded-xl md:rounded-2xl text-[10px] md:text-[11px] font-black uppercase tracking-widest transition-all duration-500 relative flex items-center justify-center gap-2 flex-1 sm:flex-none whitespace-nowrap",
+            "px-6 md:px-8 py-3 md:py-4 rounded-sm text-[10px] md:text-[12px] font-black uppercase tracking-normal transition-all duration-500 relative flex items-center justify-center gap-3 flex-1 sm:flex-none whitespace-nowrap",
             analysisTab === "upload"
-              ? "bg-black text-white shadow-2xl shadow-black/20"
-              : "text-black/40 hover:text-black/60 hover:bg-black/5"
+              ? "bg-primary text-white shadow-lg shadow-primary/20"
+              : "text-black hover:text-black/70 hover:bg-black/5"
           )}
         >
-          <History className={cn("h-4 w-4", analysisTab === "upload" ? "text-primary" : "text-black/20")} />
+          <History className={cn("h-4 w-4 md:h-5 md:w-5", analysisTab === "upload" ? "text-white" : "text-black/40")} />
           Medical Records
         </button>
         <button
           onClick={() => setAnalysisTab("results")}
           disabled={!medicalContext}
           className={cn(
-            "px-6 md:px-8 py-3 md:py-3 rounded-xl md:rounded-2xl text-[10px] md:text-[11px] font-black uppercase tracking-widest transition-all duration-500 relative flex items-center justify-center gap-2 flex-1 sm:flex-none whitespace-nowrap",
+            "px-6 md:px-8 py-3 md:py-4 rounded-sm text-[10px] md:text-[12px] font-black uppercase tracking-normal transition-all duration-500 relative flex items-center justify-center gap-3 flex-1 sm:flex-none whitespace-nowrap",
             analysisTab === "results"
-              ? "bg-black text-white shadow-2xl shadow-black/20"
-              : "text-black/40 hover:text-black/60 hover:bg-black/5",
+              ? "bg-primary text-white shadow-lg shadow-primary/20"
+              : "text-black hover:text-black/70 hover:bg-black/5",
             !medicalContext && "opacity-30 cursor-not-allowed"
           )}
         >
-          <BarChart3 className={cn("h-4 w-4", analysisTab === "results" ? "text-blue-500" : "text-black/20")} />
+          <BarChart3 className={cn("h-4 w-4 md:h-5 md:w-5", analysisTab === "results" ? "text-white" : "text-black/40")} />
           Analysis Results
         </button>
         <button
           onClick={() => setAnalysisTab("professional")}
           className={cn(
-            "px-6 md:px-8 py-3 md:py-3 rounded-xl md:rounded-2xl text-[10px] md:text-[11px] font-black uppercase tracking-widest transition-all duration-500 relative flex items-center justify-center gap-2 flex-1 sm:flex-none whitespace-nowrap",
+            "px-6 md:px-8 py-3 md:py-4 rounded-sm text-[10px] md:text-[12px] font-black uppercase tracking-normal transition-all duration-500 relative flex items-center justify-center gap-3 flex-1 sm:flex-none whitespace-nowrap",
             analysisTab === "professional"
-              ? "bg-black text-white shadow-2xl shadow-black/20"
-              : "text-black/40 hover:text-black/60 hover:bg-black/5"
+              ? "bg-primary text-white shadow-lg shadow-primary/20"
+              : "text-black hover:text-black/70 hover:bg-black/5"
           )}
         >
-          <ShieldCheck className={cn("h-4 w-4", analysisTab === "professional" ? "text-[#25D366]" : "text-black/20")} />
+          <ShieldCheck className={cn("h-4 w-4 md:h-5 md:w-5", analysisTab === "professional" ? "text-white" : "text-black/40")} />
           Doctor's Advice
           {doctorNotes.length > 0 && (
             <span className="absolute -top-1 -right-1 flex h-4 w-4">
@@ -1977,7 +2064,7 @@ function AnalysisView({
                                     p: ({node, ...props}) => <p className="mb-4" {...props} />,
                                     ul: ({node, ...props}) => <ul className="space-y-3 my-4" {...props} />,
                                     li: ({node, ...props}) => (
-                                      <li className="bg-black/[0.02] border border-black/5 p-4 rounded-xl flex items-start gap-3" {...props}>
+                                      <li className="bg-black/[0.02] border border-black/5 p-4 rounded-xl flex items-start gap-3">
                                         <div className="h-2 w-2 rounded-full bg-blue-600 mt-1.5 shrink-0" />
                                         <div className="text-sm md:text-base font-medium text-black/80">{props.children}</div>
                                       </li>
@@ -2124,10 +2211,10 @@ function AnalysisView({
                   <div className="prose prose-sm max-w-none">
                     <ReactMarkdown
                       components={{
-                        p: ({ children }) => <p className="mb-4 leading-relaxed">{children}</p>,
-                        ul: ({ children }) => <ul className="space-y-2 mb-4 list-disc pl-4">{children}</ul>,
-                        li: ({ children }) => <li className="text-black/70">{children}</li>,
-                        h3: ({ children }) => <h3 className="text-lg font-bold mb-2">{children}</h3>,
+                        p: ({ node, children, ...props }) => <p className="mb-4 leading-relaxed" {...props}>{children}</p>,
+                        ul: ({ node, children, ...props }) => <ul className="space-y-2 mb-4 list-disc pl-4" {...props}>{children}</ul>,
+                        li: ({ node, children, ...props }) => <li className="text-black/70" {...props}>{children}</li>,
+                        h3: ({ node, children, ...props }) => <h3 className="text-lg font-bold mb-2" {...props}>{children}</h3>,
                       }}
                     >
                       {fullAnalysisResult}

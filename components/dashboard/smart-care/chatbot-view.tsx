@@ -21,7 +21,12 @@ import {
   Sparkles,
   Zap,
   Brain,
-  Loader2
+  Loader2,
+  ArrowRight,
+  SendHorizontal,
+  Command,
+  Globe,
+  ArrowUpRight
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -34,6 +39,7 @@ import {
   DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 interface ChatbotViewProps {
   userName: string;
@@ -52,56 +58,46 @@ export function ChatbotView({
 }: ChatbotViewProps) {
   const isLoading = status === "submitting" || status === "submitted" || status === "streaming";
   
-  // Use local state for the input to guarantee responsiveness and bypass any hook-related typing issues
   const [localInput, setLocalInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-
   const [isToolMenuOpen, setIsToolMenuOpen] = useState(false);
 
   const tools = [
-    { id: "records", label: "Search Medical History", icon: History, prompt: "Search my medical records for " },
-    { id: "vitals", label: "Check Latest Vitals", icon: Activity, prompt: "What are my latest vitals?" },
-    { id: "notes", label: "Review Doctor Notes", icon: FileSearch, prompt: "What did my doctor note in the last session?" },
-    { id: "literature", label: "Search Medical Research", icon: Microscope, prompt: "Search medical literature about " },
+    { id: "records", label: "Medical History", icon: History, prompt: "Search my medical records for " },
+    { id: "vitals", label: "Check Vitals", icon: Activity, prompt: "What are my latest vitals?" },
+    { id: "notes", label: "Doctor Notes", icon: FileSearch, prompt: "What did my doctor note in the last session?" },
+    { id: "literature", label: "Medical Research", icon: Microscope, prompt: "Search medical literature about " },
+  ];
+
+  const suggestions = [
+    "Analyze my latest blood work",
+    "Compare my vitals to last month",
+    "Summarize my recent consultations",
+    "Explain my current medications"
   ];
 
   const handleToolSelect = (toolPrompt: string) => {
     setLocalInput(toolPrompt);
     setIsToolMenuOpen(false);
-    
-    // Focus the input field after selection
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 100);
+    setTimeout(() => inputRef.current?.focus(), 100);
   };
 
   const onFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!localInput.trim() || isLoading) return;
-
     const messageToSend = localInput.trim();
-    
-    // Clear local input immediately for better UX
     setLocalInput("");
-
     try {
-      // Direct call to sendMessage which is the correct method for this SDK version
       if (typeof sendMessage === "function") {
-        console.log("ChatbotView: Sending message", messageToSend);
         sendMessage({ text: messageToSend });
-      } else {
-        console.error("Critical: sendMessage is not a function", { status, sendMessage });
       }
     } catch (error) {
-      console.error("Failed to send message:", error);
-      // Fallback: restore input if it failed
       setLocalInput(messageToSend);
     }
   };
 
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll logic
   useEffect(() => {
     if (scrollAreaRef.current) {
       const scrollContainer = scrollAreaRef.current.querySelector('[data-slot="scroll-area-viewport"]');
@@ -116,62 +112,110 @@ export function ChatbotView({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col flex-1 h-[calc(100vh-220px)] bg-white rounded-[2.5rem] border border-black/5 shadow-2xl overflow-hidden relative"
+      className="flex flex-col flex-1 h-[calc(100vh-280px)] bg-[#fcfcfc] rounded-[3.5rem] border border-black/5 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.08)] overflow-hidden relative"
     >
-      {/* Chat Header */}
-      <div className="px-8 py-4 border-b border-black/5 bg-slate-50/50 backdrop-blur-xl flex items-center justify-between shrink-0">
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
-            <Bot className="h-5 w-5 text-primary" />
+      {/* Dynamic Chat Header */}
+      <div className="px-10 py-6 border-b border-black/[0.03] bg-white/40 backdrop-blur-3xl flex items-center justify-between shrink-0 sticky top-0 z-20">
+        <div className="flex items-center gap-5">
+          <div className="relative">
+            <div className="h-14 w-14 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 rotate-3">
+              <Bot className="h-7 w-7 text-white stroke-[2]" />
+            </div>
+            <div className="absolute -bottom-1 -right-1 h-4 w-4 bg-green-500 rounded-full border-2 border-white shadow-sm" />
           </div>
           <div>
-            <h3 className="font-bricolage font-black text-sm tracking-tight">Dr. Leo</h3>
-            <p className="text-[10px] font-bold text-black/40 uppercase tracking-widest">Always Online</p>
+            <div className="flex items-center gap-2 mb-1">
+              <h3 className="font-bricolage font-black text-xl tracking-tight text-black">Dr. Leo</h3>
+              <Badge className="bg-primary/5 text-primary border-primary/10 text-[9px] font-black uppercase tracking-widest px-2 py-0">Active Intelligence</Badge>
+            </div>
+            <p className="text-[11px] font-bold text-black/30 uppercase tracking-[0.1em]">Verified Health Assistant • Encryption Active</p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-          <span className="text-[10px] font-black text-black/30 uppercase tracking-[0.2em]">Secure AI Node</span>
+
+        <div className="flex items-center gap-4">
+          <div className="hidden md:flex flex-col items-end">
+            <span className="text-[10px] font-black text-black/20 uppercase tracking-widest">Connection Status</span>
+            <span className="text-xs font-black text-green-600 flex items-center gap-2">
+              <Globe className="h-3 w-3" /> Ultra-Low Latency
+            </span>
+          </div>
+          <div className="h-10 w-px bg-black/[0.05]" />
+          <Button variant="ghost" size="icon" className="h-12 w-12 rounded-2xl hover:bg-black/5 transition-all">
+            <History className="h-5 w-5 text-black/40" />
+          </Button>
         </div>
       </div>
 
-      {/* Messages Area */}
-      <ScrollArea className="flex-1 p-6" ref={scrollAreaRef}>
-        <div className="flex flex-col gap-6 max-w-3xl mx-auto">
-          {messages.map((msg) => (
+      {/* Messages Scroll Area */}
+      <ScrollArea className="flex-1 px-6 md:px-10 pt-10 pb-32" ref={scrollAreaRef}>
+        <div className="flex flex-col gap-10 max-w-4xl mx-auto w-full">
+          {messages.length <= 1 && (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <div className="h-24 w-24 rounded-[2rem] bg-black/5 flex items-center justify-center mb-8 animate-pulse">
+                <Sparkles className="h-10 w-10 text-black/20" />
+              </div>
+              <h4 className="text-3xl font-bricolage font-black text-black mb-4">Start your Consultation</h4>
+              <p className="text-black/40 font-medium max-w-sm mb-10 leading-relaxed">
+                I have full access to your medical records. Ask me anything about your health history, vitals, or symptoms.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl">
+                {suggestions.map((text, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setLocalInput(text)}
+                    className="flex items-center justify-between p-5 rounded-2xl border border-black/5 bg-white hover:border-primary/40 hover:bg-primary/5 transition-all group text-left shadow-sm"
+                  >
+                    <span className="text-sm font-bold text-black/60 group-hover:text-black">{text}</span>
+                    <ArrowUpRight className="h-4 w-4 text-black/20 group-hover:text-primary transition-all" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {messages.map((msg, idx) => (
             <motion.div
               key={msg.id}
-              initial={{ opacity: 0, y: 10, scale: 0.98 }}
+              initial={{ opacity: 0, y: 20, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
               className={cn(
-                "flex flex-col gap-2",
+                "flex flex-col gap-4",
                 msg.role === "user" ? "items-end" : "items-start"
               )}
             >
               <div
                 className={cn(
-                  "max-w-[85%] md:max-w-[75%] px-5 py-4 rounded-[1.8rem] text-sm font-medium shadow-sm leading-relaxed",
+                  "max-w-[90%] md:max-w-[80%] px-8 py-6 rounded-[2.5rem] shadow-sm relative group",
                   msg.role === "user"
-                    ? "bg-primary text-white rounded-tr-none"
-                    : "bg-slate-100/80 text-black/80 rounded-tl-none border border-black/5"
+                    ? "bg-gradient-to-br from-primary via-primary to-[#0047FF] text-white rounded-tr-none shadow-xl shadow-primary/20"
+                    : "bg-white text-black/80 rounded-tl-none border border-black/5 shadow-xl shadow-black/[0.02]"
                 )}
               >
-                {/* Check for parts (AI SDK v4+) */}
+                {/* Check for parts (AI SDK v6) */}
                 {msg.parts ? (
-                  <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-4">
                     {msg.parts.map((part, i) => {
                       if (part.type === "text") {
                         return (
                           <div
                             key={i}
                             className={cn(
-                              "prose prose-sm max-w-none",
-                              msg.role === "user" ? "prose-invert" : "prose-emerald"
+                              "prose prose-lg max-w-none font-medium leading-[1.6]",
+                              msg.role === "user" ? "prose-invert" : "prose-slate"
                             )}
                           >
-                            <ReactMarkdown>
+                            <ReactMarkdown
+                              components={{
+                                p: ({node, ...props}) => <p className="mb-4 last:mb-0" {...props} />,
+                                strong: ({node, ...props}) => <strong className="font-black" {...props} />,
+                                ul: ({node, ...props}) => <ul className="list-disc pl-5 mb-4" {...props} />,
+                                li: ({node, ...props}) => <li className="mb-2" {...props} />,
+                              }}
+                            >
                               {part.text}
                             </ReactMarkdown>
                           </div>
@@ -182,37 +226,41 @@ export function ChatbotView({
                         return (
                           <div
                             key={i}
-                            className="bg-white/40 backdrop-blur-sm rounded-2xl p-3 border border-black/5 flex items-center gap-3"
+                            className="bg-black/5 backdrop-blur-xl rounded-3xl p-5 border border-black/5 flex items-center gap-4 group/tool overflow-hidden relative"
                           >
-                            <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                            <div className="h-12 w-12 rounded-2xl bg-white/80 flex items-center justify-center shadow-sm relative z-10">
                               {call.toolName.toLowerCase().includes("history") ? (
-                                <History className="h-4 w-4 text-primary" />
+                                <History className="h-6 w-6 text-primary" />
                               ) : call.toolName.toLowerCase().includes("vital") ? (
-                                <Activity className="h-4 w-4 text-primary" />
+                                <Activity className="h-6 w-6 text-primary" />
                               ) : (
-                                <Search className="h-4 w-4 text-primary" />
+                                <Search className="h-6 w-6 text-primary" />
                               )}
                             </div>
-                            <div className="flex flex-col">
-                              <span className="text-[10px] font-black uppercase tracking-widest text-black/40">
-                                {call.state === "result" ? "Tool Used" : "AI is using tool"}
+                            <div className="flex flex-col relative z-10">
+                              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30 mb-1">
+                                {call.state === "result" ? "Query Completed" : "Medical Logic Step"}
                               </span>
-                              <span className="text-xs font-bold text-black/70">
-                                {call.toolName === "searchMedicalHistory" && "Scanning medical records..."}
-                                {call.toolName === "getLatestVitals" && "Retrieving latest vitals..."}
-                                {call.toolName === "searchMedicalLiterature" && "Consulting medical literature..."}
-                                {call.toolName === "getDoctorNotes" && "Checking doctor notes..."}
-                                {call.toolName === "searchVoiceHistory" && "Reviewing voice consultations..."}
-                                {call.toolName === "getDoctorIntelligence" && "Synthesizing doctor intelligence..."}
+                              <span className="text-sm font-black text-black/70">
+                                {call.toolName === "searchMedicalHistory" && "Scanning Clinical Archives"}
+                                {call.toolName === "getLatestVitals" && "Accessing Vital Telemetry"}
+                                {call.toolName === "searchMedicalLiterature" && "Consulting Research Nodes"}
+                                {call.toolName === "getDoctorNotes" && "Decoding Clinical Insights"}
+                                {call.toolName === "searchVoiceHistory" && "Analyzing Audio Transcripts"}
                               </span>
                             </div>
-                            {call.state === "result" && (
-                              <div className="ml-auto">
-                                <div className="h-5 w-5 rounded-full bg-green-500/10 flex items-center justify-center">
-                                  <ShieldCheck className="h-3 w-3 text-green-600" />
+                            {call.state === "result" ? (
+                              <div className="ml-auto relative z-10">
+                                <div className="h-8 w-8 rounded-full bg-green-500/10 flex items-center justify-center border border-green-500/20">
+                                  <ShieldCheck className="h-4 w-4 text-green-600" />
                                 </div>
                               </div>
+                            ) : (
+                              <div className="ml-auto relative z-10">
+                                <Loader2 className="h-5 w-5 text-primary animate-spin" />
+                              </div>
                             )}
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] animate-[shimmer_2s_infinite]" />
                           </div>
                         );
                       }
@@ -222,94 +270,93 @@ export function ChatbotView({
                 ) : (
                   <div
                     className={cn(
-                      "prose prose-sm max-w-none",
-                      msg.role === "user" ? "prose-invert" : "prose-emerald"
+                      "prose prose-lg max-w-none font-medium leading-[1.6]",
+                      msg.role === "user" ? "prose-invert" : "prose-slate"
                     )}
                   >
-                    <ReactMarkdown>
-                      {msg.content}
-                    </ReactMarkdown>
+                    <ReactMarkdown>{msg.content}</ReactMarkdown>
                   </div>
                 )}
               </div>
-              <span className="text-[9px] font-black text-black/20 uppercase tracking-widest px-2">
-                {msg.role === "user" ? "You" : "Dr. Leo"} • {new Date(msg.createdAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </span>
+              
+              <div className={cn(
+                "flex items-center gap-3 px-4",
+                msg.role === "user" ? "flex-row-reverse" : "flex-row"
+              )}>
+                <span className="text-[10px] font-black text-black/20 uppercase tracking-[0.2em]">
+                  {msg.role === "user" ? "Sender: You" : "Origin: Dr. Leo"}
+                </span>
+                <div className="h-1 w-1 rounded-full bg-black/10" />
+                <span className="text-[10px] font-black text-black/20 uppercase tracking-[0.2em]">
+                  {new Date(msg.createdAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </span>
+              </div>
             </motion.div>
           ))}
           
-          {isLoading && !messages[messages.length - 1]?.parts?.some(p => p.type === 'text') && (
+          {isLoading && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex items-center gap-2 text-black/30 font-black text-[10px] uppercase tracking-[0.2em] ml-2"
+              className="flex items-center gap-4 p-4 rounded-3xl bg-black/[0.02] w-fit"
             >
-              <div className="flex gap-1">
-                <span className="animate-bounce">.</span>
-                <span className="animate-bounce delay-100">.</span>
-                <span className="animate-bounce delay-200">.</span>
+              <div className="flex gap-1.5">
+                {[0, 1, 2].map((i) => (
+                  <motion.div
+                    key={i}
+                    animate={{ y: [0, -4, 0] }}
+                    transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.1 }}
+                    className="h-2 w-2 rounded-full bg-primary/40"
+                  />
+                ))}
               </div>
-              Leo is thinking
+              <span className="text-[10px] font-black uppercase tracking-widest text-black/30">Leo is thinking...</span>
             </motion.div>
           )}
         </div>
       </ScrollArea>
 
-      {/* Input Area */}
-      <div className="p-6 bg-slate-50/50 backdrop-blur-xl border-t border-black/5 shrink-0">
-        <div className="max-w-3xl mx-auto flex flex-col gap-3">
-          {/* Tool Suggestion Chips */}
-          {!localInput && !isLoading && (
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide"
-            >
-              {tools.slice(0, 3).map((tool) => (
-                <button
-                  key={tool.id}
-                  onClick={() => handleToolSelect(tool.prompt)}
-                  className="whitespace-nowrap px-4 py-2 rounded-full bg-white border border-black/5 text-[10px] font-black uppercase tracking-widest text-black/40 hover:text-primary hover:border-primary/20 hover:bg-primary/5 transition-all flex items-center gap-2 shadow-sm"
-                >
-                  <tool.icon className="h-3 w-3" />
-                  {tool.label}
-                </button>
-              ))}
-            </motion.div>
-          )}
-
-          <form
+      {/* Floating Smart Input Dock */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full max-w-4xl px-6 md:px-10 z-30">
+        <div className="relative group">
+          {/* Background blur/shadow ring */}
+          <div className="absolute -inset-4 bg-black/5 rounded-[4rem] blur-2xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-700" />
+          
+          <form 
             onSubmit={onFormSubmit}
-            className="flex items-center gap-2 bg-white rounded-[2rem] p-2 pl-2 border border-black/5 shadow-2xl shadow-black/5 focus-within:border-primary/30 transition-all relative group"
+            className="relative bg-white/80 backdrop-blur-3xl border border-black/5 p-2 rounded-[2.5rem] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.12)] flex items-center gap-2 group-focus-within:border-primary/20 transition-all duration-500"
           >
-            {/* Claude-style Tool/Plus Menu */}
             <DropdownMenu open={isToolMenuOpen} onOpenChange={setIsToolMenuOpen}>
-              <DropdownMenuTrigger
-                render={(triggerProps) => (
-                  <Button
-                    {...triggerProps}
-                    variant="ghost"
-                    className="h-12 w-12 rounded-full hover:bg-slate-100 text-black/40 hover:text-black transition-all shrink-0"
-                  >
-                    <Plus className={cn("h-6 w-6 transition-transform duration-300", isToolMenuOpen && "rotate-45")} />
-                  </Button>
-                )}
-              />
-              <DropdownMenuContent align="start" className="w-64 p-2 rounded-2xl border-black/5 shadow-2xl bg-white/95 backdrop-blur-xl">
-                <DropdownMenuLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30 px-3 py-2">Select Health Tool</DropdownMenuLabel>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  type="button"
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-14 w-14 rounded-[1.8rem] bg-black/5 hover:bg-black/10 transition-all shrink-0"
+                >
+                  <Plus className={cn("h-6 w-6 text-black/40 transition-transform duration-500", isToolMenuOpen && "rotate-45 text-primary")} />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                align="start" 
+                className="w-72 p-3 rounded-3xl border-black/5 bg-white/95 backdrop-blur-xl shadow-2xl mb-4"
+              >
+                <DropdownMenuLabel className="px-4 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-black/30">Diagnostic Tools</DropdownMenuLabel>
                 <DropdownMenuSeparator className="bg-black/5" />
-                {tools.map((tool) => (
-                  <DropdownMenuItem
-                    key={tool.id}
-                    onSelect={() => handleToolSelect(tool.prompt)}
-                    className="flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-primary/5 group"
-                  >
-                    <div className="h-8 w-8 rounded-lg bg-black/5 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                      <tool.icon className="h-4 w-4 text-black/40 group-hover:text-primary" />
-                    </div>
-                    <span className="text-xs font-bold text-black/70 group-hover:text-black">{tool.label}</span>
-                  </DropdownMenuItem>
-                ))}
+                <div className="grid gap-2 p-2">
+                  {tools.map((tool) => (
+                    <DropdownMenuItem 
+                      key={tool.id} 
+                      onClick={() => handleToolSelect(tool.prompt)}
+                      className="flex items-center gap-4 p-4 rounded-2xl cursor-pointer hover:bg-primary/5 transition-colors group/item"
+                    >
+                      <div className="h-10 w-10 rounded-xl bg-black/5 flex items-center justify-center group-hover/item:bg-primary group-hover/item:text-white transition-all">
+                        <tool.icon className="h-5 w-5" />
+                      </div>
+                      <span className="font-bold text-sm text-black/70 group-hover/item:text-black">{tool.label}</span>
+                    </DropdownMenuItem>
+                  ))}
+                </div>
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -317,33 +364,39 @@ export function ChatbotView({
               ref={inputRef}
               value={localInput}
               onChange={(e) => setLocalInput(e.target.value)}
-              placeholder="Ask Dr. Leo or select a tool..."
-              className="flex-1 bg-transparent border-none outline-none px-2 py-3 text-sm font-bold placeholder:text-black/20 text-black/70"
+              placeholder="Describe your health concern or ask Dr. Leo..."
+              className="flex-1 bg-transparent border-none focus:ring-0 px-6 py-4 text-lg font-medium placeholder:text-black/20 text-black"
+              disabled={isLoading}
             />
 
-            <button
-              type="submit"
-              disabled={isLoading || !localInput?.trim()}
-              className={cn(
-                "h-12 w-12 rounded-full flex items-center justify-center transition-all shadow-lg",
-                localInput?.trim() 
-                  ? "bg-black text-white shadow-black/20 hover:scale-105 active:scale-95" 
-                  : "bg-black/5 text-black/20 scale-95"
-              )}
-            >
-              {isLoading ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
-              ) : (
-                <ArrowUp className="h-5 w-5" />
-              )}
-            </button>
+            <div className="flex items-center gap-2 pr-2">
+              <Button 
+                type="button" 
+                variant="ghost" 
+                size="icon" 
+                className="h-14 w-14 rounded-[1.8rem] text-black/20 hover:text-black/40 hover:bg-black/5 transition-all"
+              >
+                <Paperclip className="h-6 w-6" />
+              </Button>
+              <Button 
+                type="submit" 
+                disabled={!localInput.trim() || isLoading}
+                className={cn(
+                  "h-14 px-8 rounded-[1.8rem] font-black flex items-center gap-3 transition-all duration-500 shadow-lg shadow-primary/20",
+                  localInput.trim() ? "bg-primary text-white scale-100" : "bg-black/5 text-black/20 scale-95 opacity-50"
+                )}
+              >
+                {isLoading ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  <>
+                    <span className="hidden md:block">Send</span>
+                    <SendHorizontal className="h-5 w-5" />
+                  </>
+                )}
+              </Button>
+            </div>
           </form>
-
-          <div className="flex items-center justify-center gap-6 text-[9px] font-black text-black/20 uppercase tracking-[0.15em] pt-1">
-            <span className="flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-green-500/50" /> Secure Sync</span>
-            <span className="flex items-center gap-1.5"><Sparkles className="h-3.5 w-3.5 text-primary/50" /> Gemini 2.5</span>
-            <span className="flex items-center gap-1.5"><Zap className="h-3.5 w-3.5 text-vital-orange/50" /> Low Latency</span>
-          </div>
         </div>
       </div>
     </motion.div>

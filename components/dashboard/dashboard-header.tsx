@@ -32,15 +32,15 @@ export function DashboardHeader({ user, notificationCount = 0 }: DashboardHeader
   };
 
   return (
-    <header className="flex items-center justify-between px-6 py-4 lg:px-0 lg:py-6 animate-slide-right w-full">
+    <header className="flex items-center justify-between px-4 py-4 lg:px-0 lg:py-6 w-full">
 
-      <div className="flex items-center gap-2 md:gap-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-black shadow-xl lg:h-12 lg:w-12">
-          <span className="font-syne text-lg font-extrabold text-white lg:text-2xl">T</span>
+      <div className="flex items-center gap-2 md:gap-3 min-w-0">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-black shadow-lg lg:h-12 lg:w-12 lg:rounded-xl">
+          <span className="font-syne text-base font-extrabold text-white lg:text-2xl">T</span>
         </div>
-        <div className="flex flex-col">
-          <span className="font-outfit text-base font-bold tracking-tight lg:text-xl leading-none">TakeCare</span>
-          <span className="text-[8px] font-black uppercase tracking-[0.2em] text-black/40 lg:text-[10px]">Portal</span>
+        <div className="flex flex-col min-w-0">
+          <span className="font-outfit text-sm font-bold tracking-tight lg:text-xl leading-none truncate">TakeCare</span>
+          <span className="text-[7px] font-black uppercase tracking-[0.2em] text-black/40 lg:text-[10px]">Portal</span>
         </div>
       </div>
 
@@ -56,11 +56,11 @@ export function DashboardHeader({ user, notificationCount = 0 }: DashboardHeader
         
         <div className="flex items-center gap-2 lg:gap-3">
           <div className="relative">
-            <Button variant="ghost" size="icon" className="hidden lg:flex rounded-full hover:bg-black/5 h-10 w-10">
+            <Button variant="ghost" size="icon" className="flex rounded-full hover:bg-black/5 h-9 w-9 lg:h-10 lg:w-10">
               <Bell className="h-5 w-5" />
             </Button>
             {notificationCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-black text-white ring-2 ring-white animate-in zoom-in duration-300">
+              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[8px] font-black text-white ring-2 ring-white animate-in zoom-in duration-300">
                 {notificationCount > 9 ? '9+' : notificationCount}
               </span>
             )}
@@ -74,7 +74,7 @@ export function DashboardHeader({ user, notificationCount = 0 }: DashboardHeader
             </div>
             
             <div className="flex items-center gap-3">
-              <div className="hidden flex-col items-end lg:flex">
+              <div className="hidden flex-col items-end sm:flex">
                 <span className="text-sm font-bold leading-none">{user?.name || "Patient"}</span>
                 <span className="text-[10px] font-bold text-black/40 uppercase tracking-wider mt-1 cursor-pointer hover:text-red-500 transition-colors flex items-center gap-2" onClick={handleLogout}>
                    Log out

@@ -23,8 +23,8 @@ interface MobileNavProps {
 export function MobileNav({ activeTab, onTabChange, messengerCount = 0, notificationCount = 0 }: MobileNavProps) {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden p-4 pointer-events-none">
-      <div className="max-w-md mx-auto w-full pointer-events-auto">
-        <nav className="bg-primary backdrop-blur-3xl rounded-[32px] border border-white/20 p-2 shadow-2xl shadow-primary/30 flex items-center justify-between">
+      <div className="max-w-md mx-auto w-full pointer-events-auto px-4">
+        <nav className="bg-primary backdrop-blur-3xl rounded-[28px] border border-white/20 p-1.5 shadow-2xl shadow-primary/30 flex items-center justify-between">
           {NAV_ITEMS.map((item) => {
             const isActive = activeTab === item.id;
             const Icon = item.icon;
@@ -34,9 +34,9 @@ export function MobileNav({ activeTab, onTabChange, messengerCount = 0, notifica
                 <button
                   key={item.id}
                   onClick={() => onTabChange(item.id)}
-                  className="relative -top-8 bg-white h-16 w-16 rounded-full flex items-center justify-center shadow-2xl shadow-black/10 active:scale-90 transition-transform group"
+                  className="relative -top-4 bg-white h-14 w-14 rounded-full flex items-center justify-center shadow-2xl shadow-black/10 active:scale-90 transition-transform group border-4 border-primary"
                 >
-                  <Icon className="h-8 w-8 text-primary group-hover:scale-110 transition-transform" />
+                  <Icon className="h-7 w-7 text-primary group-hover:scale-110 transition-transform" />
                   <motion.div
                     animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.1, 0.3] }}
                     transition={{ repeat: Infinity, duration: 2 }}

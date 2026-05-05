@@ -327,7 +327,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="flex flex-1 flex-col pb-12 min-h-screen relative overflow-x-hidden bg-transparent">
+    <div className="flex flex-1 flex-col pb-12 min-h-screen relative bg-transparent overflow-x-clip max-w-[100vw]">
       {/* Global Modals */}
       <DeleteConfirmationModal 
         isOpen={deleteModalOpen}
@@ -342,17 +342,29 @@ export default function DashboardPage() {
         record={viewingRecord}
       />
 
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/2 rounded-full blur-[120px] -translate-y-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-primary/2 rounded-full blur-[120px] translate-y-1/2 pointer-events-none" />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/2 rounded-full blur-[120px] -translate-y-1/2" />
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-primary/2 rounded-full blur-[120px] translate-y-1/2" />
+      </div>
 
       <header className="sticky top-0 z-50 w-full border-b border-black/5 bg-white/80 backdrop-blur-md">
         <div className="responsive-container">
           <DashboardHeader user={userData} notificationCount={unreadNotifications} />
+          
+          {/* Dashboard Navigation - Desktop Only - Integrated into Sticky Header */}
+          <div className="border-t border-black/5 mt-2 overflow-x-auto no-scrollbar">
+            <DashboardTabs
+              value={activeTab}
+              onValueChange={setActiveTab}
+              notificationCount={unreadNotifications}
+              messengerCount={messengerUnreadCount}
+            />
+          </div>
         </div>
       </header>
 
 
-      <main className="flex flex-1 flex-col responsive-container w-full overflow-x-hidden md:pb-6">
+      <main className="flex flex-1 flex-col responsive-container w-full md:pb-6 px-4 md:px-0">
         <AnimatePresence mode="wait">
           {activeTab === "overview" && (
             <motion.div 
@@ -361,9 +373,9 @@ export default function DashboardPage() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="px-6 py-6 md:py-12 lg:px-0 lg:py-20 animate-fade-up"
             >
-              <h1 className="font-bricolage text-2xl md:text-5xl lg:text-7xl font-extrabold tracking-tighter flex flex-wrap items-center gap-x-2 md:gap-x-4 transition-all">
-                <span className="text-black/30 whitespace-nowrap">{getGreeting()},</span> 
-                <span className="text-black inline-block">{userData?.name?.split(' ')[0] || "Patient"}.</span>
+              <h1 className="font-bricolage text-3xl md:text-5xl lg:text-7xl font-extrabold tracking-tighter flex flex-wrap items-center gap-x-2 md:gap-x-4 transition-all">
+                <span className="text-black/40 whitespace-nowrap">{getGreeting()},</span> 
+                <span className="text-primary inline-block">{userData?.name?.split(' ')[0] || "Patient"}.</span>
               </h1>
               <p className="mt-3 md:mt-6 text-xs md:text-lg lg:text-2xl font-semibold text-black/40 max-w-3xl leading-snug md:leading-relaxed">
                 Your <span className="text-black font-bold italic underline decoration-primary/40 underline-offset-4 cursor-help">comprehensive health profile</span> is ready.
@@ -372,15 +384,7 @@ export default function DashboardPage() {
           )}
         </AnimatePresence>
 
-        {/* Dashboard Navigation - Desktop Only */}
-        <div className="hidden lg:block">
-          <DashboardTabs
-            value={activeTab}
-            onValueChange={setActiveTab}
-            notificationCount={unreadNotifications}
-            messengerCount={messengerUnreadCount}
-          />
-        </div>
+
 
         <AnimatePresence mode="wait">
           {activeTab === "overview" ? (

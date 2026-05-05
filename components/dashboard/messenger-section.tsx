@@ -5,7 +5,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Send, Phone, UserPlus, ArrowRight, CheckCircle2, Bell, BellRing, Settings, MoreVertical, Paperclip, Smile, Mic, Mail, X } from "lucide-react";
+import { MessageCircle, Send, Phone, UserPlus, ArrowRight, CheckCircle2, Bell, BellRing, Settings, MoreVertical, Paperclip, Smile, Mic, Mail, X, ArrowUp, Plus, Wrench } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -167,18 +167,18 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
   }, [messages, isTyping]);
 
   return (
-    <div className="px-6 lg:px-12 mt-4 flex flex-col gap-8 relative">
-      <div className="flex justify-between items-center mb-2">
-        <h2 className="text-2xl font-bricolage font-black tracking-tighter">Communications Center</h2>
+    <div className="px-0 lg:px-12 mt-4 flex flex-col gap-8 relative">
+      <div className="flex justify-between items-center mb-2 lg:mb-4">
+        <h2 className="text-xl lg:text-3xl font-bricolage font-black tracking-tighter">Care Center</h2>
         <div className="relative group cursor-pointer" onClick={clearNotifications}>
-          <div className="p-3 bg-white/50 backdrop-blur-md rounded-2xl border border-black/5 shadow-sm group-hover:bg-white transition-all">
+          <div className="p-2 lg:p-3 bg-white/50 backdrop-blur-md rounded-xl lg:rounded-2xl border border-black/5 shadow-sm group-hover:bg-white transition-all">
             {notificationCount > 0 ? (
-              <BellRing className="w-6 h-6 text-red-500 animate-bounce" />
+              <BellRing className="w-5 h-5 lg:w-6 lg:h-6 text-red-500 animate-bounce" />
             ) : (
-              <Bell className="w-6 h-6 text-black/40" />
+              <Bell className="w-5 h-5 lg:w-6 lg:h-6 text-black/40" />
             )}
             {notificationCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg border-2 border-white">
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] lg:text-[10px] font-bold px-1.5 lg:py-0.5 rounded-full shadow-lg border-2 border-white">
                 {notificationCount}
               </span>
             )}
@@ -437,19 +437,34 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
             )}
           </div>
 
-          <form onSubmit={sendMessage} className="p-6 bg-white border-t border-black/5 flex gap-4 items-center">
-            <Button type="button" variant="ghost" size="icon" className="rounded-xl opacity-40 cursor-pointer"><Smile /></Button>
-            <Button type="button" variant="ghost" size="icon" className="rounded-xl opacity-40 cursor-pointer"><Paperclip /></Button>
+          <form onSubmit={sendMessage} className="p-4 sm:p-6 bg-white border-t border-black/5 flex gap-2 sm:gap-4 items-center">
+            <div className="flex gap-1 sm:gap-2">
+              <Button type="button" variant="ghost" size="icon" className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-black/5 text-black/60 hover:bg-black/10 transition-colors cursor-pointer">
+                <Plus className="w-5 h-5" />
+              </Button>
+              <Button type="button" variant="ghost" size="icon" className="hidden sm:flex h-12 w-12 rounded-xl bg-black/5 text-black/60 hover:bg-black/10 transition-colors cursor-pointer">
+                <Wrench className="w-5 h-5" />
+              </Button>
+            </div>
+            
             <div className="flex-1 relative">
               <Input
-                placeholder="Direct message to Doctor..."
+                placeholder="Message your Doctor..."
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
-                className="h-14 rounded-2xl border-black/5 bg-black/5 pl-6 text-base font-bold transition-all focus:bg-white focus:ring-0 shadow-inner"
+                className="h-12 sm:h-14 rounded-xl sm:rounded-2xl border-black/5 bg-black/5 px-4 sm:pl-6 text-sm sm:text-base font-bold transition-all focus:bg-white focus:ring-4 focus:ring-primary/5 shadow-inner"
               />
             </div>
-            <Button type="submit" className="h-14 w-14 rounded-2xl bg-black text-white shadow-xl cursor-pointer">
-              <Send className="w-6 h-6" />
+            
+            <Button 
+              type="submit" 
+              disabled={!newMessage.trim()}
+              className={cn(
+                "h-12 w-12 sm:h-14 sm:w-14 rounded-xl sm:rounded-2xl transition-all duration-300 shadow-xl cursor-pointer flex items-center justify-center",
+                newMessage.trim() ? "bg-primary text-white scale-100" : "bg-black/5 text-black/20 scale-95"
+              )}
+            >
+              <ArrowUp className="w-5 h-5 sm:w-6 sm:w-6" />
             </Button>
           </form>
         </motion.div>

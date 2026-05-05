@@ -25,24 +25,24 @@ export function DashboardTabs({
   messengerCount?: number;
 }) {
   return (
-    <div className="px-6 lg:px-0 my-8 lg:my-12">
+    <div className="px-4 md:px-0">
       <Tabs value={value} onValueChange={onValueChange} className="w-full">
-        <TabsList className="bg-black/[0.04] p-1 md:p-1.5 rounded-3xl md:rounded-4xl w-full lg:w-fit h-auto flex gap-1 md:gap-1.5 overflow-x-auto no-scrollbar border border-black/[0.03] shadow-sm relative">
+        <TabsList className="bg-black/[0.04] p-1.5 rounded-xl w-full lg:w-fit h-auto flex gap-2 overflow-x-auto no-scrollbar border border-black/[0.03] shadow-none relative">
           {TABS.map((tab) => (
             <TabsTrigger
               key={tab.id}
               value={tab.id}
               className={cn(
-                "rounded-2xl md:rounded-3xl px-8 py-4 md:px-12 md:py-5 transition-all duration-500 cursor-pointer whitespace-nowrap relative group shrink-0",
-                "data-[state=active]:text-primary",
-                "data-[state=inactive]:text-black/40 data-[state=inactive]:hover:text-black/60",
-                "flex items-center justify-center gap-2 md:gap-4 font-outfit font-black text-sm md:text-lg border border-transparent"
+                "rounded-sm px-6 py-4 md:px-16 md:py-6 transition-all duration-500 cursor-pointer whitespace-nowrap relative group shrink-0",
+                "data-active:!text-white data-active:!bg-primary data-active:shadow-lg data-active:shadow-primary/20",
+                "text-black hover:text-black/70 bg-transparent",
+                "flex items-center justify-center gap-4 md:gap-6 font-outfit font-black text-xs md:text-xl capitalize tracking-normal border border-transparent"
               )}
             >
               <div className="relative">
                 <tab.icon className={cn(
-                  "h-4 w-4 md:h-6 md:w-6 transition-transform duration-500 group-hover:scale-110",
-                  value === tab.id ? "text-primary" : "text-black/30",
+                  "h-4 w-4 md:h-7 md:w-7 transition-transform duration-500 group-hover:scale-110",
+                  value === tab.id ? "text-white" : "text-black/60",
                   tab.id === "smart-care" && value !== "smart-care" && "text-vital-orange animate-pulse"
                 )} />
 
@@ -51,7 +51,7 @@ export function DashboardTabs({
                   <motion.span
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    className="absolute -top-1.5 -right-1.5 flex h-4 w-4 md:h-5 md:w-5 items-center justify-center rounded-full bg-linear-to-tr from-[#25D366] to-[#128C7E] text-[8px] md:text-[10px] font-black text-white shadow-lg shadow-[#25D366]/40 border-2 border-white"
+                    className="absolute -top-2 -right-2 flex h-4 w-4 md:h-6 md:w-6 items-center justify-center rounded-full bg-linear-to-tr from-[#25D366] to-[#128C7E] text-[8px] md:text-[11px] font-black text-white shadow-lg shadow-[#25D366]/40 border-2 border-white"
                   >
                     {messengerCount}
                   </motion.span>
@@ -62,7 +62,7 @@ export function DashboardTabs({
                   <motion.span
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    className="absolute -top-1.5 -right-1.5 flex h-4 w-4 md:h-5 md:w-5 items-center justify-center rounded-full bg-linear-to-tr from-[#FF3B30] to-[#D70015] text-[8px] md:text-[10px] font-black text-white shadow-lg shadow-[#FF3B30]/40 border-2 border-white"
+                    className="absolute -top-2 -right-2 flex h-4 w-4 md:h-6 md:w-6 items-center justify-center rounded-full bg-linear-to-tr from-[#FF3B30] to-[#D70015] text-[8px] md:text-[11px] font-black text-white shadow-lg shadow-[#FF3B30]/40 border-2 border-white"
                   >
                     {notificationCount > 9 ? "9+" : notificationCount}
                   </motion.span>
@@ -70,17 +70,9 @@ export function DashboardTabs({
               </div>
 
               <span className={cn(
-                "capitalize text-[10px] md:text-xs font-black tracking-normal md:tracking-wider transition-colors duration-500",
-                value === tab.id ? "text-primary" : "text-black/40"
+                "capitalize text-xs md:text-lg font-black tracking-tight transition-colors duration-500",
+                value === tab.id ? "text-white" : "text-black"
               )}>{tab.label}</span>
-
-              {value === tab.id && (
-                <motion.div
-                  layoutId="active-pill"
-                  className="absolute inset-0 bg-blue-50 border border-blue-100 rounded-2xl md:rounded-3xl -z-10 shadow-sm"
-                  transition={{ type: "spring", bounce: 0.15, duration: 0.6 }}
-                />
-              )}
             </TabsTrigger>
           ))}
         </TabsList>

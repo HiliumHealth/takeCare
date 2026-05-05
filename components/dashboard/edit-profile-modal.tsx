@@ -85,7 +85,7 @@ export function EditProfileModal({ user, onUpdate }: EditProfileModalProps) {
     <Dialog>
       <DialogTrigger 
         render={
-          <Button variant="outline" className="rounded-2xl border-black/5 bg-black/5 font-black text-xs uppercase tracking-widest hover:bg-black hover:text-white transition-all px-8 h-12 shadow-sm">
+          <Button variant="outline" className="rounded-xl lg:rounded-2xl border-black/5 bg-black/5 font-black text-[10px] lg:text-xs uppercase tracking-widest hover:bg-black hover:text-white transition-all px-4 lg:px-8 h-10 lg:h-12 shadow-sm whitespace-nowrap shrink-0">
             Edit Profile
           </Button>
         }

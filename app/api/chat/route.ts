@@ -19,7 +19,7 @@ function logToFile(msg: string) {
 }
 
 export async function GET() {
-  return NextResponse.json({ status: "active", endpoint: "/api/smart-care/chat", sdkVersion: "v6" });
+  return NextResponse.json({ status: "active", endpoint: "/api/chat", sdkVersion: "v6" });
 }
 
 export async function POST(req: Request) {
@@ -57,7 +57,9 @@ export async function POST(req: Request) {
     const modelMessages = await convertToModelMessages(messages);
 
     logToFile("Starting streamText with gemini-2.5-flash...");
-    const result = streamText({
+    
+    // In AI SDK v6, we await streamText to get the result object with streaming methods
+    const result = await streamText({
       model: google('gemini-2.5-flash'),
       system: `You are Dr. Leo, a compassionate AI health assistant for TakeCare. 
       Use your tools to search medical records, check vitals, and provide evidence-based guidance.
@@ -75,8 +77,19 @@ export async function POST(req: Request) {
       }
     });
 
-    logToFile("Returning stream response.");
-    return result.toDataStreamResponse();
+    logToFile(`Result object keys: ${Object.keys(result).join(', ')}`);
+
+    logToFile("Returning stream response using toDataStreamResponse.");
+    
+    // Check if the method exists, fallback if needed
+    if (typeof (result as any).toDataStreamResponse === 'function') {
+      return (result as any).toDataStreamResponse();
+    } else if (typeof (result as any).toUIMessageStreamResponse === 'function') {
+      logToFile("Fallback: using toUIMessageStreamResponse");
+      return (result as any).toUIMessageStreamResponse();
+    } else {
+      throw new Error("No valid stream response method found on result object");
+    }
 
   } catch (err: any) {
     logToFile(`FATAL ERROR: ${err.message}`);

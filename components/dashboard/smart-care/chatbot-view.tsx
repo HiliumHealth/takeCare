@@ -152,7 +152,7 @@ export function ChatbotView({
       </div>
 
       {/* Messages Scroll Area */}
-      <ScrollArea className="flex-1 px-6 md:px-10 pt-10 pb-44" ref={scrollAreaRef}>
+      <ScrollArea className="flex-1 px-6 md:px-10 pt-10 pb-64" ref={scrollAreaRef}>
         <div className="flex flex-col gap-10 max-w-4xl mx-auto w-full">
           {messages.length <= 1 && (
             <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -320,6 +320,9 @@ export function ChatbotView({
               <span className="text-[10px] font-black uppercase tracking-widest text-black/30">Leo is thinking...</span>
             </motion.div>
           )}
+
+          {/* World-Class Scroll Buffer - Ensures no message is EVER hidden by the dock */}
+          <div className="h-[200px] w-full pointer-events-none" aria-hidden="true" />
         </div>
       </ScrollArea>
 

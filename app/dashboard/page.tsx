@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 
+import { DashboardSidebar } from "@/components/dashboard/dashboard-sidebar";
 import { DashboardTabs } from "@/components/dashboard/dashboard-tabs";
 import { StatsCards } from "@/components/dashboard/stats-cards";
 import { ActivityTable } from "@/components/dashboard/activity-table";
@@ -327,7 +328,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="flex flex-1 flex-col pb-12 min-h-screen relative bg-transparent overflow-x-clip max-w-[100vw]">
+    <div className="flex min-h-screen relative bg-transparent overflow-x-clip max-w-[100vw] lg:pl-[280px]">
       {/* Global Modals */}
       <DeleteConfirmationModal 
         isOpen={deleteModalOpen}
@@ -347,19 +348,49 @@ export default function DashboardPage() {
         <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-primary/2 rounded-full blur-[120px] translate-y-1/2" />
       </div>
 
-      <header className="sticky top-0 z-50 w-full border-b border-black/5 bg-white/80 backdrop-blur-md">
+      <DashboardSidebar 
+        value={activeTab} 
+        onValueChange={setActiveTab}
+        notificationCount={unreadNotifications}
+        messengerCount={messengerUnreadCount}
+        user={userData}
+      />
+
+      {/* Main Content Area Top Bar - Desktop */}
+      <div className="hidden lg:flex sticky top-0 z-30 w-full h-24 bg-white/40 backdrop-blur-3xl border-b border-black/[0.03] items-center px-12 justify-between">
+        <div className="flex items-center gap-4 group bg-black/[0.03] px-6 py-3 rounded-2xl border border-transparent focus-within:border-primary/20 transition-all w-96">
+          <Search className="h-5 w-5 text-black/30 group-focus-within:text-primary transition-colors" />
+          <input 
+            type="text" 
+            placeholder="Search records, doctors, or analysis..." 
+            className="bg-transparent border-none focus:ring-0 font-bold text-sm text-black placeholder:text-black/20 w-full"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        
+        <div className="flex items-center gap-8">
+          <div className="flex flex-col items-end">
+            <span className="text-[10px] font-black text-black/20 uppercase tracking-[0.2em]">Clinical Status</span>
+            <span className="text-xs font-black text-black flex items-center gap-2">
+              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]" /> Fully Synchronized
+            </span>
+          </div>
+          <div className="h-10 w-px bg-black/[0.05]" />
+          <div className="relative cursor-pointer group" onClick={() => setActiveTab("notifications")}>
+            <Bell className="h-6 w-6 text-black/40 group-hover:text-black transition-colors" />
+            {unreadNotifications > 0 && (
+              <span className="absolute -top-1 -right-1 h-4 w-4 bg-primary text-white text-[8px] font-black rounded-full flex items-center justify-center ring-4 ring-white shadow-lg">
+                {unreadNotifications}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <header className="sticky top-0 z-40 w-full border-b border-black/5 bg-white/80 backdrop-blur-md lg:hidden">
         <div className="responsive-container">
           <DashboardHeader user={userData} notificationCount={unreadNotifications} />
-          
-          {/* Dashboard Navigation - Desktop Only - Integrated into Sticky Header */}
-          <div className="border-t border-black/5 mt-2 overflow-x-auto no-scrollbar">
-            <DashboardTabs
-              value={activeTab}
-              onValueChange={setActiveTab}
-              notificationCount={unreadNotifications}
-              messengerCount={messengerUnreadCount}
-            />
-          </div>
         </div>
       </header>
 

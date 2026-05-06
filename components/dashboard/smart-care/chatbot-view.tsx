@@ -287,14 +287,14 @@ export function ChatbotView({
               </div>
               
               <div className={cn(
-                "flex items-center gap-3 px-4",
+                "flex items-center gap-3 px-6",
                 msg.role === "user" ? "flex-row-reverse" : "flex-row"
               )}>
-                <span className="text-[10px] font-black text-black/20 uppercase tracking-[0.2em]">
-                  {msg.role === "user" ? "Sender: You" : "Origin: Dr. Leo"}
+                <span className="text-[9px] font-black text-black/10 uppercase tracking-[0.2em] transition-opacity group-hover:opacity-100 opacity-0">
+                  {msg.role === "user" ? "Sent by You" : "Origin: Dr. Leo"}
                 </span>
-                <div className="h-1 w-1 rounded-full bg-black/10" />
-                <span className="text-[10px] font-black text-black/20 uppercase tracking-[0.2em]">
+                <div className="h-1 w-1 rounded-full bg-black/5" />
+                <span className="text-[9px] font-black text-black/10 uppercase tracking-[0.2em]">
                   {new Date(msg.createdAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>

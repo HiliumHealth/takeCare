@@ -37,8 +37,8 @@ export function DashboardSidebar({
         <div>
           <h1 className="font-bricolage text-2xl font-black tracking-tighter text-black">TakeCare</h1>
           <div className="flex items-center gap-2">
-            <div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30 leading-none">Portal Active</span>
+            <div className="h-1.5 w-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]" />
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30 leading-none">Everything is ready</span>
           </div>
         </div>
       </div>
@@ -46,7 +46,7 @@ export function DashboardSidebar({
       {/* Navigation Section */}
       <nav className="flex-1 px-4 py-8 space-y-2">
         <div className="px-4 mb-4">
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-black/20">Main Menu</span>
+          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-black/20">Menu</span>
         </div>
         
         {NAV_ITEMS.map((item) => {
@@ -100,16 +100,16 @@ export function DashboardSidebar({
         })}
 
         <div className="px-4 pt-10 mb-4">
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-black/20">Support & Tools</span>
+          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-black/20">Help & Security</span>
         </div>
         
         <button className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-black/40 hover:text-black hover:bg-black/[0.03] transition-all group">
           <Settings className="h-6 w-6 group-hover:rotate-45 transition-transform duration-500" />
-          <span className="font-bold text-sm tracking-tight">Preferences</span>
+          <span className="font-bold text-sm tracking-tight">Account Settings</span>
         </button>
         <button className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-black/40 hover:text-black hover:bg-black/[0.03] transition-all group">
           <ShieldCheck className="h-6 w-6" />
-          <span className="font-bold text-sm tracking-tight">Privacy Vault</span>
+          <span className="font-bold text-sm tracking-tight">Secure Records</span>
         </button>
       </nav>
 

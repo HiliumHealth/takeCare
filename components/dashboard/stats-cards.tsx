@@ -59,7 +59,7 @@ function StatCard({ title, value, subtitle, icon: Icon, delay = 0, colorClass = 
             <Icon className="h-5 w-5 text-white" />
           </div>
           <div className="flex flex-col items-end">
-             <span className="text-[10px] font-black uppercase tracking-[0.25em] text-black/20 group-hover:text-black/80 transition-all duration-500">
+             <span className="text-[10px] font-black uppercase tracking-[0.25em] text-black/40 group-hover:text-black/80 transition-all duration-500">
               {title}
             </span>
             <div className={cn(
@@ -79,11 +79,11 @@ function StatCard({ title, value, subtitle, icon: Icon, delay = 0, colorClass = 
               {value.replace('%', '')}
             </motion.span>
             {value.includes('%') && (
-              <span className="text-base font-black text-black/20 uppercase tracking-tighter -translate-y-4">%</span>
+              <span className="text-base font-black text-black/40 uppercase tracking-tighter -translate-y-4">%</span>
             )}
           </div>
           <div className="flex items-center gap-2.5 mt-3">
-            <span className="font-outfit text-[10px] font-black text-black/30 uppercase tracking-widest group-hover:text-black/50 transition-colors">
+            <span className="font-outfit text-[10px] font-black text-black/60 uppercase tracking-widest group-hover:text-black/80 transition-colors">
               {subtitle}
             </span>
             <div className="h-1.5 w-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]" />

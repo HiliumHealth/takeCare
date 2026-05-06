@@ -168,57 +168,57 @@ export function SmartCareSection({ userName = "Patient" }: { userName?: string }
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="flex-1 flex flex-col items-center justify-center min-h-[75vh] w-full"
           >
-            <div className="text-center mb-20 max-w-3xl mx-auto px-4">
+            <div className="text-center mb-12 max-w-2xl mx-auto px-4">
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1, duration: 0.8 }}
               >
-                <div className="flex justify-center mb-8">
-                  <Badge className="bg-primary/10 text-primary border-primary/20 px-4 py-1.5 text-xs font-black uppercase tracking-widest rounded-full">
-                    Smart Care Assistant
+                <div className="flex justify-center mb-6">
+                  <Badge className="bg-primary/10 text-primary border-primary/20 px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-full">
+                    Your Health Assistant
                   </Badge>
                 </div>
                 
-                <h2 className="text-4xl md:text-7xl font-bricolage font-black tracking-tight text-black mb-8">
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-bricolage font-black tracking-tight text-black mb-6">
                   How can I help you <span className="text-primary">today?</span>
                 </h2>
                 
-                <p className="text-black/60 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
-                  Select a specialized AI tool to interact with your medical data, analysis records, or speak directly with our clinical agent.
+                <p className="text-black/80 text-base md:text-lg font-medium max-w-xl mx-auto leading-relaxed">
+                  Choose a personalized health tool below to review your medical history, ask questions about your records, or chat directly with our friendly clinical assistant.
                 </p>
               </motion.div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mx-auto px-4">
               {SMART_CARE_TABS.map((tab, idx) => (
                 <motion.div
                   key={tab.id}
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 + (idx * 0.1) }}
-                  whileHover={{ scale: 1.03, translateY: -8 }}
+                  whileHover={{ scale: 1.02, translateY: -4 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => {
                     setActiveTab(tab.id);
                     setShowSelection(false);
                   }}
-                  className="relative flex flex-col items-start p-10 rounded-[3rem] cursor-pointer transition-all duration-500 overflow-hidden group bg-white border border-black/5 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_40px_80px_-20px_rgba(var(--primary-rgb),0.15)] hover:border-primary/20"
+                  className="relative flex flex-col items-start p-8 rounded-[2rem] cursor-pointer transition-all duration-500 overflow-hidden group bg-white border border-black/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_30px_60px_-15px_rgba(var(--primary-rgb),0.15)] hover:border-primary/30"
                 >
-                  <div className="h-20 w-20 rounded-3xl bg-black/5 text-black/40 flex items-center justify-center mb-8 transition-all duration-500 group-hover:bg-primary group-hover:text-white group-hover:rotate-6 group-hover:shadow-lg group-hover:shadow-primary/20">
-                    <tab.icon className="h-10 w-10 stroke-[1.5]" />
+                  <div className="h-16 w-16 rounded-2xl bg-black/5 text-black/60 flex items-center justify-center mb-6 transition-all duration-500 group-hover:bg-primary group-hover:text-white group-hover:rotate-6 group-hover:shadow-lg group-hover:shadow-primary/20">
+                    <tab.icon className="h-8 w-8 stroke-[1.5]" />
                   </div>
 
                   <div className="relative z-10 text-left">
-                    <h3 className="text-2xl md:text-3xl font-bricolage font-black tracking-tight text-black mb-4">
+                    <h3 className="text-xl md:text-2xl font-bricolage font-black tracking-tight text-black mb-3">
                       {tab.label}
                     </h3>
-                    <p className="text-sm md:text-base text-black/60 font-medium leading-relaxed group-hover:text-black/90 transition-colors">
+                    <p className="text-sm text-black/80 font-medium leading-relaxed group-hover:text-black transition-colors">
                       {tab.description}
                     </p>
                   </div>
 
-                  <div className="mt-8 flex items-center gap-2 text-primary font-bold text-sm opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-[-10px] group-hover:translate-x-0">
+                  <div className="mt-6 flex items-center gap-2 text-primary font-bold text-sm opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-[-10px] group-hover:translate-x-0">
                     Get Started <ArrowRight className="h-4 w-4" />
                   </div>
 

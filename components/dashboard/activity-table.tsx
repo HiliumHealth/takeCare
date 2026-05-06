@@ -45,10 +45,10 @@ export function ActivityTable({ records = [], onDelete, onView, deletingId }: Ac
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-3.5 h-3.5 text-green-500" />
-            <p className="text-xs font-medium text-black/30 lg:text-sm">Secure patient access • Verified chronology</p>
+            <p className="text-xs font-bold text-black/60 lg:text-sm">Secure patient access • Verified chronology</p>
           </div>
         </div>
-        <Button variant="outline" className="rounded-2xl border-black/5 bg-black/5 font-black text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-all px-8 h-12 shadow-sm">
+        <Button variant="outline" className="rounded-2xl border-black/5 bg-black/5 font-black text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-all px-8 h-12 shadow-sm text-black">
           {hasRecords ? "View Full Timeline" : "No Records Available"}
         </Button>
       </div>
@@ -57,10 +57,10 @@ export function ActivityTable({ records = [], onDelete, onView, deletingId }: Ac
         {!hasRecords ? (
           <div className="flex flex-col items-center justify-center py-20 bg-black/1 px-6 text-center">
             <div className="h-20 w-20 rounded-4xl bg-black/5 flex items-center justify-center mb-6 animate-pulse">
-               <Calendar className="h-10 w-10 text-black/10" />
+               <Calendar className="h-10 w-10 text-black/20" />
             </div>
-            <p className="text-sm font-black text-black/20 uppercase tracking-[0.3em]">Awaiting clinical verification</p>
-            <p className="text-xs text-black/10 mt-3 font-bold max-w-xs leading-relaxed">Capture your first record in the Smart Care tab to populate this list.</p>
+            <p className="text-sm font-black text-black/40 uppercase tracking-[0.3em]">Awaiting clinical verification</p>
+            <p className="text-xs text-black/30 mt-3 font-bold max-w-xs leading-relaxed">Capture your first record in the Smart Care tab to populate this list.</p>
           </div>
         ) : (
           <>
@@ -69,12 +69,12 @@ export function ActivityTable({ records = [], onDelete, onView, deletingId }: Ac
               <Table className="w-full">
                 <TableHeader className="bg-black/3">
                   <TableRow className="hover:bg-transparent border-none">
-                    <TableHead className="py-6 pl-10 font-black text-black/60 uppercase tracking-[0.2em] text-[10px]">Date</TableHead>
-                    <TableHead className="py-6 font-black text-black/60 uppercase tracking-[0.2em] text-[10px]">Source Record</TableHead>
-                    <TableHead className="py-6 font-black text-black/60 uppercase tracking-[0.2em] text-[10px] hidden lg:table-cell">Type</TableHead>
-                    <TableHead className="py-6 font-black text-black/60 uppercase tracking-[0.2em] text-[10px]">Status</TableHead>
-                    <TableHead className="py-6 font-black text-black/60 uppercase tracking-[0.2em] text-[10px]">Clinical Summary</TableHead>
-                    <TableHead className="py-6 pr-10 font-black text-black/60 uppercase tracking-[0.2em] text-[10px] text-right">Action</TableHead>
+                    <TableHead className="py-6 pl-10 font-black text-black/80 uppercase tracking-[0.2em] text-[10px]">Date</TableHead>
+                    <TableHead className="py-6 font-black text-black/80 uppercase tracking-[0.2em] text-[10px]">Source Record</TableHead>
+                    <TableHead className="py-6 font-black text-black/80 uppercase tracking-[0.2em] text-[10px] hidden lg:table-cell">Type</TableHead>
+                    <TableHead className="py-6 font-black text-black/80 uppercase tracking-[0.2em] text-[10px]">Status</TableHead>
+                    <TableHead className="py-6 font-black text-black/80 uppercase tracking-[0.2em] text-[10px]">Clinical Summary</TableHead>
+                    <TableHead className="py-6 pr-10 font-black text-black/80 uppercase tracking-[0.2em] text-[10px] text-right">Action</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -86,7 +86,7 @@ export function ActivityTable({ records = [], onDelete, onView, deletingId }: Ac
                       <TableCell className="py-7 font-black text-sm lg:text-base text-black group-hover:text-primary transition-colors">
                         {record.fileName}
                       </TableCell>
-                      <TableCell className="py-7 font-black text-black/60 text-sm hidden lg:table-cell italic">{record.type}</TableCell>
+                      <TableCell className="py-7 font-black text-black/80 text-sm hidden lg:table-cell italic">{record.type}</TableCell>
                       <TableCell className="py-7">
                         <Badge className={cn(
                           "rounded-full font-black text-[9px] px-3 py-1 uppercase tracking-wider border-none shadow-sm",

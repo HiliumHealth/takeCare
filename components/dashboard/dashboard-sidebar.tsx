@@ -126,8 +126,8 @@ export function DashboardSidebar({
         <div className="bg-black/[0.02] border border-black/[0.03] rounded-3xl p-4 mb-4">
           <div className="flex items-center gap-4 mb-4">
             <div className="h-12 w-12 rounded-2xl bg-black/5 border border-black/5 flex items-center justify-center overflow-hidden">
-              {user?.image ? (
-                <img src={user.image} alt={user.name} className="h-full w-full object-cover" />
+              {user?.avatarUrl || user?.image ? (
+                <img src={user?.avatarUrl || user?.image} alt={user?.name} className="h-full w-full object-cover" />
               ) : (
                 <User className="h-6 w-6 text-black/20" />
               )}

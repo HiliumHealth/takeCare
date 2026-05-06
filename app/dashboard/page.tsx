@@ -395,8 +395,8 @@ export default function DashboardPage() {
 
           {/* User Avatar */}
           <div className="h-10 w-10 rounded-full bg-black/5 border border-black/5 flex items-center justify-center overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
-            {userData?.image ? (
-              <img src={userData.image} alt={userData.name} className="h-full w-full object-cover" />
+            {userData?.avatarUrl || userData?.image ? (
+              <img src={userData?.avatarUrl || userData?.image} alt={userData?.name} className="h-full w-full object-cover" />
             ) : (
               <User className="h-5 w-5 text-black/40" />
             )}

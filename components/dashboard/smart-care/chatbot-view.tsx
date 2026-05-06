@@ -151,184 +151,185 @@ export function ChatbotView({
         </div>
       </div>
 
-      {/* Messages Scroll Area */}
-      <ScrollArea className="flex-1 px-6 md:px-10 pt-10 pb-64" ref={scrollAreaRef}>
-        <div className="flex flex-col gap-10 max-w-4xl mx-auto w-full">
-          {messages.length <= 1 && (
-            <div className="flex flex-col items-center justify-center py-20 text-center">
-              <div className="h-32 w-32 rounded-[2.5rem] overflow-hidden mb-8 border-4 border-white shadow-2xl shadow-black/5 rotate-2 transition-transform hover:rotate-0 duration-500">
-                <img 
-                  src="https://i.ibb.co/fYy0cwxb/Chat-GPT-Image-Apr-16-2026-09-01-03-AM.png" 
-                  alt="Dr. Leo" 
-                  className="h-full w-full object-cover"
-                />
+      {/* Messages Scroll Area - Flex-1 ensures it takes all available space above the dock */}
+      <div className="flex-1 min-h-0 relative">
+        <ScrollArea className="h-full px-6 md:px-10" ref={scrollAreaRef}>
+          <div className="flex flex-col gap-10 max-w-4xl mx-auto w-full pt-10 pb-10">
+            {messages.length <= 1 && (
+              <div className="flex flex-col items-center justify-center py-20 text-center">
+                <div className="h-32 w-32 rounded-[2.5rem] overflow-hidden mb-8 border-4 border-white shadow-2xl shadow-black/5 rotate-2 transition-transform hover:rotate-0 duration-500">
+                  <img 
+                    src="https://i.ibb.co/fYy0cwxb/Chat-GPT-Image-Apr-16-2026-09-01-03-AM.png" 
+                    alt="Dr. Leo" 
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <h4 className="text-3xl font-bricolage font-black text-black mb-4">Start your Consultation</h4>
+                <p className="text-black/80 font-medium max-w-sm mb-10 leading-relaxed">
+                  I have full access to your medical records. Ask me anything about your health history, vitals, or symptoms.
+                </p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl">
+                  {suggestions.map((text, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setLocalInput(text)}
+                      className="flex items-center justify-between p-5 rounded-2xl border border-black/5 bg-white hover:border-primary/40 hover:bg-primary/5 transition-all group text-left shadow-sm"
+                    >
+                      <span className="text-sm font-bold text-black/60 group-hover:text-black">{text}</span>
+                      <ArrowUpRight className="h-4 w-4 text-black/20 group-hover:text-primary transition-all" />
+                    </button>
+                  ))}
+                </div>
               </div>
-              <h4 className="text-3xl font-bricolage font-black text-black mb-4">Start your Consultation</h4>
-              <p className="text-black/80 font-medium max-w-sm mb-10 leading-relaxed">
-                I have full access to your medical records. Ask me anything about your health history, vitals, or symptoms.
-              </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl">
-                {suggestions.map((text, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setLocalInput(text)}
-                    className="flex items-center justify-between p-5 rounded-2xl border border-black/5 bg-white hover:border-primary/40 hover:bg-primary/5 transition-all group text-left shadow-sm"
-                  >
-                    <span className="text-sm font-bold text-black/60 group-hover:text-black">{text}</span>
-                    <ArrowUpRight className="h-4 w-4 text-black/20 group-hover:text-primary transition-all" />
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+            )}
 
-          {messages.map((msg, idx) => (
-            <motion.div
-              key={msg.id}
-              initial={{ opacity: 0, y: 20, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-              className={cn(
-                "flex flex-col gap-4",
-                msg.role === "user" ? "items-end" : "items-start"
-              )}
-            >
-              <div
+            {messages.map((msg, idx) => (
+              <motion.div
+                key={msg.id}
+                initial={{ opacity: 0, y: 20, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.4, delay: 0.1 }}
                 className={cn(
-                  "max-w-[90%] md:max-w-[80%] px-8 py-6 rounded-[2.5rem] shadow-sm relative group",
-                  msg.role === "user"
-                    ? "bg-gradient-to-br from-primary via-primary to-[#0047FF] text-white rounded-tr-none shadow-xl shadow-primary/20"
-                    : "bg-white text-black/80 rounded-tl-none border border-black/5 shadow-xl shadow-black/[0.02]"
+                  "flex flex-col gap-4",
+                  msg.role === "user" ? "items-end" : "items-start"
                 )}
               >
-                {/* Check for parts (AI SDK v6) */}
-                {msg.parts ? (
-                  <div className="flex flex-col gap-4">
-                    {msg.parts.map((part, i) => {
-                      if (part.type === "text") {
-                        return (
-                          <div
-                            key={i}
-                            className={cn(
-                              "prose prose-lg max-w-none font-medium leading-[1.6]",
-                              msg.role === "user" ? "prose-invert" : "prose-slate"
-                            )}
-                          >
-                            <ReactMarkdown
-                              components={{
-                                p: ({node, ...props}) => <p className="mb-4 last:mb-0" {...props} />,
-                                strong: ({node, ...props}) => <strong className="font-black" {...props} />,
-                                ul: ({node, ...props}) => <ul className="list-disc pl-5 mb-4" {...props} />,
-                                li: ({node, ...props}) => <li className="mb-2" {...props} />,
-                              }}
-                            >
-                              {part.text}
-                            </ReactMarkdown>
-                          </div>
-                        );
-                      }
-                      if (part.type === "tool-invocation") {
-                        const call = part.toolInvocation;
-                        return (
-                          <div
-                            key={i}
-                            className="bg-black/5 backdrop-blur-xl rounded-3xl p-5 border border-black/5 flex items-center gap-4 group/tool overflow-hidden relative"
-                          >
-                            <div className="h-12 w-12 rounded-2xl bg-white/80 flex items-center justify-center shadow-sm relative z-10">
-                              {call.toolName.toLowerCase().includes("history") ? (
-                                <History className="h-6 w-6 text-primary" />
-                              ) : call.toolName.toLowerCase().includes("vital") ? (
-                                <Activity className="h-6 w-6 text-primary" />
-                              ) : (
-                                <Search className="h-6 w-6 text-primary" />
+                <div
+                  className={cn(
+                    "max-w-[90%] md:max-w-[80%] px-8 py-6 rounded-[2.5rem] shadow-sm relative group",
+                    msg.role === "user"
+                      ? "bg-gradient-to-br from-primary via-primary to-[#0047FF] text-white rounded-tr-none shadow-xl shadow-primary/20"
+                      : "bg-white text-black/80 rounded-tl-none border border-black/5 shadow-xl shadow-black/[0.02]"
+                  )}
+                >
+                  {/* Check for parts (AI SDK v6) */}
+                  {msg.parts ? (
+                    <div className="flex flex-col gap-4">
+                      {msg.parts.map((part, i) => {
+                        if (part.type === "text") {
+                          return (
+                            <div
+                              key={i}
+                              className={cn(
+                                "prose prose-lg max-w-none font-medium leading-[1.6]",
+                                msg.role === "user" ? "prose-invert" : "prose-slate"
                               )}
+                            >
+                              <ReactMarkdown
+                                components={{
+                                  p: ({node, ...props}) => <p className="mb-4 last:mb-0" {...props} />,
+                                  strong: ({node, ...props}) => <strong className="font-black" {...props} />,
+                                  ul: ({node, ...props}) => <ul className="list-disc pl-5 mb-4" {...props} />,
+                                  li: ({node, ...props}) => <li className="mb-2" {...props} />,
+                                }}
+                              >
+                                {part.text}
+                              </ReactMarkdown>
                             </div>
-                            <div className="flex flex-col relative z-10">
-                              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30 mb-1">
-                                {call.state === "result" ? "Query Completed" : "Medical Logic Step"}
-                              </span>
-                              <span className="text-sm font-black text-black/70">
-                                {call.toolName === "searchMedicalHistory" && "Scanning Clinical Archives"}
-                                {call.toolName === "getLatestVitals" && "Accessing Vital Telemetry"}
-                                {call.toolName === "searchMedicalLiterature" && "Consulting Research Nodes"}
-                                {call.toolName === "getDoctorNotes" && "Decoding Clinical Insights"}
-                                {call.toolName === "searchVoiceHistory" && "Analyzing Audio Transcripts"}
-                              </span>
-                            </div>
-                            {call.state === "result" ? (
-                              <div className="ml-auto relative z-10">
-                                <div className="h-8 w-8 rounded-full bg-green-500/10 flex items-center justify-center border border-green-500/20">
-                                  <ShieldCheck className="h-4 w-4 text-green-600" />
+                          );
+                        }
+                        if (part.type === "tool-invocation") {
+                          const call = part.toolInvocation;
+                          return (
+                            <div
+                              key={i}
+                              className="bg-black/5 backdrop-blur-xl rounded-3xl p-5 border border-black/5 flex items-center gap-4 group/tool overflow-hidden relative"
+                            >
+                              <div className="h-12 w-12 rounded-2xl bg-white/80 flex items-center justify-center shadow-sm relative z-10">
+                                {call.toolName.toLowerCase().includes("history") ? (
+                                  <History className="h-6 w-6 text-primary" />
+                                ) : call.toolName.toLowerCase().includes("vital") ? (
+                                  <Activity className="h-6 w-6 text-primary" />
+                                ) : (
+                                  <Search className="h-6 w-6 text-primary" />
+                                )}
+                              </div>
+                              <div className="flex flex-col relative z-10">
+                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30 mb-1">
+                                  {call.state === "result" ? "Query Completed" : "Medical Logic Step"}
+                                </span>
+                                <span className="text-sm font-black text-black/70">
+                                  {call.toolName === "searchMedicalHistory" && "Scanning Clinical Archives"}
+                                  {call.toolName === "getLatestVitals" && "Accessing Vital Telemetry"}
+                                  {call.toolName === "searchMedicalLiterature" && "Consulting Research Nodes"}
+                                  {call.toolName === "getDoctorNotes" && "Decoding Clinical Insights"}
+                                  {call.toolName === "searchVoiceHistory" && "Analyzing Audio Transcripts"}
+                                </span>
+                              </div>
+                              {call.state === "result" ? (
+                                <div className="ml-auto relative z-10">
+                                  <div className="h-8 w-8 rounded-full bg-green-500/10 flex items-center justify-center border border-green-500/20">
+                                    <ShieldCheck className="h-4 w-4 text-green-600" />
+                                  </div>
                                 </div>
-                              </div>
-                            ) : (
-                              <div className="ml-auto relative z-10">
-                                <Loader2 className="h-5 w-5 text-primary animate-spin" />
-                              </div>
-                            )}
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] animate-[shimmer_2s_infinite]" />
-                          </div>
-                        );
-                      }
-                      return null;
-                    })}
-                  </div>
-                ) : (
-                  <div
-                    className={cn(
-                      "prose prose-lg max-w-none font-medium leading-[1.6]",
-                      msg.role === "user" ? "prose-invert" : "prose-slate"
-                    )}
-                  >
-                    <ReactMarkdown>{msg.content}</ReactMarkdown>
-                  </div>
-                )}
-              </div>
-              
-              <div className={cn(
-                "flex items-center gap-3 px-6",
-                msg.role === "user" ? "flex-row-reverse" : "flex-row"
-              )}>
-                <span className="text-[9px] font-black text-black/10 uppercase tracking-[0.2em] transition-opacity group-hover:opacity-100 opacity-0">
-                  {msg.role === "user" ? "Sent by You" : "Origin: Dr. Leo"}
-                </span>
-                <div className="h-1 w-1 rounded-full bg-black/5" />
-                <span className="text-[9px] font-black text-black/10 uppercase tracking-[0.2em]">
-                  {new Date(msg.createdAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </span>
-              </div>
-            </motion.div>
-          ))}
-          
-          {isLoading && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex items-center gap-4 p-4 rounded-3xl bg-black/[0.02] w-fit"
-            >
-              <div className="flex gap-1.5">
-                {[0, 1, 2].map((i) => (
-                  <motion.div
-                    key={i}
-                    animate={{ y: [0, -4, 0] }}
-                    transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.1 }}
-                    className="h-2 w-2 rounded-full bg-primary/40"
-                  />
-                ))}
-              </div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-black/30">Leo is thinking...</span>
-            </motion.div>
-          )}
+                              ) : (
+                                <div className="ml-auto relative z-10">
+                                  <Loader2 className="h-5 w-5 text-primary animate-spin" />
+                                </div>
+                              )}
+                              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] animate-[shimmer_2s_infinite]" />
+                            </div>
+                          );
+                        }
+                        return null;
+                      })}
+                    </div>
+                  ) : (
+                    <div
+                      className={cn(
+                        "prose prose-lg max-w-none font-medium leading-[1.6]",
+                        msg.role === "user" ? "prose-invert" : "prose-slate"
+                      )}
+                    >
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    </div>
+                  )}
+                </div>
+                
+                <div className={cn(
+                  "flex items-center gap-3 px-6",
+                  msg.role === "user" ? "flex-row-reverse" : "flex-row"
+                )}>
+                  <span className="text-[9px] font-black text-black/10 uppercase tracking-[0.2em] transition-opacity group-hover:opacity-100 opacity-0">
+                    {msg.role === "user" ? "Sent by You" : "Origin: Dr. Leo"}
+                  </span>
+                  <div className="h-1 w-1 rounded-full bg-black/5" />
+                  <span className="text-[9px] font-black text-black/10 uppercase tracking-[0.2em]">
+                    {new Date(msg.createdAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                </div>
+              </motion.div>
+            ))}
+            
+            {isLoading && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex items-center gap-4 p-4 rounded-3xl bg-black/[0.02] w-fit"
+              >
+                <div className="flex gap-1.5">
+                  {[0, 1, 2].map((i) => (
+                    <motion.div
+                      key={i}
+                      animate={{ y: [0, -4, 0] }}
+                      transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.1 }}
+                      className="h-2 w-2 rounded-full bg-primary/40"
+                    />
+                  ))}
+                </div>
+                <span className="text-[10px] font-black uppercase tracking-widest text-black/30">Leo is thinking...</span>
+              </motion.div>
+            )}
+          </div>
+        </ScrollArea>
+        {/* Subtle Bottom Fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent pointer-events-none z-10" />
+      </div>
 
-          {/* World-Class Scroll Buffer - Ensures no message is EVER hidden by the dock */}
-          <div className="h-[200px] w-full pointer-events-none" aria-hidden="true" />
-        </div>
-      </ScrollArea>
-
-      {/* Floating Smart Input Dock */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full max-w-4xl px-6 md:px-10 z-30">
-        <div className="relative group">
+      {/* Persistent Smart Input Dock - Sticky at bottom of container */}
+      <div className="px-6 md:px-10 pb-8 pt-4 bg-white/40 backdrop-blur-md border-t border-black/[0.03]">
+        <div className="relative group max-w-4xl mx-auto">
           {/* Background blur/shadow ring */}
           <div className="absolute -inset-4 bg-black/5 rounded-[4rem] blur-2xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-700" />
           

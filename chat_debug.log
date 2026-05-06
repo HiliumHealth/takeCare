@@ -81,3 +81,27 @@
 [2026-05-05T09:52:39.834Z] Returning stream response using toDataStreamResponse.
 [2026-05-05T09:52:39.837Z] Fallback: using toUIMessageStreamResponse
 [2026-05-05T09:53:01.274Z] STREAM ERROR: [object Object]
+[2026-05-06T14:00:07.550Z] --- POST REQUEST START ---
+[2026-05-06T14:00:07.553Z] API Key present: true, Length: 39
+[2026-05-06T14:00:07.613Z] Auth User: cmnm9stin000038v5uo82ijcs
+[2026-05-06T14:00:07.626Z] Messages count: 1
+[2026-05-06T14:00:09.906Z] Starting streamText with gemini-2.5-flash...
+[2026-05-06T14:00:09.914Z] Result object keys: _totalUsage, _finishReason, _rawFinishReason, _steps, outputSpecification, includeRawChunks, tools, addStream, closeStream, baseStream
+[2026-05-06T14:00:09.915Z] Returning stream response using toDataStreamResponse.
+[2026-05-06T14:00:09.915Z] Fallback: using toUIMessageStreamResponse
+[2026-05-06T14:01:25.471Z] --- POST REQUEST START ---
+[2026-05-06T14:01:25.473Z] API Key present: true, Length: 39
+[2026-05-06T14:01:25.490Z] Auth User: cmnm9stin000038v5uo82ijcs
+[2026-05-06T14:01:25.491Z] Messages count: 3
+[2026-05-06T14:01:28.243Z] Starting streamText with gemini-2.5-flash...
+[2026-05-06T14:01:28.258Z] Result object keys: _totalUsage, _finishReason, _rawFinishReason, _steps, outputSpecification, includeRawChunks, tools, addStream, closeStream, baseStream
+[2026-05-06T14:01:28.259Z] Returning stream response using toDataStreamResponse.
+[2026-05-06T14:01:28.259Z] Fallback: using toUIMessageStreamResponse
+[2026-05-06T14:01:49.962Z] --- POST REQUEST START ---
+[2026-05-06T14:01:49.962Z] API Key present: true, Length: 39
+[2026-05-06T14:01:49.977Z] Auth User: cmnm9stin000038v5uo82ijcs
+[2026-05-06T14:01:49.979Z] Messages count: 5
+[2026-05-06T14:01:51.948Z] Starting streamText with gemini-2.5-flash...
+[2026-05-06T14:01:51.955Z] Result object keys: _totalUsage, _finishReason, _rawFinishReason, _steps, outputSpecification, includeRawChunks, tools, addStream, closeStream, baseStream
+[2026-05-06T14:01:51.959Z] Returning stream response using toDataStreamResponse.
+[2026-05-06T14:01:51.960Z] Fallback: using toUIMessageStreamResponse

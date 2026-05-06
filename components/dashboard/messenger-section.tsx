@@ -390,7 +390,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
 
           <div
             ref={scrollRef}
-            className="flex-1 overflow-y-auto p-8 space-y-8 bg-black/[0.02]"
+            className="flex-1 overflow-y-auto p-8 space-y-8 bg-black/[0.01]"
           >
             {messages.map((m) => (
               <motion.div
@@ -402,8 +402,8 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
                 <div className={cn(
                   "p-5 rounded-3xl text-sm leading-relaxed shadow-sm overflow-hidden",
                   m.sender === "user"
-                    ? "bg-black text-white rounded-tr-none"
-                    : "bg-white text-black border border-black/5 rounded-tl-none"
+                    ? "bg-black text-white rounded-tr-none shadow-xl shadow-black/10"
+                    : "bg-white text-black border border-black/10 rounded-tl-none shadow-md shadow-black/2"
                 )}>
                   {m.type === "image" && m.mediaUrl && (
                     <div className="mb-3 rounded-xl overflow-hidden shadow-lg border border-black/5">
@@ -416,9 +416,9 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
                       <audio src={m.mediaUrl} controls className="h-10 w-48" />
                     </div>
                   )}
-                  <p className="font-medium">{m.text}</p>
+                  <p className="font-bold">{m.text}</p>
                 </div>
-                <span className="text-[10px] font-black text-black/20 mt-2 px-2 uppercase tracking-widest">{m.timestamp}</span>
+                <span className="text-[10px] font-black text-black/30 mt-2 px-2 uppercase tracking-widest">{m.timestamp}</span>
               </motion.div>
             ))}
             {isTyping && (
@@ -428,11 +428,11 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
                 className="flex items-center gap-2 p-4 bg-black/5 rounded-2xl w-fit"
               >
                 <div className="flex gap-1">
-                  <div className="w-1.5 h-1.5 bg-black/40 rounded-full animate-bounce" />
-                  <div className="w-1.5 h-1.5 bg-black/40 rounded-full animate-bounce [animation-delay:0.2s]" />
-                  <div className="w-1.5 h-1.5 bg-black/40 rounded-full animate-bounce [animation-delay:0.4s]" />
+                  <div className="w-1.5 h-1.5 bg-black/60 rounded-full animate-bounce" />
+                  <div className="w-1.5 h-1.5 bg-black/60 rounded-full animate-bounce [animation-delay:0.2s]" />
+                  <div className="w-1.5 h-1.5 bg-black/60 rounded-full animate-bounce [animation-delay:0.4s]" />
                 </div>
-                <span className="text-[10px] font-black text-black/40 uppercase tracking-widest">Doctor is typing</span>
+                <span className="text-[10px] font-black text-black/60 uppercase tracking-widest">Doctor is typing</span>
               </motion.div>
             )}
           </div>

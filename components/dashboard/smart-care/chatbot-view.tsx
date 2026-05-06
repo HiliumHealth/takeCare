@@ -18,7 +18,6 @@ import {
   Search,
   ShieldCheck,
   Bot,
-  Sparkles,
   Zap,
   Brain,
   Loader2,
@@ -114,7 +113,7 @@ export function ChatbotView({
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col flex-1 h-[calc(100vh-280px)] bg-[#fcfcfc] rounded-[3.5rem] border border-black/5 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.08)] overflow-hidden relative"
+      className="flex flex-col flex-1 min-h-[600px] lg:h-[750px] bg-[#fcfcfc] rounded-[3.5rem] border border-black/5 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.08)] overflow-hidden relative"
     >
       {/* Dynamic Chat Header */}
       <div className="px-10 py-6 border-b border-black/[0.03] bg-white/40 backdrop-blur-3xl flex items-center justify-between shrink-0 sticky top-0 z-20">
@@ -130,15 +129,15 @@ export function ChatbotView({
               <h3 className="font-bricolage font-black text-xl tracking-tight text-black">Dr. Leo</h3>
               <Badge className="bg-primary/5 text-primary border-primary/10 text-[9px] font-black uppercase tracking-widest px-2 py-0">Active Intelligence</Badge>
             </div>
-            <p className="text-[11px] font-bold text-black/30 uppercase tracking-[0.1em]">Verified Health Assistant • Encryption Active</p>
+            <p className="text-[11px] font-bold text-black/60 uppercase tracking-[0.1em]">Verified Health Assistant • Encryption Active</p>
           </div>
         </div>
 
         <div className="flex items-center gap-4">
           <div className="hidden md:flex flex-col items-end">
             <span className="text-[10px] font-black text-black/20 uppercase tracking-widest">Connection Status</span>
-            <span className="text-xs font-black text-green-600 flex items-center gap-2">
-              <Globe className="h-3 w-3" /> Ultra-Low Latency
+            <span className="text-xs font-black text-black flex items-center gap-2">
+              <Globe className="h-3 w-3 text-green-500" /> Ultra-Low Latency
             </span>
           </div>
           <div className="h-10 w-px bg-black/[0.05]" />
@@ -149,15 +148,15 @@ export function ChatbotView({
       </div>
 
       {/* Messages Scroll Area */}
-      <ScrollArea className="flex-1 px-6 md:px-10 pt-10 pb-32" ref={scrollAreaRef}>
+      <ScrollArea className="flex-1 px-6 md:px-10 pt-10 pb-44" ref={scrollAreaRef}>
         <div className="flex flex-col gap-10 max-w-4xl mx-auto w-full">
           {messages.length <= 1 && (
             <div className="flex flex-col items-center justify-center py-20 text-center">
-              <div className="h-24 w-24 rounded-[2rem] bg-black/5 flex items-center justify-center mb-8 animate-pulse">
-                <Sparkles className="h-10 w-10 text-black/20" />
+              <div className="h-24 w-24 rounded-[2rem] bg-black/5 flex items-center justify-center mb-8">
+                <Bot className="h-10 w-10 text-black/40" />
               </div>
               <h4 className="text-3xl font-bricolage font-black text-black mb-4">Start your Consultation</h4>
-              <p className="text-black/40 font-medium max-w-sm mb-10 leading-relaxed">
+              <p className="text-black/80 font-medium max-w-sm mb-10 leading-relaxed">
                 I have full access to your medical records. Ask me anything about your health history, vitals, or symptoms.
               </p>
               

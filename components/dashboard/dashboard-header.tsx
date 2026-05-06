@@ -40,24 +40,24 @@ export function DashboardHeader({ user, notificationCount = 0 }: DashboardHeader
         </div>
         <div className="flex flex-col min-w-0">
           <span className="font-outfit text-sm font-bold tracking-tight lg:text-xl leading-none truncate">TakeCare</span>
-          <span className="text-[7px] font-black uppercase tracking-[0.2em] text-black/40 lg:text-[10px]">Portal</span>
+          <span className="text-[7px] font-black uppercase tracking-[0.2em] text-black/60 lg:text-[10px]">Portal</span>
         </div>
       </div>
 
       <div className="flex items-center gap-3 lg:gap-6">
         <div className="hidden items-center gap-2 rounded-full bg-black/5 px-4 py-2 lg:flex border border-transparent focus-within:border-primary/20 transition-all">
-          <Search className="h-4 w-4 text-black/40" />
+          <Search className="h-4 w-4 text-black/60" />
           <input 
             type="text" 
             placeholder="Search health records..." 
-            className="bg-transparent text-sm font-medium outline-none placeholder:text-black/20"
+            className="bg-transparent text-sm font-medium outline-none placeholder:text-black/30 text-black"
           />
         </div>
         
         <div className="flex items-center gap-2 lg:gap-3">
           <div className="relative">
             <Button variant="ghost" size="icon" className="flex rounded-full hover:bg-black/5 h-9 w-9 lg:h-10 lg:w-10">
-              <Bell className="h-5 w-5" />
+              <Bell className="h-5 w-5 text-black" />
             </Button>
             {notificationCount > 0 && (
               <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[8px] font-black text-white ring-2 ring-white animate-in zoom-in duration-300">
@@ -66,7 +66,7 @@ export function DashboardHeader({ user, notificationCount = 0 }: DashboardHeader
             )}
           </div>
 
-          <div className="hidden lg:block h-8 w-px bg-black/5 mx-2" />
+          <div className="hidden lg:block h-8 w-px bg-black/10 mx-2" />
           
           <div className="flex items-center gap-3 lg:gap-6">
             <div className="lg:block">
@@ -75,8 +75,8 @@ export function DashboardHeader({ user, notificationCount = 0 }: DashboardHeader
             
             <div className="flex items-center gap-3">
               <div className="hidden flex-col items-end sm:flex">
-                <span className="text-sm font-bold leading-none">{user?.name || "Patient"}</span>
-                <span className="text-[10px] font-bold text-black/40 uppercase tracking-wider mt-1 cursor-pointer hover:text-red-500 transition-colors flex items-center gap-2" onClick={handleLogout}>
+                <span className="text-sm font-black leading-none text-black">{user?.name || "Patient"}</span>
+                <span className="text-[10px] font-bold text-black/60 uppercase tracking-wider mt-1 cursor-pointer hover:text-red-600 transition-colors flex items-center gap-2" onClick={handleLogout}>
                    Log out
                 </span>
               </div>

@@ -373,17 +373,16 @@ export default function DashboardPage() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="px-6 py-6 md:py-12 lg:px-0 lg:py-20 animate-fade-up"
             >
-              <h1 className="font-bricolage text-3xl md:text-5xl lg:text-7xl font-extrabold tracking-tighter flex flex-wrap items-center gap-x-2 md:gap-x-4 transition-all">
-                <span className="text-black/40 whitespace-nowrap">{getGreeting()},</span> 
-                <span className="text-primary inline-block">{userData?.name?.split(' ')[0] || "Patient"}.</span>
+              <h1 className="font-bricolage text-2xl md:text-5xl lg:text-7xl font-extrabold tracking-tighter flex flex-wrap items-center gap-x-2 md:gap-x-4 transition-all">
+                <span className="text-black/60 whitespace-nowrap">{getGreeting()},</span> 
+                <span className="text-black inline-block">{userData?.name?.split(' ')[0] || "Patient"}.</span>
               </h1>
-              <p className="mt-3 md:mt-6 text-xs md:text-lg lg:text-2xl font-semibold text-black/40 max-w-3xl leading-snug md:leading-relaxed">
+              <p className="mt-3 md:mt-6 text-xs md:text-lg lg:text-2xl font-semibold text-black/80 max-w-3xl leading-snug md:leading-relaxed">
                 Your <span className="text-black font-bold italic underline decoration-primary/40 underline-offset-4 cursor-help">comprehensive health profile</span> is ready.
               </p>
             </motion.div>
           )}
         </AnimatePresence>
-
 
 
         <AnimatePresence mode="wait">
@@ -428,7 +427,7 @@ export default function DashboardPage() {
                           </div>
                         </div>
                       </div>
-                      <p className="text-xs md:text-sm font-bold text-black/30 uppercase tracking-widest mt-1">Manage and search your clinical records</p>
+                      <p className="text-xs md:text-sm font-bold text-black/60 uppercase tracking-widest mt-1">Manage and search your clinical records</p>
                     </div>
                     <div className="relative group w-full md:w-96">
                       <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-black/20 group-focus-within:text-primary transition-colors">
@@ -443,9 +442,9 @@ export default function DashboardPage() {
                       {searchQuery && (
                         <button 
                           onClick={() => setSearchQuery("")}
-                          className="absolute inset-y-0 right-4 flex items-center text-black/40 hover:text-black transition-colors p-2"
+                          className="absolute inset-y-0 right-4 flex items-center text-black/60 hover:text-black transition-colors p-2"
                         >
-                          <XCircle className="h-5 w-5 fill-black/5" />
+                          <XCircle className="h-5 w-5 fill-black/10" />
                         </button>
                       )}
                     </div>

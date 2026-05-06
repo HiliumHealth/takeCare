@@ -69,24 +69,24 @@ export function ActivityTable({ records = [], onDelete, onView, deletingId }: Ac
               <Table className="w-full">
                 <TableHeader className="bg-black/3">
                   <TableRow className="hover:bg-transparent border-none">
-                    <TableHead className="py-6 pl-10 font-black text-black/40 uppercase tracking-[0.2em] text-[10px]">Date</TableHead>
-                    <TableHead className="py-6 font-black text-black/40 uppercase tracking-[0.2em] text-[10px]">Source Record</TableHead>
-                    <TableHead className="py-6 font-black text-black/40 uppercase tracking-[0.2em] text-[10px] hidden lg:table-cell">Type</TableHead>
-                    <TableHead className="py-6 font-black text-black/40 uppercase tracking-[0.2em] text-[10px]">Status</TableHead>
-                    <TableHead className="py-6 font-black text-black/40 uppercase tracking-[0.2em] text-[10px]">Clinical Summary</TableHead>
-                    <TableHead className="py-6 pr-10 font-black text-black/40 uppercase tracking-[0.2em] text-[10px] text-right">Action</TableHead>
+                    <TableHead className="py-6 pl-10 font-black text-black/60 uppercase tracking-[0.2em] text-[10px]">Date</TableHead>
+                    <TableHead className="py-6 font-black text-black/60 uppercase tracking-[0.2em] text-[10px]">Source Record</TableHead>
+                    <TableHead className="py-6 font-black text-black/60 uppercase tracking-[0.2em] text-[10px] hidden lg:table-cell">Type</TableHead>
+                    <TableHead className="py-6 font-black text-black/60 uppercase tracking-[0.2em] text-[10px]">Status</TableHead>
+                    <TableHead className="py-6 font-black text-black/60 uppercase tracking-[0.2em] text-[10px]">Clinical Summary</TableHead>
+                    <TableHead className="py-6 pr-10 font-black text-black/60 uppercase tracking-[0.2em] text-[10px] text-right">Action</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {records.map((record, idx) => (
                     <TableRow key={record.id || idx} className="group hover:bg-black/2 border-black/5 transition-all duration-300">
-                      <TableCell className="py-7 pl-10 font-bold text-sm">
+                      <TableCell className="py-7 pl-10 font-black text-sm text-black">
                         {new Date(record.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                       </TableCell>
-                      <TableCell className="py-7 font-black text-sm lg:text-base text-primary/80 group-hover:text-primary transition-colors">
+                      <TableCell className="py-7 font-black text-sm lg:text-base text-black group-hover:text-primary transition-colors">
                         {record.fileName}
                       </TableCell>
-                      <TableCell className="py-7 font-medium text-black/40 text-sm hidden lg:table-cell italic">{record.type}</TableCell>
+                      <TableCell className="py-7 font-black text-black/60 text-sm hidden lg:table-cell italic">{record.type}</TableCell>
                       <TableCell className="py-7">
                         <Badge className={cn(
                           "rounded-full font-black text-[9px] px-3 py-1 uppercase tracking-wider border-none shadow-sm",
@@ -147,23 +147,23 @@ export function ActivityTable({ records = [], onDelete, onView, deletingId }: Ac
               <Table className="min-w-[700px]">
                 <TableHeader className="bg-black/3">
                   <TableRow className="hover:bg-transparent border-none">
-                    <TableHead className="py-5 pl-6 font-black text-black/40 uppercase tracking-[0.2em] text-[9px]">Date</TableHead>
-                    <TableHead className="py-5 font-black text-black/40 uppercase tracking-[0.2em] text-[9px]">Source Record</TableHead>
-                    <TableHead className="py-5 font-black text-black/40 uppercase tracking-[0.2em] text-[9px]">Status</TableHead>
-                    <TableHead className="py-5 font-black text-black/40 uppercase tracking-[0.2em] text-[9px]">Summary</TableHead>
-                    <TableHead className="py-5 pr-6 font-black text-black/40 uppercase tracking-[0.2em] text-[9px] text-right">Action</TableHead>
+                    <TableHead className="py-5 pl-6 font-black text-black/60 uppercase tracking-[0.2em] text-[9px]">Date</TableHead>
+                    <TableHead className="py-5 font-black text-black/60 uppercase tracking-[0.2em] text-[9px]">Source Record</TableHead>
+                    <TableHead className="py-5 font-black text-black/60 uppercase tracking-[0.2em] text-[9px]">Status</TableHead>
+                    <TableHead className="py-5 font-black text-black/60 uppercase tracking-[0.2em] text-[9px]">Summary</TableHead>
+                    <TableHead className="py-5 pr-6 font-black text-black/60 uppercase tracking-[0.2em] text-[9px] text-right">Action</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {records.map((record, idx) => (
                     <TableRow key={record.id || idx} className="active:bg-black/2 border-black/5 transition-all">
-                      <TableCell className="py-6 pl-6 font-bold text-xs">
+                      <TableCell className="py-6 pl-6 font-black text-xs text-black">
                         {new Date(record.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                       </TableCell>
-                      <TableCell className="py-6 font-black text-xs text-primary/80">
+                      <TableCell className="py-6 font-black text-xs text-black">
                         <div className="flex flex-col gap-0.5">
                           <span>{record.fileName}</span>
-                          <span className="text-[8px] font-medium text-black/30 italic uppercase">{record.type}</span>
+                          <span className="text-[8px] font-black text-black/60 italic uppercase">{record.type}</span>
                         </div>
                       </TableCell>
                       <TableCell className="py-6">

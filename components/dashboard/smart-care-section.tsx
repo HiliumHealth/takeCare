@@ -47,7 +47,6 @@ import {
   ArrowLeft,
   ShieldCheck,
   History,
-  Sparkles,
   BookOpen,
   ArrowUpRight
 } from "lucide-react";
@@ -185,7 +184,7 @@ export function SmartCareSection({ userName = "Patient" }: { userName?: string }
                   How can I help you <span className="text-primary">today?</span>
                 </h2>
                 
-                <p className="text-black/40 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
+                <p className="text-black/60 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed">
                   Select a specialized AI tool to interact with your medical data, analysis records, or speak directly with our clinical agent.
                 </p>
               </motion.div>
@@ -214,7 +213,7 @@ export function SmartCareSection({ userName = "Patient" }: { userName?: string }
                     <h3 className="text-2xl md:text-3xl font-bricolage font-black tracking-tight text-black mb-4">
                       {tab.label}
                     </h3>
-                    <p className="text-sm md:text-base text-black/40 font-medium leading-relaxed group-hover:text-black/60 transition-colors">
+                    <p className="text-sm md:text-base text-black/60 font-medium leading-relaxed group-hover:text-black/90 transition-colors">
                       {tab.description}
                     </p>
                   </div>
@@ -258,7 +257,7 @@ export function SmartCareSection({ userName = "Patient" }: { userName?: string }
                   </p>
                 </div>
                 <div className="h-12 w-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-                  {React.createElement(SMART_CARE_TABS.find(t => t.id === activeTab)?.icon || Sparkles, { className: "h-6 w-6" })}
+                  {React.createElement(SMART_CARE_TABS.find(t => t.id === activeTab)?.icon || Bot, { className: "h-6 w-6" })}
                 </div>
               </div>
             </div>

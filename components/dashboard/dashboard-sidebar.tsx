@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
 
+import { EditProfileModal } from "./edit-profile-modal";
+
 const NAV_ITEMS = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "messenger", label: "Messenger", icon: MessageSquare },
@@ -58,7 +60,7 @@ export function DashboardSidebar({
               className={cn(
                 "w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all duration-300 group relative",
                 isActive 
-                  ? "bg-black text-white shadow-xl shadow-black/10" 
+                  ? "bg-blue-600 text-white shadow-xl shadow-blue-600/20" 
                   : "text-black/50 hover:text-black hover:bg-black/[0.03]"
               )}
             >
@@ -92,7 +94,7 @@ export function DashboardSidebar({
               {isActive && (
                 <motion.div
                   layoutId="sidebar-active"
-                  className="absolute left-0 w-1 h-6 bg-primary rounded-r-full"
+                  className="absolute left-0 w-1 h-6 bg-white/50 rounded-r-full"
                 />
               )}
             </button>
@@ -103,10 +105,16 @@ export function DashboardSidebar({
           <span className="text-[10px] font-black uppercase tracking-[0.3em] text-black/20">Help & Security</span>
         </div>
         
-        <button className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-black/40 hover:text-black hover:bg-black/[0.03] transition-all group">
-          <Settings className="h-6 w-6 group-hover:rotate-45 transition-transform duration-500" />
-          <span className="font-bold text-sm tracking-tight">Account Settings</span>
-        </button>
+        <EditProfileModal 
+          user={user} 
+          onUpdate={() => window.location.reload()}
+          customTrigger={
+            <button className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-black/40 hover:text-black hover:bg-black/[0.03] transition-all group">
+              <Settings className="h-6 w-6 group-hover:rotate-45 transition-transform duration-500" />
+              <span className="font-bold text-sm tracking-tight">Account Settings</span>
+            </button>
+          }
+        />
         <button className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-black/40 hover:text-black hover:bg-black/[0.03] transition-all group">
           <ShieldCheck className="h-6 w-6" />
           <span className="font-bold text-sm tracking-tight">Secure Records</span>

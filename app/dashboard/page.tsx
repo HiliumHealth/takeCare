@@ -17,7 +17,7 @@ import { toast } from "sonner";
 import { DeleteConfirmationModal } from "@/components/dashboard/delete-confirmation-modal";
 import { RecordDetailsModal } from "@/components/dashboard/record-details-modal";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, XCircle, CheckCircle2, BellRing, ArrowRight, Bell, Heart, Activity, Pill, ShieldCheck, Loader2, Brain } from "lucide-react";
+import { Search, Filter, XCircle, CheckCircle2, BellRing, ArrowRight, Bell, Heart, Activity, Pill, ShieldCheck, Loader2, Brain, Sun, Moon, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { MobileNav } from "@/components/dashboard/mobile-nav";
@@ -383,6 +383,22 @@ export default function DashboardPage() {
               <span className="absolute -top-1 -right-1 h-4 w-4 bg-primary text-white text-[8px] font-black rounded-full flex items-center justify-center ring-4 ring-white shadow-lg">
                 {unreadNotifications}
               </span>
+            )}
+          </div>
+          <div className="h-6 w-px bg-black/[0.05]" />
+          
+          {/* Theme Switcher */}
+          <button className="h-10 w-10 rounded-full border border-black/5 bg-black/5 flex items-center justify-center hover:bg-black/10 transition-colors group">
+            <Sun className="h-5 w-5 text-black/60 group-hover:text-black hidden dark:block" />
+            <Moon className="h-5 w-5 text-black/60 group-hover:text-black block dark:hidden" />
+          </button>
+
+          {/* User Avatar */}
+          <div className="h-10 w-10 rounded-full bg-black/5 border border-black/5 flex items-center justify-center overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
+            {userData?.image ? (
+              <img src={userData.image} alt={userData.name} className="h-full w-full object-cover" />
+            ) : (
+              <User className="h-5 w-5 text-black/40" />
             )}
           </div>
         </div>

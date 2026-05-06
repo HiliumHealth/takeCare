@@ -79,12 +79,12 @@ export function ActivityTable({ records = [], onDelete, onView, deletingId }: Ac
                 </TableHeader>
                 <TableBody>
                   {records.map((record, idx) => (
-                    <TableRow key={record.id || idx} className="group hover:bg-black/2 border-black/5 transition-all duration-300">
+                    <TableRow key={record.id || idx} className="group even:bg-slate-50 odd:bg-white hover:bg-black/5 border-black/5 transition-all duration-300">
                       <TableCell className="py-7 pl-10 font-black text-sm text-black">
                         {new Date(record.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                       </TableCell>
                       <TableCell className="py-7 font-black text-sm lg:text-base text-black group-hover:text-primary transition-colors">
-                        {record.fileName}
+                        {truncateWords(record.fileName, 3)}
                       </TableCell>
                       <TableCell className="py-7 font-black text-black/80 text-sm hidden lg:table-cell italic">{record.type}</TableCell>
                       <TableCell className="py-7">
@@ -103,9 +103,9 @@ export function ActivityTable({ records = [], onDelete, onView, deletingId }: Ac
                       <TableCell className="py-7">
                         <div className="flex flex-col gap-1">
                           <span className="font-bold text-black text-sm max-w-[300px] leading-snug">
-                            {truncateWords(record.analysis?.summary || record.fallbackSummary || "Analyzing context...", 29)}
+                            {truncateWords(record.analysis?.summary || record.fallbackSummary || "Analyzing context...", 3)}
                           </span>
-                          {(record.analysis?.summary || record.fallbackSummary)?.split(/\s+/).length > 29 && (
+                          {(record.analysis?.summary || record.fallbackSummary)?.split(/\s+/).length > 3 && (
                             <button 
                               onClick={() => onView?.(record)}
                               className="text-[10px] font-black text-primary uppercase tracking-widest hover:underline text-left mt-1"
@@ -147,22 +147,22 @@ export function ActivityTable({ records = [], onDelete, onView, deletingId }: Ac
               <Table className="min-w-[700px]">
                 <TableHeader className="bg-black/3">
                   <TableRow className="hover:bg-transparent border-none">
-                    <TableHead className="py-5 pl-6 font-black text-black/60 uppercase tracking-[0.2em] text-[9px]">Date</TableHead>
-                    <TableHead className="py-5 font-black text-black/60 uppercase tracking-[0.2em] text-[9px]">Source Record</TableHead>
-                    <TableHead className="py-5 font-black text-black/60 uppercase tracking-[0.2em] text-[9px]">Status</TableHead>
-                    <TableHead className="py-5 font-black text-black/60 uppercase tracking-[0.2em] text-[9px]">Summary</TableHead>
-                    <TableHead className="py-5 pr-6 font-black text-black/60 uppercase tracking-[0.2em] text-[9px] text-right">Action</TableHead>
+                    <TableHead className="py-5 pl-6 font-black text-black/80 uppercase tracking-[0.2em] text-[9px]">Date</TableHead>
+                    <TableHead className="py-5 font-black text-black/80 uppercase tracking-[0.2em] text-[9px]">Source Record</TableHead>
+                    <TableHead className="py-5 font-black text-black/80 uppercase tracking-[0.2em] text-[9px]">Status</TableHead>
+                    <TableHead className="py-5 font-black text-black/80 uppercase tracking-[0.2em] text-[9px]">Summary</TableHead>
+                    <TableHead className="py-5 pr-6 font-black text-black/80 uppercase tracking-[0.2em] text-[9px] text-right">Action</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {records.map((record, idx) => (
-                    <TableRow key={record.id || idx} className="active:bg-black/2 border-black/5 transition-all">
+                    <TableRow key={record.id || idx} className="even:bg-slate-50 odd:bg-white active:bg-black/5 border-black/5 transition-all">
                       <TableCell className="py-6 pl-6 font-black text-xs text-black">
                         {new Date(record.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                       </TableCell>
                       <TableCell className="py-6 font-black text-xs text-black">
                         <div className="flex flex-col gap-0.5">
-                          <span>{record.fileName}</span>
+                          <span>{truncateWords(record.fileName, 3)}</span>
                           <span className="text-[8px] font-black text-black/60 italic uppercase">{record.type}</span>
                         </div>
                       </TableCell>
@@ -176,8 +176,8 @@ export function ActivityTable({ records = [], onDelete, onView, deletingId }: Ac
                         </Badge>
                       </TableCell>
                       <TableCell className="py-6">
-                        <span className="font-bold text-black text-xs line-clamp-1 max-w-[150px]">
-                          {record.analysis?.summary || record.fallbackSummary || "Analyzing..."}
+                        <span className="font-bold text-black text-xs max-w-[150px] inline-block">
+                          {truncateWords(record.analysis?.summary || record.fallbackSummary || "Analyzing...", 3)}
                         </span>
                       </TableCell>
                       <TableCell className="py-6 pr-6 text-right">

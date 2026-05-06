@@ -18,10 +18,10 @@ interface EditProfileModalProps {
     avatarUrl: string | null;
     coverImageUrl: string | null;
   };
-  onUpdate: () => void;
+  customTrigger?: React.ReactNode;
 }
 
-export function EditProfileModal({ user, onUpdate }: EditProfileModalProps) {
+export function EditProfileModal({ user, onUpdate, customTrigger }: EditProfileModalProps) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: user.name || "",
@@ -84,11 +84,11 @@ export function EditProfileModal({ user, onUpdate }: EditProfileModalProps) {
   return (
     <Dialog>
       <DialogTrigger 
-        render={
+        render={customTrigger || (
           <Button variant="outline" className="rounded-xl lg:rounded-2xl border-black/5 bg-black/5 font-black text-[10px] lg:text-xs uppercase tracking-widest hover:bg-black hover:text-white transition-all px-4 lg:px-8 h-10 lg:h-12 shadow-sm whitespace-nowrap shrink-0">
             Edit Profile
           </Button>
-        }
+        )}
       />
 
       <DialogContent className="sm:max-w-xl rounded-3xl md:rounded-5xl bg-white border-black/5 p-8 overflow-hidden">

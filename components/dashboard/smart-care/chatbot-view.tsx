@@ -119,8 +119,12 @@ export function ChatbotView({
       <div className="px-10 py-6 border-b border-black/[0.03] bg-white/40 backdrop-blur-3xl flex items-center justify-between shrink-0 sticky top-0 z-20">
         <div className="flex items-center gap-5">
           <div className="relative">
-            <div className="h-14 w-14 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 rotate-3">
-              <Bot className="h-7 w-7 text-white stroke-[2]" />
+            <div className="h-14 w-14 rounded-2xl overflow-hidden shadow-lg shadow-primary/10 rotate-3 border-2 border-white">
+              <img 
+                src="https://i.ibb.co/fYy0cwxb/Chat-GPT-Image-Apr-16-2026-09-01-03-AM.png" 
+                alt="Dr. Leo" 
+                className="h-full w-full object-cover"
+              />
             </div>
             <div className="absolute -bottom-1 -right-1 h-4 w-4 bg-green-500 rounded-full border-2 border-white shadow-sm" />
           </div>
@@ -152,8 +156,12 @@ export function ChatbotView({
         <div className="flex flex-col gap-10 max-w-4xl mx-auto w-full">
           {messages.length <= 1 && (
             <div className="flex flex-col items-center justify-center py-20 text-center">
-              <div className="h-24 w-24 rounded-[2rem] bg-black/5 flex items-center justify-center mb-8">
-                <Bot className="h-10 w-10 text-black/40" />
+              <div className="h-32 w-32 rounded-[2.5rem] overflow-hidden mb-8 border-4 border-white shadow-2xl shadow-black/5 rotate-2 transition-transform hover:rotate-0 duration-500">
+                <img 
+                  src="https://i.ibb.co/fYy0cwxb/Chat-GPT-Image-Apr-16-2026-09-01-03-AM.png" 
+                  alt="Dr. Leo" 
+                  className="h-full w-full object-cover"
+                />
               </div>
               <h4 className="text-3xl font-bricolage font-black text-black mb-4">Start your Consultation</h4>
               <p className="text-black/80 font-medium max-w-sm mb-10 leading-relaxed">

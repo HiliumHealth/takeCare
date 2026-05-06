@@ -105,3 +105,43 @@
 [2026-05-06T14:01:51.955Z] Result object keys: _totalUsage, _finishReason, _rawFinishReason, _steps, outputSpecification, includeRawChunks, tools, addStream, closeStream, baseStream
 [2026-05-06T14:01:51.959Z] Returning stream response using toDataStreamResponse.
 [2026-05-06T14:01:51.960Z] Fallback: using toUIMessageStreamResponse
+[2026-05-06T14:06:57.174Z] --- POST REQUEST START ---
+[2026-05-06T14:06:57.175Z] API Key present: true, Length: 39
+[2026-05-06T14:06:57.204Z] Auth User: cmnm9stin000038v5uo82ijcs
+[2026-05-06T14:06:57.209Z] Messages count: 1
+[2026-05-06T14:06:58.764Z] Starting streamText with gemini-2.5-flash...
+[2026-05-06T14:06:58.779Z] Result object keys: _totalUsage, _finishReason, _rawFinishReason, _steps, outputSpecification, includeRawChunks, tools, addStream, closeStream, baseStream
+[2026-05-06T14:06:58.780Z] Returning stream response using toDataStreamResponse.
+[2026-05-06T14:06:58.780Z] Fallback: using toUIMessageStreamResponse
+[2026-05-06T14:07:20.996Z] --- POST REQUEST START ---
+[2026-05-06T14:07:20.996Z] API Key present: true, Length: 39
+[2026-05-06T14:07:21.039Z] Auth User: cmnm9stin000038v5uo82ijcs
+[2026-05-06T14:07:21.041Z] Messages count: 3
+[2026-05-06T14:07:26.743Z] Starting streamText with gemini-2.5-flash...
+[2026-05-06T14:07:26.748Z] Result object keys: _totalUsage, _finishReason, _rawFinishReason, _steps, outputSpecification, includeRawChunks, tools, addStream, closeStream, baseStream
+[2026-05-06T14:07:26.749Z] Returning stream response using toDataStreamResponse.
+[2026-05-06T14:07:26.750Z] Fallback: using toUIMessageStreamResponse
+[2026-05-06T14:07:34.041Z] --- POST REQUEST START ---
+[2026-05-06T14:07:34.042Z] API Key present: true, Length: 39
+[2026-05-06T14:07:34.060Z] Auth User: cmnm9stin000038v5uo82ijcs
+[2026-05-06T14:07:34.061Z] Messages count: 5
+[2026-05-06T14:07:37.685Z] Starting streamText with gemini-2.5-flash...
+[2026-05-06T14:07:37.691Z] Result object keys: _totalUsage, _finishReason, _rawFinishReason, _steps, outputSpecification, includeRawChunks, tools, addStream, closeStream, baseStream
+[2026-05-06T14:07:37.692Z] Returning stream response using toDataStreamResponse.
+[2026-05-06T14:07:37.692Z] Fallback: using toUIMessageStreamResponse
+[2026-05-06T14:08:03.400Z] --- POST REQUEST START ---
+[2026-05-06T14:08:03.403Z] API Key present: true, Length: 39
+[2026-05-06T14:08:03.429Z] Auth User: cmnm9stin000038v5uo82ijcs
+[2026-05-06T14:08:03.430Z] Messages count: 7
+[2026-05-06T14:08:05.444Z] Starting streamText with gemini-2.5-flash...
+[2026-05-06T14:08:05.446Z] Result object keys: _totalUsage, _finishReason, _rawFinishReason, _steps, outputSpecification, includeRawChunks, tools, addStream, closeStream, baseStream
+[2026-05-06T14:08:05.446Z] Returning stream response using toDataStreamResponse.
+[2026-05-06T14:08:05.447Z] Fallback: using toUIMessageStreamResponse
+[2026-05-06T14:08:29.105Z] --- POST REQUEST START ---
+[2026-05-06T14:08:29.106Z] API Key present: true, Length: 39
+[2026-05-06T14:08:29.126Z] Auth User: cmnm9stin000038v5uo82ijcs
+[2026-05-06T14:08:29.128Z] Messages count: 9
+[2026-05-06T14:08:31.992Z] Starting streamText with gemini-2.5-flash...
+[2026-05-06T14:08:31.994Z] Result object keys: _totalUsage, _finishReason, _rawFinishReason, _steps, outputSpecification, includeRawChunks, tools, addStream, closeStream, baseStream
+[2026-05-06T14:08:31.994Z] Returning stream response using toDataStreamResponse.
+[2026-05-06T14:08:31.995Z] Fallback: using toUIMessageStreamResponse

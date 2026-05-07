@@ -39,55 +39,55 @@ export function ActivityTable({ records = [], onDelete, onView, deletingId }: Ac
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="mx-0 lg:mx-0 mt-4 mb-20 overflow-hidden rounded-[2.5rem] border border-black/5 bg-white shadow-medical flex flex-col"
+      className="mx-0 lg:mx-0 mt-4 mb-20 overflow-hidden rounded-3xl border border-black/5 dark:border-white/5 bg-white dark:bg-white/5 shadow-medical flex flex-col"
     >
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-black/5 bg-black/1 px-8 py-7 gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-black/5 dark:border-white/5 bg-black/1 dark:bg-white/[0.01] px-6 py-4 gap-4">
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-3.5 h-3.5 text-green-500" />
-            <p className="text-xs font-bold text-black/60 lg:text-sm">Secure patient access • Verified chronology</p>
+            <p className="text-xs font-bold text-black/60 dark:text-white/60 lg:text-sm">Secure patient access • Verified chronology</p>
           </div>
         </div>
-        <Button variant="outline" className="rounded-2xl border-black/5 bg-black/5 font-black text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-all px-8 h-12 shadow-sm text-black">
+        <Button variant="outline" className="rounded-2xl border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 font-black text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-all px-8 h-12 shadow-sm text-black dark:text-white">
           {hasRecords ? "View Full Timeline" : "No Records Available"}
         </Button>
       </div>
 
       <div className="overflow-x-auto">
         {!hasRecords ? (
-          <div className="flex flex-col items-center justify-center py-20 bg-black/1 px-6 text-center">
-            <div className="h-20 w-20 rounded-4xl bg-black/5 flex items-center justify-center mb-6 animate-pulse">
-               <Calendar className="h-10 w-10 text-black/20" />
+          <div className="flex flex-col items-center justify-center py-20 bg-black/1 dark:bg-white/[0.01] px-6 text-center">
+            <div className="h-20 w-20 rounded-4xl bg-black/5 dark:bg-white/5 flex items-center justify-center mb-6 animate-pulse">
+               <Calendar className="h-10 w-10 text-black/20 dark:text-white/20" />
             </div>
-            <p className="text-sm font-black text-black/40 uppercase tracking-[0.3em]">Awaiting clinical verification</p>
-            <p className="text-xs text-black/30 mt-3 font-bold max-w-xs leading-relaxed">Capture your first record in the Smart Care tab to populate this list.</p>
+            <p className="text-sm font-black text-black/40 dark:text-white/40 uppercase tracking-[0.3em]">Awaiting clinical verification</p>
+            <p className="text-xs text-black/30 dark:text-white/30 mt-3 font-bold max-w-xs leading-relaxed">Capture your first record in the Smart Care tab to populate this list.</p>
           </div>
         ) : (
           <>
             {/* Desktop Table View */}
             <div className="hidden md:block">
               <Table className="w-full">
-                <TableHeader className="bg-black/3">
+                <TableHeader className="bg-black/3 dark:bg-white/[0.03]">
                   <TableRow className="hover:bg-transparent border-none">
-                    <TableHead className="py-6 pl-10 font-black text-black/80 uppercase tracking-[0.2em] text-[10px]">Date</TableHead>
-                    <TableHead className="py-6 font-black text-black/80 uppercase tracking-[0.2em] text-[10px]">Source Record</TableHead>
-                    <TableHead className="py-6 font-black text-black/80 uppercase tracking-[0.2em] text-[10px] hidden lg:table-cell">Type</TableHead>
-                    <TableHead className="py-6 font-black text-black/80 uppercase tracking-[0.2em] text-[10px]">Status</TableHead>
-                    <TableHead className="py-6 font-black text-black/80 uppercase tracking-[0.2em] text-[10px]">Clinical Summary</TableHead>
-                    <TableHead className="py-6 pr-10 font-black text-black/80 uppercase tracking-[0.2em] text-[10px] text-right">Action</TableHead>
+                    <TableHead className="py-4 pl-10 font-black text-black/80 dark:text-white/80 uppercase tracking-[0.2em] text-[10px]">Date</TableHead>
+                    <TableHead className="py-4 font-black text-black/80 dark:text-white/80 uppercase tracking-[0.2em] text-[10px]">Source Record</TableHead>
+                    <TableHead className="py-4 font-black text-black/80 dark:text-white/80 uppercase tracking-[0.2em] text-[10px] hidden lg:table-cell">Type</TableHead>
+                    <TableHead className="py-4 font-black text-black/80 dark:text-white/80 uppercase tracking-[0.2em] text-[10px]">Status</TableHead>
+                    <TableHead className="py-4 font-black text-black/80 dark:text-white/80 uppercase tracking-[0.2em] text-[10px]">Clinical Summary</TableHead>
+                    <TableHead className="py-4 pr-10 font-black text-black/80 dark:text-white/80 uppercase tracking-[0.2em] text-[10px] text-right">Action</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {records.map((record, idx) => (
-                    <TableRow key={record.id || idx} className="group even:bg-slate-50 odd:bg-white hover:bg-black/5 border-black/5 transition-all duration-300">
-                      <TableCell className="py-7 pl-10 font-black text-sm text-black">
+                    <TableRow key={record.id || idx} className="group even:bg-slate-50 odd:bg-white dark:even:bg-white/[0.02] dark:odd:bg-transparent hover:bg-black/5 dark:hover:bg-white/5 border-black/5 dark:border-white/5 transition-all duration-300">
+                      <TableCell className="py-3 pl-10 font-black text-xs text-black dark:text-white">
                         {new Date(record.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                       </TableCell>
-                      <TableCell className="py-7 font-black text-sm lg:text-base text-black group-hover:text-primary transition-colors">
+                      <TableCell className="py-3 font-black text-xs lg:text-sm text-black dark:text-white group-hover:text-primary transition-colors">
                         {truncateWords(record.fileName, 3)}
                       </TableCell>
-                      <TableCell className="py-7 font-black text-black/80 text-sm hidden lg:table-cell italic">{record.type}</TableCell>
-                      <TableCell className="py-7">
+                      <TableCell className="py-3 font-black text-black/80 dark:text-white/80 text-[11px] hidden lg:table-cell italic">{record.type}</TableCell>
+                      <TableCell className="py-3">
                         <Badge className={cn(
                           "rounded-full font-black text-[9px] px-3 py-1 uppercase tracking-wider border-none shadow-sm",
                           record.analysis ? "bg-emerald-500/10 text-emerald-600" : 
@@ -102,7 +102,7 @@ export function ActivityTable({ records = [], onDelete, onView, deletingId }: Ac
                       </TableCell>
                       <TableCell className="py-7">
                         <div className="flex flex-col gap-1">
-                          <span className="font-bold text-black text-sm max-w-[300px] leading-snug">
+                          <span className="font-bold text-black dark:text-white text-sm max-w-[300px] leading-snug">
                             {truncateWords(record.analysis?.summary || record.fallbackSummary || "Analyzing context...", 3)}
                           </span>
                           {(record.analysis?.summary || record.fallbackSummary)?.split(/\s+/).length > 3 && (
@@ -145,25 +145,25 @@ export function ActivityTable({ records = [], onDelete, onView, deletingId }: Ac
             {/* Mobile Table View (Horizontal Scroll) */}
             <div className="md:hidden overflow-x-auto no-scrollbar">
               <Table className="min-w-[700px]">
-                <TableHeader className="bg-black/3">
+                <TableHeader className="bg-black/3 dark:bg-white/[0.03]">
                   <TableRow className="hover:bg-transparent border-none">
-                    <TableHead className="py-5 pl-6 font-black text-black/80 uppercase tracking-[0.2em] text-[9px]">Date</TableHead>
-                    <TableHead className="py-5 font-black text-black/80 uppercase tracking-[0.2em] text-[9px]">Source Record</TableHead>
-                    <TableHead className="py-5 font-black text-black/80 uppercase tracking-[0.2em] text-[9px]">Status</TableHead>
-                    <TableHead className="py-5 font-black text-black/80 uppercase tracking-[0.2em] text-[9px]">Summary</TableHead>
-                    <TableHead className="py-5 pr-6 font-black text-black/80 uppercase tracking-[0.2em] text-[9px] text-right">Action</TableHead>
+                    <TableHead className="py-5 pl-6 font-black text-black/80 dark:text-white/80 uppercase tracking-[0.2em] text-[9px]">Date</TableHead>
+                    <TableHead className="py-5 font-black text-black/80 dark:text-white/80 uppercase tracking-[0.2em] text-[9px]">Source Record</TableHead>
+                    <TableHead className="py-5 font-black text-black/80 dark:text-white/80 uppercase tracking-[0.2em] text-[9px]">Status</TableHead>
+                    <TableHead className="py-5 font-black text-black/80 dark:text-white/80 uppercase tracking-[0.2em] text-[9px]">Summary</TableHead>
+                    <TableHead className="py-5 pr-6 font-black text-black/80 dark:text-white/80 uppercase tracking-[0.2em] text-[9px] text-right">Action</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {records.map((record, idx) => (
-                    <TableRow key={record.id || idx} className="even:bg-slate-50 odd:bg-white active:bg-black/5 border-black/5 transition-all">
-                      <TableCell className="py-6 pl-6 font-black text-xs text-black">
+                    <TableRow key={record.id || idx} className="even:bg-slate-50 odd:bg-white dark:even:bg-white/[0.02] dark:odd:bg-transparent active:bg-black/5 dark:active:bg-white/5 border-black/5 dark:border-white/5 transition-all">
+                      <TableCell className="py-6 pl-6 font-black text-xs text-black dark:text-white">
                         {new Date(record.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                       </TableCell>
-                      <TableCell className="py-6 font-black text-xs text-black">
+                      <TableCell className="py-6 font-black text-xs text-black dark:text-white">
                         <div className="flex flex-col gap-0.5">
                           <span>{truncateWords(record.fileName, 3)}</span>
-                          <span className="text-[8px] font-black text-black/60 italic uppercase">{record.type}</span>
+                          <span className="text-[8px] font-black text-black/60 dark:text-white/60 italic uppercase">{record.type}</span>
                         </div>
                       </TableCell>
                       <TableCell className="py-6">
@@ -176,7 +176,7 @@ export function ActivityTable({ records = [], onDelete, onView, deletingId }: Ac
                         </Badge>
                       </TableCell>
                       <TableCell className="py-6">
-                        <span className="font-bold text-black text-xs max-w-[150px] inline-block">
+                        <span className="font-bold text-black dark:text-white text-xs max-w-[150px] inline-block">
                           {truncateWords(record.analysis?.summary || record.fallbackSummary || "Analyzing...", 3)}
                         </span>
                       </TableCell>

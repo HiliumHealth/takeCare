@@ -69,7 +69,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0a0a0a] flex flex-col justify-center items-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Background elements */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-600/10 blur-[120px]" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/10 blur-[120px]" />
@@ -78,21 +78,21 @@ export default function SignUpPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="max-w-md w-full space-y-8 bg-white/80 backdrop-blur-xl p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-200/50 z-10"
+        className="max-w-md w-full space-y-8 bg-white/80 dark:bg-[#0f0f0f]/80 backdrop-blur-xl p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-200/50 dark:border-white/10 z-10"
       >
         <div className="text-center">
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.1 }}
-            className="w-16 h-16 bg-black rounded-2xl mx-auto flex items-center justify-center shadow-lg shadow-black/10"
+            className="w-16 h-16 bg-black dark:bg-white rounded-2xl mx-auto flex items-center justify-center shadow-lg shadow-black/10 dark:shadow-white/10"
           >
-            <User className="w-8 h-8 text-white" />
+            <User className="w-8 h-8 text-white dark:text-black" />
           </motion.div>
-          <h2 className="mt-6 text-3xl font-extrabold text-slate-900 tracking-tight">
+          <h2 className="mt-6 text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Create an Account
           </h2>
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-sm text-slate-500 dark:text-white/60">
             Join us today and personalize your health journey.
           </p>
         </div>
@@ -100,17 +100,17 @@ export default function SignUpPage() {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="username" className="text-slate-700">Username</Label>
+              <Label htmlFor="username" className="text-slate-700 dark:text-white/80">Username</Label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-slate-400" />
+                  <User className="h-5 w-5 text-slate-400 dark:text-white/40" />
                 </div>
                 <Input
                   id="username"
                   name="username"
                   type="text"
                   required
-                  className="pl-10 bg-white border-slate-200 text-slate-900 focus-visible:ring-blue-500 focus-visible:border-blue-500 placeholder:text-slate-400"
+                  className="pl-10 bg-white dark:bg-[#0a0a0a] border-slate-200 dark:border-white/10 text-slate-900 dark:text-white focus-visible:ring-blue-500 focus-visible:border-blue-500 placeholder:text-slate-400 dark:placeholder:text-white/40"
                   placeholder="johndoe"
                   value={formData.username}
                   onChange={handleChange}
@@ -119,17 +119,17 @@ export default function SignUpPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-slate-700">Email Address</Label>
+              <Label htmlFor="email" className="text-slate-700 dark:text-white/80">Email Address</Label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-slate-400" />
+                  <Mail className="h-5 w-5 text-slate-400 dark:text-white/40" />
                 </div>
                 <Input
                   id="email"
                   name="email"
                   type="email"
                   required
-                  className="pl-10 bg-white border-slate-200 text-slate-900 focus-visible:ring-blue-500 focus-visible:border-blue-500 placeholder:text-slate-400"
+                  className="pl-10 bg-white dark:bg-[#0a0a0a] border-slate-200 dark:border-white/10 text-slate-900 dark:text-white focus-visible:ring-blue-500 focus-visible:border-blue-500 placeholder:text-slate-400 dark:placeholder:text-white/40"
                   placeholder="name@example.com"
                   value={formData.email}
                   onChange={handleChange}
@@ -138,17 +138,17 @@ export default function SignUpPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-slate-700">Password</Label>
+              <Label htmlFor="password" className="text-slate-700 dark:text-white/80">Password</Label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-slate-400" />
+                  <Lock className="h-5 w-5 text-slate-400 dark:text-white/40" />
                 </div>
                 <Input
                   id="password"
                   name="password"
                   type={showPassword ? "text" : "password"}
                   required
-                  className="pl-10 pr-10 bg-white border-slate-200 text-slate-900 focus-visible:ring-blue-500 focus-visible:border-blue-500 placeholder:text-slate-400"
+                  className="pl-10 pr-10 bg-white dark:bg-[#0a0a0a] border-slate-200 dark:border-white/10 text-slate-900 dark:text-white focus-visible:ring-blue-500 focus-visible:border-blue-500 placeholder:text-slate-400 dark:placeholder:text-white/40"
                   placeholder="••••••••"
                   value={formData.password}
                   onChange={handleChange}
@@ -184,7 +184,7 @@ export default function SignUpPage() {
           </Button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-slate-500">
+        <p className="mt-6 text-center text-sm text-slate-500 dark:text-white/60">
           Already have an account?{" "}
           <Link href="/signin" className="font-semibold text-blue-600 hover:text-blue-500 transition-colors">
             Sign in here

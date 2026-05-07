@@ -1,5 +1,6 @@
 "use client";
 
+import { useTheme } from "next-themes";
 import React, { useState, useEffect, useRef } from "react";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 
@@ -24,7 +25,7 @@ import { MobileNav } from "@/components/dashboard/mobile-nav";
 
 function DashboardLoading() {
   return (
-    <div className="min-h-screen w-full bg-white flex flex-col items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen w-full bg-white dark:bg-[#0a0a0a] flex flex-col items-center justify-center relative overflow-hidden transition-colors duration-500">
       {/* Background Decor */}
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] animate-pulse pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-vital-orange/5 rounded-full blur-[100px] animate-pulse delay-700 pointer-events-none" />
@@ -51,7 +52,7 @@ function DashboardLoading() {
           <motion.div
             animate={{ scale: [1, 1.1, 1] }}
             transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-            className="relative z-20 h-24 w-24 bg-white rounded-4xl shadow-2xl flex items-center justify-center border border-primary/10"
+            className="relative z-20 h-24 w-24 bg-white dark:bg-black rounded-4xl shadow-2xl flex items-center justify-center border border-primary/10"
           >
             <Heart className="h-10 w-10 text-primary fill-primary/10" />
           </motion.div>
@@ -62,13 +63,13 @@ function DashboardLoading() {
             transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
             className="absolute inset-0"
           >
-            <motion.div className="absolute -top-4 left-1/2 -translate-x-1/2 h-10 w-10 bg-white rounded-xl shadow-lg border border-black/5 flex items-center justify-center">
+            <motion.div className="absolute -top-4 left-1/2 -translate-x-1/2 h-10 w-10 bg-white dark:bg-black rounded-xl shadow-lg border border-black/5 dark:border-white/5 flex items-center justify-center">
               <Pill className="h-5 w-5 text-vital-orange" />
             </motion.div>
-            <motion.div className="absolute top-1/2 -right-4 -translate-y-1/2 h-10 w-10 bg-white rounded-xl shadow-lg border border-black/5 flex items-center justify-center">
+            <motion.div className="absolute top-1/2 -right-4 -translate-y-1/2 h-10 w-10 bg-white dark:bg-black rounded-xl shadow-lg border border-black/5 dark:border-white/5 flex items-center justify-center">
               <Activity className="h-5 w-5 text-blue-500" />
             </motion.div>
-            <motion.div className="absolute bottom-1/2 -left-4 translate-y-1/2 h-10 w-10 bg-white rounded-xl shadow-lg border border-black/5 flex items-center justify-center">
+            <motion.div className="absolute bottom-1/2 -left-4 translate-y-1/2 h-10 w-10 bg-white dark:bg-black rounded-xl shadow-lg border border-black/5 dark:border-white/5 flex items-center justify-center">
               <ShieldCheck className="h-5 w-5 text-green-500" />
             </motion.div>
           </motion.div>
@@ -79,13 +80,13 @@ function DashboardLoading() {
           <motion.h2
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="font-bricolage text-3xl font-black tracking-tight text-black"
+            className="font-bricolage text-3xl font-black tracking-tight text-black dark:text-white"
           >
             Loading <span className="text-primary italic">Health Info..</span>
           </motion.h2>
 
           <div className="flex flex-col items-center gap-2">
-            <div className="w-64 h-1.5 bg-black/5 rounded-full overflow-hidden relative">
+            <div className="w-64 h-1.5 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden relative">
               <motion.div
                 initial={{ left: "-100%" }}
                 animate={{ left: "100%" }}
@@ -93,7 +94,7 @@ function DashboardLoading() {
                 className="absolute top-0 bottom-0 w-1/2 bg-linear-to-r from-transparent via-primary to-transparent"
               />
             </div>
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-black/30 flex items-center gap-2">
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-black/30 dark:text-white/30 flex items-center gap-2">
               <Loader2 className="h-3 w-3 animate-spin" />
               Secure Clinical Data Sync
             </p>
@@ -130,6 +131,7 @@ function DashboardLoading() {
 }
 
 export default function DashboardPage() {
+  const { theme, setTheme } = useTheme();
   const [activeTab, setActiveTab] = useState("overview");
   const [unreadNotifications, setUnreadNotifications] = useState(3);
   const [messengerUnreadCount, setMessengerUnreadCount] = useState(0);
@@ -328,7 +330,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="flex flex-col flex-1 min-h-screen relative bg-transparent overflow-x-clip max-w-[100vw] lg:pl-[280px]">
+    <div className="flex flex-col flex-1 min-h-screen relative bg-transparent overflow-x-clip max-w-[100vw] lg:pl-[260px]">
       {/* Global Modals */}
       <DeleteConfirmationModal 
         isOpen={deleteModalOpen}
@@ -357,13 +359,13 @@ export default function DashboardPage() {
       />
 
       {/* Main Content Area Top Bar - Desktop */}
-      <div className="hidden lg:flex sticky top-0 z-30 w-full h-24 bg-white/40 backdrop-blur-3xl border-b border-black/[0.03] items-center px-12 justify-between">
-        <div className="flex items-center gap-4 group bg-black/[0.03] px-6 py-3 rounded-2xl border border-transparent focus-within:border-primary/20 transition-all w-96">
-          <Search className="h-5 w-5 text-black/30 group-focus-within:text-primary transition-colors" />
+      <div className="hidden lg:flex sticky top-0 z-30 w-full h-20 bg-white/40 dark:bg-black/40 backdrop-blur-3xl border-b border-black/[0.03] dark:border-white/[0.03] items-center px-10 justify-between">
+        <div className="flex items-center gap-4 group bg-black/[0.03] dark:bg-white/[0.03] px-6 py-3 rounded-2xl border border-transparent focus-within:border-primary/20 transition-all w-96">
+          <Search className="h-5 w-5 text-black/30 dark:text-white/30 group-focus-within:text-primary transition-colors" />
           <input 
             type="text" 
             placeholder="Search records, doctors, or analysis..." 
-            className="bg-transparent border-none focus:ring-0 font-bold text-sm text-black placeholder:text-black/20 w-full"
+            className="bg-transparent border-none focus:ring-0 font-bold text-sm text-black dark:text-white placeholder:text-black/20 dark:placeholder:text-white/20 w-full"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -371,61 +373,64 @@ export default function DashboardPage() {
         
         <div className="flex items-center gap-8">
           <div className="flex flex-col items-end">
-            <span className="text-[10px] font-black text-black/20 uppercase tracking-[0.2em]">Profile Status</span>
-            <span className="text-xs font-black text-black flex items-center gap-2">
+            <span className="text-[10px] font-black text-black/20 dark:text-white/20 uppercase tracking-[0.2em]">Profile Status</span>
+            <span className="text-xs font-black text-black dark:text-white flex items-center gap-2">
               <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]" /> Everything is up to date
             </span>
           </div>
-          <div className="h-10 w-px bg-black/[0.05]" />
+          <div className="h-10 w-px bg-black/[0.05] dark:bg-white/[0.05]" />
           <div className="relative cursor-pointer group" onClick={() => setActiveTab("notifications")}>
-            <Bell className="h-6 w-6 text-black/40 group-hover:text-black transition-colors" />
+            <Bell className="h-6 w-6 text-black/40 dark:text-white/40 group-hover:text-black dark:group-hover:text-white transition-colors" />
             {unreadNotifications > 0 && (
               <span className="absolute -top-1 -right-1 h-4 w-4 bg-primary text-white text-[8px] font-black rounded-full flex items-center justify-center ring-4 ring-white shadow-lg">
                 {unreadNotifications}
               </span>
             )}
           </div>
-          <div className="h-6 w-px bg-black/[0.05]" />
+          <div className="h-6 w-px bg-black/[0.05] dark:bg-white/[0.05]" />
           
           {/* Theme Switcher */}
-          <button className="h-10 w-10 rounded-full border border-black/5 bg-black/5 flex items-center justify-center hover:bg-black/10 transition-colors group">
-            <Sun className="h-5 w-5 text-black/60 group-hover:text-black hidden dark:block" />
+          <button 
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="h-10 w-10 rounded-full border border-black/5 bg-black/5 dark:bg-white/5 dark:border-white/10 flex items-center justify-center hover:bg-black/10 dark:hover:bg-white/10 transition-colors group"
+          >
+            <Sun className="h-5 w-5 text-white/60 group-hover:text-white hidden dark:block" />
             <Moon className="h-5 w-5 text-black/60 group-hover:text-black block dark:hidden" />
           </button>
 
           {/* User Avatar */}
-          <div className="h-10 w-10 rounded-full bg-black/5 border border-black/5 flex items-center justify-center overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
+          <div className="h-10 w-10 rounded-full bg-black/5 border border-black/5 dark:bg-white/5 dark:border-white/5 flex items-center justify-center overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
             {userData?.avatarUrl || userData?.image ? (
               <img src={userData?.avatarUrl || userData?.image} alt={userData?.name} className="h-full w-full object-cover" />
             ) : (
-              <User className="h-5 w-5 text-black/40" />
+              <User className="h-5 w-5 text-black/40 dark:text-white/40" />
             )}
           </div>
         </div>
       </div>
 
-      <header className="sticky top-0 z-40 w-full border-b border-black/5 bg-white/80 backdrop-blur-md lg:hidden">
+      <header className="sticky top-0 z-40 w-full border-b border-black/5 dark:border-white/5 bg-white/80 dark:bg-black/80 backdrop-blur-md lg:hidden">
         <div className="responsive-container">
           <DashboardHeader user={userData} notificationCount={unreadNotifications} />
         </div>
       </header>
 
 
-      <main className="flex flex-1 flex-col w-full md:pb-6 px-4 md:px-12 lg:px-16 max-w-none overflow-x-hidden">
+      <main className="flex flex-1 flex-col w-full md:pb-6 px-4 md:px-8 lg:px-10 max-w-none overflow-x-hidden">
         <AnimatePresence mode="wait">
           {activeTab === "overview" && (
             <motion.div 
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="px-6 py-6 md:py-8 lg:px-0 lg:py-10 animate-fade-up"
+              className="px-6 py-4 md:py-6 lg:px-0 lg:py-8 animate-fade-up"
             >
-              <h1 className="font-bricolage text-2xl md:text-4xl lg:text-5xl font-extrabold tracking-tighter flex flex-wrap items-center gap-x-2 md:gap-x-4 transition-all">
-                <span className="text-black/80 whitespace-nowrap">{getGreeting()},</span> 
-                <span className="text-black inline-block">{userData?.name?.split(' ')[0] || "Patient"}.</span>
+              <h1 className="font-bricolage text-xl md:text-3xl lg:text-4xl font-extrabold tracking-tighter flex flex-wrap items-center gap-x-2 md:gap-x-4 transition-all">
+                <span className="text-black/80 dark:text-white/80 whitespace-nowrap">{getGreeting()},</span> 
+                <span className="text-black dark:text-white inline-block">{userData?.name?.split(' ')[0] || "Patient"}.</span>
               </h1>
-              <p className="mt-3 md:mt-4 text-sm md:text-base lg:text-lg font-semibold text-black/90 max-w-2xl leading-snug md:leading-relaxed">
-                Your <span className="text-black font-bold italic underline decoration-primary/40 underline-offset-4 cursor-help">comprehensive health profile</span> is ready.
+              <p className="mt-2 md:mt-3 text-xs md:text-sm lg:text-base font-semibold text-black/90 dark:text-white/90 max-w-2xl leading-snug md:leading-relaxed">
+                Your <span className="text-black dark:text-white font-bold italic underline decoration-primary/40 underline-offset-4 cursor-help">comprehensive health profile</span> is ready.
               </p>
             </motion.div>
           )}
@@ -441,7 +446,7 @@ export default function DashboardPage() {
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div className="mt-6 flex flex-col gap-8">
+              <div className="mt-4 flex flex-col gap-6">
                 <StatsCards stats={{
                   doctorsCount: userData?.doctorInvitations?.length || 0,
                   recordsCount: userData?.medicalRecords?.length || 0,
@@ -455,8 +460,8 @@ export default function DashboardPage() {
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center">
-                        <h2 className="font-bricolage text-2xl md:text-3xl font-extrabold tracking-tight text-black">Health History</h2>
-                        <div className="flex -space-x-3 overflow-hidden ml-6">
+                        <h2 className="font-bricolage text-xl md:text-2xl font-extrabold tracking-tight text-black dark:text-white">Health History</h2>
+                        <div className="flex -space-x-2 overflow-hidden ml-4">
                           {[
                             "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=100&auto=format&fit=crop",
                             "https://images.unsplash.com/photo-1594824476967-48c8b964273f?q=80&w=100&auto=format&fit=crop",
@@ -464,34 +469,34 @@ export default function DashboardPage() {
                           ].map((src, i) => (
                             <img
                               key={i}
-                              className="inline-block h-10 w-10 rounded-full ring-[4px] ring-[#f8f9fa] object-cover transition-transform hover:scale-110 cursor-pointer"
+                              className="inline-block h-10 w-10 rounded-full ring-[4px] ring-[#f8f9fa] dark:ring-[#0a0a0a] object-cover transition-transform hover:scale-110 cursor-pointer"
                               src={src}
                               alt="Medical Expert"
                             />
                           ))}
-                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-black text-[10px] ring-[4px] ring-[#f8f9fa] transition-all hover:bg-primary hover:text-white cursor-pointer">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary font-black text-[9px] ring-[4px] ring-[#f8f9fa] dark:ring-[#0a0a0a] transition-all hover:bg-primary hover:text-white cursor-pointer">
                             +12
                           </div>
                         </div>
                       </div>
-                      <p className="text-xs md:text-sm font-bold text-black/80 uppercase tracking-widest mt-1">Manage and search your clinical records</p>
+                      <p className="text-[10px] md:text-xs font-bold text-black/80 dark:text-white/80 uppercase tracking-widest mt-1">Manage and search your clinical records</p>
                     </div>
                     <div className="relative group w-full md:w-96">
-                      <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-black/20 group-focus-within:text-primary transition-colors">
+                      <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-black/20 dark:text-white/20 group-focus-within:text-primary transition-colors">
                         <Search className="h-5 w-5" />
                       </div>
                       <Input
                         placeholder="Search by doctor, date, or clinical diagnosis..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="h-14 pl-12 pr-12 rounded-2xl border-black/5 bg-white shadow-xl shadow-black/5 focus:ring-4 focus:ring-primary/5 transition-all font-bold text-[15px] placeholder:text-black/30 text-black"
+                        className="h-12 pl-12 pr-12 rounded-xl border-black/5 dark:border-white/5 bg-white dark:bg-[#0f0f0f] shadow-xl shadow-black/5 dark:shadow-black/20 focus:ring-4 focus:ring-primary/5 transition-all font-bold text-sm placeholder:text-black/30 dark:placeholder:text-white/30 text-black dark:text-white"
                       />
                       {searchQuery && (
                         <button 
                           onClick={() => setSearchQuery("")}
-                          className="absolute inset-y-0 right-4 flex items-center text-black/60 hover:text-black transition-colors p-2"
+                          className="absolute inset-y-0 right-4 flex items-center text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors p-2"
                         >
-                          <XCircle className="h-5 w-5 fill-black/10" />
+                          <XCircle className="h-5 w-5 fill-black/10 dark:fill-white/10" />
                         </button>
                       )}
                     </div>
@@ -581,8 +586,8 @@ export default function DashboardPage() {
               className="mt-6 flex flex-col gap-6"
             >
               <div className="flex flex-col gap-1">
-                <h2 className="font-bricolage text-2xl md:text-3xl font-extrabold tracking-tight text-black">Notifications Center</h2>
-                <p className="text-xs md:text-sm font-bold text-black/30 uppercase tracking-widest">Real-time health updates and clinical alerts</p>
+                <h2 className="font-bricolage text-2xl md:text-3xl font-extrabold tracking-tight text-black dark:text-white">Notifications Center</h2>
+                <p className="text-xs md:text-sm font-bold text-black/30 dark:text-white/30 uppercase tracking-widest">Real-time health updates and clinical alerts</p>
               </div>
 
               <div className="flex flex-col gap-4">

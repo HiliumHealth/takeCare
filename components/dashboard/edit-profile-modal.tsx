@@ -85,23 +85,23 @@ export function EditProfileModal({ user, onUpdate, customTrigger }: EditProfileM
     <Dialog>
       <DialogTrigger 
         render={customTrigger || (
-          <Button variant="outline" className="rounded-xl lg:rounded-2xl border-black/5 bg-black/5 font-black text-[10px] lg:text-xs uppercase tracking-widest hover:bg-black hover:text-white transition-all px-4 lg:px-8 h-10 lg:h-12 shadow-sm whitespace-nowrap shrink-0">
+          <Button variant="outline" className="rounded-xl lg:rounded-2xl border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 font-black text-[10px] lg:text-xs uppercase tracking-widest hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-all px-4 lg:px-8 h-10 lg:h-12 shadow-sm whitespace-nowrap shrink-0 text-black dark:text-white">
             Edit Profile
           </Button>
         )}
       />
 
-      <DialogContent className="sm:max-w-xl rounded-3xl md:rounded-5xl bg-white border-black/5 p-8 overflow-hidden">
+      <DialogContent className="sm:max-w-xl rounded-3xl md:rounded-5xl bg-white dark:bg-[#0a0a0a] border-black/5 dark:border-white/5 p-8 overflow-hidden">
         <DialogHeader className="px-0 md:px-2">
-          <DialogTitle className="font-bricolage text-2xl md:text-3xl font-extrabold tracking-tighter">Edit Patient Profile</DialogTitle>
+          <DialogTitle className="font-bricolage text-2xl md:text-3xl font-extrabold tracking-tighter text-black dark:text-white">Edit Patient Profile</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6 mt-6">
           {/* Cover Image */}
           <div className="space-y-2">
-            <Label className="text-xs font-black uppercase tracking-[0.2em] text-black/30">Cover Image</Label>
+            <Label className="text-xs font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">Cover Image</Label>
             <div 
-              className="relative group rounded-3xl overflow-hidden h-32 bg-black/5 border border-black/5 cursor-pointer"
+              className="relative group rounded-3xl overflow-hidden h-32 bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 cursor-pointer"
               onClick={() => coverInputRef.current?.click()}
             >
               <input 
@@ -124,9 +124,9 @@ export function EditProfileModal({ user, onUpdate, customTrigger }: EditProfileM
           {/* Avatar and Name */}
           <div className="flex gap-6 items-start">
              <div className="space-y-2">
-                <Label className="text-xs font-black uppercase tracking-[0.2em] text-black/30">Avatar</Label>
+                <Label className="text-xs font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">Avatar</Label>
                 <div 
-                  className="relative h-24 w-24 rounded-3xl bg-primary/10 border-4 border-white shadow-xl overflow-hidden group cursor-pointer"
+                  className="relative h-24 w-24 rounded-3xl bg-primary/10 border-4 border-white dark:border-[#0a0a0a] shadow-xl overflow-hidden group cursor-pointer"
                   onClick={() => avatarInputRef.current?.click()}
                 >
                    <input 
@@ -150,11 +150,11 @@ export function EditProfileModal({ user, onUpdate, customTrigger }: EditProfileM
 
              <div className="flex-1 space-y-4">
                <div className="space-y-2">
-                 <Label className="text-xs font-black uppercase tracking-[0.2em] text-black/30">Full Name</Label>
+                 <Label className="text-xs font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">Full Name</Label>
                  <Input
                    value={formData.name}
                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                   className="h-14 rounded-2xl border-black/5 bg-black/5 px-6 text-lg font-bold focus:bg-white"
+                   className="h-14 rounded-2xl border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 px-6 text-lg font-bold text-black dark:text-white focus:bg-white dark:focus:bg-[#1a1a1a]"
                  />
                </div>
              </div>
@@ -163,18 +163,18 @@ export function EditProfileModal({ user, onUpdate, customTrigger }: EditProfileM
           <Button 
             onClick={handleUpdate} 
             disabled={loading}
-            className="w-full h-14 bg-black text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-black/90 shadow-xl shadow-black/10"
+            className="w-full h-14 bg-black dark:bg-white text-white dark:text-black rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-black/90 dark:hover:bg-white/90 shadow-xl shadow-black/10 dark:shadow-white/10"
           >
             {loading ? <Loader2 className="animate-spin mr-2" /> : "Save Profile Changes"}
           </Button>
 
           {/* Danger Zone */}
-          <div className="pt-4 mt-4 border-t border-black/5">
+          <div className="pt-4 mt-4 border-t border-black/5 dark:border-white/5">
              <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-red-500/50 mb-4 block">Clinical Danger Zone</Label>
-             <div className="p-5 rounded-2xl bg-red-50/50 border border-red-100 flex items-center justify-between gap-4">
+             <div className="p-5 rounded-2xl bg-red-50/50 dark:bg-red-950/20 border border-red-100 dark:border-red-900/30 flex items-center justify-between gap-4">
                 <div className="flex flex-col gap-0.5">
-                   <span className="text-sm font-bold text-red-600">Delete medical records</span>
-                   <span className="text-[10px] font-medium text-red-900/40">This will permanently wipe all your clinical data.</span>
+                   <span className="text-sm font-bold text-red-600 dark:text-red-400">Delete medical records</span>
+                   <span className="text-[10px] font-medium text-red-900/40 dark:text-red-400/40">This will permanently wipe all your clinical data.</span>
                 </div>
                 <DeleteConfirm clerkId={user.clerkId} />
              </div>
@@ -217,20 +217,20 @@ function DeleteConfirm({ clerkId }: { clerkId: string }) {
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-md rounded-4xl bg-white p-8 border-none shadow-2xl">
+        <DialogContent className="sm:max-w-md rounded-4xl bg-white dark:bg-[#0a0a0a] p-8 border-none shadow-2xl dark:shadow-black/50">
           <DialogHeader className="items-center text-center">
-             <div className="h-16 w-16 rounded-3xl bg-red-100 flex items-center justify-center mb-4">
-                <Trash2 className="h-8 w-8 text-red-600" />
+             <div className="h-16 w-16 rounded-3xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center mb-4">
+                <Trash2 className="h-8 w-8 text-red-600 dark:text-red-400" />
              </div>
-             <DialogTitle className="font-bricolage text-2xl font-extrabold tracking-tight">Are you absolutely sure?</DialogTitle>
-             <p className="text-sm text-black/50 font-medium mt-2">
+             <DialogTitle className="font-bricolage text-2xl font-extrabold tracking-tight text-black dark:text-white">Are you absolutely sure?</DialogTitle>
+             <p className="text-sm text-black/50 dark:text-white/50 font-medium mt-2">
                 This action is IRREVERSIBLE. It will permanently delete your medical history, health goals, and AI analysis reports.
              </p>
           </DialogHeader>
           <div className="flex gap-3 mt-8">
              <Button 
                variant="outline" 
-               className="flex-1 h-12 rounded-xl font-bold border-black/5 hover:bg-black/5" 
+               className="flex-1 h-12 rounded-xl font-bold border-black/5 dark:border-white/5 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white" 
                onClick={() => setOpen(false)}
              >
                Cancel

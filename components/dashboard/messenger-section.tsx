@@ -169,7 +169,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
   return (
     <div className="px-0 lg:px-12 mt-4 flex flex-col gap-8 relative">
       <div className="flex justify-between items-center mb-2 lg:mb-4">
-        <h2 className="text-xl lg:text-3xl font-bricolage font-black tracking-tighter">Care Center</h2>
+        <h2 className="text-xl lg:text-3xl font-bricolage font-black tracking-tighter dark:text-white">Care Center</h2>
         <div className="relative group cursor-pointer" onClick={clearNotifications}>
           <div className="p-2 lg:p-3 bg-white/50 backdrop-blur-md rounded-xl lg:rounded-2xl border border-black/5 shadow-sm group-hover:bg-white transition-all">
             {notificationCount > 0 ? (
@@ -188,7 +188,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
 
       {!isChatActive ? (
         <div className="w-full">
-          <div className="bg-black/5 p-1 rounded-2xl w-full lg:w-fit h-auto flex gap-1">
+          <div className="bg-black/5 dark:bg-white/5 p-1 rounded-2xl w-full lg:w-fit h-auto flex gap-1 transition-colors">
             {PLATFORMS.map((p) => (
               <button
                 type="button"
@@ -199,7 +199,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
                 }}
                 className={cn(
                   "rounded-xl px-6 py-2.5 transition-all duration-300 cursor-pointer flex-1 lg:flex-none flex items-center justify-center gap-2 font-outfit font-bold text-sm",
-                  "hover:bg-white hover:shadow-sm text-black/80 focus:outline-none active:scale-95"
+                  "hover:bg-white dark:hover:bg-white/10 hover:shadow-sm text-black/80 dark:text-white focus:outline-none active:scale-95"
                 )}
               >
                 <p.icon className={cn("h-4 w-4 transition-colors", p.color)} />
@@ -240,14 +240,14 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="relative z-10 bg-white/60 backdrop-blur-2xl border border-white p-4 rounded-[28px] shadow-xl w-[90%] max-w-sm flex items-center gap-4 group cursor-default"
+              className="relative z-10 bg-white/60 dark:bg-black/60 backdrop-blur-2xl border border-white/20 p-4 rounded-[28px] shadow-xl w-[90%] max-w-sm flex items-center gap-4 group cursor-default"
             >
               <div className="w-12 h-12 shrink-0 bg-primary/10 rounded-2xl flex items-center justify-center group-hover:bg-primary group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
                 <MessageCircle className="text-primary group-hover:text-white w-5 h-5 transition-colors" />
               </div>
               <div className="flex flex-col text-left">
-                <h3 className="font-bricolage text-[16px] font-black text-black tracking-tight leading-none mb-1">Sync & Send</h3>
-                <p className="text-black/60 font-medium text-[11px] leading-relaxed">
+                <h3 className="font-bricolage text-[16px] font-black text-black dark:text-white tracking-tight leading-none mb-1">Sync & Send</h3>
+                <p className="text-black/60 dark:text-white/60 font-medium text-[11px] leading-relaxed">
                   Link your preferred messenger and start health analysis instantly.
                 </p>
               </div>
@@ -269,13 +269,13 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
                   exit={{ y: "100%", opacity: 0 }}
                   transition={{ type: "spring", damping: 25, stiffness: 200 }}
                   onClick={(e) => e.stopPropagation()}
-                  className="w-full sm:max-w-2xl bg-white rounded-t-[40px] sm:rounded-4xl max-h-[90vh] overflow-y-auto p-6 md:p-10 shadow-2xl relative cursor-default"
+                  className="w-full sm:max-w-2xl bg-white dark:bg-[#0a0a0a] rounded-t-[40px] sm:rounded-4xl max-h-[90vh] overflow-y-auto p-6 md:p-10 shadow-2xl relative cursor-default transition-colors duration-500"
                 >
                   <button
                     onClick={() => setIsPopupOpen(false)}
                     className="absolute top-6 right-6 p-2 bg-black/5 rounded-full hover:bg-black/10 transition-colors z-10 cursor-pointer"
                   >
-                    <X className="w-5 h-5 text-black/60" />
+                    <X className="w-5 h-5 text-black/60 dark:text-white/60" />
                   </button>
 
                   {(() => {
@@ -291,10 +291,10 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
                               <p.icon className={cn("h-10 w-10", p.color)} />
                             </div>
                             <div className="space-y-1">
-                              <h3 className="font-bricolage text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight">
+                              <h3 className="font-bricolage text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight dark:text-white">
                                 Invite via <span className={p.color}>{p.label}</span>
                               </h3>
-                              <p className="text-sm font-medium text-black/40">
+                              <p className="text-sm font-medium text-black/40 dark:text-white/40">
                                 {p.id === "gmail"
                                   ? "Send a secure invitation directly to their Gmail."
                                   : `Direct ${p.label} integration for diagnostics.`}
@@ -304,7 +304,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
 
                           <form onSubmit={handleInvite} className="grid gap-5">
                             <div className="grid gap-2">
-                              <Label htmlFor={`doctor-name-${p.id}`} className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30">
+                              <Label htmlFor={`doctor-name-${p.id}`} className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">
                                 Doctor's Full Name
                               </Label>
                               <Input
@@ -318,7 +318,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
                             </div>
 
                             <div className="grid gap-2">
-                              <Label htmlFor={`contact-${p.id}`} className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30">
+                              <Label htmlFor={`contact-${p.id}`} className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">
                                 {p.id === "gmail" ? "Doctor's Gmail" : `${p.label} Number`}
                               </Label>
                               <Input
@@ -326,14 +326,14 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
                                 type={p.id === "gmail" ? "email" : "tel"}
                                 required
                                 placeholder={p.id === "gmail" ? "gita@gmail.com" : "Ex: 237670000000"}
-                              value={contactInfo}
+                                value={contactInfo}
                                 onChange={(e) => setContactInfo(e.target.value)}
                                 className="h-14 sm:h-16 rounded-2xl border-black/5 bg-black/5 pl-6 text-base sm:text-lg font-bold transition-all focus:bg-white focus:ring-4 focus:ring-primary/5 shadow-inner hover:bg-black/10"
                               />
                             </div>
 
                             <div className="grid gap-2">
-                              <Label htmlFor={`message-${p.id}`} className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30">
+                              <Label htmlFor={`message-${p.id}`} className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">
                                 Optional Message
                               </Label>
                               <textarea
@@ -341,7 +341,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
                                 placeholder="Add a personalized message..."
                                 value={initialMessage}
                                 onChange={(e) => setInitialMessage(e.target.value)}
-                                className="min-h-[80px] sm:min-h-24 resize-none rounded-2xl border border-black/5 bg-black/5 p-4 text-sm sm:text-base font-medium transition-all focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary/5 shadow-inner hover:bg-black/10"
+                                className="min-h-[80px] sm:min-h-24 resize-none rounded-2xl border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 p-4 text-sm sm:text-base font-medium transition-all focus:bg-white dark:focus:bg-white/10 focus:outline-none focus:ring-4 focus:ring-primary/5 shadow-inner hover:bg-black/10 dark:hover:bg-white/10 text-black dark:text-white"
                               />
                             </div>
 
@@ -369,16 +369,16 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="flex flex-col min-h-[600px] lg:h-[750px] w-full bg-white rounded-4xl border border-black/5 shadow-2xl overflow-hidden relative"
+          className="flex flex-col min-h-[600px] lg:h-[750px] w-full bg-white dark:bg-[#0f0f0f] rounded-4xl border border-black/5 dark:border-white/5 shadow-2xl overflow-hidden relative"
         >
-          <div className="p-6 bg-white border-b border-black/5 flex justify-between items-center z-10">
+          <div className="p-6 bg-white dark:bg-[#0f0f0f] border-b border-black/5 dark:border-white/5 flex justify-between items-center z-10">
             <div className="flex items-center gap-4">
               <div className="w-14 h-14 rounded-2xl bg-[#25D366]/10 flex items-center justify-center shadow-inner relative">
                 <MessageCircle className="w-7 h-7 text-[#25D366]" />
                 <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white" />
               </div>
               <div className="flex flex-col">
-                <h3 className="font-bricolage text-xl font-bold">{doctorName}</h3>
+                <h3 className="font-bricolage text-xl font-bold dark:text-white">{doctorName}</h3>
                 <span className="text-xs font-bold text-green-500 uppercase">Live via WhatsApp</span>
               </div>
             </div>
@@ -402,8 +402,8 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
                 <div className={cn(
                   "p-5 rounded-3xl text-sm leading-relaxed shadow-sm overflow-hidden",
                   m.sender === "user"
-                    ? "bg-black text-white rounded-tr-none shadow-xl shadow-black/10"
-                    : "bg-white text-black border border-black/10 rounded-tl-none shadow-md shadow-black/2"
+                    ? "bg-black dark:bg-blue-600 text-white rounded-tr-none shadow-xl shadow-black/10"
+                    : "bg-white dark:bg-white/5 text-black dark:text-white border border-black/10 dark:border-white/10 rounded-tl-none shadow-md shadow-black/2"
                 )}>
                   {m.type === "image" && m.mediaUrl && (
                     <div className="mb-3 rounded-xl overflow-hidden shadow-lg border border-black/5">
@@ -418,7 +418,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
                   )}
                   <p className="font-bold">{m.text}</p>
                 </div>
-                <span className="text-[10px] font-black text-black/30 mt-2 px-2 uppercase tracking-widest">{m.timestamp}</span>
+                <span className="text-[10px] font-black text-black/30 dark:text-white/30 mt-2 px-2 uppercase tracking-widest">{m.timestamp}</span>
               </motion.div>
             ))}
             {isTyping && (
@@ -437,7 +437,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
             )}
           </div>
 
-          <form onSubmit={sendMessage} className="p-4 sm:p-6 bg-white border-t border-black/5 flex gap-2 sm:gap-4 items-center">
+          <form onSubmit={sendMessage} className="p-4 sm:p-6 bg-white dark:bg-[#0f0f0f] border-t border-black/5 dark:border-white/5 flex gap-2 sm:gap-4 items-center">
             <div className="flex gap-1 sm:gap-2">
               <Button type="button" variant="ghost" size="icon" className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-black/5 text-black/60 hover:bg-black/10 transition-colors cursor-pointer">
                 <Plus className="w-5 h-5" />
@@ -482,13 +482,13 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
               initial={{ scale: 0.85, opacity: 0, y: 30 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.85, opacity: 0, y: 30 }}
-              className="flex flex-col items-center justify-center gap-6 rounded-4xl bg-white p-10 lg:p-14 shadow-2xl border border-black/5 w-full max-w-lg text-center relative overflow-hidden"
+              className="flex flex-col items-center justify-center gap-6 rounded-4xl bg-white dark:bg-[#0a0a0a] p-10 lg:p-14 shadow-2xl border border-black/5 dark:border-white/5 w-full max-w-lg text-center relative overflow-hidden"
             >
               <div className="absolute top-0 inset-x-0 h-1.5 bg-[#25D366] animate-progress" />
               <CheckCircle2 className="h-12 w-12 text-[#25D366]" />
               <div className="space-y-2">
-                <h3 className="font-bricolage text-2xl font-extrabold text-black">Invitation Sent!</h3>
-                <p className="text-sm font-medium text-black/40">Connecting to {doctorName}...</p>
+                <h3 className="font-bricolage text-2xl font-extrabold text-black dark:text-white">Invitation Sent!</h3>
+                <p className="text-sm font-medium text-black/40 dark:text-white/40">Connecting to {doctorName}...</p>
               </div>
             </motion.div>
           </motion.div>

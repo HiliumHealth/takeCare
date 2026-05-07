@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Syne, Space_Grotesk, Outfit, Geist, Bricolage_Grotesque } from "next/font/google";
+import { Syne, Inter, Outfit, Geist, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
@@ -17,9 +17,9 @@ const syne = Syne({
   weight: ["400", "600", "700", "800"],
 });
 
-const spaceGrotesk = Space_Grotesk({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-space-grotesk",
+  variable: "--font-space-grotesk", // keeping variable name to avoid breaking tailwind config
   weight: ["300", "400", "500", "600", "700"],
 });
 
@@ -81,20 +81,28 @@ export const metadata: Metadata = {
 import { BackgroundGrid } from "@/components/ui/background-grid";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/components/providers/session-provider";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={cn("scroll-smooth", "font-sans", geist.variable)}>
+    <html lang="en" className={cn("scroll-smooth", "font-sans", geist.variable)} suppressHydrationWarning>
       <body
-        className={`${syne.variable} ${spaceGrotesk.variable} ${outfit.variable} ${bricolage.variable} antialiased`}
+        className={`${syne.variable} ${inter.variable} ${outfit.variable} ${bricolage.variable} antialiased min-h-screen bg-white dark:bg-black transition-colors duration-500`}
       >
-        <AuthProvider>
-          <BackgroundGrid />
-          {children}
-          <Toaster closeButton position="top-center" expand visibleToasts={1} />
-        </AuthProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange={false}
+        >
+          <AuthProvider>
+            <BackgroundGrid />
+            {children}
+            <Toaster closeButton position="top-center" expand visibleToasts={1} />
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

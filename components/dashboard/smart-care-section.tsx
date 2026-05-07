@@ -180,11 +180,11 @@ export function SmartCareSection({ userName = "Patient" }: { userName?: string }
                   </Badge>
                 </div>
                 
-                <h2 className="text-3xl md:text-5xl lg:text-6xl font-bricolage font-black tracking-tight text-black mb-6">
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-bricolage font-black tracking-tight text-black dark:text-white mb-6">
                   How can I help you <span className="text-primary">today?</span>
                 </h2>
                 
-                <p className="text-black/80 text-base md:text-lg font-medium max-w-xl mx-auto leading-relaxed">
+                <p className="text-black/80 dark:text-white/80 text-base md:text-lg font-medium max-w-xl mx-auto leading-relaxed">
                   Choose a personalized health tool below to review your medical history, ask questions about your records, or chat directly with our friendly clinical assistant.
                 </p>
               </motion.div>
@@ -203,17 +203,17 @@ export function SmartCareSection({ userName = "Patient" }: { userName?: string }
                     setActiveTab(tab.id);
                     setShowSelection(false);
                   }}
-                  className="relative flex flex-col items-start p-8 rounded-[2rem] cursor-pointer transition-all duration-500 overflow-hidden group bg-white border border-black/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_30px_60px_-15px_rgba(var(--primary-rgb),0.15)] hover:border-primary/30"
+                  className="relative flex flex-col items-start p-8 rounded-[2rem] cursor-pointer transition-all duration-500 overflow-hidden group bg-white dark:bg-[#0a0a0a] border border-black/10 dark:border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] hover:shadow-[0_30px_60px_-15px_rgba(var(--primary-rgb),0.15)] hover:border-primary/30"
                 >
-                  <div className="h-16 w-16 rounded-2xl bg-black/5 text-black/60 flex items-center justify-center mb-6 transition-all duration-500 group-hover:bg-primary group-hover:text-white group-hover:rotate-6 group-hover:shadow-lg group-hover:shadow-primary/20">
+                  <div className="h-16 w-16 rounded-2xl bg-black/5 dark:bg-white/5 text-black/60 dark:text-white/60 flex items-center justify-center mb-6 transition-all duration-500 group-hover:bg-primary group-hover:text-white group-hover:rotate-6 group-hover:shadow-lg group-hover:shadow-primary/20">
                     <tab.icon className="h-8 w-8 stroke-[1.5]" />
                   </div>
 
                   <div className="relative z-10 text-left">
-                    <h3 className="text-xl md:text-2xl font-bricolage font-black tracking-tight text-black mb-3">
+                    <h3 className="text-xl md:text-2xl font-bricolage font-black tracking-tight text-black dark:text-white mb-3">
                       {tab.label}
                     </h3>
-                    <p className="text-sm text-black/80 font-medium leading-relaxed group-hover:text-black transition-colors">
+                    <p className="text-sm text-black/80 dark:text-white/80 font-medium leading-relaxed group-hover:text-black dark:group-hover:text-white transition-colors">
                       {tab.description}
                     </p>
                   </div>
@@ -241,9 +241,9 @@ export function SmartCareSection({ userName = "Patient" }: { userName?: string }
               <Button
                 variant="ghost"
                 onClick={() => setShowSelection(true)}
-                className="group flex items-center gap-3 px-6 py-6 rounded-2xl hover:bg-black/5 transition-all text-black/60 hover:text-black"
+                className="group flex items-center gap-3 px-6 py-6 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white"
               >
-                <div className="h-10 w-10 rounded-xl bg-black/5 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
+                <div className="h-10 w-10 rounded-xl bg-black/5 dark:bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
                   <ArrowLeft className="h-5 w-5" />
                 </div>
                 <span className="font-bricolage font-black text-lg">Back to Selection</span>
@@ -251,8 +251,8 @@ export function SmartCareSection({ userName = "Patient" }: { userName?: string }
 
               <div className="flex items-center gap-4">
                 <div className="text-right hidden md:block">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-black/30">Active Mode</p>
-                  <p className="text-lg font-bricolage font-black text-black">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-black/30 dark:text-white/30">Active Mode</p>
+                  <p className="text-lg font-bricolage font-black text-black dark:text-white">
                     {SMART_CARE_TABS.find(t => t.id === activeTab)?.label}
                   </p>
                 </div>
@@ -460,7 +460,7 @@ function VoiceAgentView({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -30 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="relative flex flex-col items-center p-6 md:p-12 rounded-3xl md:rounded-[3.5rem] border border-black/5 bg-white shadow-2xl min-h-[500px]"
+      className="relative flex flex-col items-center p-6 md:p-12 rounded-3xl md:rounded-[3.5rem] border border-black/5 dark:border-white/5 bg-white dark:bg-[#0a0a0a] shadow-2xl min-h-[500px]"
     >
       {/* Background Ambient Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
@@ -504,7 +504,7 @@ function VoiceAgentView({
           </div>
           
           <div className="mt-6 text-center z-10">
-            <h3 className="font-bricolage text-2xl md:text-4xl font-extrabold text-black tracking-tighter flex items-center justify-center gap-2">
+            <h3 className="font-bricolage text-2xl md:text-4xl font-extrabold text-black dark:text-white tracking-tighter flex items-center justify-center gap-2">
               Dr. Leo
               {callStatus === "active" && (
                 <span className="relative flex h-3 w-3 md:h-4 md:w-4 -mt-1 md:-mt-2">
@@ -513,7 +513,7 @@ function VoiceAgentView({
                 </span>
               )}
             </h3>
-            <p className="text-black/50 font-bold text-[10px] md:text-xs mt-1 md:mt-2 uppercase tracking-[0.2em]">
+            <p className="text-black/50 dark:text-white/50 font-bold text-[10px] md:text-xs mt-1 md:mt-2 uppercase tracking-[0.2em]">
               AI Clinical Assistant
             </p>
           </div>
@@ -524,20 +524,20 @@ function VoiceAgentView({
           <Badge
             className={cn(
               "px-4 md:px-6 py-1.5 md:py-2 rounded-full text-[10px] md:text-xs font-black uppercase tracking-[0.2em] transition-all",
-              callStatus === "active" ? "bg-green-500/10 text-green-600 border-green-500/20" : "bg-black/5 text-black/40 border-transparent",
+              callStatus === "active" ? "bg-green-500/10 text-green-600 border-green-500/20" : "bg-black/5 dark:bg-white/5 text-black/40 dark:text-white/40 border-transparent",
               callStatus !== "inactive" && "animate-pulse"
             )}
           >
             {callStatus === "active" ? (isDoctorSpeaking ? "Doctor Speaking..." : "Listening...") : callStatus === "connecting" ? "Secure Handshake..." : "Ready to Consult"}
           </Badge>
 
-          <div className="flex items-center justify-center gap-4 bg-white/60 backdrop-blur-3xl p-3 md:p-4 rounded-full border border-black/5 shadow-xl w-fit">
+          <div className="flex items-center justify-center gap-4 bg-white/60 dark:bg-black/60 backdrop-blur-3xl p-3 md:p-4 rounded-full border border-black/5 dark:border-white/5 shadow-xl w-fit">
             <button
               onClick={toggleMute}
               disabled={callStatus !== "active"}
               className={cn(
                 "h-12 w-12 md:h-16 md:w-16 rounded-full flex items-center justify-center transition-all",
-                isMuted ? "bg-red-50 text-red-500" : "bg-black/5 text-black hover:bg-black/10 hover:scale-105",
+                isMuted ? "bg-red-50 text-red-500" : "bg-black/5 dark:bg-white/5 text-black dark:text-white hover:bg-black/10 dark:hover:bg-white/10 hover:scale-105",
                 callStatus !== "active" && "opacity-30 cursor-not-allowed"
               )}
             >
@@ -569,7 +569,7 @@ function VoiceAgentView({
 
             <button
               disabled={callStatus !== "active"}
-              className="h-12 w-12 md:h-16 md:w-16 rounded-full flex items-center justify-center transition-all bg-black/5 text-black hover:bg-black/10 hover:scale-105 disabled:opacity-30 disabled:cursor-not-allowed"
+              className="h-12 w-12 md:h-16 md:w-16 rounded-full flex items-center justify-center transition-all bg-black/5 dark:bg-white/5 text-black dark:text-white hover:bg-black/10 dark:hover:bg-white/10 hover:scale-105 disabled:opacity-30 disabled:cursor-not-allowed"
             >
               <Video className="h-5 w-5 md:h-7 md:w-7" />
             </button>
@@ -585,8 +585,8 @@ function VoiceAgentView({
               exit={{ height: 0, opacity: 0 }}
               className="w-full flex justify-center overflow-hidden pb-4 md:pb-0"
             >
-              <div className="w-full max-w-lg flex flex-col gap-5 border-t border-black/5 pt-8 mt-2">
-                <p className="text-[9px] md:text-[10px] font-black text-black/30 uppercase tracking-[0.2em] text-center w-full">Context & Records</p>
+              <div className="w-full max-w-lg flex flex-col gap-5 border-t border-black/5 dark:border-white/5 pt-8 mt-2">
+                <p className="text-[9px] md:text-[10px] font-black text-black/30 dark:text-white/30 uppercase tracking-[0.2em] text-center w-full">Context & Records</p>
                 
                 <div className="flex overflow-x-auto gap-3 pb-2 no-scrollbar px-2 -mx-2 items-center snap-x">
                   {allConsultations.length > 0 ? (
@@ -597,8 +597,8 @@ function VoiceAgentView({
                         className={cn(
                           "p-3 md:p-4 rounded-[1.5rem] border transition-all text-left flex flex-col gap-2 relative overflow-hidden min-w-[220px] shrink-0 snap-center",
                           selectedRecordId === record.id
-                            ? "bg-black text-white border-black shadow-lg"
-                            : "bg-white text-black border-black/5 hover:border-black/10 shadow-sm hover:scale-[1.02]"
+                            ? "bg-black dark:bg-white text-white dark:text-black border-black dark:border-white shadow-lg"
+                            : "bg-white dark:bg-[#0a0a0a] text-black dark:text-white border-black/5 dark:border-white/5 hover:border-black/10 dark:hover:border-white/10 shadow-sm hover:scale-[1.02]"
                         )}
                       >
                         {selectedRecordId === record.id && (
@@ -613,9 +613,9 @@ function VoiceAgentView({
                             record.type === "CLINICAL_NOTE" ? "bg-[#25D366]/10" : "bg-black/5"
                           )}>
                             {record.type === "CLINICAL_NOTE" ? (
-                              <ShieldCheck className={cn("h-4 w-4", selectedRecordId === record.id ? "text-white" : "text-[#25D366]")} />
+                              <ShieldCheck className={cn("h-4 w-4", selectedRecordId === record.id ? "text-white dark:text-black" : "text-[#25D366]")} />
                             ) : (
-                              <FileText className={cn("h-4 w-4", selectedRecordId === record.id ? "text-white" : "text-black/40")} />
+                              <FileText className={cn("h-4 w-4", selectedRecordId === record.id ? "text-white dark:text-black" : "text-black/40 dark:text-white/40")} />
                             )}
                           </div>
                           <p className="text-[10px] font-black uppercase tracking-widest truncate w-[85%]">
@@ -628,13 +628,13 @@ function VoiceAgentView({
                       </button>
                     ))
                   ) : (
-                    <p className="text-center w-full text-xs text-black/40 font-medium">No prior records linked to this consultation.</p>
+                    <p className="text-center w-full text-xs text-black/40 dark:text-white/40 font-medium">No prior records linked to this consultation.</p>
                   )}
                 </div>
 
                 {medicalContext?.patient_summary?.medications?.length > 0 && (
                   <div className="flex overflow-x-auto gap-2 pb-2 no-scrollbar px-2 -mx-2 snap-x items-center">
-                    <span className="text-[9px] md:text-[10px] font-black text-black/30 uppercase tracking-[0.2em] shrink-0 mr-1">Topics:</span>
+                    <span className="text-[9px] md:text-[10px] font-black text-black/30 dark:text-white/30 uppercase tracking-[0.2em] shrink-0 mr-1">Topics:</span>
                     {medicalContext.patient_summary.medications.map((med: any) => (
                       <button
                         key={med.name}
@@ -643,7 +643,7 @@ function VoiceAgentView({
                           "px-4 py-2 rounded-full border transition-all flex items-center gap-1.5 shrink-0 snap-center",
                           selectedMeds.includes(med.name)
                             ? "bg-primary text-white border-primary shadow-md shadow-primary/20"
-                            : "bg-white text-black/60 border-black/5 hover:bg-black/[0.02]"
+                            : "bg-white dark:bg-white/5 text-black/60 dark:text-white/60 border-black/5 dark:border-white/5 hover:bg-black/[0.02] dark:hover:bg-white/[0.05]"
                         )}
                       >
                         <Pill className={cn("h-3 w-3", selectedMeds.includes(med.name) ? "text-white" : "text-primary")} />

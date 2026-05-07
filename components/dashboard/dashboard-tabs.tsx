@@ -27,22 +27,22 @@ export function DashboardTabs({
   return (
     <div className="px-4 md:px-0">
       <Tabs value={value} onValueChange={onValueChange} className="w-full">
-        <TabsList className="bg-black/[0.04] p-1.5 rounded-xl w-full lg:w-fit h-auto flex gap-2 overflow-x-auto no-scrollbar border border-black/[0.03] shadow-none relative">
+        <TabsList className="bg-black/[0.04] dark:bg-white/[0.04] p-1.5 rounded-xl w-full lg:w-fit h-auto flex gap-2 overflow-x-auto no-scrollbar border border-black/[0.03] dark:border-white/[0.03] shadow-none relative">
           {TABS.map((tab) => (
             <TabsTrigger
               key={tab.id}
               value={tab.id}
               className={cn(
                 "rounded-sm px-6 py-4 md:px-16 md:py-6 transition-all duration-500 cursor-pointer whitespace-nowrap relative group shrink-0",
-                "data-active:!text-white data-active:!bg-primary data-active:shadow-lg data-active:shadow-primary/20",
-                "text-black hover:text-black/70 bg-transparent",
+                "data-[state=active]:!text-white data-[state=active]:!bg-primary data-[state=active]:shadow-lg data-[state=active]:shadow-primary/20",
+                "text-black dark:text-white hover:text-black/70 dark:hover:text-white/70 bg-transparent",
                 "flex items-center justify-center gap-4 md:gap-6 font-outfit font-black text-xs md:text-xl capitalize tracking-normal border border-transparent"
               )}
             >
               <div className="relative">
                 <tab.icon className={cn(
                   "h-4 w-4 md:h-7 md:w-7 transition-transform duration-500 group-hover:scale-110",
-                  value === tab.id ? "text-white" : "text-black/60",
+                  value === tab.id ? "text-white" : "text-black/60 dark:text-white/60",
                   tab.id === "smart-care" && value !== "smart-care" && "text-vital-orange animate-pulse"
                 )} />
 
@@ -51,7 +51,7 @@ export function DashboardTabs({
                   <motion.span
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    className="absolute -top-2 -right-2 flex h-4 w-4 md:h-6 md:w-6 items-center justify-center rounded-full bg-linear-to-tr from-[#25D366] to-[#128C7E] text-[8px] md:text-[11px] font-black text-white shadow-lg shadow-[#25D366]/40 border-2 border-white"
+                    className="absolute -top-2 -right-2 flex h-4 w-4 md:h-6 md:w-6 items-center justify-center rounded-full bg-linear-to-tr from-[#25D366] to-[#128C7E] text-[8px] md:text-[11px] font-black text-white shadow-lg shadow-[#25D366]/40 border-2 border-white dark:border-[#0a0a0a]"
                   >
                     {messengerCount}
                   </motion.span>
@@ -62,7 +62,7 @@ export function DashboardTabs({
                   <motion.span
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    className="absolute -top-2 -right-2 flex h-4 w-4 md:h-6 md:w-6 items-center justify-center rounded-full bg-linear-to-tr from-[#FF3B30] to-[#D70015] text-[8px] md:text-[11px] font-black text-white shadow-lg shadow-[#FF3B30]/40 border-2 border-white"
+                    className="absolute -top-2 -right-2 flex h-4 w-4 md:h-6 md:w-6 items-center justify-center rounded-full bg-vital-orange text-[8px] md:text-[11px] font-black text-white shadow-lg shadow-vital-orange/40 border-2 border-white dark:border-[#0a0a0a]"
                   >
                     {notificationCount > 9 ? "9+" : notificationCount}
                   </motion.span>

@@ -1145,17 +1145,17 @@ function AnalysisView({
 
   return (
     <div className="relative">
-      <div className="flex flex-row overflow-x-auto no-scrollbar gap-2 mb-6 md:mb-10 bg-black/[0.04] p-1.5 rounded-xl w-full sm:w-fit border border-black/[0.03] shadow-none">
+      <div className="flex flex-row overflow-x-auto no-scrollbar gap-2 mb-6 md:mb-10 bg-black/[0.04] dark:bg-white/5 p-1.5 rounded-xl w-full sm:w-fit border border-black/[0.03] dark:border-white/10 shadow-none transition-colors">
         <button
           onClick={() => setAnalysisTab("upload")}
           className={cn(
             "px-6 md:px-8 py-3 md:py-4 rounded-sm text-[10px] md:text-[12px] font-black uppercase tracking-normal transition-all duration-500 relative flex items-center justify-center gap-3 flex-1 sm:flex-none whitespace-nowrap",
             analysisTab === "upload"
               ? "bg-primary text-white shadow-lg shadow-primary/20"
-              : "text-black hover:text-black/70 hover:bg-black/5"
+              : "text-black dark:text-white/80 hover:text-black/70 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5"
           )}
         >
-          <History className={cn("h-4 w-4 md:h-5 md:w-5", analysisTab === "upload" ? "text-white" : "text-black/40")} />
+          <History className={cn("h-4 w-4 md:h-5 md:w-5", analysisTab === "upload" ? "text-white" : "text-black/40 dark:text-white/40")} />
           Medical Records
         </button>
         <button
@@ -1165,11 +1165,11 @@ function AnalysisView({
             "px-6 md:px-8 py-3 md:py-4 rounded-sm text-[10px] md:text-[12px] font-black uppercase tracking-normal transition-all duration-500 relative flex items-center justify-center gap-3 flex-1 sm:flex-none whitespace-nowrap",
             analysisTab === "results"
               ? "bg-primary text-white shadow-lg shadow-primary/20"
-              : "text-black hover:text-black/70 hover:bg-black/5",
+              : "text-black dark:text-white/80 hover:text-black/70 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5",
             !medicalContext && "opacity-30 cursor-not-allowed"
           )}
         >
-          <BarChart3 className={cn("h-4 w-4 md:h-5 md:w-5", analysisTab === "results" ? "text-white" : "text-black/40")} />
+          <BarChart3 className={cn("h-4 w-4 md:h-5 md:w-5", analysisTab === "results" ? "text-white" : "text-black/40 dark:text-white/40")} />
           Analysis Results
         </button>
         <button
@@ -1178,10 +1178,10 @@ function AnalysisView({
             "px-6 md:px-8 py-3 md:py-4 rounded-sm text-[10px] md:text-[12px] font-black uppercase tracking-normal transition-all duration-500 relative flex items-center justify-center gap-3 flex-1 sm:flex-none whitespace-nowrap",
             analysisTab === "professional"
               ? "bg-primary text-white shadow-lg shadow-primary/20"
-              : "text-black hover:text-black/70 hover:bg-black/5"
+              : "text-black dark:text-white/80 hover:text-black/70 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5"
           )}
         >
-          <ShieldCheck className={cn("h-4 w-4 md:h-5 md:w-5", analysisTab === "professional" ? "text-white" : "text-black/40")} />
+          <ShieldCheck className={cn("h-4 w-4 md:h-5 md:w-5", analysisTab === "professional" ? "text-white" : "text-black/40 dark:text-white/40")} />
           Doctor's Advice
           {doctorNotes.length > 0 && (
             <span className="absolute -top-1 -right-1 flex h-4 w-4">
@@ -1208,7 +1208,7 @@ function AnalysisView({
                 key={card.id}
                 whileHover={{ y: -8 }}
                 onClick={() => setShowSim(card.id)}
-                className="group relative p-6 md:p-8 rounded-3xl md:rounded-4xl border border-black/5 bg-white shadow-sm overflow-hidden cursor-pointer"
+                className="group relative p-6 md:p-8 rounded-3xl md:rounded-4xl border border-black/5 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm overflow-hidden cursor-pointer transition-colors duration-500"
               >
                 <div className={cn("absolute -top-12 -right-12 h-32 w-32 blur-[60px] opacity-20", card.color)} />
                 <div className="relative z-10 h-full flex flex-col gap-6 md:gap-10">
@@ -1219,20 +1219,20 @@ function AnalysisView({
                     {card.id === 'wearables' && bleDevice && (
                       <span className="flex h-2 w-2 rounded-full bg-green-500 animate-ping absolute top-8 right-12" />
                     )}
-                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-black/20">{card.label}</span>
+                    <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-black/20 dark:text-white/40 transition-colors">{card.label}</span>
                   </div>
                   <div className="space-y-2 md:space-y-3">
-                    <h3 className="font-bricolage text-xl md:text-2xl font-extrabold tracking-tight">{card.title}</h3>
-                    <p className="text-xs md:text-sm font-medium text-black/50 leading-relaxed">{card.description}</p>
+                    <h3 className="font-bricolage text-xl md:text-2xl font-extrabold tracking-tight dark:text-white transition-colors">{card.title}</h3>
+                    <p className="text-xs md:text-sm font-medium text-black/50 dark:text-white/60 leading-relaxed transition-colors">{card.description}</p>
                   </div>
                   <div className="mt-auto flex items-center justify-between">
                     <span className={cn(
-                      "text-[10px] md:text-xs font-bold",
-                      card.id === 'wearables' && bleDevice ? "text-green-500" : "text-black/30"
+                      "text-[10px] md:text-xs font-bold transition-colors",
+                      card.id === 'wearables' && bleDevice ? "text-green-500" : "text-black/30 dark:text-white/40"
                     )}>
                       {card.content}
                     </span>
-                    <Button size="icon" className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-black transform group-hover:scale-110 transition-transform">
+                    <Button size="icon" className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-black dark:bg-white/10 transform group-hover:scale-110 transition-transform">
                       <Plus className="h-4 w-4 md:h-5 md:w-5 text-white" />
                     </Button>
                   </div>
@@ -1240,17 +1240,17 @@ function AnalysisView({
               </motion.div>
             ))}
 
-            <div className="md:col-span-2 lg:col-span-3 p-6 md:p-10 rounded-3xl md:rounded-[2.5rem] border border-primary/10 bg-white flex flex-col lg:flex-row items-center justify-between gap-6 md:gap-8 mt-2 md:mt-4 overflow-hidden relative shadow-2xl shadow-primary/5">
+            <div className="md:col-span-2 lg:col-span-3 p-6 md:p-10 rounded-3xl md:rounded-[2.5rem] border border-primary/10 dark:border-white/10 bg-white dark:bg-white/5 flex flex-col lg:flex-row items-center justify-between gap-6 md:gap-8 mt-2 md:mt-4 overflow-hidden relative shadow-2xl shadow-primary/5 transition-colors duration-500">
               <div className="absolute top-0 right-0 h-full w-1/2 bg-linear-to-l from-primary/5 to-transparent pointer-events-none" />
               <div className="flex items-center gap-4 md:gap-6 flex-1 w-full text-center lg:text-left flex-col lg:flex-row">
                 <div className="h-14 w-14 md:h-16 md:w-16 rounded-2xl md:rounded-3xl bg-primary/10 flex items-center justify-center">
                   <Activity className={cn("h-7 w-7 md:h-8 md:w-8 text-primary", analyzing && "animate-bounce")} />
                 </div>
                 <div className="space-y-1" >
-                  <h4 className="font-bricolage text-xl md:text-2xl font-bold text-black">
+                  <h4 className="font-bricolage text-xl md:text-2xl font-bold text-black dark:text-white transition-colors">
                     {analyzing ? `Analyzing... ${progress}%` : "Synthesis Ready"}
                   </h4>
-                  <p className="text-black/40 text-[11px] md:text-sm font-medium">
+                  <p className="text-black/40 dark:text-white/40 text-[11px] md:text-sm font-medium transition-colors">
                     {analyzing ? "Synthesizing medical history and metrics." : `Your clinical context is ${medicalContext ? "85%" : "0%"} complete.`}
                   </p>
                 </div>
@@ -1258,7 +1258,7 @@ function AnalysisView({
               <Button
                 disabled={analyzing}
                 onClick={() => setAnalyzing(true)}
-                className="w-full lg:w-auto h-12 md:h-14 px-8 md:px-10 rounded-xl md:rounded-2xl bg-black hover:bg-primary text-white font-black text-xs md:text-base shadow-xl shadow-black/25 disabled:opacity-50 transition-all duration-300 uppercase tracking-widest"
+                className="w-full lg:w-auto h-12 md:h-14 px-8 md:px-10 rounded-xl md:rounded-2xl bg-black dark:bg-white/10 hover:bg-primary dark:hover:bg-primary text-white font-black text-xs md:text-base shadow-xl shadow-black/25 dark:shadow-none disabled:opacity-50 transition-all duration-300 uppercase tracking-widest"
               >
                 {analyzing ? "Scanning..." : "Sync Health Data"}
               </Button>
@@ -1279,14 +1279,14 @@ function AnalysisView({
             exit={{ opacity: 0, y: -20 }}
             className="flex flex-col gap-6"
           >
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/40 backdrop-blur-xl p-5 md:p-6 rounded-3xl md:rounded-4xl border border-black/5 shadow-sm mb-2">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/40 dark:bg-white/5 backdrop-blur-xl p-5 md:p-6 rounded-3xl md:rounded-4xl border border-black/5 dark:border-white/10 shadow-sm mb-2 transition-colors duration-500">
               <div className="flex items-center gap-3 md:gap-4">
                 <div className="h-12 w-12 md:h-14 md:w-14 rounded-2xl bg-[#25D366]/10 flex items-center justify-center shrink-0">
                   <ShieldCheck className="h-6 w-6 md:h-7 md:w-7 text-[#25D366]" />
                 </div>
                 <div>
-                  <h3 className="font-bricolage text-xl md:text-2xl font-black tracking-tight leading-tight">Professional Advice</h3>
-                  <p className="text-[10px] md:text-xs font-bold text-black/40 uppercase tracking-widest mt-0.5">Verified Medical Guidance</p>
+                  <h3 className="font-bricolage text-xl md:text-2xl font-black tracking-tight leading-tight dark:text-white">Professional Advice</h3>
+                  <p className="text-[10px] md:text-xs font-bold text-black/40 dark:text-white/40 uppercase tracking-widest mt-0.5">Verified Medical Guidance</p>
                 </div>
               </div>
             </div>
@@ -1299,7 +1299,7 @@ function AnalysisView({
                       key={note.id}
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      className="bg-white rounded-4xl p-8 md:p-10 border border-black/5 shadow-xl relative overflow-hidden group"
+                      className="bg-white dark:bg-white/5 rounded-4xl p-8 md:p-10 border border-black/5 dark:border-white/10 shadow-xl relative overflow-hidden group transition-colors duration-500"
                     >
                       <div className="absolute top-0 right-0 w-32 h-32 bg-[#25D366]/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-[#25D366]/10 transition-colors duration-700" />
                       
@@ -1309,8 +1309,8 @@ function AnalysisView({
                             <User className="h-6 w-6 text-white" />
                           </div>
                           <div>
-                            <h4 className="font-bricolage text-xl font-black">{note.fileName.replace("Doctor Note - ", "") || "Medical Professional"}</h4>
-                            <p className="text-[10px] font-bold text-black/30 uppercase tracking-widest mt-0.5">
+                            <h4 className="font-bricolage text-xl font-black dark:text-white">{note.fileName.replace("Doctor Note - ", "") || "Medical Professional"}</h4>
+                            <p className="text-[10px] font-bold text-black/30 dark:text-white/40 uppercase tracking-widest mt-0.5">
                               {new Date(note.createdAt).toLocaleDateString(undefined, { 
                                 year: 'numeric', 
                                 month: 'long', 
@@ -1326,41 +1326,41 @@ function AnalysisView({
                         </Badge>
                       </div>
 
-                      <div className="prose prose-sm md:prose-base max-w-none text-black/70 leading-relaxed font-medium bg-black/[0.02] p-8 rounded-3xl border border-black/5">
-                      <div className="prose prose-sm prose-emerald max-w-none">
+                      <div className="prose prose-sm md:prose-base max-w-none text-black/70 dark:text-white/70 leading-relaxed font-medium bg-black/[0.02] dark:bg-white/5 p-8 rounded-3xl border border-black/5 dark:border-white/10 transition-colors">
+                      <div className="prose prose-sm prose-emerald max-w-none dark:prose-invert">
                         <ReactMarkdown>
                           {note.extractedText}
                         </ReactMarkdown>
                       </div>
                       </div>
 
-                      <div className="mt-8 flex items-center gap-6 pt-6 border-t border-black/5">
+                       <div className="mt-8 flex items-center gap-6 pt-6 border-t border-black/5 dark:border-white/10 transition-colors">
                         <div className="flex items-center gap-2">
                           <ShieldCheck className="h-4 w-4 text-[#25D366]" />
-                          <span className="text-[10px] font-bold text-black/40 uppercase tracking-widest">End-to-End Encrypted</span>
+                          <span className="text-[10px] font-bold text-black/40 dark:text-white/40 uppercase tracking-widest">End-to-End Encrypted</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <History className="h-4 w-4 text-black/20" />
-                          <span className="text-[10px] font-bold text-black/40 uppercase tracking-widest">Added to Twin</span>
+                          <History className="h-4 w-4 text-black/20 dark:text-white/20" />
+                          <span className="text-[10px] font-bold text-black/40 dark:text-white/40 uppercase tracking-widest">Added to Twin</span>
                         </div>
                       </div>
                     </motion.div>
                   ))
                 ) : (
-                  <div className="flex flex-col items-center justify-center py-20 bg-white/40 backdrop-blur-xl rounded-5xl border border-dashed border-black/10 text-center space-y-6">
-                    <div className="h-20 w-20 bg-black/5 rounded-full flex items-center justify-center">
-                      <ShieldCheck className="h-10 w-10 text-black/10" />
+                  <div className="flex flex-col items-center justify-center py-20 bg-white/40 dark:bg-white/5 backdrop-blur-xl rounded-5xl border border-dashed border-black/10 dark:border-white/10 text-center space-y-6 transition-colors duration-500">
+                    <div className="h-20 w-20 bg-black/5 dark:bg-white/10 rounded-full flex items-center justify-center">
+                      <ShieldCheck className="h-10 w-10 text-black/10 dark:text-white/20" />
                     </div>
                     <div className="space-y-2 max-w-xs">
-                      <h4 className="font-bricolage text-xl font-black">No assessments yet</h4>
-                      <p className="text-sm font-medium text-black/40 leading-relaxed">
+                      <h4 className="font-bricolage text-xl font-black dark:text-white">No assessments yet</h4>
+                      <p className="text-sm font-medium text-black/40 dark:text-white/40 leading-relaxed">
                         Once a medical professional reviews your record, their expert advice will appear here.
                       </p>
                     </div>
-                    <Button 
+                     <Button 
                       variant="outline" 
                       onClick={() => setShowSim("records")}
-                      className="rounded-2xl border-black/10 text-[10px] font-black uppercase tracking-widest hover:bg-black/5"
+                      className="rounded-2xl border-black/10 dark:border-white/20 text-[10px] font-black uppercase tracking-widest hover:bg-black/5 dark:hover:bg-white/5 dark:text-white"
                     >
                       Invite a Doctor
                     </Button>
@@ -1378,7 +1378,7 @@ function AnalysisView({
             className="flex flex-col gap-6"
           >
             {/* Clinical Dashboard Header */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/40 backdrop-blur-xl p-5 md:p-6 rounded-3xl md:rounded-4xl border border-black/5 shadow-sm">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/40 dark:bg-white/5 backdrop-blur-xl p-5 md:p-6 rounded-3xl md:rounded-4xl border border-black/5 dark:border-white/10 shadow-sm transition-colors duration-500">
               <div className="flex items-center gap-3 md:gap-4">
                 <div className="h-12 w-12 md:h-14 md:w-14 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0">
                   <Heart className="h-6 w-6 md:h-7 md:w-7 text-primary animate-pulse" />
@@ -1387,7 +1387,7 @@ function AnalysisView({
                   <h3 className="font-bricolage text-xl md:text-2xl font-black tracking-tight leading-tight">Health Summary</h3>
                   <div className="flex items-center gap-2 mt-0.5">
                     <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                    <span className="text-[9px] md:text-xs font-bold text-black/40 uppercase tracking-widest whitespace-nowrap">Health Data Connected</span>
+                    <span className="text-[9px] md:text-xs font-bold text-black/40 dark:text-white/40 uppercase tracking-widest whitespace-nowrap">Health Data Connected</span>
                   </div>
                 </div>
               </div>
@@ -1397,12 +1397,12 @@ function AnalysisView({
                   variant="outline"
                   size="sm"
                   onClick={() => setAnalysisTab("upload")}
-                  className="flex-1 md:flex-none rounded-2xl border-black/10 text-[10px] font-black uppercase tracking-widest hover:bg-black/5 h-10 px-4 md:px-6"
+                  className="flex-1 md:flex-none rounded-2xl border-black/10 dark:border-white/20 text-[10px] font-black uppercase tracking-widest hover:bg-black/5 dark:hover:bg-white/5 dark:text-white h-10 px-4 md:px-6 transition-colors"
                 >
                   <ArrowLeft className="h-3 w-3 mr-2" />
                   Records
                 </Button>
-                <div className="h-10 px-4 md:px-6 rounded-2xl bg-black text-white flex items-center justify-center text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-black/10">
+                <div className="h-10 px-4 md:px-6 rounded-2xl bg-black dark:bg-white/10 text-white flex items-center justify-center text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-black/10 dark:shadow-none transition-colors">
                   {ps?.id || "TC-0000"}
                 </div>
               </div>

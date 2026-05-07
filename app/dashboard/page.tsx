@@ -551,7 +551,10 @@ export default function DashboardPage() {
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
               <div className="mt-6">
-                <SmartCareSection userName={userData?.name || "Patient"} />
+                <SmartCareSection 
+                  userName={userData?.name || "Patient"} 
+                  initialRecords={userData?.medicalRecords || []}
+                />
               </div>
             </motion.div>
           ) : activeTab === "ai" ? (

@@ -74,11 +74,17 @@ const SMART_CARE_TABS = [
   { id: "analyze", label: "Analyze", icon: BarChart3, description: "Deep analysis of health records" },
 ];
 
-export function SmartCareSection({ userName = "Patient" }: { userName?: string }) {
+export function SmartCareSection({ 
+  userName = "Patient",
+  initialRecords = []
+}: { 
+  userName?: string,
+  initialRecords?: any[]
+}) {
   const [activeTab, setActiveTab] = useState("talk");
   const [medicalContext, setMedicalContext] = useState<any>(null);
   const [analysisResult, setAnalysisResult] = useState<string | null>(null);
-  const [allRecords, setAllRecords] = useState<any[]>([]);
+  const [allRecords, setAllRecords] = useState<any[]>(initialRecords);
   const [selectedRecordId, setSelectedRecordId] = useState<string | null>(null);
   const [patientId, setPatientId] = useState<string | null>(null);
   const [showSelection, setShowSelection] = useState(true);
@@ -109,6 +115,22 @@ export function SmartCareSection({ userName = "Patient" }: { userName?: string }
       toast.error(`Chat Communication Error: ${error.message || "Something went wrong"}`);
     },
   });
+
+  // Sync with prop updates from parent
+  useEffect(() => {
+    if (initialRecords && initialRecords.length > 0) {
+      setAllRecords(initialRecords);
+      // If we don't have a context yet, pick the best one
+      if (!medicalContext) {
+        const recentRecord = initialRecords.find((r: any) => r.analysis);
+        if (recentRecord && recentRecord.analysis) {
+          setMedicalContext(recentRecord.analysis.rawJson || null);
+          setAnalysisResult(recentRecord.analysis.summary);
+          setSelectedRecordId(recentRecord.id);
+        }
+      }
+    }
+  }, [initialRecords]);
 
   const sendMessage = async (data: any) => {
     const text = typeof data === 'string' ? data : data?.text;
@@ -153,7 +175,7 @@ export function SmartCareSection({ userName = "Patient" }: { userName?: string }
       }
     }
     loadHistory();
-  }, []);
+  }, [status]);
 
 
   return (
@@ -684,7 +706,7 @@ function AnalysisView({
   allRecords: any[]
 }) {
   const [analysisTab, setAnalysisTab] = useState<"upload" | "results" | "professional">("upload");
-  const doctorNotes = allRecords.filter(r => r.type === "CLINICAL_NOTE");
+  const doctorNotes = allRecords.filter(r => r.type === "CLINICAL_NOTE" || r.type === "CLINICAL_ASSESSMENT");
 
   const [analyzing, setAnalyzing] = useState(false);
   const [researching, setResearching] = useState(false);

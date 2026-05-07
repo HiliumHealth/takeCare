@@ -11,6 +11,8 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 
+import { ModeToggle } from "./mode-toggle";
+
 interface EditProfileModalProps {
   user: {
     clerkId: string;
@@ -18,6 +20,7 @@ interface EditProfileModalProps {
     avatarUrl: string | null;
     coverImageUrl: string | null;
   };
+  onUpdate: () => void;
   customTrigger?: React.ReactNode;
 }
 
@@ -92,8 +95,12 @@ export function EditProfileModal({ user, onUpdate, customTrigger }: EditProfileM
       />
 
       <DialogContent className="sm:max-w-xl rounded-3xl md:rounded-5xl bg-white dark:bg-[#0a0a0a] border-black/5 dark:border-white/5 p-8 overflow-hidden">
-        <DialogHeader className="px-0 md:px-2">
+        <DialogHeader className="px-0 md:px-2 flex flex-row items-center justify-between">
           <DialogTitle className="font-bricolage text-2xl md:text-3xl font-extrabold tracking-tighter text-black dark:text-white">Edit Patient Profile</DialogTitle>
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-black uppercase tracking-widest text-black/30 dark:text-white/30 hidden sm:block">Theme</span>
+            <ModeToggle />
+          </div>
         </DialogHeader>
 
         <div className="space-y-6 mt-6">

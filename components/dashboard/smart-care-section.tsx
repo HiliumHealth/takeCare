@@ -1666,15 +1666,15 @@ function AnalysisView({
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               className={cn(
-                "bg-white p-6 md:p-10 w-full max-w-5xl shadow-2xl relative flex flex-col h-[calc(100vh-140px)] sm:h-[80vh] rounded-3xl overflow-hidden",
+                "bg-white dark:bg-[#0a0a0a] p-6 md:p-10 w-full max-w-5xl shadow-2xl relative flex flex-col h-[calc(100vh-140px)] sm:h-[80vh] rounded-3xl overflow-hidden border border-black/5 dark:border-white/10",
                 showSim === "research" && "sm:rounded-[2rem]"
               )}
             >
               <button
                 onClick={() => setShowSim(null)}
-                className="absolute top-4 right-4 md:top-8 md:right-8 h-10 w-10 md:h-12 md:w-12 rounded-xl md:rounded-2xl bg-black/5 flex items-center justify-center hover:bg-black/10 transition-colors z-20"
+                className="absolute top-4 right-4 md:top-8 md:right-8 h-10 w-10 md:h-12 md:w-12 rounded-xl md:rounded-2xl bg-black/5 dark:bg-white/10 flex items-center justify-center hover:bg-black/10 dark:hover:bg-white/20 transition-colors z-20"
               >
-                <X className="h-5 w-5 md:h-6 md:w-6 text-black" />
+                <X className="h-5 w-5 md:h-6 md:w-6 text-black dark:text-white" />
               </button>
 
               {showSim === "records" && (
@@ -1685,8 +1685,8 @@ function AnalysisView({
                         <FileText className="h-5 w-5 text-white" />
                       </div>
                       <div>
-                        <h2 className="text-xl md:text-3xl font-bricolage font-black text-black">Medical Records</h2>
-                        <p className="text-[10px] md:text-xs font-bold text-black/40 uppercase tracking-widest">Upload or scan your documents</p>
+                        <h2 className="text-xl md:text-3xl font-bricolage font-black text-black dark:text-white">Medical Records</h2>
+                        <p className="text-[10px] md:text-xs font-bold text-black/40 dark:text-white/40 uppercase tracking-widest">Upload or scan your documents</p>
                       </div>
                     </div>
                   </div>
@@ -1713,7 +1713,7 @@ function AnalysisView({
                           <Button
                             onClick={() => fileInputRef.current?.click()}
                             variant="outline"
-                            className="h-36 rounded-[2rem] border-2 border-dashed border-blue-200 bg-white/50 backdrop-blur-sm flex flex-col gap-3 group/btn hover:bg-blue-50/50 hover:border-blue-400 transition-all font-black text-[10px] uppercase tracking-widest"
+                            className="h-36 rounded-[2rem] border-2 border-dashed border-blue-200 dark:border-blue-500/20 bg-white/50 dark:bg-white/5 backdrop-blur-sm flex flex-col gap-3 group/btn hover:bg-blue-50/50 dark:hover:bg-blue-500/10 hover:border-blue-400 transition-all font-black text-[10px] uppercase tracking-widest text-black dark:text-white"
                           >
                             <div className="h-12 w-12 rounded-2xl bg-blue-50 flex items-center justify-center group-hover/btn:scale-110 transition-transform">
                               <FileUp className="h-6 w-6 text-blue-500" />
@@ -1731,7 +1731,7 @@ function AnalysisView({
                           <Button
                             onClick={() => cameraInputRef.current?.click()}
                             variant="outline"
-                            className="h-36 rounded-[2rem] border-2 border-dashed border-primary/20 bg-white/50 backdrop-blur-sm flex flex-col gap-3 group/btn hover:bg-primary/5 hover:border-primary transition-all font-black text-[10px] uppercase tracking-widest"
+                            className="h-36 rounded-[2rem] border-2 border-dashed border-primary/20 dark:border-primary/40 bg-white/50 dark:bg-white/5 backdrop-blur-sm flex flex-col gap-3 group/btn hover:bg-primary/5 dark:hover:bg-primary/10 hover:border-primary transition-all font-black text-[10px] uppercase tracking-widest text-black dark:text-white"
                           >
                             <div className="h-12 w-12 rounded-2xl bg-primary/5 flex items-center justify-center group-hover/btn:scale-110 transition-transform">
                               <Camera className="h-6 w-6 text-primary" />
@@ -1756,8 +1756,8 @@ function AnalysisView({
                         <h4 className="text-[10px] font-black uppercase tracking-widest text-black/40">Ready for Analysis</h4>
                         <AnimatePresence>
                           {selectedFiles.length === 0 ? (
-                            <div className="py-10 text-center rounded-2xl border border-black/5 bg-black/[0.01] flex flex-col items-center justify-center gap-2">
-                              <p className="text-xs font-bold text-black/20 uppercase tracking-widest">No files added yet</p>
+                            <div className="py-10 text-center rounded-2xl border border-black/5 dark:border-white/10 bg-black/[0.01] dark:bg-white/5 flex flex-col items-center justify-center gap-2">
+                              <p className="text-xs font-bold text-black/20 dark:text-white/20 uppercase tracking-widest">No files added yet</p>
                             </div>
                           ) : (
                             <div className="grid grid-cols-1 gap-3">
@@ -1767,10 +1767,10 @@ function AnalysisView({
                                   animate={{ opacity: 1, scale: 1 }}
                                   exit={{ opacity: 0, scale: 0.9 }}
                                   key={i}
-                                  className="p-4 rounded-3xl bg-white border border-black/5 flex items-center justify-between group hover:shadow-lg hover:shadow-black/5 transition-all"
+                                  className="p-4 rounded-3xl bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 flex items-center justify-between group hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-white/5 transition-all"
                                 >
                                   <div className="flex items-center gap-4">
-                                    <div className="h-14 w-14 rounded-2xl bg-black flex items-center justify-center overflow-hidden border border-black/5 shadow-inner">
+                                    <div className="h-14 w-14 rounded-2xl bg-black flex items-center justify-center overflow-hidden border border-black/5 dark:border-white/10 shadow-inner">
                                       {file.type.startsWith('image/') ? (
                                         <img
                                           src={URL.createObjectURL(file)}
@@ -1782,10 +1782,10 @@ function AnalysisView({
                                       )}
                                     </div>
                                     <div className="max-w-[140px]">
-                                      <p className="text-sm font-black text-black truncate tracking-tight">{file.name}</p>
+                                      <p className="text-sm font-black text-black dark:text-white truncate tracking-tight">{file.name}</p>
                                       <div className="flex items-center gap-2 mt-0.5">
                                         <div className="h-1.5 w-1.5 rounded-full bg-blue-500" />
-                                        <p className="text-[10px] text-black/30 font-bold uppercase tracking-widest">{(file.size / 1024).toFixed(0)} KB</p>
+                                        <p className="text-[10px] text-black/30 dark:text-white/30 font-bold uppercase tracking-widest">{(file.size / 1024).toFixed(0)} KB</p>
                                       </div>
                                     </div>
                                   </div>
@@ -1805,15 +1805,15 @@ function AnalysisView({
                       </div>
 
                       <div className="mt-auto space-y-4">
-                        <div className="p-4 rounded-xl bg-blue-50 border border-blue-100">
-                          <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest leading-tight">Stored Knowledge</p>
-                          <p className="text-xs font-medium text-black/60 mt-1">Your records will be analyzed to help our AI understand your health better.</p>
+                        <div className="p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-500/20">
+                          <p className="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest leading-tight">Stored Knowledge</p>
+                          <p className="text-xs font-medium text-black/60 dark:text-white/60 mt-1">Your records will be analyzed to help our AI understand your health better.</p>
                         </div>
 
                         <Button
                           onClick={runMedicalAnalysis}
                           disabled={selectedFiles.length === 0 || isIngesting}
-                          className="w-full h-14 rounded-xl bg-black text-white hover:bg-blue-600 shadow-xl shadow-black/10 font-bold"
+                          className="w-full h-14 rounded-xl bg-black dark:bg-white/10 text-white hover:bg-blue-600 dark:hover:bg-blue-600 shadow-xl shadow-black/10 dark:shadow-none font-bold"
                         >
                           {isIngesting ? "Reading documents..." : "Start Analysis"}
                         </Button>
@@ -1821,25 +1821,25 @@ function AnalysisView({
                     </div>
 
                     {/* Right Side: Analysis View */}
-                    <div className="flex flex-col rounded-3xl border border-black/5 bg-black/[0.01] overflow-hidden">
-                      <div className="px-6 py-4 border-b border-black/5 bg-white flex items-center justify-between">
+                    <div className="flex flex-col rounded-3xl border border-black/5 dark:border-white/10 bg-black/[0.01] dark:bg-white/5 overflow-hidden">
+                      <div className="px-6 py-4 border-b border-black/5 dark:border-white/10 bg-white dark:bg-black/40 flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-black uppercase tracking-widest text-black/60">Live Analysis</span>
+                          <span className="text-[10px] font-black uppercase tracking-widest text-black/60 dark:text-white/60">Live Analysis</span>
                         </div>
-                        <Badge variant="secondary" className="bg-blue-50 text-blue-600 border-none font-bold">Analysis Output</Badge>
+                        <Badge variant="secondary" className="bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border-none font-bold">Analysis Output</Badge>
                       </div>
 
-                      <div className="flex-1 overflow-y-auto p-8 no-scrollbar bg-white/50">
+                      <div className="flex-1 overflow-y-auto p-8 no-scrollbar bg-white/50 dark:bg-white/5">
                         {isIngesting ? (
                           <div className="h-full flex flex-col items-center justify-center gap-4 text-center">
                             <Loader2 className="h-10 w-10 text-blue-500 animate-spin" />
-                            <p className="text-sm font-bold text-black/40">Reading your medical documents...</p>
+                            <p className="text-sm font-bold text-black/40 dark:text-white/40">Reading your medical documents...</p>
                           </div>
                         ) : analysisResult ? (
                           <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            className="prose prose-sm font-medium text-black/80 max-w-none prose-p:leading-relaxed prose-headings:font-bricolage prose-headings:font-extrabold"
+                            className="prose prose-sm font-medium text-black/80 dark:text-white/80 max-w-none prose-p:leading-relaxed prose-headings:font-bricolage prose-headings:font-extrabold dark:prose-invert"
                           >
                             <div className="prose prose-sm max-w-none">
                               <ReactMarkdown>{analysisResult}</ReactMarkdown>
@@ -1847,20 +1847,20 @@ function AnalysisView({
                           </motion.div>
                         ) : analysisError ? (
                           <div className="h-full flex flex-col items-center justify-center p-6 text-center">
-                            <div className="h-16 w-16 rounded-full bg-red-50 flex items-center justify-center mb-4">
+                            <div className="h-16 w-16 rounded-full bg-red-50 dark:bg-red-500/10 flex items-center justify-center mb-4">
                               <X className="h-8 w-8 text-red-500" />
                             </div>
-                            <h4 className="font-bold text-red-600">Analysis Error</h4>
-                            <p className="text-sm text-red-500/60 mt-2">{analysisError}</p>
-                            <Button variant="outline" onClick={() => setSelectedFiles([])} className="mt-6 rounded-xl border-red-200 text-red-600">Clear and Retry</Button>
+                            <h4 className="font-bold text-red-600 dark:text-red-400">Analysis Error</h4>
+                            <p className="text-sm text-red-500/60 dark:text-red-400/60 mt-2">{analysisError}</p>
+                            <Button variant="outline" onClick={() => setSelectedFiles([])} className="mt-6 rounded-xl border-red-200 dark:border-red-500/30 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors">Clear and Retry</Button>
                           </div>
                         ) : (
                           <div className="h-full flex flex-col items-center justify-center p-10 text-center">
-                            <div className="h-16 w-16 rounded-full bg-black/[0.02] flex items-center justify-center mb-6 border-2 border-dashed border-black/10">
-                              <Bot className="h-6 w-6 text-black/10" />
+                            <div className="h-16 w-16 rounded-full bg-black/[0.02] dark:bg-white/5 flex items-center justify-center mb-6 border-2 border-dashed border-black/10 dark:border-white/10">
+                              <Bot className="h-6 w-6 text-black/10 dark:text-white/20" />
                             </div>
-                            <h4 className="text-lg font-bold text-black/40">Waiting for Documents</h4>
-                            <p className="text-sm text-black/20 font-medium max-w-[240px] mx-auto mt-2">Upload medical records to generate your health summary.</p>
+                            <h4 className="text-lg font-bold text-black/40 dark:text-white/40">Waiting for Documents</h4>
+                            <p className="text-sm text-black/20 dark:text-white/20 font-medium max-w-[240px] mx-auto mt-2">Upload medical records to generate your health summary.</p>
                           </div>
                         )}
                       </div>
@@ -1876,8 +1876,8 @@ function AnalysisView({
                       <Watch className="h-7 w-7 text-orange-500" />
                     </div>
                     <div>
-                      <h2 className="text-3xl font-bricolage font-extrabold tracking-tight">Wearable Sync</h2>
-                      <p className="text-black/50 font-medium">{bleDevice ? `Live data from ${bleDevice.name}` : 'Connect your smart bracelet via Bluetooth'}</p>
+                      <h2 className="text-3xl font-bricolage font-extrabold tracking-tight text-black dark:text-white">Wearable Sync</h2>
+                      <p className="text-black/50 dark:text-white/50 font-medium">{bleDevice ? `Live data from ${bleDevice.name}` : 'Connect your smart bracelet via Bluetooth'}</p>
                     </div>
                   </div>
 
@@ -1899,14 +1899,14 @@ function AnalysisView({
                           transition={{ repeat: Infinity, duration: 2, ease: "easeOut", delay: 0.5 }}
                           className="absolute inset-0 rounded-full bg-orange-500/10 border border-orange-500/20"
                         />
-                        <div className="relative z-10 h-24 w-24 rounded-full bg-white shadow-2xl flex items-center justify-center border border-orange-100">
+                        <div className="relative z-10 h-24 w-24 rounded-full bg-white dark:bg-white/5 shadow-2xl flex items-center justify-center border border-orange-100 dark:border-orange-500/20">
                           <Watch className="h-10 w-10 text-orange-500" />
                         </div>
                       </div>
 
                       <div className="text-center space-y-3 max-w-sm">
-                        <h4 className="text-xl font-bold font-bricolage">Ready to pair</h4>
-                        <p className="text-sm font-medium text-black/40">Ensure your TakeCare bracelet is turned on and within 3 feet of this device.</p>
+                        <h4 className="text-xl font-bold font-bricolage text-black dark:text-white">Ready to pair</h4>
+                        <p className="text-sm font-medium text-black/40 dark:text-white/40">Ensure your TakeCare bracelet is turned on and within 3 feet of this device.</p>
                         {connectionError && (
                           <motion.div
                             initial={{ opacity: 0, scale: 0.9 }}
@@ -1924,9 +1924,9 @@ function AnalysisView({
                           { step: "02", label: "Keep Proximity" },
                           { step: "03", label: "Accept Pairing" }
                         ].map((s) => (
-                          <div key={s.step} className="p-4 rounded-2xl bg-black/2 border border-black/5 flex flex-col items-center gap-1">
+                          <div key={s.step} className="p-4 rounded-2xl bg-black/2 dark:bg-white/5 border border-black/5 dark:border-white/10 flex flex-col items-center gap-1">
                             <span className="text-[10px] font-black text-orange-500 uppercase tracking-widest">{s.step}</span>
-                            <span className="text-xs font-bold text-black/60">{s.label}</span>
+                            <span className="text-xs font-bold text-black/60 dark:text-white/60">{s.label}</span>
                           </div>
                         ))}
                       </div>
@@ -1939,7 +1939,7 @@ function AnalysisView({
                           Start Scanning
                           <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                         </Button>
-                        <p className="text-[10px] text-center text-black/30 font-medium">
+                        <p className="text-[10px] text-center text-black/30 dark:text-white/30 font-medium">
                           Tip: If it&apos;s connected to your phone&apos;s app, disconnect it there first.
                         </p>
                       </div>
@@ -1959,25 +1959,25 @@ function AnalysisView({
                             transition={{ delay: i * 0.1 }}
                             key={metric.label}
                             className={cn(
-                              "p-6 rounded-3xl bg-black/5 flex flex-col items-center text-center gap-2 border transition-all",
-                              metric.live ? "border-red-200 shadow-lg shadow-red-500/5 bg-red-50/30" : "border-transparent"
+                              "p-6 rounded-3xl bg-black/5 dark:bg-white/5 flex flex-col items-center text-center gap-2 border transition-all",
+                              metric.live ? "border-red-200 dark:border-red-500/20 shadow-lg shadow-red-500/5 dark:shadow-none bg-red-50/30 dark:bg-red-500/10" : "border-transparent"
                             )}
                           >
                             <metric.icon className={cn("h-6 w-6 mb-2", metric.color, metric.live && "animate-pulse")} />
-                            <span className="text-2xl font-black font-bricolage">{metric.val}</span>
-                            <span className="text-[10px] font-bold text-black/30 uppercase tracking-widest">{metric.label} {metric.unit}</span>
+                            <span className="text-2xl font-black font-bricolage text-black dark:text-white">{metric.val}</span>
+                            <span className="text-[10px] font-bold text-black/30 dark:text-white/30 uppercase tracking-widest">{metric.label} {metric.unit}</span>
                           </motion.div>
                         ))}
                       </div>
 
-                      <div className="p-8 rounded-4xl bg-green-50 border border-green-100 flex items-center justify-between mt-auto">
+                      <div className="p-8 rounded-4xl bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-500/20 flex items-center justify-between mt-auto">
                         <div className="flex items-center gap-4">
                           <div className="h-12 w-12 rounded-full bg-green-500 flex items-center justify-center text-white shadow-lg shadow-green-500/30">
                             <Watch className="h-6 w-6" />
                           </div>
                           <div>
-                            <p className="font-bold text-green-900">{bleDevice.name || "Smart Bracelet"}</p>
-                            <p className="text-xs text-green-700/60 font-medium flex items-center gap-2">
+                            <p className="font-bold text-green-900 dark:text-green-400">{bleDevice.name || "Smart Bracelet"}</p>
+                                      <p className="text-xs text-green-700/60 dark:text-green-300/60 font-medium flex items-center gap-2">
                               <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
                               Linked and Transmitting
                             </p>
@@ -1986,7 +1986,7 @@ function AnalysisView({
                         <Button
                           variant="outline"
                           onClick={handleDisconnect}
-                          className="rounded-xl border-red-200 text-red-700 hover:bg-red-50"
+                          className="rounded-xl border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
                         >
                           Disconnect
                         </Button>
@@ -1996,8 +1996,8 @@ function AnalysisView({
                     <div className="flex-1 flex flex-col items-center justify-center gap-6">
                       <div className="h-24 w-24 rounded-full border-4 border-orange-100 border-t-orange-500 animate-spin" />
                       <div className="text-center">
-                        <h4 className="text-xl font-bold font-bricolage">Searching for devices</h4>
-                        <p className="text-sm font-medium text-black/40">Please follow the browser instructions...</p>
+                        <h4 className="text-xl font-bold font-bricolage text-black dark:text-white">Searching for devices</h4>
+                        <p className="text-sm font-medium text-black/40 dark:text-white/40">Please follow the browser instructions...</p>
                       </div>
                     </div>
                   )}
@@ -2013,8 +2013,8 @@ function AnalysisView({
                         <Search className="h-5 w-5 text-white" />
                       </div>
                       <div>
-                        <h2 className="text-xl md:text-3xl font-bricolage font-black text-black">Health Research</h2>
-                        <p className="text-[10px] md:text-xs font-bold text-black/40 uppercase tracking-widest">Search online for medical info</p>
+                        <h2 className="text-xl md:text-3xl font-bricolage font-black text-black dark:text-white">Health Research</h2>
+                        <p className="text-[10px] md:text-xs font-bold text-black/40 dark:text-white/40 uppercase tracking-widest">Search online for medical info</p>
                       </div>
                     </div>
                   </div>
@@ -2033,7 +2033,7 @@ function AnalysisView({
                           placeholder="Search for symptoms or conditions..."
                           value={researchQuery}
                           onChange={(e) => setResearchQuery(e.target.value)}
-                          className="h-12 md:h-14 rounded-2xl border-black/10 bg-black/[0.02] pl-6 pr-16 text-sm md:text-lg font-bold placeholder:text-black/30 outline-none"
+                          className="h-12 md:h-14 rounded-2xl border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/5 pl-6 pr-16 text-sm md:text-lg font-bold placeholder:text-black/30 dark:placeholder:text-white/30 outline-none text-black dark:text-white"
                         />
                         <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
                           <Button 
@@ -2055,8 +2055,8 @@ function AnalysisView({
                         <div className="py-20 flex flex-col items-center justify-center gap-4 text-center">
                           <Loader2 className="h-10 w-10 text-blue-600 animate-spin" />
                           <div className="space-y-1">
-                            <h3 className="text-lg font-bold text-black">Searching for research...</h3>
-                            <p className="text-xs font-medium text-black/40">Fetching latest results from medical sources</p>
+                            <h3 className="text-lg font-bold text-black dark:text-white">Searching for research...</h3>
+                            <p className="text-xs font-medium text-black/40 dark:text-white/40">Fetching latest results from medical sources</p>
                           </div>
                         </div>
                       ) : researchResult ? (
@@ -2067,27 +2067,26 @@ function AnalysisView({
                           className="space-y-6 pb-24"
                         >
                           {/* Clean Report View */}
-                          <div ref={researchReportRef} className="bg-white rounded-2xl border border-black/10 shadow-sm overflow-hidden relative">
+                          <div ref={researchReportRef} className="bg-white dark:bg-[#0a0a0a] rounded-2xl border border-black/10 dark:border-white/10 shadow-sm overflow-hidden relative">
                             <div className="h-1.5 w-full bg-blue-600" />
                             
                             <div className="p-4 md:p-8 lg:p-10">
-                              <div className="border-b border-black/5 pb-6 mb-6">
-                                <span className="inline-block px-3 py-1 bg-blue-50 text-blue-600 text-[10px] font-black uppercase tracking-widest rounded-lg mb-2">Research Summary</span>
-                                <h3 className="text-xl md:text-3xl font-bricolage font-black text-black">
+                              <div className="border-b border-black/5 dark:border-white/10 pb-6 mb-6">
+                                <span className="inline-block px-3 py-1 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[10px] font-black uppercase tracking-widest rounded-lg mb-2">Research Summary</span>
+                                <h3 className="text-xl md:text-3xl font-bricolage font-black text-black dark:text-white">
                                   Findings: {researchQuery}
                                 </h3>
                               </div>
-
-                              <div className="prose prose-sm md:prose-base max-w-none text-black/70 leading-relaxed">
+                              <div className="prose prose-sm md:prose-base max-w-none text-black/70 dark:text-white/70 leading-relaxed dark:prose-invert">
                                 <ReactMarkdown
                                   components={{
-                                    h3: ({node, ...props}) => <h3 className="text-lg md:text-xl font-bold text-black mt-8 mb-4 border-l-4 border-blue-600 pl-3" {...props} />,
+                                    h3: ({node, ...props}) => <h3 className="text-lg md:text-xl font-bold text-black dark:text-white mt-8 mb-4 border-l-4 border-blue-600 pl-3" {...props} />,
                                     p: ({node, ...props}) => <p className="mb-4" {...props} />,
                                     ul: ({node, ...props}) => <ul className="space-y-3 my-4" {...props} />,
                                     li: ({node, ...props}) => (
-                                      <li className="bg-black/[0.02] border border-black/5 p-4 rounded-xl flex items-start gap-3">
+                                      <li className="bg-black/[0.02] dark:bg-white/5 border border-black/5 dark:border-white/10 p-4 rounded-xl flex items-start gap-3">
                                         <div className="h-2 w-2 rounded-full bg-blue-600 mt-1.5 shrink-0" />
-                                        <div className="text-sm md:text-base font-medium text-black/80">{props.children}</div>
+                                        <div className="text-sm md:text-base font-medium text-black/80 dark:text-white/80">{props.children}</div>
                                       </li>
                                     ),
                                   }}
@@ -2102,7 +2101,7 @@ function AnalysisView({
                           <div className="flex flex-col sm:flex-row gap-4 mt-8">
                             <Button 
                               onClick={handleDownloadResearchPDF}
-                              className="flex-1 h-14 md:h-16 rounded-2xl bg-black hover:bg-blue-600 text-white font-bold shadow-lg shadow-black/10 transition-all active:scale-95"
+                              className="flex-1 h-14 md:h-16 rounded-2xl bg-black dark:bg-white dark:text-black hover:bg-blue-600 dark:hover:bg-blue-400 text-white font-bold shadow-lg shadow-black/10 transition-all active:scale-95"
                             >
                               <FileDown className="mr-3 h-5 w-5" />
                               Save research as PDF
@@ -2114,7 +2113,7 @@ function AnalysisView({
                                 setResearchResult(null);
                                 setResearchQuery("");
                               }}
-                              className="flex-1 h-14 md:h-16 rounded-2xl border-black/10 bg-white font-bold hover:bg-black/5"
+                              className="flex-1 h-14 md:h-16 rounded-2xl border-black/10 dark:border-white/10 bg-white dark:bg-[#0a0a0a] text-black dark:text-white font-bold hover:bg-black/5 dark:hover:bg-white/5"
                             >
                               New Search
                             </Button>
@@ -2254,11 +2253,11 @@ function AnalysisView({
             </article>
           </div>
 
-          <DialogFooter className="px-6 py-6 lg:px-12 lg:py-8 bg-white border-t border-black/5 flex flex-col sm:flex-row items-center justify-between gap-4 shrink-0">
+          <DialogFooter className="px-6 py-6 lg:px-12 lg:py-8 bg-white dark:bg-[#0a0a0a] border-t border-black/5 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 shrink-0">
             <Button
               variant="outline"
               onClick={() => setShowAnalysisModal(false)}
-              className="w-full sm:w-auto rounded-2xl border-black/10 font-black text-[10px] lg:text-xs uppercase tracking-[0.2em] px-10 h-14 hover:bg-black/10 transition-all font-outfit"
+              className="w-full sm:w-auto rounded-2xl border-black/10 dark:border-white/10 font-black text-[10px] lg:text-xs uppercase tracking-[0.2em] px-10 h-14 hover:bg-black/10 dark:hover:bg-white/10 transition-all font-outfit text-black dark:text-white"
             >
               Close Preview
             </Button>
@@ -2266,7 +2265,7 @@ function AnalysisView({
               <Button
                 onClick={handleDownloadReport}
                 disabled={isDownloading}
-                className="w-full sm:w-auto rounded-2xl bg-black hover:bg-primary text-white font-black text-[10px] lg:text-xs uppercase tracking-[0.2em] px-12 h-14 group transition-all shadow-xl shadow-black/20 font-outfit"
+                className="w-full sm:w-auto rounded-2xl bg-black dark:bg-white text-white dark:text-black hover:bg-primary dark:hover:bg-blue-400 font-black text-[10px] lg:text-xs uppercase tracking-[0.2em] px-12 h-14 group transition-all shadow-xl shadow-black/20 dark:shadow-none font-outfit"
               >
                 {isDownloading ? (
                   <>

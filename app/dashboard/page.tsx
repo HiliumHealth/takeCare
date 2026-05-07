@@ -598,27 +598,27 @@ export default function DashboardPage() {
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: idx * 0.1 }}
-                      className="p-6 bg-white rounded-3xl border border-black/5 shadow-sm flex items-center gap-6 group hover:border-primary/20 transition-all"
+                      className="p-6 bg-white dark:bg-white/5 rounded-3xl border border-black/5 dark:border-white/10 shadow-sm flex items-center gap-6 group hover:border-primary/20 transition-all"
                     >
                       <div className={cn(
                         "h-14 w-14 rounded-2xl flex items-center justify-center shrink-0 shadow-inner",
-                        inv.status === 'ACCEPTED' ? "bg-green-50 text-green-500" : 
-                        inv.status === 'REJECTED' ? "bg-red-50 text-red-500" : "bg-black/5 text-black/20"
+                        inv.status === 'ACCEPTED' ? "bg-green-50 dark:bg-green-500/10 text-green-500" : 
+                        inv.status === 'REJECTED' ? "bg-red-50 dark:bg-red-500/10 text-red-500" : "bg-black/5 dark:bg-white/10 text-black/20 dark:text-white/40"
                       )}>
                         {inv.status === 'ACCEPTED' ? <CheckCircle2 className="h-6 w-6" /> : 
                          inv.status === 'REJECTED' ? <XCircle className="h-6 w-6" /> : <BellRing className="h-6 w-6" />}
                       </div>
                       <div className="flex-1 flex flex-col gap-1">
                         <div className="flex items-center justify-between">
-                          <h4 className="font-bold text-black">
+                          <h4 className="font-bold text-black dark:text-white">
                             {inv.status === 'ACCEPTED' ? "Connection Established" : 
                              inv.status === 'REJECTED' ? "Invitation Declined" : "Invitation Pending"}
                           </h4>
-                          <span className="text-[10px] font-black text-black/20 uppercase tracking-widest">
+                           <span className="text-[10px] font-black text-black/20 dark:text-white/40 uppercase tracking-widest">
                             {new Date(inv.createdAt).toLocaleDateString()}
                           </span>
                         </div>
-                        <p className="text-sm text-black/50 font-medium">
+                        <p className="text-sm text-black/50 dark:text-white/60 font-medium">
                           {inv.status === 'ACCEPTED' 
                             ? `Dr. ${inv.doctorName} has accepted your secure clinical invitation. You can now start sharing records.`
                             : inv.status === 'REJECTED'
@@ -630,17 +630,17 @@ export default function DashboardPage() {
                         variant="ghost" 
                         size="icon" 
                         onClick={() => setActiveTab("overview")}
-                        className="rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="rounded-xl opacity-0 group-hover:opacity-100 transition-opacity dark:text-white"
                       >
                         <ArrowRight className="h-4 w-4" />
                       </Button>
                     </motion.div>
                   ))
                 ) : (
-                  <div className="flex flex-col items-center justify-center py-32 bg-black/2 rounded-[2.5rem] border border-dashed border-black/10">
-                    <Bell className="h-12 w-12 text-black/10 mb-4" />
-                    <p className="text-[10px] font-black text-black/30 uppercase tracking-[0.3em]">No alerts at this time</p>
-                    <p className="text-xs text-black/10 mt-2 font-bold">New status updates will appear here instantly.</p>
+                   <div className="flex flex-col items-center justify-center py-32 bg-black/2 dark:bg-white/5 rounded-[2.5rem] border border-dashed border-black/10 dark:border-white/10">
+                    <Bell className="h-12 w-12 text-black/10 dark:text-white/20 mb-4" />
+                    <p className="text-[10px] font-black text-black/30 dark:text-white/40 uppercase tracking-[0.3em]">No alerts at this time</p>
+                    <p className="text-xs text-black/10 dark:text-white/20 mt-2 font-bold">New status updates will appear here instantly.</p>
                   </div>
                 )}
               </div>

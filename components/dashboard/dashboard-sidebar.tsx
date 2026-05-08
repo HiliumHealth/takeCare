@@ -125,9 +125,12 @@ export function DashboardSidebar({
       <div className="p-4 mt-auto">
         <div className="bg-black/[0.02] dark:bg-white/[0.02] border border-black/[0.03] dark:border-white/[0.03] rounded-3xl p-4 mb-4">
           <div className="flex items-center gap-4 mb-4">
-            <div className="h-12 w-12 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 flex items-center justify-center overflow-hidden">
+            <div className="h-12 w-12 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 flex items-center justify-center overflow-hidden relative">
               {user?.avatarUrl || user?.image ? (
-                <img src={user?.avatarUrl || user?.image} alt={user?.name} className="h-full w-full object-cover" />
+                <>
+                  <img src={user?.avatarUrl || user?.image} alt={user?.name} className="h-full w-full object-cover" />
+                  <div className="absolute inset-0 bg-black/10 dark:bg-black/40 pointer-events-none transition-colors duration-500" />
+                </>
               ) : (
                 <User className="h-6 w-6 text-black/20 dark:text-white/20" />
               )}

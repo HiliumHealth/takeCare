@@ -58,7 +58,7 @@ export async function POST(req: Request) {
 
     logToFile("Starting streamText with gemini-2.5-flash...");
     const result = streamText({
-      model: google('gemini-1.5-flash'),
+      model: google('gemini-2.5-flash'),
       system: `You are Dr. Leo, a compassionate and precise AI health assistant for XERINE. 
       Your mission is to provide evidence-based medical guidance by integrating the patient's personal history with current clinical research.
 
@@ -74,12 +74,13 @@ export async function POST(req: Request) {
       tools,
       maxSteps: 5,
       onError: (err: any) => {
-        logToFile(`STREAM ERROR: ${err}`);
+        const errMsg = err instanceof Error ? err.message : JSON.stringify(err, Object.getOwnPropertyNames(err));
+        logToFile(`STREAM ERROR: ${errMsg}`);
       }
     } as any);
 
-    logToFile("Returning stream response.");
-    return result.toDataStreamResponse();
+    logToFile("Returning stream response via toUIMessageStreamResponse (AI SDK v6).");
+    return result.toUIMessageStreamResponse();
 
   } catch (err: any) {
     logToFile(`FATAL ERROR: ${err.message}`);

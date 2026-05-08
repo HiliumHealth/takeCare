@@ -107,10 +107,10 @@ export function SmartCareSection({
   ], [userName]);
 
   // useChat v6: simpler configuration
-  const { messages, sendMessage: sdkSendMessage, append: sdkAppend, status: chatStatus, setMessages } = useChat({
+  const { messages, sendMessage: sdkSendMessage, status: chatStatus, setMessages } = useChat({
     id: "smart-care-chat",
-    api: "/api/chat",
-    initialMessages: initialChatMessages,
+    // In AI SDK v6, default is /api/chat which is what we want here.
+    messages: initialChatMessages,
     onError: (error) => {
       console.error("useChat SDK Error Details:", error);
       toast.error(`Chat Communication Error: ${error.message || "Something went wrong"}`);
@@ -348,7 +348,7 @@ function VoiceAgentView({
   onSelectionChange: (record: any) => void,
   selectedRecordId: string | null
 }) {
-
+  const { data: session } = useSession();
   const [callStatus, setCallStatus] = useState<"inactive" | "connecting" | "active">("inactive");
   const [isDoctorSpeaking, setIsDoctorSpeaking] = useState(false);
   const [isMuted, setIsMuted] = useState(false);

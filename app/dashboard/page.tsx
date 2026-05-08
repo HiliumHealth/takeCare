@@ -399,9 +399,12 @@ export default function DashboardPage() {
           </button>
 
           {/* User Avatar */}
-          <div className="h-10 w-10 rounded-full bg-black/5 border border-black/5 dark:bg-white/5 dark:border-white/5 flex items-center justify-center overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
+          <div className="h-10 w-10 rounded-full bg-black/5 border border-black/5 dark:bg-white/5 dark:border-white/5 flex items-center justify-center overflow-hidden cursor-pointer hover:shadow-md transition-all relative">
             {userData?.avatarUrl || userData?.image ? (
-              <img src={userData?.avatarUrl || userData?.image} alt={userData?.name} className="h-full w-full object-cover" />
+              <>
+                <img src={userData?.avatarUrl || userData?.image} alt={userData?.name} className="h-full w-full object-cover" />
+                <div className="absolute inset-0 bg-black/10 dark:bg-black/40 pointer-events-none" />
+              </>
             ) : (
               <User className="h-5 w-5 text-black/40 dark:text-white/40" />
             )}
@@ -462,17 +465,20 @@ export default function DashboardPage() {
                       <div className="flex items-center">
                         <h2 className="font-bricolage text-lg md:text-xl font-extrabold tracking-tight text-black dark:text-white">Health History</h2>
                         <div className="flex -space-x-2 overflow-hidden ml-4">
+                          {/* Experts Circle */}
                           {[
                             "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=100&auto=format&fit=crop",
                             "https://images.unsplash.com/photo-1594824476967-48c8b964273f?q=80&w=100&auto=format&fit=crop",
                             "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=100&auto=format&fit=crop"
                           ].map((src, i) => (
-                            <img
-                              key={i}
-                              className="inline-block h-8 w-8 rounded-full ring-[4px] ring-[#f8f9fa] dark:ring-[#0a0a0a] object-cover transition-transform hover:scale-110 cursor-pointer"
-                              src={src}
-                              alt="Medical Expert"
-                            />
+                            <div key={i} className="relative inline-block h-8 w-8 rounded-full ring-[4px] ring-white/10 dark:ring-black/40 overflow-hidden transition-transform hover:scale-110 cursor-pointer">
+                              <img
+                                className="h-full w-full object-cover"
+                                src={src}
+                                alt="Medical Expert"
+                              />
+                              <div className="absolute inset-0 bg-black/10 dark:bg-black/40 pointer-events-none" />
+                            </div>
                           ))}
                           <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary font-black text-[8px] ring-[4px] ring-[#f8f9fa] dark:ring-[#0a0a0a] transition-all hover:bg-primary hover:text-white cursor-pointer">
                             +12

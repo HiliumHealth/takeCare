@@ -87,7 +87,7 @@ export function EditProfileModal({ user, onUpdate, customTrigger }: EditProfileM
   return (
     <Dialog>
       <DialogTrigger 
-        render={customTrigger || (
+        render={customTrigger as React.ReactElement || (
           <Button variant="outline" className="rounded-xl lg:rounded-2xl border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 font-black text-[10px] lg:text-xs uppercase tracking-widest hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-all px-4 lg:px-8 h-10 lg:h-12 shadow-sm whitespace-nowrap shrink-0 text-black dark:text-white">
             Edit Profile
           </Button>
@@ -119,7 +119,10 @@ export function EditProfileModal({ user, onUpdate, customTrigger }: EditProfileM
                 onChange={(e) => handleFileChange(e, "coverImageUrl")}
               />
               {formData.coverImageUrl && isValidUrl(formData.coverImageUrl) && (
-                <img src={formData.coverImageUrl} alt="Cover" className="h-full w-full object-cover" />
+                <div className="relative h-full w-full">
+                  <img src={formData.coverImageUrl} alt="Cover" className="h-full w-full object-cover" />
+                  <div className="absolute inset-0 bg-black/10 dark:bg-black/50 pointer-events-none" />
+                </div>
               )}
               <div className="absolute inset-0 bg-black/20 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <ImageIcon className="text-white h-8 w-8" />
@@ -133,7 +136,7 @@ export function EditProfileModal({ user, onUpdate, customTrigger }: EditProfileM
              <div className="space-y-2">
                 <Label className="text-xs font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">Avatar</Label>
                 <div 
-                  className="relative h-24 w-24 rounded-3xl bg-primary/10 border-4 border-white dark:border-[#0a0a0a] shadow-xl overflow-hidden group cursor-pointer"
+                  className="relative h-24 w-24 rounded-3xl bg-primary/10 border-4 border-white/0 dark:border-white/5 shadow-xl overflow-hidden group cursor-pointer"
                   onClick={() => avatarInputRef.current?.click()}
                 >
                    <input 
@@ -144,7 +147,10 @@ export function EditProfileModal({ user, onUpdate, customTrigger }: EditProfileM
                       onChange={(e) => handleFileChange(e, "avatarUrl")}
                    />
                    {formData.avatarUrl && isValidUrl(formData.avatarUrl) ? (
-                     <img src={formData.avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
+                     <>
+                       <img src={formData.avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
+                       <div className="absolute inset-0 bg-black/10 dark:bg-black/40 pointer-events-none transition-colors" />
+                     </>
                    ) : (
                      <User className="h-full w-full p-4 text-primary/40" />
                    )}

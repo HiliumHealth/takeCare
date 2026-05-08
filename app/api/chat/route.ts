@@ -58,8 +58,8 @@ export async function POST(req: Request) {
 
     logToFile("Starting streamText with gemini-2.5-flash...");
 
-    // In AI SDK v6, we await streamText to get the result object with streaming methods
-    const result = await streamText({
+    // In AI SDK v6, we get the result object immediately (not awaited)
+    const result = streamText({
       model: google('gemini-2.5-flash'),
       system: `You are Dr. Leo, a compassionate and precise AI health assistant for XERINE. 
       Your mission is to provide evidence-based medical guidance by integrating the patient's personal history with current clinical research.
@@ -77,23 +77,13 @@ export async function POST(req: Request) {
       tools,
       maxSteps: 5,
       onError: (err: any) => {
-        logToFile(`STREAM ERROR: ${err}`);
+        const errMsg = err instanceof Error ? err.message : JSON.stringify(err, Object.getOwnPropertyNames(err));
+        logToFile(`STREAM ERROR: ${errMsg}`);
       }
     } as any);
 
-    logToFile(`Result object keys: ${Object.keys(result).join(', ')}`);
-
-    logToFile("Returning stream response using toDataStreamResponse.");
-
-    // Check if the method exists, fallback if needed
-    if (typeof (result as any).toDataStreamResponse === 'function') {
-      return (result as any).toDataStreamResponse();
-    } else if (typeof (result as any).toUIMessageStreamResponse === 'function') {
-      logToFile("Fallback: using toUIMessageStreamResponse");
-      return (result as any).toUIMessageStreamResponse();
-    } else {
-      throw new Error("No valid stream response method found on result object");
-    }
+    logToFile("Returning stream response via toUIMessageStreamResponse (AI SDK v6).");
+    return result.toUIMessageStreamResponse();
 
   } catch (err: any) {
     logToFile(`FATAL ERROR: ${err.message}`);

@@ -80,8 +80,9 @@ export function DashboardHeader({ user, notificationCount = 0 }: DashboardHeader
                    Log out
                 </span>
               </div>
-              <Avatar className="h-9 w-9 border-2 border-white dark:border-[#0a0a0a] shadow-lg lg:h-12 lg:w-12">
-                <AvatarImage src={user?.avatarUrl || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&auto=format&fit=crop"} />
+              <Avatar className="h-9 w-9 border-2 border-white/0 dark:border-white/5 shadow-lg lg:h-12 lg:w-12 relative overflow-hidden">
+                <AvatarImage src={user?.avatarUrl || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&auto=format&fit=crop"} className="object-cover" />
+                <div className="absolute inset-0 bg-black/10 dark:bg-black/40 pointer-events-none" />
                 <AvatarFallback className="bg-primary text-white font-bold">{user?.name?.slice(0, 2).toUpperCase() || "PT"}</AvatarFallback>
               </Avatar>
             </div>

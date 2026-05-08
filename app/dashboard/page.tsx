@@ -460,7 +460,7 @@ export default function DashboardPage() {
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center">
-                        <h2 className="font-bricolage text-xl md:text-2xl font-extrabold tracking-tight text-black dark:text-white">Health History</h2>
+                        <h2 className="font-bricolage text-lg md:text-xl font-extrabold tracking-tight text-black dark:text-white">Health History</h2>
                         <div className="flex -space-x-2 overflow-hidden ml-4">
                           {[
                             "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=100&auto=format&fit=crop",
@@ -469,17 +469,17 @@ export default function DashboardPage() {
                           ].map((src, i) => (
                             <img
                               key={i}
-                              className="inline-block h-10 w-10 rounded-full ring-[4px] ring-[#f8f9fa] dark:ring-[#0a0a0a] object-cover transition-transform hover:scale-110 cursor-pointer"
+                              className="inline-block h-8 w-8 rounded-full ring-[4px] ring-[#f8f9fa] dark:ring-[#0a0a0a] object-cover transition-transform hover:scale-110 cursor-pointer"
                               src={src}
                               alt="Medical Expert"
                             />
                           ))}
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary font-black text-[9px] ring-[4px] ring-[#f8f9fa] dark:ring-[#0a0a0a] transition-all hover:bg-primary hover:text-white cursor-pointer">
+                          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary font-black text-[8px] ring-[4px] ring-[#f8f9fa] dark:ring-[#0a0a0a] transition-all hover:bg-primary hover:text-white cursor-pointer">
                             +12
                           </div>
                         </div>
                       </div>
-                      <p className="text-[10px] md:text-xs font-bold text-black/80 dark:text-white/80 uppercase tracking-widest mt-1">Manage and search your clinical records</p>
+                      <p className="text-[9px] md:text-[10px] font-bold text-black/80 dark:text-white/80 uppercase tracking-widest mt-1">Manage and search your clinical records</p>
                     </div>
                     <div className="relative group w-full md:w-96">
                       <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-black/20 dark:text-white/20 group-focus-within:text-primary transition-colors">

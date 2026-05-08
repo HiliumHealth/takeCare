@@ -394,4 +394,9 @@
   .btn-primary-round:active {
     transform: scale(0.95);
   }
+
+  .mask-soft-edge {
+    mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
+    -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
+  }
 }

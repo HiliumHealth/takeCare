@@ -89,7 +89,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("scroll-smooth", "font-sans", geist.variable)} suppressHydrationWarning>
       <body
-        className={`${syne.variable} ${inter.variable} ${outfit.variable} ${bricolage.variable} antialiased min-h-screen bg-white dark:bg-black transition-colors duration-500`}
+        className={`${syne.variable} ${inter.variable} ${outfit.variable} ${bricolage.variable} antialiased min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-500`}
       >
         <ThemeProvider
           attribute="class"

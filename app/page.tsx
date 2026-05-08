@@ -89,7 +89,7 @@ export default function OnboardingPage() {
               <div className="absolute top-1/2 left-1/2 -z-10 h-[80%] w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-[120px]" />
 
               {/* Main Image with Soft Masking */}
-              <div className="relative h-full w-full lg:mask-soft-edge">
+              <div className="relative h-full w-full bg-transparent mask-soft-edge">
                 <Image
                   src="/onboarding/patient.png"
                   alt="Patient in healthcare consultation"
@@ -108,10 +108,10 @@ export default function OnboardingPage() {
               <div className="absolute inset-y-0 right-0 hidden w-48 bg-linear-to-l from-white dark:from-[#0a0a0a] to-transparent lg:block" />
 
               {/* 3. Radial Softening - Premium Feel */}
-              <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_30%,white_90%)] dark:bg-[radial-gradient(circle_at_center,transparent_30%,#0a0a0a_90%)] opacity-40" />
+              <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_40%,white_100%)] dark:bg-[radial-gradient(circle_at_center,transparent_20%,#0a0a0a_100%)] opacity-100" />
 
               {/* 4. Top Soft Shadows for Texture */}
-              <div className="absolute top-0 left-0 w-full h-24 bg-linear-to-b from-white dark:from-[#0a0a0a] to-transparent opacity-60" />
+              <div className="absolute top-0 left-0 w-full h-24 bg-linear-to-b from-white dark:from-[#0a0a0a] to-transparent opacity-100" />
             </div>
           </div>
         </section>

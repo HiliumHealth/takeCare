@@ -56,7 +56,7 @@ export async function POST(req: Request) {
     // AI SDK v6: convertToModelMessages
     const modelMessages = await convertToModelMessages(messages);
 
-    logToFile("Starting streamText with gemini-1.5-flash...");
+    logToFile("Starting streamText with gemini-2.5-flash...");
     const result = streamText({
       model: google('gemini-2.5-flash'),
       system: `You are Dr. Leo, a compassionate and precise AI health assistant for XERINE. 

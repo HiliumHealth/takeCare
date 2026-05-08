@@ -2168,7 +2168,7 @@ function AnalysisView({
 
       {/* Full Analysis Results Preview Modal */}
       <Dialog open={showAnalysisModal} onOpenChange={setShowAnalysisModal}>
-        <DialogContent className="max-w-[95vw] lg:max-w-5xl xl:max-w-6xl h-[92vh] lg:h-[85vh] flex flex-col p-0 overflow-hidden rounded-[2rem] lg:rounded-[3rem] border-none shadow-2xl backdrop-blur-3xl bg-white/95">
+        <DialogContent className="max-w-[98vw] lg:max-w-5xl xl:max-w-6xl h-[92vh] lg:h-[85vh] flex flex-col p-0 overflow-hidden rounded-[2rem] lg:rounded-[3rem] border-none shadow-2xl backdrop-blur-3xl bg-white/95">
           <div className="absolute top-0 left-0 w-full h-2 bg-primary" />
 
           <DialogHeader className="px-6 py-6 lg:px-12 lg:py-10 bg-white border-b border-black/5 shrink-0">

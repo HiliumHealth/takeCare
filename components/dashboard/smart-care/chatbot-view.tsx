@@ -174,7 +174,7 @@ ${localInput.trim()}
 
       {/* Messages Scroll Area - Flex-1 ensures it takes all available space above the dock */}
       <div className="flex-1 min-h-0 relative">
-        <ScrollArea className="h-full px-1.5 md:px-10" ref={scrollAreaRef}>
+        <ScrollArea className="h-full px-0.5 md:px-10" ref={scrollAreaRef}>
           <div className="flex flex-col gap-6 md:gap-10 max-w-4xl mx-auto w-full pt-6 pb-10">
             {messages.length <= 1 && (
               <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -212,36 +212,41 @@ ${localInput.trim()}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.4, delay: 0.1 }}
                 className={cn(
-                  "flex items-end gap-1.5 md:gap-3 mb-6 md:mb-10 w-full",
-                  msg.role === "user" ? "flex-row-reverse" : "flex-row"
+                  "flex flex-col md:flex-row md:items-end gap-2 md:gap-3 mb-8 md:mb-10 w-full",
+                  msg.role === "user" ? "items-end md:flex-row-reverse" : "items-start md:flex-row"
                 )}
               >
-                {/* Avatar */}
-                <Avatar className={cn(
-                  "h-10 w-10 border-2 shadow-sm shrink-0 mb-1",
-                  msg.role === "user" ? "border-primary/20" : "border-white dark:border-white/10"
-                )}>
-                  {msg.role === "assistant" ? (
-                    <>
-                      <AvatarImage src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=200&h=200" alt="Dr. Leo" />
-                      <AvatarFallback className="bg-primary text-white text-[10px] font-black">LEO</AvatarFallback>
-                    </>
-                  ) : (
-                    <>
-                      <AvatarImage src={session?.user?.image || ""} alt={userName} />
-                      <AvatarFallback className="bg-black text-white text-[10px] font-black">
-                        {userName.substring(0, 2).toUpperCase()}
-                      </AvatarFallback>
-                    </>
-                  )}
-                </Avatar>
+                {/* Avatar Wrapper - Small and above the bubble on mobile */}
+                <div className="flex items-center gap-2 mb-1 md:mb-0 md:contents">
+                  <Avatar className={cn(
+                    "h-6 w-6 md:h-10 md:w-10 border-2 shadow-sm shrink-0",
+                    msg.role === "user" ? "border-primary/20" : "border-white dark:border-white/10"
+                  )}>
+                    {msg.role === "assistant" ? (
+                      <>
+                        <AvatarImage src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=200&h=200" alt="Dr. Leo" />
+                        <AvatarFallback className="bg-primary text-white text-[10px] font-black">LEO</AvatarFallback>
+                      </>
+                    ) : (
+                      <>
+                        <AvatarImage src={session?.user?.image || ""} alt={userName} />
+                        <AvatarFallback className="bg-black text-white text-[10px] font-black">
+                          {userName.substring(0, 2).toUpperCase()}
+                        </AvatarFallback>
+                      </>
+                    )}
+                  </Avatar>
+                  <span className="md:hidden text-[9px] font-black uppercase tracking-widest text-black/40 dark:text-white/40">
+                    {msg.role === "user" ? "You" : "Dr. Leo"}
+                  </span>
+                </div>
 
                 <div
                   className={cn(
-                    "max-w-[92%] md:max-w-[80%] px-4 md:px-8 py-3.5 md:py-6 rounded-[2rem] md:rounded-[2.5rem] shadow-sm relative group",
+                    "w-[98%] md:max-w-[80%] px-5 md:px-8 py-4 md:py-6 rounded-[2rem] md:rounded-[2.5rem] shadow-sm relative group",
                     msg.role === "user"
-                      ? "bg-gradient-to-br from-primary via-primary to-[#0047FF] text-white rounded-tr-none shadow-xl shadow-primary/20"
-                      : "bg-white dark:bg-[#0f0f0f] text-black/80 dark:text-white/80 rounded-tl-none border border-black/5 dark:border-white/5 shadow-xl shadow-black/[0.02]"
+                      ? "bg-gradient-to-br from-primary via-primary to-[#0047FF] text-white rounded-tr-none md:rounded-tr-none shadow-xl shadow-primary/20"
+                      : "bg-white dark:bg-[#0f0f0f] text-black/80 dark:text-white/80 rounded-tl-none md:rounded-tl-none border border-black/5 dark:border-white/5 shadow-xl shadow-black/[0.02]"
                   )}
                 >
                   {/* Check for parts (AI SDK v6) */}
@@ -371,7 +376,7 @@ ${localInput.trim()}
       </div>
 
       {/* Persistent Smart Input Dock - Sticky at bottom of container */}
-      <div className="px-2 md:px-10 pb-8 pt-4 bg-white/40 dark:bg-black/40 backdrop-blur-md border-t border-black/[0.03] dark:border-white/[0.03] relative">
+      <div className="px-1 md:px-10 pb-8 pt-4 bg-white/40 dark:bg-black/40 backdrop-blur-md border-t border-black/[0.03] dark:border-white/[0.03] relative">
         
         {/* Selected Tool Indicator - Floats above the input dock */}
         <div className="absolute -top-12 left-10 right-10 flex justify-center z-30 pointer-events-none">

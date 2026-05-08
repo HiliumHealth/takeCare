@@ -419,7 +419,7 @@ export default function DashboardPage() {
       </header>
 
 
-      <main className="flex flex-1 flex-col w-full md:pb-6 px-4 md:px-8 lg:px-10 max-w-none overflow-x-hidden">
+      <main className="flex flex-1 flex-col w-full md:pb-6 px-1 md:px-8 lg:px-10 max-w-none overflow-x-hidden">
         <AnimatePresence mode="wait">
           {activeTab === "overview" && (
             <motion.div 

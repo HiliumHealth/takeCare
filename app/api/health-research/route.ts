@@ -41,7 +41,7 @@ export async function POST(req: Request) {
 
     // 2. Use Gemini to synthesize the search results into a professional report
     const prompt = `
-      You are 'TakeCare Health Research AI', a specialist in synthesizing complex medical research into actionable clinical intelligence for patients.
+      You are 'XERINE Health Research AI', a specialist in synthesizing complex medical research into actionable clinical intelligence for patients.
       
       USER RESEARCH GOAL: "${query}"
       PATIENT CLINICAL CONTEXT: ${contextString}

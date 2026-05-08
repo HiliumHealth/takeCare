@@ -38,7 +38,7 @@ export async function POST(req: Request) {
     );
 
     const promptText = `
-You are a highly capable AI medical data extraction and analysis specialist acting as the knowledge ingestion engine for the 'TakeCare' healthcare RAG system.
+You are a highly capable AI medical data extraction and analysis specialist acting as the knowledge ingestion engine for the 'XERINE' healthcare RAG system.
 
 Please carefully review the attached medical records (images, scans, or PDFs). Execute the following tasks:
 

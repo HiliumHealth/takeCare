@@ -25,7 +25,8 @@ import {
   SendHorizontal,
   Command,
   Globe,
-  ArrowUpRight
+  ArrowUpRight,
+  X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -37,6 +38,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { useSession } from "next-auth/react";
+import { SYNTHETIC_DOCTOR_DATA } from "@/lib/doctor-data";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -55,17 +59,19 @@ export function ChatbotView({
   status,
   setMessages 
 }: ChatbotViewProps) {
+  const { data: session } = useSession();
   const isLoading = status === "submitting" || status === "submitted" || status === "streaming";
   
   const [localInput, setLocalInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const [isToolMenuOpen, setIsToolMenuOpen] = useState(false);
+  const [selectedTools, setSelectedTools] = useState<any[]>([]);
 
   const tools = [
-    { id: "records", label: "Medical History", icon: History, prompt: "Search my medical records for " },
-    { id: "vitals", label: "Check Vitals", icon: Activity, prompt: "What are my latest vitals?" },
-    { id: "notes", label: "Doctor Notes", icon: FileSearch, prompt: "What did my doctor note in the last session?" },
-    { id: "literature", label: "Medical Research", icon: Microscope, prompt: "Search medical literature about " },
+    { id: "records", label: "Medical History", icon: History, prompt: "[DIRECTIVE: Access and analyze XERINE medical records for relevant patient history.]" },
+    { id: "vitals", label: "Check Vitals", icon: Activity, prompt: "[DIRECTIVE: Retrieve and interpret latest vitals from the patient profile.]" },
+    { id: "notes", label: "Doctor Notes", icon: FileSearch, prompt: "[DIRECTIVE: Examine clinical consultation notes and doctor observations.]" },
+    { id: "literature", label: "Medical Research", icon: Microscope, prompt: "[DIRECTIVE: Research medical literature for current evidence-based guidance on this topic.]" },
   ];
 
   const suggestions = [
@@ -75,23 +81,38 @@ export function ChatbotView({
     "Explain my current medications"
   ];
 
-  const handleToolSelect = (toolPrompt: string) => {
-    setLocalInput(toolPrompt);
+  const handleToolSelect = (tool: any) => {
+    setSelectedTools(prev => {
+      const exists = prev.find(t => t.id === tool.id);
+      if (exists) return prev.filter(t => t.id !== tool.id);
+      return [...prev, tool];
+    });
     setIsToolMenuOpen(false);
     setTimeout(() => inputRef.current?.focus(), 100);
   };
 
   const onFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!localInput.trim() || isLoading) return;
-    const messageToSend = localInput.trim();
+    if (!localInput.trim() && selectedTools.length === 0) return;
+    if (isLoading) return;
+
+    // Construct a structured message
+    const instructions = selectedTools.map(t => t.prompt).join("\n");
+    const messageToSend = `
+${selectedTools.length > 0 ? "### SYSTEM INSTRUCTIONS\n" + instructions + "\n\n" : ""}
+### USER QUERY
+${localInput.trim()}
+`.trim();
+    
     setLocalInput("");
+    // We do NOT clear selectedTools anymore, as requested by user
+
     try {
       if (typeof sendMessage === "function") {
         sendMessage({ text: messageToSend });
       }
     } catch (error) {
-      setLocalInput(messageToSend);
+      setLocalInput(localInput);
     }
   };
 
@@ -113,10 +134,10 @@ export function ChatbotView({
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col flex-1 min-h-[600px] lg:h-[750px] bg-[#fcfcfc] dark:bg-[#0a0a0a] rounded-[3.5rem] border border-black/5 dark:border-white/5 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.08)] dark:shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] overflow-hidden relative"
+      className="flex flex-col flex-1 min-h-[600px] lg:h-[750px] w-[96%] mx-auto md:w-full bg-[#fcfcfc] dark:bg-[#0a0a0a] rounded-[2rem] md:rounded-[3.5rem] border border-black/5 dark:border-white/5 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.08)] dark:shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] overflow-hidden relative"
     >
       {/* Dynamic Chat Header */}
-      <div className="px-10 py-6 border-b border-black/[0.03] dark:border-white/[0.03] bg-white/40 dark:bg-black/40 backdrop-blur-3xl flex items-center justify-between shrink-0 sticky top-0 z-20">
+      <div className="px-4 md:px-10 py-6 border-b border-black/[0.03] dark:border-white/[0.03] bg-white/40 dark:bg-black/40 backdrop-blur-3xl flex items-center justify-between shrink-0 sticky top-0 z-20">
         <div className="flex items-center gap-5">
           <div className="relative">
             <div className="h-14 w-14 rounded-2xl overflow-hidden shadow-lg shadow-primary/10 rotate-3 border-2 border-white">
@@ -153,8 +174,8 @@ export function ChatbotView({
 
       {/* Messages Scroll Area - Flex-1 ensures it takes all available space above the dock */}
       <div className="flex-1 min-h-0 relative">
-        <ScrollArea className="h-full px-6 md:px-10" ref={scrollAreaRef}>
-          <div className="flex flex-col gap-10 max-w-4xl mx-auto w-full pt-10 pb-10">
+        <ScrollArea className="h-full px-2 md:px-10" ref={scrollAreaRef}>
+          <div className="flex flex-col gap-6 md:gap-10 max-w-4xl mx-auto w-full pt-6 pb-10">
             {messages.length <= 1 && (
               <div className="flex flex-col items-center justify-center py-20 text-center">
                 <div className="h-32 w-32 rounded-[2.5rem] overflow-hidden mb-8 border-4 border-white shadow-2xl shadow-black/5 rotate-2 transition-transform hover:rotate-0 duration-500">
@@ -191,13 +212,33 @@ export function ChatbotView({
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.4, delay: 0.1 }}
                 className={cn(
-                  "flex flex-col gap-4",
-                  msg.role === "user" ? "items-end" : "items-start"
+                  "flex items-end gap-3 mb-10 w-full",
+                  msg.role === "user" ? "flex-row-reverse" : "flex-row"
                 )}
               >
+                {/* Avatar */}
+                <Avatar className={cn(
+                  "h-10 w-10 border-2 shadow-sm shrink-0 mb-1",
+                  msg.role === "user" ? "border-primary/20" : "border-white dark:border-white/10"
+                )}>
+                  {msg.role === "assistant" ? (
+                    <>
+                      <AvatarImage src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=200&h=200" alt="Dr. Leo" />
+                      <AvatarFallback className="bg-primary text-white text-[10px] font-black">LEO</AvatarFallback>
+                    </>
+                  ) : (
+                    <>
+                      <AvatarImage src={session?.user?.image || ""} alt={userName} />
+                      <AvatarFallback className="bg-black text-white text-[10px] font-black">
+                        {userName.substring(0, 2).toUpperCase()}
+                      </AvatarFallback>
+                    </>
+                  )}
+                </Avatar>
+
                 <div
                   className={cn(
-                    "max-w-[90%] md:max-w-[80%] px-8 py-6 rounded-[2.5rem] shadow-sm relative group",
+                    "max-w-[88%] md:max-w-[80%] px-4 md:px-8 py-4 md:py-6 rounded-[2rem] md:rounded-[2.5rem] shadow-sm relative group",
                     msg.role === "user"
                       ? "bg-gradient-to-br from-primary via-primary to-[#0047FF] text-white rounded-tr-none shadow-xl shadow-primary/20"
                       : "bg-white dark:bg-[#0f0f0f] text-black/80 dark:text-white/80 rounded-tl-none border border-black/5 dark:border-white/5 shadow-xl shadow-black/[0.02]"
@@ -206,7 +247,7 @@ export function ChatbotView({
                   {/* Check for parts (AI SDK v6) */}
                   {msg.parts ? (
                     <div className="flex flex-col gap-4">
-                      {msg.parts.map((part, i) => {
+                      {msg.parts.map((part: any, i: number) => {
                         if (part.type === "text") {
                           return (
                             <div
@@ -224,7 +265,9 @@ export function ChatbotView({
                                   li: ({node, ...props}) => <li className="mb-2" {...props} />,
                                 }}
                               >
-                                {part.text}
+                                {msg.role === "user" && part.text.includes("### USER QUERY") 
+                                  ? part.text.split("### USER QUERY")[1].trim() 
+                                  : part.text}
                               </ReactMarkdown>
                             </div>
                           );
@@ -328,7 +371,34 @@ export function ChatbotView({
       </div>
 
       {/* Persistent Smart Input Dock - Sticky at bottom of container */}
-      <div className="px-6 md:px-10 pb-8 pt-4 bg-white/40 dark:bg-black/40 backdrop-blur-md border-t border-black/[0.03] dark:border-white/[0.03]">
+      <div className="px-2 md:px-10 pb-8 pt-4 bg-white/40 dark:bg-black/40 backdrop-blur-md border-t border-black/[0.03] dark:border-white/[0.03] relative">
+        
+        {/* Selected Tool Indicator - Floats above the input dock */}
+        <div className="absolute -top-12 left-10 right-10 flex justify-center z-30 pointer-events-none">
+          <div className="flex flex-wrap items-center justify-center gap-2 pointer-events-auto">
+            <AnimatePresence>
+              {selectedTools.map((tool) => (
+                <motion.div
+                  key={tool.id}
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  className="flex items-center gap-2 px-3 py-1.5 bg-primary text-white rounded-full shadow-lg shadow-primary/20 border border-white/20 whitespace-nowrap"
+                >
+                  <tool.icon className="h-3.5 w-3.5" />
+                  <span className="text-[9px] font-black uppercase tracking-widest">{tool.label}</span>
+                  <button 
+                    onClick={() => setSelectedTools(prev => prev.filter(t => t.id !== tool.id))}
+                    className="ml-0.5 h-4 w-4 rounded-full hover:bg-white/20 flex items-center justify-center transition-colors"
+                  >
+                    <X className="h-2.5 w-2.5" />
+                  </button>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+        </div>
+
         <div className="relative group max-w-4xl mx-auto">
           {/* Background blur/shadow ring */}
           <div className="absolute -inset-4 bg-black/5 dark:bg-white/5 rounded-[4rem] blur-2xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-700" />
@@ -355,18 +425,36 @@ export function ChatbotView({
                 <DropdownMenuLabel className="px-4 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">Diagnostic Tools</DropdownMenuLabel>
                 <DropdownMenuSeparator className="bg-black/5 dark:bg-white/5" />
                 <div className="grid gap-2 p-2">
-                  {tools.map((tool) => (
-                    <DropdownMenuItem 
-                      key={tool.id} 
-                      onClick={() => handleToolSelect(tool.prompt)}
-                      className="flex items-center gap-4 p-4 rounded-2xl cursor-pointer hover:bg-primary/5 transition-colors group/item"
-                    >
-                      <div className="h-10 w-10 rounded-xl bg-black/5 dark:bg-white/5 flex items-center justify-center group-hover/item:bg-primary group-hover/item:text-white transition-all">
-                        <tool.icon className="h-5 w-5" />
-                      </div>
-                      <span className="font-bold text-sm text-black/70 dark:text-white/70 group-hover/item:text-black dark:group-hover/item:text-white">{tool.label}</span>
-                    </DropdownMenuItem>
-                  ))}
+                  {tools.map((tool) => {
+                    const isActive = selectedTools.find(t => t.id === tool.id);
+                    return (
+                      <DropdownMenuItem 
+                        key={tool.id} 
+                        onClick={() => handleToolSelect(tool)}
+                        className={cn(
+                          "flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-colors group/item",
+                          isActive ? "bg-primary text-white" : "hover:bg-primary/5"
+                        )}
+                      >
+                        <div className={cn(
+                          "h-10 w-10 rounded-xl flex items-center justify-center transition-all",
+                          isActive ? "bg-white/20 text-white" : "bg-black/5 dark:bg-white/5 group-hover/item:bg-primary group-hover/item:text-white"
+                        )}>
+                          <tool.icon className="h-5 w-5" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-black tracking-tight">{tool.label}</p>
+                          <p className={cn(
+                            "text-[10px] font-medium opacity-60",
+                            isActive ? "text-white" : "text-black/40 dark:text-white/40"
+                          )}>
+                            {tool.prompt.slice(0, 30)}...
+                          </p>
+                        </div>
+                        {isActive && <X className="h-4 w-4" />}
+                      </DropdownMenuItem>
+                    );
+                  })}
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -376,7 +464,7 @@ export function ChatbotView({
               value={localInput}
               onChange={(e) => setLocalInput(e.target.value)}
               placeholder="Describe your health concern or ask Dr. Leo..."
-              className="flex-1 bg-transparent border-none focus:ring-0 px-6 py-4 text-lg font-medium placeholder:text-black/20 dark:placeholder:text-white/20 text-black dark:text-white"
+              className="flex-1 bg-transparent border-none focus:ring-0 focus:outline-none focus-visible:outline-none px-6 py-4 text-lg font-medium placeholder:text-black/20 dark:placeholder:text-white/20 text-black dark:text-white"
               disabled={isLoading}
             />
 
@@ -391,10 +479,10 @@ export function ChatbotView({
               </Button>
               <Button 
                 type="submit" 
-                disabled={!localInput.trim() || isLoading}
+                disabled={(!localInput.trim() && selectedTools.length === 0) || isLoading}
                 className={cn(
                   "h-14 px-8 rounded-[1.8rem] font-black flex items-center gap-3 transition-all duration-500 shadow-lg shadow-primary/20",
-                  localInput.trim() ? "bg-primary text-white scale-100" : "bg-black/5 dark:bg-white/5 text-black/20 dark:text-white/20 scale-95 opacity-50"
+                  (localInput.trim() || selectedTools.length > 0) ? "bg-primary text-white scale-100" : "bg-black/5 dark:bg-white/5 text-black/20 dark:text-white/20 scale-95 opacity-50"
                 )}
               >
                 {isLoading ? (

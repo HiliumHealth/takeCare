@@ -15,7 +15,7 @@ function logToFile(msg: string) {
     const logPath = path.join(process.cwd(), 'chat_debug.log');
     const timestamp = new Date().toISOString();
     fs.appendFileSync(logPath, `[${timestamp}] ${msg}\n`);
-  } catch (e) {}
+  } catch (e) { }
 }
 
 export async function GET() {
@@ -24,7 +24,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
   logToFile("--- POST REQUEST START ---");
-  
+
   try {
     const key = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
     logToFile(`API Key present: ${!!key}, Length: ${key?.length || 0}`);
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
 
     const body = await req.json();
     const { messages }: { messages: UIMessage[] } = body;
-    
+
     if (!messages?.length) {
       logToFile("Error: No messages in body");
       return new Response('No messages', { status: 400 });
@@ -56,19 +56,23 @@ export async function POST(req: Request) {
     // AI SDK v6: convertToModelMessages
     const modelMessages = await convertToModelMessages(messages);
 
-    logToFile("Starting streamText with gemini-2.5-flash...");
-    
+    logToFile("Starting streamText with gemini-1.5-flash...");
+
     // In AI SDK v6, we await streamText to get the result object with streaming methods
     const result = await streamText({
       model: google('gemini-2.5-flash'),
-      system: `You are Dr. Leo, a compassionate AI health assistant for TakeCare. 
-      Use your tools to search medical records, check vitals, and provide evidence-based guidance.
-      Always search before answering if the query relates to the patient's history.
-      
+      system: `You are Dr. Leo, a compassionate and precise AI health assistant for XERINE. 
+      Your mission is to provide evidence-based medical guidance by integrating the patient's personal history with current clinical research.
+
+      Operational Guidelines:
+      1. INTEGRATION: When multiple instructions are provided (e.g., searching records AND researching literature), perform both tasks and synthesize the findings.
+      2. PROACTIVITY: Always check the patient's medical records if the query relates to their specific condition or history.
+      3. CLARITY: Distinguish between the patient's actual data and general medical research.
+
       Patient Profile:
       ${context.profile}
       
-      Status: This patient has ${context.recordCount} records.`,
+      Status: This patient has ${context.recordCount} records in the XERINE database.`,
       messages: modelMessages,
       tools,
       maxSteps: 5,
@@ -80,7 +84,7 @@ export async function POST(req: Request) {
     logToFile(`Result object keys: ${Object.keys(result).join(', ')}`);
 
     logToFile("Returning stream response using toDataStreamResponse.");
-    
+
     // Check if the method exists, fallback if needed
     if (typeof (result as any).toDataStreamResponse === 'function') {
       return (result as any).toDataStreamResponse();
@@ -94,7 +98,7 @@ export async function POST(req: Request) {
   } catch (err: any) {
     logToFile(`FATAL ERROR: ${err.message}`);
     console.error("[ChatAPI] Error:", err);
-    return new Response(JSON.stringify({ error: err.message }), { 
+    return new Response(JSON.stringify({ error: err.message }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });

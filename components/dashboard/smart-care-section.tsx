@@ -69,8 +69,8 @@ import { ChatbotView } from "./smart-care/chatbot-view";
 
 
 const SMART_CARE_TABS = [
-  { id: "talk", label: "Talk", icon: Mic, description: "Voice interaction with AI medical agent" },
-  { id: "text", label: "Chat", icon: MessageSquareText, description: "Secure chat with medical AI" },
+  { id: "talk", label: "Talk", icon: Mic, description: "Voice interaction with Xerine medical agent" },
+  { id: "text", label: "Chat", icon: MessageSquareText, description: "Secure chat with Xerine AI" },
   { id: "analyze", label: "Analyze", icon: BarChart3, description: "Deep analysis of health records" },
 ];
 
@@ -198,7 +198,7 @@ export function SmartCareSection({
               >
                 <div className="flex justify-center mb-6">
                   <Badge className="bg-primary/10 text-primary border-primary/20 px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-full">
-                    Your Health Assistant
+                    Xerine Health Assistant
                   </Badge>
                 </div>
                 
@@ -426,7 +426,7 @@ function VoiceAgentView({
         ${JSON.stringify(selectedMedDetails, null, 2)}
 
         INSTRUCTIONS:
-        You are ${userName}'s AI Medical Assistant. Use the latest records to provide advice.
+        You are Dr. Leo, a compassionate AI health assistant for XERINE. Use the latest records to provide advice.
         - Discuss specific medications: ${selectedMeds.join(", ")}.
         - Address symptoms and provide empathetic, clear guidance.
         - Address the user by their first name: ${userName.split(' ')[0]}.

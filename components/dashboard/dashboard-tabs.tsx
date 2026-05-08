@@ -10,7 +10,7 @@ const TABS = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "messenger", label: "Messenger", icon: MessageSquare },
   { id: "notifications", label: "Notifications", icon: Bell },
-  { id: "smart-care", label: "Smart Care", icon: Plus },
+  { id: "smart-care", label: "Xerine", icon: Plus },
 ];
 
 export function DashboardTabs({

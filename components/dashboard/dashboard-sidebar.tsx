@@ -13,7 +13,7 @@ const NAV_ITEMS = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "messenger", label: "Messenger", icon: MessageSquare },
   { id: "notifications", label: "Notifications", icon: Bell },
-  { id: "smart-care", label: "Smart Care", icon: Plus, highlight: true },
+  { id: "smart-care", label: "Xerine", icon: Plus, highlight: true },
 ];
 
 export function DashboardSidebar({
@@ -37,7 +37,7 @@ export function DashboardSidebar({
           <Heart className="h-5 w-5 text-white dark:text-black fill-white/10 dark:fill-black/10" />
         </div>
         <div>
-          <h1 className="font-bricolage text-xl font-black tracking-tighter text-black dark:text-white">TakeCare</h1>
+          <h1 className="font-bricolage text-xl font-black tracking-tighter text-black dark:text-white">XERINE</h1>
           <div className="flex items-center gap-2">
             <div className="h-1 w-1 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]" />
             <span className="text-[9px] font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30 leading-none">Everything is ready</span>
@@ -50,7 +50,7 @@ export function DashboardSidebar({
         <div className="px-4 mb-4">
           <span className="text-[10px] font-black uppercase tracking-[0.3em] text-black/20 dark:text-white/20">Menu</span>
         </div>
-        
+
         {NAV_ITEMS.map((item) => {
           const isActive = value === item.id;
           return (
@@ -59,8 +59,8 @@ export function DashboardSidebar({
               onClick={() => onValueChange(item.id)}
               className={cn(
                 "w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group relative",
-                isActive 
-                  ? "bg-blue-600 text-white shadow-xl shadow-blue-600/20" 
+                isActive
+                  ? "bg-blue-600 text-white shadow-xl shadow-blue-600/20"
                   : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white hover:bg-black/[0.03] dark:hover:bg-white/[0.03]"
               )}
             >
@@ -70,7 +70,7 @@ export function DashboardSidebar({
                   isActive ? "text-white" : "text-black/40 dark:text-white/40",
                   item.highlight && !isActive && "text-primary animate-pulse"
                 )} />
-                
+
                 {/* Badge Logic */}
                 {item.id === "messenger" && messengerCount > 0 && (
                   <span className="absolute -top-2 -right-2 h-5 w-5 bg-primary text-white text-[9px] font-black rounded-full flex items-center justify-center border-2 border-white">
@@ -83,7 +83,7 @@ export function DashboardSidebar({
                   </span>
                 )}
               </div>
-              
+
               <span className={cn(
                 "font-bold text-sm tracking-tight capitalize",
                 isActive ? "text-white" : "text-black/60 dark:text-white/60"
@@ -104,9 +104,9 @@ export function DashboardSidebar({
         <div className="px-4 pt-10 mb-4">
           <span className="text-[10px] font-black uppercase tracking-[0.3em] text-black/20 dark:text-white/20">Help & Security</span>
         </div>
-        
-        <EditProfileModal 
-          user={user} 
+
+        <EditProfileModal
+          user={user}
           onUpdate={() => window.location.reload()}
           customTrigger={
             <button className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white hover:bg-black/[0.03] dark:hover:bg-white/[0.03] transition-all group">
@@ -137,8 +137,8 @@ export function DashboardSidebar({
               <p className="text-[10px] font-bold text-black/30 dark:text-white/30 uppercase tracking-widest truncate">Secure Account</p>
             </div>
           </div>
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             onClick={() => signOut()}
             className="w-full justify-start gap-3 h-12 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500 text-black/40 dark:text-white/40 transition-all font-bold text-xs"
           >
@@ -148,7 +148,7 @@ export function DashboardSidebar({
         </div>
 
         <div className="px-4 py-2 flex items-center justify-between opacity-20 dark:opacity-40 text-black dark:text-white">
-          <p className="text-[8px] font-black uppercase tracking-widest">TakeCare v2.0</p>
+          <p className="text-[8px] font-black uppercase tracking-widest">XERINE v1.0</p>
           <Activity className="h-3 w-3" />
         </div>
       </div>

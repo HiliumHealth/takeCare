@@ -60,7 +60,7 @@ export async function POST(req: Request) {
 
     // In AI SDK v6, we await streamText to get the result object with streaming methods
     const result = await streamText({
-      model: google('gemini-2.5-flash'),
+      model: google('gemini-1.5-flash'),
       system: `You are Dr. Leo, a compassionate and precise AI health assistant for XERINE. 
       Your mission is to provide evidence-based medical guidance by integrating the patient's personal history with current clinical research.
 
@@ -79,7 +79,7 @@ export async function POST(req: Request) {
       onError: (err) => {
         logToFile(`STREAM ERROR: ${err}`);
       }
-    });
+    } as any);
 
     logToFile(`Result object keys: ${Object.keys(result).join(', ')}`);
 

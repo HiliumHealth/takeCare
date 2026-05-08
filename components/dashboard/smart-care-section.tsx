@@ -48,7 +48,8 @@ import {
   ShieldCheck,
   History,
   BookOpen,
-  ArrowUpRight
+  ArrowUpRight,
+  Sparkles
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import jsPDF from "jspdf";

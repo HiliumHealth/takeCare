@@ -134,10 +134,10 @@ ${localInput.trim()}
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col flex-1 min-h-[600px] lg:h-[750px] w-[96%] mx-auto md:w-full bg-[#fcfcfc] dark:bg-[#0a0a0a] rounded-[2rem] md:rounded-[3.5rem] border border-black/5 dark:border-white/5 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.08)] dark:shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] overflow-hidden relative"
+      className="flex flex-col flex-1 min-h-[600px] lg:h-[750px] w-full md:w-full bg-[#fcfcfc] dark:bg-[#0a0a0a] rounded-none md:rounded-[3.5rem] border-x-0 md:border border-black/5 dark:border-white/5 shadow-none md:shadow-[0_40px_100px_-20px_rgba(0,0,0,0.08)] dark:md:shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] overflow-hidden relative"
     >
       {/* Dynamic Chat Header */}
-      <div className="px-4 md:px-10 py-6 border-b border-black/[0.03] dark:border-white/[0.03] bg-white/40 dark:bg-black/40 backdrop-blur-3xl flex items-center justify-between shrink-0 sticky top-0 z-20">
+      <div className="px-4 md:px-10 py-4 md:py-6 border-b border-black/[0.03] dark:border-white/[0.03] bg-white/40 dark:bg-black/40 backdrop-blur-3xl flex items-center justify-between shrink-0 sticky top-0 z-20">
         <div className="flex items-center gap-5">
           <div className="relative">
             <div className="h-14 w-14 rounded-2xl overflow-hidden shadow-lg shadow-primary/10 rotate-3 border-2 border-white">
@@ -174,7 +174,7 @@ ${localInput.trim()}
 
       {/* Messages Scroll Area - Flex-1 ensures it takes all available space above the dock */}
       <div className="flex-1 min-h-0 relative">
-        <ScrollArea className="h-full px-2 md:px-10" ref={scrollAreaRef}>
+        <ScrollArea className="h-full px-1.5 md:px-10" ref={scrollAreaRef}>
           <div className="flex flex-col gap-6 md:gap-10 max-w-4xl mx-auto w-full pt-6 pb-10">
             {messages.length <= 1 && (
               <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -195,7 +195,7 @@ ${localInput.trim()}
                     <button
                       key={i}
                       onClick={() => setLocalInput(text)}
-                      className="flex items-center justify-between p-5 rounded-2xl border border-black/5 dark:border-white/5 bg-white dark:bg-[#0f0f0f] hover:border-primary/40 hover:bg-primary/5 transition-all group text-left shadow-sm"
+                      className="flex items-center justify-between p-4 md:p-5 rounded-2xl border border-black/5 dark:border-white/5 bg-white dark:bg-[#0f0f0f] hover:border-primary/40 hover:bg-primary/5 transition-all group text-left shadow-sm"
                     >
                       <span className="text-sm font-bold text-black/60 dark:text-white/60 group-hover:text-black dark:group-hover:text-white">{text}</span>
                       <ArrowUpRight className="h-4 w-4 text-black/20 dark:text-white/20 group-hover:text-primary transition-all" />
@@ -212,7 +212,7 @@ ${localInput.trim()}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.4, delay: 0.1 }}
                 className={cn(
-                  "flex items-end gap-3 mb-10 w-full",
+                  "flex items-end gap-1.5 md:gap-3 mb-6 md:mb-10 w-full",
                   msg.role === "user" ? "flex-row-reverse" : "flex-row"
                 )}
               >
@@ -238,7 +238,7 @@ ${localInput.trim()}
 
                 <div
                   className={cn(
-                    "max-w-[88%] md:max-w-[80%] px-4 md:px-8 py-4 md:py-6 rounded-[2rem] md:rounded-[2.5rem] shadow-sm relative group",
+                    "max-w-[92%] md:max-w-[80%] px-4 md:px-8 py-3.5 md:py-6 rounded-[2rem] md:rounded-[2.5rem] shadow-sm relative group",
                     msg.role === "user"
                       ? "bg-gradient-to-br from-primary via-primary to-[#0047FF] text-white rounded-tr-none shadow-xl shadow-primary/20"
                       : "bg-white dark:bg-[#0f0f0f] text-black/80 dark:text-white/80 rounded-tl-none border border-black/5 dark:border-white/5 shadow-xl shadow-black/[0.02]"
@@ -253,7 +253,7 @@ ${localInput.trim()}
                             <div
                               key={i}
                               className={cn(
-                                "prose prose-lg max-w-none font-medium leading-[1.6]",
+                                "prose prose-base md:prose-lg max-w-none font-medium leading-[1.6]",
                                 msg.role === "user" ? "prose-invert" : "prose-slate"
                               )}
                             >
@@ -321,7 +321,7 @@ ${localInput.trim()}
                   ) : (
                     <div
                       className={cn(
-                        "prose prose-lg max-w-none font-medium leading-[1.6]",
+                        "prose prose-base md:prose-lg max-w-none font-medium leading-[1.6]",
                         msg.role === "user" ? "prose-invert" : "prose-slate"
                       )}
                     >
@@ -349,7 +349,7 @@ ${localInput.trim()}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="flex items-center gap-4 p-4 rounded-3xl bg-black/[0.02] dark:bg-white/[0.02] w-fit"
+                className="flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-2xl md:rounded-3xl bg-black/[0.02] dark:bg-white/[0.02] w-fit"
               >
                 <div className="flex gap-1.5">
                   {[0, 1, 2].map((i) => (
@@ -408,7 +408,7 @@ ${localInput.trim()}
             className="relative bg-white/80 dark:bg-[#0f0f0f]/80 backdrop-blur-3xl border border-black/5 dark:border-white/5 p-2 rounded-[2.5rem] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.12)] flex items-center gap-2 group-focus-within:border-primary/20 transition-all duration-500"
           >
             <DropdownMenu open={isToolMenuOpen} onOpenChange={setIsToolMenuOpen}>
-              <DropdownMenuTrigger asChild>
+              <DropdownMenuTrigger>
                 <Button 
                   type="button"
                   variant="ghost" 

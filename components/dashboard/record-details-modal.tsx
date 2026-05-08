@@ -68,10 +68,10 @@ export function RecordDetailsModal({
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 bottom-0 w-full sm:w-[500px] md:w-[650px] bg-linear-to-b from-white to-[#FAFAFA] z-[101] shadow-[-20px_0_50px_rgba(0,0,0,0.05)] flex flex-col border-l border-black/5"
+            className="fixed right-0 top-0 bottom-0 w-full sm:w-[500px] md:w-[650px] bg-background dark:bg-[#0A0A0A] z-[101] shadow-[-20px_0_50px_rgba(0,0,0,0.05)] flex flex-col border-l border-black/5 dark:border-white/5"
           >
             {/* High-End Header */}
-            <div className="relative px-6 py-8 md:px-10 md:py-10 bg-white border-b border-black/[0.03] shrink-0">
+            <div className="relative px-6 py-8 md:px-10 md:py-10 bg-background dark:bg-[#0A0A0A] border-b border-black/[0.03] dark:border-white/[0.03] shrink-0">
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-3">
                   <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shadow-inner">
@@ -88,12 +88,12 @@ export function RecordDetailsModal({
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full hover:bg-black/5 transition-all text-black/20 hover:text-black/60 hidden md:flex">
+                  <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-all text-black/20 dark:text-white/20 hover:text-black/60 dark:hover:text-white/60 hidden md:flex">
                     <Share2 className="h-5 w-5" />
                   </Button>
                   <Button 
                     onClick={onClose}
-                    className="h-12 w-12 rounded-full bg-black/[0.03] hover:bg-black/5 transition-all text-black/40 hover:text-black/80 flex items-center justify-center p-0"
+                    className="h-12 w-12 rounded-full bg-black/[0.03] dark:bg-white/[0.03] hover:bg-black/5 dark:hover:bg-white/5 transition-all text-black/40 dark:text-white/40 hover:text-black/80 dark:hover:text-white/80 flex items-center justify-center p-0"
                   >
                     <X className="h-6 w-6" />
                   </Button>
@@ -101,11 +101,11 @@ export function RecordDetailsModal({
               </div>
 
               <div className="space-y-4">
-                <h2 className="font-bricolage text-2xl md:text-4xl font-extrabold tracking-tight text-black leading-tight">
+                <h2 className="font-bricolage text-2xl md:text-4xl font-extrabold tracking-tight text-foreground leading-tight">
                   {record.fileName}
                 </h2>
                 
-                <div className="flex flex-wrap items-center gap-6 text-black/30 font-bold text-xs md:text-sm">
+                <div className="flex flex-wrap items-center gap-6 text-black/30 dark:text-white/30 font-bold text-xs md:text-sm">
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
                     <span>Created {new Date(record.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
@@ -123,7 +123,7 @@ export function RecordDetailsModal({
             </div>
 
             {/* Content Area - Scrollable Engine */}
-            <div className="flex-1 overflow-y-auto custom-scrollbar bg-[#FAFAFA]">
+            <div className="flex-1 overflow-y-auto custom-scrollbar bg-background dark:bg-[#0A0A0A]">
               <div className="px-6 py-8 md:px-10 md:py-10 space-y-8">
                 
                 {/* Clinical Data Section - Priority for Doctor Notes */}
@@ -131,7 +131,7 @@ export function RecordDetailsModal({
                   <motion.div 
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    className="relative overflow-hidden bg-white rounded-[2.5rem] p-8 md:p-10 border border-black/[0.03] shadow-xl shadow-black/[0.02]"
+                    className="relative overflow-hidden bg-white/50 dark:bg-white/5 rounded-[2.5rem] p-8 md:p-10 border border-black/[0.03] dark:border-white/[0.03] shadow-xl shadow-black/[0.02] dark:shadow-black/20"
                   >
                     <div className="absolute top-0 right-0 p-10 opacity-[0.03] pointer-events-none">
                       <ClipboardList className="h-24 w-24" />
@@ -144,20 +144,20 @@ export function RecordDetailsModal({
                         </div>
                         <div className="flex flex-col">
                           <span className="font-black text-[10px] uppercase tracking-[0.2em] text-primary">Clinical Observation</span>
-                          <span className="text-[9px] font-bold text-black/30 uppercase tracking-widest">Medical Assessment Data</span>
+                          <span className="text-[9px] font-bold text-black/30 dark:text-white/30 uppercase tracking-widest">Medical Assessment Data</span>
                         </div>
                       </div>
                       
                       <div className="space-y-4">
                         <div className="flex items-center justify-between">
-                          <h3 className="font-bricolage text-2xl font-black text-black tracking-tight">Doctor's Note</h3>
+                          <h3 className="font-bricolage text-2xl font-black text-foreground tracking-tight">Doctor's Note</h3>
                           <Badge className="rounded-full bg-[#10B981]/10 text-[#10B981] border-none text-[8px] font-black uppercase tracking-widest px-3 py-1">
                             Official Report
                           </Badge>
                         </div>
                         
-                        <div className="p-6 md:p-8 bg-black/[0.02] rounded-3xl border border-black/[0.03] relative">
-                          <p className="text-sm md:text-lg text-black/80 font-medium leading-relaxed font-serif italic">
+                        <div className="p-6 md:p-8 bg-black/[0.02] dark:bg-white/[0.02] rounded-3xl border border-black/[0.03] dark:border-white/[0.03] relative">
+                          <p className="text-sm md:text-lg text-black/80 dark:text-white/80 font-medium leading-relaxed font-serif italic">
                             {record.extractedText || "No clinical text available for this record."}
                           </p>
                         </div>
@@ -172,7 +172,7 @@ export function RecordDetailsModal({
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.1 }}
-                    className="relative overflow-hidden bg-white rounded-[2.5rem] p-8 border border-black/[0.03] shadow-sm"
+                    className="relative overflow-hidden bg-white/50 dark:bg-white/5 rounded-[2.5rem] p-8 border border-black/[0.03] dark:border-white/[0.03] shadow-sm"
                   >
                     <div className="flex flex-col gap-6">
                       <div className="flex items-center gap-3 text-primary">
@@ -183,8 +183,8 @@ export function RecordDetailsModal({
                       </div>
                       
                       <div className="space-y-3">
-                        <h3 className="font-bricolage text-xl font-extrabold text-black">Summary</h3>
-                        <p className="text-sm md:text-base text-black/60 font-medium leading-relaxed italic">
+                        <h3 className="font-bricolage text-xl font-extrabold text-foreground">Summary</h3>
+                        <p className="text-sm md:text-base text-black/60 dark:text-white/60 font-medium leading-relaxed italic">
                           "{record.analysis?.summary || record.fallbackSummary || "Our AI engine is currently processing the clinical context of this file. Full report will be available shortly."}"
                         </p>
                       </div>
@@ -196,7 +196,7 @@ export function RecordDetailsModal({
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 px-2">
                     <Shield className="h-4 w-4 text-primary" />
-                    <span className="font-black text-[10px] uppercase tracking-[0.2em] text-black/40">Clinical Insights</span>
+                    <span className="font-black text-[10px] uppercase tracking-[0.2em] text-black/40 dark:text-white/40">Clinical Insights</span>
                   </div>
                   
                   <div className="grid grid-cols-1 gap-4">
@@ -207,30 +207,30 @@ export function RecordDetailsModal({
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: 0.2 + (idx * 0.05) }}
                           key={idx}
-                          className="bg-white p-6 rounded-3xl border border-black/[0.03] shadow-sm group hover:border-primary/20 transition-all cursor-default"
+                          className="bg-white/50 dark:bg-white/5 p-6 rounded-3xl border border-black/[0.03] dark:border-white/[0.03] shadow-sm group hover:border-primary/20 transition-all cursor-default"
                         >
                           <div className="flex gap-4 items-center">
-                            <div className="h-10 w-10 rounded-xl bg-black/[0.02] group-hover:bg-primary/5 flex items-center justify-center shrink-0 transition-colors">
-                              <ChevronRight className="h-4 w-4 text-black/20 group-hover:text-primary transition-colors" />
+                            <div className="h-10 w-10 rounded-xl bg-black/[0.02] dark:bg-white/[0.02] group-hover:bg-primary/5 flex items-center justify-center shrink-0 transition-colors">
+                              <ChevronRight className="h-4 w-4 text-black/20 dark:text-white/20 group-hover:text-primary transition-colors" />
                             </div>
-                            <p className="text-sm text-black font-bold leading-snug">{insight}</p>
+                            <p className="text-sm text-foreground font-bold leading-snug">{insight}</p>
                           </div>
                         </motion.div>
                       ))
                     ) : record.type === "CLINICAL_NOTE" ? (
-                      <div className="p-8 bg-white rounded-[2rem] border border-black/[0.03] flex items-center gap-4">
-                         <div className="h-12 w-12 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
+                      <div className="p-8 bg-white/50 dark:bg-white/5 rounded-[2rem] border border-black/[0.03] dark:border-white/[0.03] flex items-center gap-4">
+                         <div className="h-12 w-12 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
                            <CheckCircle2 className="h-6 w-6" />
                          </div>
                          <div>
-                            <p className="text-sm font-bold text-black">Professional Assessment</p>
-                            <p className="text-[10px] text-black/40 font-bold uppercase tracking-widest">This record contains direct medical feedback.</p>
+                            <p className="text-sm font-bold text-foreground">Professional Assessment</p>
+                            <p className="text-[10px] text-black/40 dark:text-white/40 font-bold uppercase tracking-widest">This record contains direct medical feedback.</p>
                          </div>
                       </div>
                     ) : (
-                      <div className="py-12 bg-white rounded-3xl border border-dashed border-black/10 flex flex-col items-center justify-center gap-4">
-                        <ClipboardList className="h-10 w-10 text-black/10" />
-                        <p className="text-xs text-black/30 font-bold uppercase tracking-widest text-center px-10">
+                      <div className="py-12 bg-white/50 dark:bg-white/5 rounded-3xl border border-dashed border-black/10 dark:border-white/10 flex flex-col items-center justify-center gap-4">
+                        <ClipboardList className="h-10 w-10 text-black/10 dark:text-white/10" />
+                        <p className="text-xs text-black/30 dark:text-white/30 font-bold uppercase tracking-widest text-center px-10">
                           Extracting detailed insights...
                         </p>
                       </div>
@@ -239,7 +239,7 @@ export function RecordDetailsModal({
                 </div>
 
                 {/* Security & Action Footer */}
-                <div className="bg-white text-black p-8 rounded-[2.5rem] shadow-xl shadow-black/5 border border-black/5 flex flex-col gap-6 relative overflow-hidden">
+                <div className="bg-white/50 dark:bg-white/5 text-foreground p-8 rounded-[2.5rem] shadow-xl shadow-black/5 dark:shadow-black/20 border border-black/5 dark:border-white/5 flex flex-col gap-6 relative overflow-hidden">
                   <div className="absolute top-0 inset-x-0 h-1.5 bg-linear-to-r from-primary/40 via-primary to-primary/40 opacity-50" />
                   <div className="absolute top-0 right-0 p-8 opacity-[0.03]">
                     <Lock className="h-20 w-20" />
@@ -250,11 +250,11 @@ export function RecordDetailsModal({
                       <span className="font-black text-[10px] uppercase tracking-widest text-primary/80">Security Protocol</span>
                     </div>
                     <h4 className="font-bricolage text-lg font-extrabold">Data Governance</h4>
-                    <p className="text-xs text-black/40 font-medium leading-relaxed">
+                    <p className="text-xs text-black/40 dark:text-white/40 font-medium leading-relaxed">
                       This clinical record is encrypted using AES-256 standards. Only you and authorized medical entities can view the full metadata.
                     </p>
                   </div>
-                  <Button className="w-full h-14 rounded-2xl bg-black text-white font-black text-xs uppercase tracking-widest hover:bg-primary transition-all shadow-lg shadow-black/10">
+                  <Button className="w-full h-14 rounded-2xl bg-foreground text-background font-black text-xs uppercase tracking-widest hover:bg-primary transition-all shadow-lg shadow-black/10">
                     View Audit Log
                   </Button>
                 </div>
@@ -263,7 +263,7 @@ export function RecordDetailsModal({
             </div>
 
             {/* Quick Actions Footer - Sticky */}
-            <div className="p-6 md:p-8 bg-white border-t border-black/[0.03] flex items-center gap-4 shrink-0">
+            <div className="p-6 md:p-8 bg-background dark:bg-[#0A0A0A] border-t border-black/[0.03] dark:border-white/[0.03] flex items-center gap-4 shrink-0">
               <Button 
                 onClick={() => {
                   if (record.url && record.url !== "N/A") {
@@ -274,7 +274,7 @@ export function RecordDetailsModal({
                     });
                   }
                 }}
-                className="flex-1 h-16 rounded-2xl bg-white border border-black/5 text-black font-black text-xs uppercase tracking-widest hover:bg-black hover:text-white transition-all shadow-xl shadow-black/[0.03] flex items-center justify-center gap-3 relative overflow-hidden group"
+                className="flex-1 h-16 rounded-2xl bg-background border border-black/5 dark:border-white/5 text-foreground font-black text-xs uppercase tracking-widest hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-all shadow-xl shadow-black/[0.03] dark:shadow-black/20 flex items-center justify-center gap-3 relative overflow-hidden group"
               >
                 <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 <Download className="h-5 w-5 text-primary" />
@@ -283,7 +283,7 @@ export function RecordDetailsModal({
               <Button 
                 variant="outline" 
                 onClick={() => record.url && window.open(record.url, "_blank")}
-                className="h-16 w-16 rounded-2xl border-black/5 bg-black/[0.02] hover:bg-black/5 flex items-center justify-center text-black/40 shadow-sm"
+                className="h-16 w-16 rounded-2xl border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center text-black/40 dark:text-white/40 shadow-sm"
               >
                 <ExternalLink className="h-5 w-5" />
               </Button>

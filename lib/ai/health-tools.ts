@@ -15,7 +15,7 @@ export function createHealthTools(userId: string) {
         query: z.string().describe('Natural language search query'),
         limit: z.number().optional().default(3),
       }),
-      execute: async ({ query, limit }) => {
+      execute: async ({ query, limit }: { query: string; limit: number }) => {
         try {
           const records = await searchMedicalRecords(userId, query, limit);
           if (!records.length) return { found: false, message: 'No matching records found.' };
@@ -44,7 +44,7 @@ export function createHealthTools(userId: string) {
       parameters: z.object({
         field: z.string().optional().describe('Specific vital field to get, e.g. blood_pressure. Omit for all.'),
       }),
-      execute: async ({ field }) => {
+      execute: async ({ field }: { field?: string }) => {
         try {
           const latest = await prisma.analysis.findFirst({
             where: { medicalRecord: { userId } },
@@ -75,7 +75,7 @@ export function createHealthTools(userId: string) {
       parameters: z.object({
         query: z.string().describe('Medical search query'),
       }),
-      execute: async ({ query }) => {
+      execute: async ({ query }: { query: string }) => {
         try {
           const resp = await getJson({
             engine: 'google',
@@ -103,7 +103,7 @@ export function createHealthTools(userId: string) {
         'Retrieve clinical notes written directly by the patient doctor. ' +
         'Use when the patient asks what their doctor said or recommended.',
       parameters: z.object({ limit: z.number().optional().default(3) }),
-      execute: async ({ limit }) => {
+      execute: async ({ limit }: { limit: number }) => {
         try {
           const notes = await prisma.medicalRecord.findMany({
             where: { userId, type: 'CLINICAL_NOTE' },
@@ -133,7 +133,7 @@ export function createHealthTools(userId: string) {
         'Search past voice consultations with Dr. Leo for relevant context. ' +
         'Use when the patient refers to something discussed in a previous voice call.',
       parameters: z.object({ query: z.string().describe('Search query for voice transcripts') }),
-      execute: async ({ query }) => {
+      execute: async ({ query }: { query: string }) => {
         try {
           const results = await searchVapiTranscripts(userId, query, 2);
           if (!results.length) return { found: false };

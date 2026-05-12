@@ -13,12 +13,14 @@ export async function POST(req: Request) {
     const labRequestsJson = formData.get("labRequests") as string;
     const lifestyleJson = formData.get("lifestyle") as string;
     const vitalTargetsJson = formData.get("vitalTargets") as string;
+    const vitalsJson = formData.get("vitals") as string;
     const followUpDate = formData.get("followUpDate") as string;
 
     const medications = JSON.parse(medicationsJson || "[]");
     const labRequests = JSON.parse(labRequestsJson || "[]");
     const lifestyle = JSON.parse(lifestyleJson || "{}");
     const vitalTargets = JSON.parse(vitalTargetsJson || "[]");
+    const vitals = JSON.parse(vitalsJson || "{}");
     const files = formData.getAll("files") as File[];
 
     if (!inviteId) {
@@ -41,6 +43,11 @@ export async function POST(req: Request) {
         doctorName: invitation.doctorName,
         diagnosis,
         notes,
+        vitals,
+        labRequests,
+        vitalTargets,
+        lifestyle,
+        followUpDate,
         medications: {
           create: medications.map((med: any) => ({
             name: med.name,

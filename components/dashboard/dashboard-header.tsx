@@ -35,8 +35,8 @@ export function DashboardHeader({ user, notificationCount = 0 }: DashboardHeader
     <header className="flex items-center justify-between px-4 py-2 lg:px-0 lg:py-4 w-full">
 
       <div className="flex items-center gap-2 md:gap-3 min-w-0">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-black shadow-lg lg:h-12 lg:w-12 lg:rounded-xl overflow-hidden">
-           <img src="/hilium.png" alt="Hilium Logo" className="w-full h-full object-cover p-1" />
+        <div className="flex h-12 w-12 items-center justify-center lg:h-16 lg:w-16 overflow-hidden">
+           <img src="/hilium.png" alt="Hilium Logo" className="w-full h-full object-contain dark:invert" />
         </div>
         <div className="flex flex-col min-w-0">
           <span className="font-outfit text-sm font-bold tracking-tight lg:text-xl leading-none truncate dark:text-white">Hilium</span>
@@ -45,7 +45,7 @@ export function DashboardHeader({ user, notificationCount = 0 }: DashboardHeader
       </div>
 
       <div className="flex items-center gap-3 lg:gap-6">
-        <div className="hidden items-center gap-2 rounded-full bg-black/5 dark:bg-white/5 px-4 py-2 lg:flex border border-transparent focus-within:border-primary/20 transition-all">
+        <div className="hidden items-center gap-2 rounded-full lg:flex transition-all">
           <Search className="h-4 w-4 text-black/60 dark:text-white/60" />
           <input 
             type="text" 

@@ -30,8 +30,8 @@ export default function OnboardingPage() {
         {/* Header / Logo */}
         <header className="mb-6 lg:mb-12 animate-slide-right">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-black shadow-2xl lg:h-14 lg:w-14 overflow-hidden">
-               <img src="/hilium.png" alt="Hilium Logo" className="w-full h-full object-cover p-1" />
+            <div className="flex h-14 w-14 items-center justify-center lg:h-20 lg:w-20 overflow-hidden">
+               <img src="/hilium.png" alt="Hilium Logo" className="w-full h-full object-contain dark:invert" />
             </div>
             <div className="flex flex-col">
               <span className="font-outfit text-lg font-bold tracking-tight lg:text-2xl leading-none text-black">Hilium</span>

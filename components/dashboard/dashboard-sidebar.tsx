@@ -33,8 +33,8 @@ export function DashboardSidebar({
     <aside className="fixed left-0 top-0 bottom-0 w-[260px] bg-white dark:bg-[#0a0a0a] border-r border-black/[0.04] dark:border-white/[0.04] z-50 hidden lg:flex flex-col shadow-[20px_0_50px_-20px_rgba(0,0,0,0.02)] dark:shadow-[20px_0_50px_-20px_rgba(0,0,0,0.2)] transition-colors duration-500">
       {/* Brand Header */}
       <div className="p-6 pb-0 flex items-center gap-3">
-        <div className="h-10 w-10 rounded-xl bg-black dark:bg-white flex items-center justify-center shadow-2xl shadow-black/20 dark:shadow-white/10 transition-colors duration-500 overflow-hidden">
-           <img src="/hilium.png" alt="Hilium Logo" className="w-full h-full object-cover p-1.5 dark:invert" />
+        <div className="h-16 w-16 flex items-center justify-center transition-colors duration-500 overflow-hidden">
+           <img src="/hilium.png" alt="Hilium Logo" className="w-full h-full object-contain dark:invert" />
         </div>
         <div>
           <h1 className="font-bricolage text-xl font-black tracking-tighter text-black dark:text-white uppercase">Hilium</h1>
@@ -123,7 +123,7 @@ export function DashboardSidebar({
 
       {/* User & Footer */}
       <div className="p-4 mt-auto">
-        <div className="bg-black/[0.02] dark:bg-white/[0.02] border border-black/[0.03] dark:border-white/[0.03] rounded-3xl p-4 mb-4">
+        <div className="border border-black/[0.03] dark:border-white/[0.03] rounded-3xl p-4 mb-4">
           <div className="flex items-center gap-4 mb-4">
             <div className="h-12 w-12 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 flex items-center justify-center overflow-hidden relative">
               {user?.avatarUrl || user?.image ? (

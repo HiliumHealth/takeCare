@@ -36,7 +36,7 @@ export const sendInvitationEmail = async (email: string, doctorName: string, otp
         </div>
 
         <div style="text-align: center; margin-bottom: 40px;">
-          <a href="${process.env.NEXTAUTH_URL || 'https://takecare-ai.vercel.app'}/doctor/verify" 
+          <a href="${process.env.NEXTAUTH_URL || 'https://takecareai.vercel.app'}/doctor/verify" 
              style="background-color: #2563eb; color: #ffffff; padding: 18px 36px; text-decoration: none; border-radius: 16px; font-weight: 700; font-size: 15px; display: inline-block;">
             Access Doctor Dashboard
           </a>
@@ -106,7 +106,7 @@ export const sendReportNotificationEmail = async (email: string, patientName: st
         </div>
 
         <div style="text-align: center; margin-bottom: 40px;">
-          <a href="${process.env.NEXTAUTH_URL || 'https://takecare-ai.vercel.app'}/dashboard" 
+          <a href="${process.env.NEXTAUTH_URL || 'https://takecareai.vercel.app'}/dashboard" 
              style="background-color: #0f172a; color: #ffffff; padding: 20px 40px; text-decoration: none; border-radius: 20px; font-weight: 800; font-size: 16px; display: inline-block; box-shadow: 0 10px 20px -5px rgba(0,0,0,0.2);">
             View My Health Dashboard
           </a>

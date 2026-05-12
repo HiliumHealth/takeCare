@@ -13,7 +13,7 @@ const NAV_ITEMS = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "messenger", label: "Messenger", icon: MessageSquare },
   { id: "notifications", label: "Notifications", icon: Bell },
-  { id: "smart-care", label: "Xerine", icon: Plus, highlight: true },
+  { id: "smart-care", label: "Xerine AI", icon: Plus, highlight: true },
 ];
 
 export function DashboardSidebar({
@@ -32,12 +32,12 @@ export function DashboardSidebar({
   return (
     <aside className="fixed left-0 top-0 bottom-0 w-[260px] bg-white dark:bg-[#0a0a0a] border-r border-black/[0.04] dark:border-white/[0.04] z-50 hidden lg:flex flex-col shadow-[20px_0_50px_-20px_rgba(0,0,0,0.02)] dark:shadow-[20px_0_50px_-20px_rgba(0,0,0,0.2)] transition-colors duration-500">
       {/* Brand Header */}
-      <div className="p-6 flex items-center gap-3">
-        <div className="h-10 w-10 rounded-xl bg-black dark:bg-white flex items-center justify-center shadow-2xl shadow-black/20 dark:shadow-white/10 transition-colors duration-500">
-          <Heart className="h-5 w-5 text-white dark:text-black fill-white/10 dark:fill-black/10" />
+      <div className="p-6 pb-0 flex items-center gap-3">
+        <div className="h-10 w-10 rounded-xl bg-black dark:bg-white flex items-center justify-center shadow-2xl shadow-black/20 dark:shadow-white/10 transition-colors duration-500 overflow-hidden">
+           <img src="/hilium.png" alt="Hilium Logo" className="w-full h-full object-cover p-1.5 dark:invert" />
         </div>
         <div>
-          <h1 className="font-bricolage text-xl font-black tracking-tighter text-black dark:text-white">XERINE</h1>
+          <h1 className="font-bricolage text-xl font-black tracking-tighter text-black dark:text-white uppercase">Hilium</h1>
           <div className="flex items-center gap-2">
             <div className="h-1 w-1 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]" />
             <span className="text-[9px] font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30 leading-none">Everything is ready</span>

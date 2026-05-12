@@ -32,7 +32,7 @@ export function DashboardHeader({ user, notificationCount = 0 }: DashboardHeader
   };
 
   return (
-    <header className="flex items-center justify-between px-4 py-4 lg:px-0 lg:py-6 w-full">
+    <header className="flex items-center justify-between px-4 py-2 lg:px-0 lg:py-4 w-full">
 
       <div className="flex items-center gap-2 md:gap-3 min-w-0">
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-black shadow-lg lg:h-12 lg:w-12 lg:rounded-xl overflow-hidden">

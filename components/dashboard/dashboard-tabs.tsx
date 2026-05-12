@@ -11,7 +11,7 @@ const TABS = [
   { id: "health-book", label: "Health Book", icon: BookOpen },
   { id: "messenger", label: "Messenger", icon: MessageSquare },
   { id: "notifications", label: "Notifications", icon: Bell },
-  { id: "smart-care", label: "Xerine", icon: Plus },
+  { id: "smart-care", label: "Xerine AI", icon: Plus },
 ];
 
 export function DashboardTabs({

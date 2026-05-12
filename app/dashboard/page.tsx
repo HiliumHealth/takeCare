@@ -53,9 +53,9 @@ function DashboardLoading() {
           <motion.div
             animate={{ scale: [1, 1.1, 1] }}
             transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-            className="relative z-20 h-24 w-24 bg-white dark:bg-black rounded-4xl shadow-2xl flex items-center justify-center border border-primary/10"
+            className="relative z-20 h-24 w-24 bg-white dark:bg-black rounded-4xl shadow-2xl flex items-center justify-center border border-primary/10 overflow-hidden"
           >
-            <Heart className="h-10 w-10 text-primary fill-primary/10" />
+            <img src="/hilium.png" alt="Hilium Logo" className="w-full h-full object-cover p-4" />
           </motion.div>
 
           {/* Floating Orbiting Icons */}
@@ -361,15 +361,20 @@ export default function DashboardPage() {
 
       {/* Main Content Area Top Bar - Desktop */}
       <div className="hidden lg:flex sticky top-0 z-30 w-full h-20 bg-white/40 dark:bg-black/40 backdrop-blur-3xl border-b border-black/[0.03] dark:border-white/[0.03] items-center px-10 justify-between">
-        <div className="flex items-center gap-4 group bg-black/[0.03] dark:bg-white/[0.03] px-6 py-3 rounded-2xl border border-transparent focus-within:border-primary/20 transition-all w-96">
-          <Search className="h-5 w-5 text-black/30 dark:text-white/30 group-focus-within:text-primary transition-colors" />
-          <input 
-            type="text" 
-            placeholder="Search records, doctors, or analysis..." 
-            className="bg-transparent border-none focus:ring-0 font-bold text-sm text-black dark:text-white placeholder:text-black/20 dark:placeholder:text-white/20 w-full"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+        <div className="flex items-center gap-6 flex-1">
+          <div className="h-10 w-10 rounded-xl bg-black dark:bg-white flex items-center justify-center shadow-lg overflow-hidden shrink-0">
+             <img src="/hilium.png" alt="Hilium Logo" className="w-full h-full object-cover p-1.5 dark:invert" />
+          </div>
+          <div className="flex items-center gap-4 group bg-black/[0.03] dark:bg-white/[0.03] px-6 py-3 rounded-2xl border border-transparent focus-within:border-primary/20 transition-all w-96">
+            <Search className="h-5 w-5 text-black/30 dark:text-white/30 group-focus-within:text-primary transition-colors" />
+            <input 
+              type="text" 
+              placeholder="Search records, doctors, or analysis..." 
+              className="bg-transparent border-none focus:ring-0 font-bold text-sm text-black dark:text-white placeholder:text-black/20 dark:placeholder:text-white/20 w-full"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
         </div>
         
         <div className="flex items-center gap-8">
@@ -427,7 +432,7 @@ export default function DashboardPage() {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="px-6 py-4 md:py-6 lg:px-0 lg:py-8 animate-fade-up"
+              className="px-6 py-2 md:py-4 lg:px-0 lg:py-6 animate-fade-up"
             >
               <h1 className="font-bricolage text-xl md:text-3xl lg:text-4xl font-extrabold tracking-tighter flex flex-wrap items-center gap-x-2 md:gap-x-4 transition-all">
                 <span className="text-black/80 dark:text-white/80 whitespace-nowrap">{getGreeting()},</span> 

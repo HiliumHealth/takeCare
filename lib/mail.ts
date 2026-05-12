@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
 
 export const sendInvitationEmail = async (email: string, doctorName: string, otp: string, patientName: string) => {
   const mailOptions = {
-    from: `"TakeCare AI" <${process.env.EMAIL_USER}>`,
+    from: `"Hilium" <${process.env.EMAIL_USER}>`,
     to: email,
     subject: `Medical Consultation Request - ${patientName}`,
     html: `
@@ -118,7 +118,7 @@ export const sendReportNotificationEmail = async (email: string, patientName: st
 
         <div style="border-top: 1px solid #f1f5f9; margin-top: 40px; padding-top: 32px; text-align: center;">
           <p style="color: #94a3b8; font-size: 11px; font-weight: 500;">
-            &copy; 2026 TakeCare AI. HIPAA Compliant & Secure.
+            &copy; 2026 Hilium. HIPAA Compliant & Secure.
           </p>
         </div>
       </div>

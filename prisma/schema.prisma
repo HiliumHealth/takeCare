@@ -25,6 +25,7 @@ model User {
   conversations     Conversation[]
   vapiTranscripts   VapiTranscript[]
   doctorIntelligence DoctorIntelligence?
+  prescriptions     Prescription[]
 }
 
 model DoctorInvitation {
@@ -121,3 +122,28 @@ model DoctorIntelligence {
   updatedAt      DateTime                    @updatedAt
 }
 
+model Prescription {
+  id          String       @id @default(cuid())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  doctorName  String
+  diagnosis   String?      @db.Text
+  notes       String?      @db.Text
+  medications Medication[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Medication {
+  id             String       @id @default(cuid())
+  prescriptionId String
+  prescription   Prescription @relation(fields: [prescriptionId], references: [id], onDelete: Cascade)
+  name           String
+  dosage         String
+  frequency      String       // e.g. "3 times a day"
+  times          String[]     // e.g. ["08:00", "14:00", "20:00"]
+  startDate      DateTime?
+  endDate        DateTime?
+  instructions   String?
+  createdAt      DateTime     @default(now())
+}

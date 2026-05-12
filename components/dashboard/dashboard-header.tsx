@@ -35,11 +35,11 @@ export function DashboardHeader({ user, notificationCount = 0 }: DashboardHeader
     <header className="flex items-center justify-between px-4 py-4 lg:px-0 lg:py-6 w-full">
 
       <div className="flex items-center gap-2 md:gap-3 min-w-0">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-black shadow-lg lg:h-12 lg:w-12 lg:rounded-xl">
-          <span className="font-syne text-base font-extrabold text-white lg:text-2xl">T</span>
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-black shadow-lg lg:h-12 lg:w-12 lg:rounded-xl overflow-hidden">
+           <img src="/hilium.png" alt="Hilium Logo" className="w-full h-full object-cover p-1" />
         </div>
         <div className="flex flex-col min-w-0">
-          <span className="font-outfit text-sm font-bold tracking-tight lg:text-xl leading-none truncate dark:text-white">TakeCare</span>
+          <span className="font-outfit text-sm font-bold tracking-tight lg:text-xl leading-none truncate dark:text-white">Hilium</span>
           <span className="text-[7px] font-black uppercase tracking-[0.2em] text-black/60 dark:text-white/60 lg:text-[10px]">Portal</span>
         </div>
       </div>

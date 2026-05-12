@@ -28,6 +28,10 @@ export async function getMyMedicalHistory() {
       doctorInvitations: {
         orderBy: { createdAt: "desc" }
       },
+      prescriptions: {
+        orderBy: { createdAt: "desc" },
+        include: { medications: true }
+      },
       personalization: true
     }
   });

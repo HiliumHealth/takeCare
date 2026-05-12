@@ -118,7 +118,7 @@ export default function DoctorVerifyPage() {
           </Button>
 
           <p className="text-[11px] text-center text-black/40 font-medium mt-4">
-            Protected by TakeCare AI HIPAA-Compliant Gateway
+            Protected by Hilium HIPAA-Compliant Gateway
           </p>
         </form>
       </motion.div>

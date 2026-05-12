@@ -2,12 +2,13 @@
 
 import React from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, MessageSquare, Bell, Plus } from "lucide-react";
+import { LayoutDashboard, MessageSquare, Bell, Plus, BookOpen } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const TABS = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
+  { id: "health-book", label: "Health Book", icon: BookOpen },
   { id: "messenger", label: "Messenger", icon: MessageSquare },
   { id: "notifications", label: "Notifications", icon: Bell },
   { id: "smart-care", label: "Xerine", icon: Plus },

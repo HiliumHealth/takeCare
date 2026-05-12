@@ -30,37 +30,42 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://takecare-ai.vercel.app'),
+  metadataBase: new URL('https://hilium.ai'),
   title: {
-    default: "TakeCare AI | Your Intelligent Health Companion",
-    template: "%s | TakeCare AI",
+    default: "Hilium | Your Intelligent Health Companion",
+    template: "%s | Hilium",
   },
-  description: "TakeCare AI is your next-generation healthcare assistant. Powered by advanced artificial intelligence to help you track, optimize, and secure your health data seamlessly.",
-  keywords: ["healthcare AI", "medical assistant", "AI doctor", "personal health record", "symptom checker", "TakeCare AI", "AI in healthcare", "telemedicine", "medical tracking"],
-  authors: [{ name: "TakeCare AI Team" }],
-  creator: "TakeCare AI",
-  publisher: "TakeCare AI",
+  description: "Hilium is your next-generation healthcare assistant. Powered by advanced artificial intelligence to help you track, optimize, and secure your health data seamlessly.",
+  keywords: ["healthcare AI", "medical assistant", "AI doctor", "personal health record", "symptom checker", "Hilium", "AI in healthcare", "telemedicine", "medical tracking"],
+  authors: [{ name: "Hilium Team" }],
+  creator: "Hilium",
+  publisher: "Hilium",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   openGraph: {
-    title: "TakeCare AI | Your Intelligent Health Companion",
-    description: "TakeCare AI is your next-generation healthcare assistant. Powered by advanced artificial intelligence to help you track, optimize, and secure your health data seamlessly.",
-    url: "https://takecare-ai.vercel.app",
-    siteName: "TakeCare AI",
+    type: "website",
+    locale: "en_US",
+    url: "https://hilium.ai",
+    siteName: "Hilium",
+    title: "Hilium | Your Intelligent Health Companion",
+    description: "Hilium is your next-generation healthcare assistant. Powered by advanced artificial intelligence to help you track, optimize, and secure your health data seamlessly.",
     images: [
       {
-        url: "https://i.ibb.co/LXwrFDNT/patient-black-female-removebg-1773219328794.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "TakeCare AI - Intelligent Health Companion Interface",
+        alt: "Hilium - Intelligent Health Companion Interface",
       },
     ],
-    locale: "en_US",
-    type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "TakeCare AI | Your Intelligent Health Companion",
-    description: "Experience the next generation healthcare assistant. Track and manage your health precisely with TakeCare AI.",
-    images: ["https://i.ibb.co/LXwrFDNT/patient-black-female-removebg-1773219328794.png"],
+    title: "Hilium | Your Intelligent Health Companion",
+    description: "Experience the next generation healthcare assistant. Track and manage your health precisely with Hilium.",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
@@ -74,7 +79,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://takecare-ai.vercel.app",
+    canonical: "https://hilium.ai",
   },
 };
 
@@ -99,6 +104,18 @@ export default function RootLayout({
         >
           <AuthProvider>
             <BackgroundGrid />
+            {/* Header / Logo */}
+            <header className="mb-6 lg:mb-12 animate-slide-right">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-black shadow-2xl lg:h-14 lg:w-14 overflow-hidden">
+                   <img src="/hilium.png" alt="Hilium Logo" className="w-full h-full object-cover p-1" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-outfit text-lg font-bold tracking-tight lg:text-2xl leading-none text-black">Hilium</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-black/40 lg:text-xs">Intelligence</span>
+                </div>
+              </div>
+            </header>
             {children}
             <Toaster closeButton position="top-center" expand visibleToasts={1} />
           </AuthProvider>

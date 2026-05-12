@@ -10,6 +10,7 @@ import { StatsCards } from "@/components/dashboard/stats-cards";
 import { ActivityTable } from "@/components/dashboard/activity-table";
 import { MessengerSection } from "@/components/dashboard/messenger-section";
 import { SmartCareSection } from "@/components/dashboard/smart-care-section";
+import { HealthBookSection } from "@/components/dashboard/health-book-section";
 import { motion, AnimatePresence } from "framer-motion";
 import { getMyMedicalHistory, deleteMedicalRecord, deleteDoctorInvitation } from "@/app/actions/medical";
 import { useRouter } from "next/navigation";
@@ -82,7 +83,7 @@ function DashboardLoading() {
             animate={{ opacity: 1, y: 0 }}
             className="font-bricolage text-3xl font-black tracking-tight text-black dark:text-white"
           >
-            Loading <span className="text-primary italic">Health Info..</span>
+            Entering <span className="text-primary italic">Hilium..</span>
           </motion.h2>
 
           <div className="flex flex-col items-center gap-2">
@@ -529,6 +530,19 @@ export default function DashboardPage() {
                   deletingId={deletingId}
                 />
               </div>
+            </motion.div>
+          ) : activeTab === "health-book" ? (
+            <motion.div
+              key="health-book"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.5 }}
+            >
+              <HealthBookSection 
+                prescriptions={userData?.prescriptions || []} 
+                clinicalRecords={userData?.medicalRecords?.filter((r: any) => r.type === "CLINICAL_CONSULTATION") || []}
+              />
             </motion.div>
           ) : activeTab === "messenger" ? (
             <motion.div

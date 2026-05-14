@@ -2,16 +2,16 @@
 
 import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { 
-  FileText, 
-  Calendar, 
-  Shield, 
-  Brain, 
-  Activity, 
-  X, 
-  Download, 
-  Share2, 
-  Plus, 
+import {
+  FileText,
+  Calendar,
+  Shield,
+  Brain,
+  Activity,
+  X,
+  Download,
+  Share2,
+  Plus,
   CheckCircle2,
   Lock,
   ArrowRight,
@@ -34,7 +34,7 @@ export function RecordDetailsModal({
   onClose,
   record
 }: RecordDetailsPanelProps) {
-  
+
   const [smartSummary, setSmartSummary] = React.useState<string | null>(null);
   const [isSummarizing, setIsSummarizing] = React.useState(false);
 
@@ -42,7 +42,7 @@ export function RecordDetailsModal({
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
-      
+
       // Auto-generate AI summary if not already present
       if (record && !smartSummary) {
         const generateSummary = async () => {
@@ -112,7 +112,7 @@ export function RecordDetailsModal({
                   <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-all text-black/20 dark:text-white/20 hover:text-black/60 dark:hover:text-white/60 hidden md:flex">
                     <Share2 className="h-5 w-5" />
                   </Button>
-                  <Button 
+                  <Button
                     onClick={onClose}
                     className="h-12 w-12 rounded-full bg-black/[0.03] dark:bg-white/[0.03] hover:bg-black/5 dark:hover:bg-white/5 transition-all text-black/40 dark:text-white/40 hover:text-black/80 dark:hover:text-white/80 flex items-center justify-center p-0"
                   >
@@ -125,7 +125,7 @@ export function RecordDetailsModal({
                 <h2 className="font-bricolage text-2xl md:text-4xl font-extrabold tracking-tight text-foreground leading-tight">
                   {record.fileName}
                 </h2>
-                
+
                 <div className="flex flex-wrap items-center gap-6 text-black/30 dark:text-white/30 font-bold text-xs md:text-sm">
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
@@ -146,10 +146,10 @@ export function RecordDetailsModal({
             {/* Content Area - Scrollable Engine */}
             <div className="flex-1 overflow-y-auto custom-scrollbar bg-background dark:bg-[#0A0A0A]">
               <div className="px-6 py-8 md:px-10 md:py-10 space-y-8">
-                
+
                 {/* Clinical Data Section - Priority for Doctor Notes */}
                 {(record.type === "CLINICAL_NOTE" || record.extractedText) && (
-                  <motion.div 
+                  <motion.div
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     className="relative overflow-hidden bg-white/50 dark:bg-white/5 rounded-[2.5rem] p-8 md:p-10 border border-black/[0.03] dark:border-white/[0.03] shadow-xl shadow-black/[0.02] dark:shadow-black/20"
@@ -157,7 +157,7 @@ export function RecordDetailsModal({
                     <div className="absolute top-0 right-0 p-10 opacity-[0.03] pointer-events-none">
                       <ClipboardList className="h-24 w-24" />
                     </div>
-                    
+
                     <div className="flex flex-col gap-8 relative z-10">
                       <div className="flex items-center gap-3">
                         <div className="h-10 w-10 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
@@ -168,7 +168,7 @@ export function RecordDetailsModal({
                           <span className="text-[9px] font-bold text-black/30 dark:text-white/30 uppercase tracking-widest">Medical Assessment Data</span>
                         </div>
                       </div>
-                      
+
                       <div className="space-y-6">
                         <div className="flex items-center justify-between">
                           <h3 className="font-bricolage text-2xl font-black text-foreground tracking-tight">Doctor's Assessment</h3>
@@ -176,14 +176,14 @@ export function RecordDetailsModal({
                             Official Report
                           </Badge>
                         </div>
-                        
+
                         {record.type === "CLINICAL_CONSULTATION" || (record.extractedText && record.extractedText.includes("DIAGNOSIS:")) ? (
                           <div className="space-y-8">
                             {/* Structured Clinical Sections */}
                             {(() => {
                               const text = record.extractedText || "";
                               const sections: any = {};
-                              
+
                               const patterns = {
                                 diagnosis: /DIAGNOSIS:\s*(.*?)(?=CONSULTATION NOTES:|$)/s,
                                 notes: /CONSULTATION NOTES:\s*(.*?)(?=PRESCRIPTIONS:|$)/s,
@@ -331,7 +331,7 @@ export function RecordDetailsModal({
 
                 {/* AI Intelligence Hero */}
                 {record.type !== "CLINICAL_NOTE" && (
-                  <motion.div 
+                  <motion.div
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.1 }}
@@ -350,16 +350,16 @@ export function RecordDetailsModal({
                           </div>
                           <span className="font-black text-[10px] uppercase tracking-[0.2em]">Clinical Intelligence</span>
                         </div>
-                        <Badge className="bg-primary text-white border-none text-[8px] font-black uppercase tracking-widest px-2 py-0.5">Xerine 1.5 Flash</Badge>
+                        <Badge className="bg-primary text-white border-none text-[8px] font-black uppercase tracking-widest px-2 py-0.5">Hilium Ai summary</Badge>
                       </div>
-                      
+
                       <div className="space-y-3">
                         <h3 className="font-bricolage text-xl font-extrabold text-foreground">AI Medical Summary</h3>
                         {isSummarizing ? (
                           <div className="flex flex-col gap-2">
-                             <div className="h-4 w-full bg-black/5 dark:bg-white/5 rounded-full animate-pulse" />
-                             <div className="h-4 w-3/4 bg-black/5 dark:bg-white/5 rounded-full animate-pulse" />
-                             <div className="h-4 w-1/2 bg-black/5 dark:bg-white/5 rounded-full animate-pulse" />
+                            <div className="h-4 w-full bg-black/5 dark:bg-white/5 rounded-full animate-pulse" />
+                            <div className="h-4 w-3/4 bg-black/5 dark:bg-white/5 rounded-full animate-pulse" />
+                            <div className="h-4 w-1/2 bg-black/5 dark:bg-white/5 rounded-full animate-pulse" />
                           </div>
                         ) : (
                           <p className="text-sm md:text-base text-black/60 dark:text-white/60 font-medium leading-relaxed italic border-l-2 border-primary/20 pl-4 py-1">
@@ -381,11 +381,11 @@ export function RecordDetailsModal({
                     <Shield className="h-4 w-4 text-primary" />
                     <span className="font-black text-[10px] uppercase tracking-[0.2em] text-black/40 dark:text-white/40">Clinical Insights</span>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 gap-4">
                     {record.analysis?.insights?.length > 0 ? (
                       record.analysis.insights.map((insight: string, idx: number) => (
-                        <motion.div 
+                        <motion.div
                           initial={{ x: 20, opacity: 0 }}
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: 0.2 + (idx * 0.05) }}
@@ -402,13 +402,13 @@ export function RecordDetailsModal({
                       ))
                     ) : record.type === "CLINICAL_NOTE" ? (
                       <div className="p-8 bg-white/50 dark:bg-white/5 rounded-[2rem] border border-black/[0.03] dark:border-white/[0.03] flex items-center gap-4">
-                         <div className="h-12 w-12 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
-                           <CheckCircle2 className="h-6 w-6" />
-                         </div>
-                         <div>
-                            <p className="text-sm font-bold text-foreground">Professional Assessment</p>
-                            <p className="text-[10px] text-black/40 dark:text-white/40 font-bold uppercase tracking-widest">This record contains direct medical feedback.</p>
-                         </div>
+                        <div className="h-12 w-12 rounded-full bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
+                          <CheckCircle2 className="h-6 w-6" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-foreground">Professional Assessment</p>
+                          <p className="text-[10px] text-black/40 dark:text-white/40 font-bold uppercase tracking-widest">This record contains direct medical feedback.</p>
+                        </div>
                       </div>
                     ) : (
                       <div className="py-12 bg-white/50 dark:bg-white/5 rounded-3xl border border-dashed border-black/10 dark:border-white/10 flex flex-col items-center justify-center gap-4">
@@ -447,7 +447,7 @@ export function RecordDetailsModal({
 
             {/* Quick Actions Footer - Sticky */}
             <div className="p-6 md:p-8 bg-background dark:bg-[#0A0A0A] border-t border-black/[0.03] dark:border-white/[0.03] flex items-center gap-4 shrink-0">
-              <Button 
+              <Button
                 onClick={() => {
                   if (record.url && record.url !== "N/A") {
                     window.open(record.url, "_blank");
@@ -463,8 +463,8 @@ export function RecordDetailsModal({
                 <Download className="h-5 w-5 text-primary" />
                 <span>{record.type === "CLINICAL_NOTE" ? "View Report" : "Download Document"}</span>
               </Button>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => record.url && window.open(record.url, "_blank")}
                 className="h-16 w-16 rounded-2xl border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center text-black/40 dark:text-white/40 shadow-sm"
               >

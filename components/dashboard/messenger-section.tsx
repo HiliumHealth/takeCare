@@ -95,22 +95,22 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
   const handleInvite = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Normalize to digits only for API if it's a phone number
-    let formattedNumber = platform === "gmail" ? contactInfo : contactInfo.replace(/\D/g, "");
+    // Secure mode strictly uses the Gmail OTP flow
+    let formattedNumber = contactInfo; 
     setIsSubmitting(true);
 
     try {
-      const endpoint = `/api/messenger/${platform}`;
+      const endpoint = `/api/messenger/gmail`;
       const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          whatsappNumber: formattedNumber, // Kept for backwards compatibility with Whatsapp route
-          contactInfo: formattedNumber, // Used by Gmail/Telegram route
+          whatsappNumber: formattedNumber, // Kept for backward compatibility
+          contactInfo: formattedNumber, 
           contactName: doctorName,
           doctorName: doctorName,
           initialMessage: initialMessage,
-          platform: "gmail", // always use secure gmail route underneath for secure mode
+          platform: "gmail", 
         }),
       });
 

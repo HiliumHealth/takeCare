@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "set NEXT_TURBO=0 && next dev",
+    "dev": "next dev --no-turbo",
+    "clean": "Remove-Item -Recurse -Force .next; npx prisma generate",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

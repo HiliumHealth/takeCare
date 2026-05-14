@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Camera, User, Image as ImageIcon, Loader2, Trash2 } from "lucide-react";
-import { updateMyProfile, deleteMyAccount } from "@/app/actions/medical";
+import { updateMyProfile, deleteMyAccount } from "@/app/actions/user";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";

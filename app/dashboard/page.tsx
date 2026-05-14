@@ -536,9 +536,9 @@ export default function DashboardPage() {
                         icon: <CheckCircle2 className="h-5 w-5 text-emerald-500" />
                       });
                     }}
-                    className="h-14 px-6 rounded-xl bg-black dark:bg-white text-white dark:text-black font-black text-[10px] uppercase tracking-widest hover:shadow-xl hover:shadow-primary/20 active:scale-95 transition-all flex items-center gap-3 group cursor-pointer"
+                    className="h-14 px-6 rounded-xl bg-primary text-white font-black text-[10px] uppercase tracking-widest hover:shadow-xl hover:shadow-primary/30 active:scale-95 transition-all flex items-center gap-3 group cursor-pointer border-none"
                   >
-                    <Download className="h-4 w-4 text-primary group-hover:translate-y-0.5 transition-transform" />
+                    <Download className="h-4 w-4 text-white group-hover:translate-y-0.5 transition-transform" />
                     <span>Download Book</span>
                   </Button>
                 </motion.div>

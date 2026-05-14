@@ -26,7 +26,7 @@ export async function generateSmartSummary(recordId: string) {
   });
 
   // 2. Prepare the prompt
-  const patientProfile = personalization 
+  const patientProfile = personalization
     ? `Patient Background: Blood Type ${personalization.bloodType}, Allergies: ${personalization.allergies.join(", ") || "None"}. Health Goals: ${personalization.healthGoals.join(", ")}.`
     : "No detailed patient background available.";
 
@@ -58,7 +58,7 @@ export async function generateSmartSummary(recordId: string) {
     }
 
     const { text } = await generateText({
-      model: google("gemini-1.5-flash"), 
+      model: google("gemini-2.5-flash"),
       prompt: prompt,
     });
 

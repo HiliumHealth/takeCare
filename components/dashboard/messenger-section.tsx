@@ -326,7 +326,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
                               >
                                 Simulate Scan
                               </Button>
-                              <style jsx>{`
+                              <style>{`
                                 @keyframes scan {
                                   0%, 100% { top: 1rem; }
                                   50% { top: calc(100% - 1rem); }
@@ -528,7 +528,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
         )}
       </AnimatePresence>
 
-      <style jsx global>{`
+      <style>{`
         @keyframes pulse-ring {
           0% { transform: scale(0.8); opacity: 0.5; }
           100% { transform: scale(1.1); opacity: 0; }

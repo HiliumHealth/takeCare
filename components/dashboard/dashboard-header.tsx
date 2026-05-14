@@ -25,7 +25,7 @@ export function DashboardHeader({ user, notificationCount = 0 }: DashboardHeader
 
   const handleLogout = async () => {
     // Clear the personalized cookie server-side
-    const { logoutUser } = await import("@/app/actions/medical");
+    const { logoutUser } = await import("@/app/actions/user");
     await logoutUser();
     // Sign out via NextAuth (clears session cookie)
     await signOut({ callbackUrl: "/" });

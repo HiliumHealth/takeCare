@@ -94,7 +94,7 @@ export default function OnboardingPage() {
               {/* Main Image with Soft Masking */}
               <div className="relative h-full w-full bg-transparent mask-soft-edge">
                 <Image
-                  src="/onboarding/patient.png"
+                  src="https://i.ibb.co/Q7f9b6ML/Chat-GPT-Image-May-14-2026-10-57-44-AM.png"
                   alt="Patient in healthcare consultation"
                   fill
                   className="object-contain object-bottom scale-110 lg:scale-105 lg:object-bottom-right transition-transform duration-700 hover:scale-[1.1] cursor-pointer"

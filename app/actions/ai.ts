@@ -52,16 +52,23 @@ export async function generateSmartSummary(recordId: string) {
 
   // 3. Call Gemini
   try {
+    if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+      console.error("[AI-ACTION] GOOGLE_GENERATIVE_AI_API_KEY is not defined in environment.");
+      return "Xerine AI requires an API key to synthesize your clinical data. Please configure your environment.";
+    }
+
     const { text } = await generateText({
-      model: google("gemini-1.5-flash"), // User requested gemini-2.5-flash but 1.5-flash is stable and fast for this. If 2.5 is needed I'll check model names.
+      model: google("gemini-1.5-flash"), 
       prompt: prompt,
     });
 
-    // 4. Update the record's fallback summary or analysis summary if needed
-    // For now we just return it to the UI
+    if (!text) {
+      return "Xerine AI could not extract meaningful insights from this specific record. Manual review recommended.";
+    }
+
     return text.trim();
-  } catch (error) {
-    console.error("[AI-SUMMARY-ERROR]", error);
-    return "Xerine AI is currently processing your data. Please check back in a moment.";
+  } catch (error: any) {
+    console.error("[AI-SUMMARY-ERROR]", error.message || error);
+    return `Xerine AI encountered a temporary synchronization issue. (Error: ${error.message?.substring(0, 50)}...)`;
   }
 }

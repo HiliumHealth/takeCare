@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import { DeleteConfirmationModal } from "@/components/dashboard/delete-confirmation-modal";
 import { RecordDetailsModal } from "@/components/dashboard/record-details-modal";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, XCircle, CheckCircle2, BellRing, ArrowRight, Bell, Heart, Activity, Pill, ShieldCheck, Loader2, Brain, Sun, Moon, User } from "lucide-react";
+import { Search, Filter, XCircle, CheckCircle2, BellRing, ArrowRight, ArrowLeft, Bell, Heart, Activity, Pill, ShieldCheck, Loader2, Brain, Sun, Moon, User, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { MobileNav } from "@/components/dashboard/mobile-nav";

@@ -5,14 +5,13 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Send, Phone, UserPlus, ArrowRight, CheckCircle2, Bell, BellRing, Settings, MoreVertical, Paperclip, Smile, Mic, Mail, X, ArrowUp, Plus, Wrench } from "lucide-react";
+import { MessageCircle, Send, Phone, UserPlus, ArrowRight, CheckCircle2, Bell, BellRing, Settings, MoreVertical, Paperclip, Smile, Mic, Mail, X, ArrowUp, Plus, Wrench, QrCode, Zap, ShieldCheck } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-const PLATFORMS = [
-  { id: "whatsapp", label: "WhatsApp", icon: MessageCircle, color: "text-[#25D366]", bg: "bg-[#25D366]/10" },
-  { id: "telegram", label: "Telegram", icon: Send, color: "text-[#0088cc]", bg: "bg-[#0088cc]/10" },
-  { id: "gmail", label: "Gmail", icon: Mail, color: "text-red-500", bg: "bg-red-500/10" },
+const MODES = [
+  { id: "fast", label: "Fast Mode", icon: Zap, color: "text-blue-500", bg: "bg-blue-500/10", desc: "Instant QR Scan" },
+  { id: "secure", label: "Secure Mode", icon: ShieldCheck, color: "text-emerald-500", bg: "bg-emerald-500/10", desc: "Encrypted Gmail Link" },
 ];
 
 interface Message {
@@ -25,7 +24,7 @@ interface Message {
 }
 
 export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNotificationSync?: (count: number) => void; onInviteSuccess?: () => void; }) {
-  const [platform, setPlatform] = useState("whatsapp");
+  const [mode, setMode] = useState("fast");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isInvited, setIsInvited] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -111,7 +110,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
           contactName: doctorName,
           doctorName: doctorName,
           initialMessage: initialMessage,
-          platform: platform,
+          platform: "gmail", // always use secure gmail route underneath for secure mode
         }),
       });
 
@@ -189,21 +188,22 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
       {!isChatActive ? (
         <div className="w-full">
           <div className="bg-black/5 dark:bg-white/5 p-1 rounded-2xl w-full lg:w-fit h-auto flex gap-1 transition-colors">
-            {PLATFORMS.map((p) => (
+            {MODES.map((m) => (
               <button
                 type="button"
-                key={p.id}
+                key={m.id}
                 onClick={() => {
-                  setPlatform(p.id);
+                  setMode(m.id);
                   setIsPopupOpen(true);
                 }}
                 className={cn(
                   "rounded-xl px-6 py-2.5 transition-all duration-300 cursor-pointer flex-1 lg:flex-none flex items-center justify-center gap-2 font-outfit font-bold text-sm",
-                  "hover:bg-white dark:hover:bg-white/10 hover:shadow-sm text-black/80 dark:text-white focus:outline-none active:scale-95"
+                  "hover:bg-white dark:hover:bg-white/10 hover:shadow-sm text-black/80 dark:text-white focus:outline-none active:scale-95",
+                  mode === m.id ? "bg-white dark:bg-white/10 shadow-sm" : ""
                 )}
               >
-                <p.icon className={cn("h-4 w-4 transition-colors", p.color)} />
-                {p.label}
+                <m.icon className={cn("h-4 w-4 transition-colors", m.color)} />
+                {m.label}
               </button>
             ))}
           </div>
@@ -279,7 +279,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
                   </button>
 
                   {(() => {
-                    const p = PLATFORMS.find(pl => pl.id === platform) || PLATFORMS[0];
+                    const m = MODES.find(md => md.id === mode) || MODES[0];
                     return (
                       <div className="flex flex-col gap-8 relative overflow-hidden mt-2">
                         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none" />
@@ -287,75 +287,108 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
 
                         <div className="flex flex-col gap-8">
                           <div className="flex items-center gap-6">
-                            <div className={cn("relative flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl shadow-xl", p.bg)}>
-                              <p.icon className={cn("h-10 w-10", p.color)} />
+                            <div className={cn("relative flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl shadow-xl", m.bg)}>
+                              <m.icon className={cn("h-10 w-10", m.color)} />
                             </div>
                             <div className="space-y-1">
                               <h3 className="font-bricolage text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight dark:text-white">
-                                Invite via <span className={p.color}>{p.label}</span>
+                                {m.label}
                               </h3>
                               <p className="text-sm font-medium text-black/40 dark:text-white/40">
-                                {p.id === "gmail"
-                                  ? "Send a secure invitation directly to their Gmail."
-                                  : `Direct ${p.label} integration for diagnostics.`}
+                                {m.desc}
                               </p>
                             </div>
                           </div>
 
-                          <form onSubmit={handleInvite} className="grid gap-5">
-                            <div className="grid gap-2">
-                              <Label htmlFor={`doctor-name-${p.id}`} className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">
-                                Doctor's Full Name
-                              </Label>
-                              <Input
-                                id={`doctor-name-${p.id}`}
-                                placeholder="e.g. Dr. Sarah Jenkins"
-                                required
-                                value={doctorName}
-                                onChange={(e) => setDoctorName(e.target.value)}
-                                className="h-14 sm:h-16 rounded-2xl border-black/5 bg-black/5 pl-6 text-base sm:text-lg font-bold transition-all focus:bg-white focus:ring-4 focus:ring-primary/5 shadow-inner hover:bg-black/10"
-                              />
+                          {mode === "fast" ? (
+                            <div className="flex flex-col items-center justify-center py-8 z-10">
+                              <div className="bg-white p-4 rounded-[32px] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] border border-black/5 flex items-center justify-center relative group">
+                                <div className="absolute inset-0 bg-blue-500/10 rounded-[32px] blur-2xl group-hover:bg-blue-500/20 transition-all duration-500" />
+                                <img 
+                                  src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://takecare-doctor.vercel.app/dashboard/patient/scan&margin=20" 
+                                  alt="Secure QR Code" 
+                                  className="w-56 h-56 rounded-2xl mix-blend-multiply relative z-10 pointer-events-none" 
+                                />
+                                {/* Scanning line animation */}
+                                <div className="absolute top-4 left-4 right-4 h-0.5 bg-blue-500 z-20 shadow-[0_0_15px_rgba(59,130,246,0.8)] opacity-70 animate-[scan_2s_ease-in-out_infinite]" />
+                              </div>
+                              <p className="text-sm font-bold text-black/50 dark:text-white/50 mt-8 max-w-xs text-center leading-relaxed">
+                                Doctor scans this code to instantly securely access your Hilium Dossier.
+                              </p>
+                              <Button 
+                                onClick={() => {
+                                  setIsPopupOpen(false);
+                                  setIsChatActive(true);
+                                  // Optionally open doctor's dashboard in a new tab to simulate the scan
+                                  // window.open("https://takecare-doctor.vercel.app", "_blank");
+                                }}
+                                className="mt-8 h-14 px-10 rounded-full bg-black dark:bg-white text-white dark:text-black font-black hover:scale-105 active:scale-95 shadow-xl transition-all cursor-pointer"
+                              >
+                                Simulate Scan
+                              </Button>
+                              <style jsx>{`
+                                @keyframes scan {
+                                  0%, 100% { top: 1rem; }
+                                  50% { top: calc(100% - 1rem); }
+                                }
+                              `}</style>
                             </div>
+                          ) : (
+                            <form onSubmit={handleInvite} className="grid gap-5 z-10">
+                              <div className="grid gap-2">
+                                <Label htmlFor="doctor-name" className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">
+                                  Doctor's Full Name
+                                </Label>
+                                <Input
+                                  id="doctor-name"
+                                  placeholder="e.g. Dr. Sarah Jenkins"
+                                  required
+                                  value={doctorName}
+                                  onChange={(e) => setDoctorName(e.target.value)}
+                                  className="h-14 sm:h-16 rounded-2xl border-black/5 bg-black/5 pl-6 text-base sm:text-lg font-bold transition-all focus:bg-white focus:ring-4 focus:ring-primary/5 shadow-inner hover:bg-black/10"
+                                />
+                              </div>
 
-                            <div className="grid gap-2">
-                              <Label htmlFor={`contact-${p.id}`} className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">
-                                {p.id === "gmail" ? "Doctor's Gmail" : `${p.label} Number`}
-                              </Label>
-                              <Input
-                                id={`contact-${p.id}`}
-                                type={p.id === "gmail" ? "email" : "tel"}
-                                required
-                                placeholder={p.id === "gmail" ? "gita@gmail.com" : "Ex: 237670000000"}
-                                value={contactInfo}
-                                onChange={(e) => setContactInfo(e.target.value)}
-                                className="h-14 sm:h-16 rounded-2xl border-black/5 bg-black/5 pl-6 text-base sm:text-lg font-bold transition-all focus:bg-white focus:ring-4 focus:ring-primary/5 shadow-inner hover:bg-black/10"
-                              />
-                            </div>
+                              <div className="grid gap-2">
+                                <Label htmlFor="contact-email" className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">
+                                  Doctor's Secure Email
+                                </Label>
+                                <Input
+                                  id="contact-email"
+                                  type="email"
+                                  required
+                                  placeholder="dr.jenkins@hospital.com"
+                                  value={contactInfo}
+                                  onChange={(e) => setContactInfo(e.target.value)}
+                                  className="h-14 sm:h-16 rounded-2xl border-black/5 bg-black/5 pl-6 text-base sm:text-lg font-bold transition-all focus:bg-white focus:ring-4 focus:ring-primary/5 shadow-inner hover:bg-black/10"
+                                />
+                              </div>
 
-                            <div className="grid gap-2">
-                              <Label htmlFor={`message-${p.id}`} className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">
-                                Optional Message
-                              </Label>
-                              <textarea
-                                id={`message-${p.id}`}
-                                placeholder="Add a personalized message..."
-                                value={initialMessage}
-                                onChange={(e) => setInitialMessage(e.target.value)}
-                                className="min-h-[80px] sm:min-h-24 resize-none rounded-2xl border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 p-4 text-sm sm:text-base font-medium transition-all focus:bg-white dark:focus:bg-white/10 focus:outline-none focus:ring-4 focus:ring-primary/5 shadow-inner hover:bg-black/10 dark:hover:bg-white/10 text-black dark:text-white"
-                              />
-                            </div>
+                              <div className="grid gap-2">
+                                <Label htmlFor="message" className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">
+                                  Encrypted Message (Optional)
+                                </Label>
+                                <textarea
+                                  id="message"
+                                  placeholder="Add context for your doctor..."
+                                  value={initialMessage}
+                                  onChange={(e) => setInitialMessage(e.target.value)}
+                                  className="min-h-[80px] sm:min-h-24 resize-none rounded-2xl border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 p-4 text-sm sm:text-base font-medium transition-all focus:bg-white dark:focus:bg-white/10 focus:outline-none focus:ring-4 focus:ring-primary/5 shadow-inner hover:bg-black/10 dark:hover:bg-white/10 text-black dark:text-white"
+                                />
+                              </div>
 
-                            <Button type="submit" disabled={isSubmitting} className="h-14 sm:h-16 rounded-[24px] sm:rounded-3xl bg-primary text-white font-black text-base sm:text-lg hover:scale-[1.02] active:scale-95 shadow-xl mt-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed">
-                              {isSubmitting ? (
-                                <div className="flex items-center gap-2">
-                                  <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                                  Sending...
-                                </div>
-                              ) : (
-                                `Send ${p.label} Invitation`
-                              )}
-                            </Button>
-                          </form>
+                              <Button type="submit" disabled={isSubmitting} className="h-14 sm:h-16 rounded-[24px] sm:rounded-3xl bg-primary text-white font-black text-base sm:text-lg hover:scale-[1.02] active:scale-95 shadow-xl mt-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed">
+                                {isSubmitting ? (
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                                    Encrypting...
+                                  </div>
+                                ) : (
+                                  "Send Secure Link"
+                                )}
+                              </Button>
+                            </form>
+                          )}
                         </div>
                       </div>
                     );

@@ -26,106 +26,143 @@ import { MobileNav } from "@/components/dashboard/mobile-nav";
 
 function DashboardLoading() {
   return (
-    <div className="min-h-screen w-full bg-white dark:bg-[#0a0a0a] flex flex-col items-center justify-center relative overflow-hidden transition-colors duration-500">
-      {/* Background Decor */}
-      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] animate-pulse pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-vital-orange/5 rounded-full blur-[100px] animate-pulse delay-700 pointer-events-none" />
+    <div className="min-h-screen w-full bg-white dark:bg-[#050505] flex flex-col items-center justify-center relative overflow-hidden">
+      {/* Dynamic Clinical Background */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(0,71,255,0.05),transparent_70%)]" />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] animate-pulse delay-1000" />
+        
+        {/* Subtle Grid Pattern */}
+        <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]" 
+             style={{ backgroundImage: 'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+      </div>
 
-      <div className="relative z-10 flex flex-col items-center gap-12">
-        {/* Animated Icon Cluster */}
-        <div className="relative h-40 w-40 flex items-center justify-center">
+      <div className="relative z-10 flex flex-col items-center gap-16">
+        {/* Artistic Central Hub */}
+        <div className="relative h-64 w-64 flex items-center justify-center">
+          {/* Breathing Aura */}
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: [0.8, 1.2, 0.8], opacity: [0.3, 0.6, 0.3] }}
-            transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-            className="absolute inset-0 bg-primary/10 rounded-full blur-2xl"
-          />
-
-          <motion.div
-            animate={{
-              rotate: 360,
-              borderRadius: ["40%", "50%", "40%"]
+            animate={{ 
+              scale: [1, 1.2, 1],
+              opacity: [0.1, 0.2, 0.1]
             }}
-            transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
-            className="absolute inset-0 border-2 border-dashed border-primary/20"
+            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+            className="absolute inset-0 bg-primary rounded-full blur-[80px]"
           />
 
-          <motion.div
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-            className="relative z-20 h-24 w-24 bg-white dark:bg-black rounded-4xl shadow-2xl flex items-center justify-center border border-primary/10 overflow-hidden"
-          >
-            <img src="/hilium.png" alt="Hilium Logo" className="w-full h-full object-cover p-4" />
-          </motion.div>
-
-          {/* Floating Orbiting Icons */}
+          {/* Orbiting Paths */}
           <motion.div
             animate={{ rotate: 360 }}
-            transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
+            transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+            className="absolute inset-0 border border-primary/10 rounded-full"
+          />
+          <motion.div
+            animate={{ rotate: -360 }}
+            transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
+            className="absolute inset-8 border border-emerald-500/10 rounded-full border-dashed"
+          />
+
+          {/* Central Perfectly Rounded Logo */}
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", damping: 20 }}
+            className="relative z-20 h-32 w-32 rounded-full bg-white dark:bg-black shadow-[0_0_50px_rgba(0,71,255,0.15)] flex items-center justify-center border border-primary/10 overflow-hidden group"
+          >
+            <div className="absolute inset-0 bg-linear-to-tr from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <img src="/hilium.png" alt="Hilium Logo" className="w-16 h-16 object-contain" />
+            
+            {/* Inner Scanning Effect */}
+            <motion.div 
+              animate={{ top: ["100%", "-100%"] }}
+              transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+              className="absolute inset-x-0 h-1/2 bg-linear-to-b from-transparent via-primary/10 to-transparent pointer-events-none"
+            />
+          </motion.div>
+
+          {/* Floating Clinical Elements */}
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
             className="absolute inset-0"
           >
-            <motion.div className="absolute -top-4 left-1/2 -translate-x-1/2 h-10 w-10 bg-white dark:bg-black rounded-xl shadow-lg border border-black/5 dark:border-white/5 flex items-center justify-center">
-              <Pill className="h-5 w-5 text-vital-orange" />
-            </motion.div>
-            <motion.div className="absolute top-1/2 -right-4 -translate-y-1/2 h-10 w-10 bg-white dark:bg-black rounded-xl shadow-lg border border-black/5 dark:border-white/5 flex items-center justify-center">
-              <Activity className="h-5 w-5 text-blue-500" />
-            </motion.div>
-            <motion.div className="absolute bottom-1/2 -left-4 translate-y-1/2 h-10 w-10 bg-white dark:bg-black rounded-xl shadow-lg border border-black/5 dark:border-white/5 flex items-center justify-center">
-              <ShieldCheck className="h-5 w-5 text-green-500" />
-            </motion.div>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-4">
+              <div className="h-10 w-10 rounded-2xl bg-white dark:bg-[#111] shadow-xl border border-black/5 dark:border-white/5 flex items-center justify-center">
+                <Activity className="h-5 w-5 text-primary animate-pulse" />
+              </div>
+            </div>
+          </motion.div>
+          
+          <motion.div
+            animate={{ rotate: -360 }}
+            transition={{ repeat: Infinity, duration: 18, ease: "linear" }}
+            className="absolute inset-0"
+          >
+            <div className="absolute bottom-0 right-1/4 translate-y-4">
+              <div className="h-8 w-8 rounded-xl bg-white dark:bg-[#111] shadow-lg border border-black/5 dark:border-white/5 flex items-center justify-center">
+                <ShieldCheck className="h-4 w-4 text-emerald-500" />
+              </div>
+            </div>
           </motion.div>
         </div>
 
-        {/* Text Section */}
-        <div className="text-center space-y-4">
-          <motion.h2
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="font-bricolage text-3xl font-black tracking-tight text-black dark:text-white"
-          >
-            Entering <span className="text-primary italic">Hilium..</span>
-          </motion.h2>
+        {/* Textual Narrative */}
+        <div className="text-center space-y-6 max-w-sm">
+          <div className="space-y-2">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/60"
+            >
+              System Calibration
+            </motion.div>
+            <h2 className="font-bricolage text-4xl font-black tracking-tight text-black dark:text-white">
+              Entering <span className="text-primary italic">Hilium</span>
+            </h2>
+          </div>
 
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-64 h-1.5 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden relative">
-              <motion.div
-                initial={{ left: "-100%" }}
-                animate={{ left: "100%" }}
-                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                className="absolute top-0 bottom-0 w-1/2 bg-linear-to-r from-transparent via-primary to-transparent"
-              />
+          <div className="flex flex-col items-center gap-4">
+            {/* EKG Inspired Pulse Line */}
+            <div className="w-48 h-8 relative opacity-30">
+               <svg viewBox="0 0 100 20" className="w-full h-full stroke-primary stroke-[0.5] fill-none">
+                 <motion.path
+                   d="M0 10 L35 10 L40 2 L45 18 L50 10 L100 10"
+                   initial={{ pathLength: 0, opacity: 0 }}
+                   animate={{ pathLength: 1, opacity: 1 }}
+                   transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+                 />
+               </svg>
             </div>
-            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-black/30 dark:text-white/30 flex items-center gap-2">
-              <Loader2 className="h-3 w-3 animate-spin" />
-              Secure Clinical Data Sync
+            
+            <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-black/40 dark:text-white/40 flex items-center gap-3">
+              <span className="flex gap-1">
+                <motion.span animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 1, delay: 0 }} className="h-1 w-1 rounded-full bg-primary" />
+                <motion.span animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 1, delay: 0.2 }} className="h-1 w-1 rounded-full bg-primary" />
+                <motion.span animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 1, delay: 0.4 }} className="h-1 w-1 rounded-full bg-primary" />
+              </span>
+              Clinical Data Synchronization
             </p>
           </div>
         </div>
+      </div>
 
-        {/* Status Pills */}
-        <div className="flex gap-3">
-          {["Vitals", "Lab Records", "Medications"].map((status, i) => (
+      {/* Trust Signifiers */}
+      <div className="absolute bottom-12 inset-x-0 flex flex-col items-center gap-6">
+        <div className="flex gap-2">
+          {["Vitals", "Lab Records", "Analysis"].map((item, i) => (
             <motion.div
-              key={status}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: i * 0.2 }}
-              className="px-4 py-1.5 rounded-full bg-black/5 border border-black/5 text-[9px] font-bold uppercase tracking-widest text-black/40"
+              key={item}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 0.4, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              className="text-[8px] font-black uppercase tracking-widest px-3 py-1 border border-black/10 dark:border-white/10 rounded-full"
             >
-              {status}
+              {item}
             </motion.div>
           ))}
         </div>
-      </div>
-
-      {/* Footer Info */}
-      <div className="absolute bottom-12 inset-x-0 flex flex-col items-center gap-2 opacity-20">
-        <p className="text-[10px] font-bold tracking-widest uppercase">HIPAA Compliant & End-to-End Encrypted</p>
-        <div className="flex gap-4">
-          <div className="h-1 w-8 bg-black rounded-full" />
-          <div className="h-1 w-8 bg-black rounded-full" />
-          <div className="h-1 w-8 bg-black rounded-full" />
-        </div>
+        <p className="text-[9px] font-bold tracking-[0.3em] uppercase text-black/20 dark:text-white/20">End-to-End Encrypted Clinical Vault</p>
       </div>
     </div>
   );
@@ -223,6 +260,8 @@ export default function DashboardPage() {
   const [viewingRecord, setViewingRecord] = useState<any | null>(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const handleRecordDeleteClick = (e: React.MouseEvent, id: string, type: string) => {
     e.preventDefault();
@@ -303,12 +342,19 @@ export default function DashboardPage() {
       fileName: `Invite: Dr. ${inv.doctorName}`,
       type: `INVITATION (${inv.platform.toUpperCase()})`,
       url: "#",
-      fallbackSummary: inv.status === 'ACCEPTED' ? "Doctor has accepted your invite and is reviewing your records." : "Awaiting Doctor Response",
+      fallbackSummary: 
+        inv.status === 'ACCEPTED' ? "Doctor has accepted your invite and is reviewing your records." : 
+        inv.status === 'COMPLETED' ? "Professional assessment has been delivered to your health history." :
+        inv.status === 'REJECTED' ? "Invitation declined by doctor." :
+        "Awaiting Doctor Response",
       analysis: inv.status === 'PENDING' ? undefined : { 
         summary: inv.status === 'ACCEPTED' 
           ? `Status: ACCEPTED. Dr. ${inv.doctorName} is now reviewing your health profile via ${inv.platform}.` 
+          : inv.status === 'COMPLETED'
+          ? `Status: COMPLETED. Dr. ${inv.doctorName} has finalized your clinical assessment.`
           : `Status: ${inv.status}. Contact Info: ${inv.contactInfo || 'N/A'}`,
-        insights: inv.status === 'ACCEPTED' ? ["Secure connection established", "Privacy-first data sharing enabled"] : []
+        insights: inv.status === 'ACCEPTED' ? ["Secure connection established", "Privacy-first data sharing enabled"] : 
+                  inv.status === 'COMPLETED' ? ["Assessment available in history", "Care plan updated"] : []
       }
     }))
   ].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -322,6 +368,18 @@ export default function DashboardPage() {
       record.fallbackSummary?.toLowerCase().includes(searchLower)
     );
   });
+
+  // Pagination Logic
+  const totalPages = Math.ceil(filteredRecords.length / itemsPerPage);
+  const paginatedRecords = filteredRecords.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  // Reset to page 1 on search
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -426,20 +484,51 @@ export default function DashboardPage() {
       <main className="flex flex-1 flex-col w-full md:pb-6 px-1 md:px-8 lg:px-10 max-w-none overflow-x-hidden">
         <AnimatePresence mode="wait">
           {activeTab === "overview" && (
-            <motion.div 
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="px-6 py-2 md:py-4 lg:px-0 lg:py-6 animate-fade-up"
-            >
-              <h1 className="font-bricolage text-xl md:text-3xl lg:text-4xl font-extrabold tracking-tighter flex flex-wrap items-center gap-x-2 md:gap-x-4 transition-all">
-                <span className="text-black/80 dark:text-white/80 whitespace-nowrap">{getGreeting()},</span> 
-                <span className="text-black dark:text-white inline-block">{userData?.name?.split(' ')[0] || "Patient"}.</span>
-              </h1>
-              <p className="mt-2 md:mt-3 text-xs md:text-sm lg:text-base font-semibold text-black/90 dark:text-white/90 max-w-2xl leading-snug md:leading-relaxed">
-                Your <span className="text-black dark:text-white font-bold italic underline decoration-primary/40 underline-offset-4 cursor-help">comprehensive health profile</span> is ready.
-              </p>
-            </motion.div>
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div className="flex flex-col">
+                  <h1 className="font-bricolage text-xl md:text-3xl lg:text-4xl font-extrabold tracking-tighter flex flex-wrap items-center gap-x-2 md:gap-x-4 transition-all text-black dark:text-white">
+                    <span className="opacity-60 whitespace-nowrap">{getGreeting()},</span> 
+                    <span className="inline-block">{userData?.name?.split(' ')[0] || "Patient"}.</span>
+                  </h1>
+                  <p className="mt-2 md:mt-3 text-xs md:text-sm lg:text-base font-semibold text-black/90 dark:text-white/90 max-w-2xl leading-snug md:leading-relaxed">
+                    Your <span className="text-black dark:text-white font-bold italic underline decoration-primary/40 underline-offset-4 cursor-help">comprehensive health profile</span> is ready.
+                  </p>
+                </div>
+                
+                {/* Hospital Book Download Button */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <Button
+                    onClick={async () => {
+                      const { generateHospitalBook } = await import("@/lib/pdf-generator");
+                      generateHospitalBook({
+                        user: userData,
+                        records: userData.medicalRecords,
+                        prescriptions: userData.prescriptions,
+                        personalization: userData.personalization
+                      });
+                      toast.success("Compiling Clinical Vault...", {
+                        description: "Your Hospital Book is being generated and signed by Hilium AI.",
+                        icon: <Brain className="h-5 w-5 text-primary" />
+                      });
+                    }}
+                    className="h-16 px-8 rounded-2xl bg-black dark:bg-white text-white dark:text-black font-black text-[11px] uppercase tracking-[0.2em] hover:scale-[1.02] active:scale-95 transition-all shadow-2xl shadow-primary/20 flex items-center gap-4 group shrink-0 relative overflow-hidden"
+                  >
+                    <div className="absolute inset-0 bg-linear-to-r from-primary/10 via-transparent to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                    <div className="h-10 w-10 rounded-xl bg-white/10 dark:bg-black/10 flex items-center justify-center group-hover:rotate-12 transition-transform">
+                      <FileText className="h-5 w-5 text-primary" />
+                    </div>
+                    <div className="flex flex-col items-start leading-none">
+                      <span className="mb-1">Generate</span>
+                      <span className="opacity-40">Hospital Book</span>
+                    </div>
+                    <ArrowRight className="h-4 w-4 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                  </Button>
+                </motion.div>
+              </div>
           )}
         </AnimatePresence>
 
@@ -527,11 +616,66 @@ export default function DashboardPage() {
                 </div>
 
                 <ActivityTable 
-                  records={filteredRecords} 
+                  records={paginatedRecords} 
                   onDelete={handleRecordDeleteClick}
                   onView={handleViewRecord}
                   deletingId={deletingId}
                 />
+
+                {/* Professional Pagination Controls */}
+                {totalPages > 1 && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex flex-col sm:flex-row items-center justify-between gap-6 px-6 py-8 bg-white dark:bg-black/20 rounded-[2.5rem] border border-black/5 dark:border-white/5 shadow-sm"
+                  >
+                    <div className="flex flex-col">
+                      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-black/20 dark:text-white/20">Data Navigation</span>
+                      <p className="text-xs font-bold text-black/60 dark:text-white/60">
+                        Showing <span className="text-black dark:text-white">{Math.min(filteredRecords.length, (currentPage - 1) * itemsPerPage + 1)}-{Math.min(filteredRecords.length, currentPage * itemsPerPage)}</span> of <span className="text-black dark:text-white">{filteredRecords.length}</span> clinical records
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                        disabled={currentPage === 1}
+                        className="h-12 w-12 rounded-2xl bg-black/5 dark:bg-white/5 hover:bg-primary hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-black/5"
+                      >
+                        <ArrowLeft className="h-5 w-5" />
+                      </Button>
+                      
+                      <div className="flex items-center gap-1 mx-4">
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                          <button
+                            key={page}
+                            onClick={() => setCurrentPage(page)}
+                            className={cn(
+                              "h-10 w-10 rounded-xl text-[10px] font-black transition-all",
+                              currentPage === page 
+                                ? "bg-primary text-white shadow-lg shadow-primary/20 scale-110" 
+                                : "text-black/30 dark:text-white/30 hover:bg-black/5 dark:hover:bg-white/5"
+                            )}
+                          >
+                            {page.toString().padStart(2, '0')}
+                          </button>
+                        ))}
+                      </div>
+
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                        disabled={currentPage === totalPages}
+                        className="h-12 w-12 rounded-2xl bg-black/5 dark:bg-white/5 hover:bg-primary hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-black/5"
+                      >
+                        <ArrowRight className="h-5 w-5" />
+                      </Button>
+                    </div>
+                  </motion.div>
+                )}
               </div>
             </motion.div>
           ) : activeTab === "health-book" ? (

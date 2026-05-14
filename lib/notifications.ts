@@ -5,11 +5,16 @@ const PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
 const PRIVATE_KEY = process.env.VAPID_PRIVATE_KEY;
 
 if (PUBLIC_KEY && PRIVATE_KEY) {
+  console.log("[Push] VAPID keys detected, configuring web-push");
   webpush.setVapidDetails(
     "mailto:admin@hilium.ai",
     PUBLIC_KEY,
     PRIVATE_KEY
   );
+} else {
+  console.warn("[Push] VAPID keys missing! Push notifications will not work.");
+  console.log("[Push] PUBLIC_KEY:", PUBLIC_KEY ? "Present" : "Missing");
+  console.log("[Push] PRIVATE_KEY:", PRIVATE_KEY ? "Present" : "Missing");
 }
 
 export async function sendPushNotification(

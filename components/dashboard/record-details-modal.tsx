@@ -35,17 +35,38 @@ export function RecordDetailsModal({
   record
 }: RecordDetailsPanelProps) {
   
+  const [smartSummary, setSmartSummary] = React.useState<string | null>(null);
+  const [isSummarizing, setIsSummarizing] = React.useState(false);
+
   // Disable body scroll when panel is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      
+      // Auto-generate AI summary if not already present
+      if (record && !smartSummary) {
+        const generateSummary = async () => {
+          setIsSummarizing(true);
+          try {
+            const { generateSmartSummary } = await import("@/app/actions/ai");
+            const summary = await generateSmartSummary(record.id);
+            setSmartSummary(summary);
+          } catch (error) {
+            console.error("AI Summary Error:", error);
+          } finally {
+            setIsSummarizing(false);
+          }
+        };
+        generateSummary();
+      }
     } else {
       document.body.style.overflow = "unset";
+      setSmartSummary(null); // Reset when closed
     }
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isOpen]);
+  }, [isOpen, record?.id]);
 
   if (!record) return null;
 
@@ -156,8 +177,8 @@ export function RecordDetailsModal({
                           </Badge>
                         </div>
                         
-                        {record.type === "CLINICAL_CONSULTATION" ? (
-                          <div className="space-y-6">
+                        {record.type === "CLINICAL_CONSULTATION" || (record.extractedText && record.extractedText.includes("DIAGNOSIS:")) ? (
+                          <div className="space-y-8">
                             {/* Structured Clinical Sections */}
                             {(() => {
                               const text = record.extractedText || "";
@@ -179,102 +200,120 @@ export function RecordDetailsModal({
                               });
 
                               return (
-                                <>
-                                  {/* Diagnosis & Notes */}
-                                  <div className="p-6 bg-primary/[0.03] dark:bg-primary/[0.05] rounded-3xl border border-primary/10">
-                                    <div className="flex flex-col gap-4">
-                                      {sections.diagnosis && (
-                                        <div>
-                                          <span className="font-black text-[9px] uppercase tracking-widest text-primary mb-1 block">Primary Diagnosis</span>
-                                          <p className="text-lg font-black text-foreground leading-tight">{sections.diagnosis}</p>
-                                        </div>
-                                      )}
-                                      {sections.notes && (
-                                        <div className="pt-4 border-t border-primary/5">
-                                          <span className="font-black text-[9px] uppercase tracking-widest text-black/40 dark:text-white/40 mb-1 block">Doctor's Observation</span>
-                                          <p className="text-sm font-medium text-black/70 dark:text-white/70 italic leading-relaxed">"{sections.notes}"</p>
-                                        </div>
-                                      )}
-                                    </div>
-                                  </div>
-
-                                  {/* Treatment & Labs Grid */}
-                                  <div className="grid grid-cols-1 gap-4">
-                                    {sections.prescriptions && sections.prescriptions !== "None" && (
-                                      <div className="p-6 bg-emerald-500/[0.03] dark:bg-emerald-500/[0.05] rounded-3xl border border-emerald-500/10 relative overflow-hidden group">
-                                        <div className="absolute -right-2 -top-2 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
-                                          <Plus className="h-16 w-16 text-emerald-500" />
-                                        </div>
-                                        <div className="flex items-center gap-2 mb-3">
-                                          <div className="h-6 w-6 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                                            <Plus className="h-3.5 w-3.5 text-emerald-500" />
-                                          </div>
-                                          <span className="font-black text-[9px] uppercase tracking-widest text-emerald-500">Treatment Plan</span>
-                                        </div>
-                                        <div className="space-y-2">
-                                          {sections.prescriptions.split("\n").filter((l: string) => l.trim()).map((line: string, i: number) => (
-                                            <div key={i} className="flex items-start gap-2 text-xs font-bold text-foreground">
-                                              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
-                                              <span>{line.replace(/^- /, "")}</span>
-                                            </div>
-                                          ))}
-                                        </div>
+                                <div className="flex flex-col gap-8">
+                                  {/* Top Primary Section: Diagnosis */}
+                                  {sections.diagnosis && (
+                                    <div className="relative p-8 bg-black/[0.02] dark:bg-white/[0.03] rounded-[2.5rem] border border-black/5 dark:border-white/5 overflow-hidden group">
+                                      <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity">
+                                        <Brain className="h-20 w-20" />
                                       </div>
-                                    )}
-
-                                    {sections.labs && !sections.labs.includes("None") && (
-                                      <div className="p-6 bg-amber-500/[0.03] dark:bg-amber-500/[0.05] rounded-3xl border border-amber-500/10 relative overflow-hidden group">
-                                        <div className="absolute -right-2 -top-2 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
-                                          <Activity className="h-16 w-16 text-amber-500" />
+                                      <div className="relative z-10 space-y-4">
+                                        <div className="flex items-center gap-2">
+                                          <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                                          <span className="font-black text-[10px] uppercase tracking-[0.2em] text-primary">Primary Diagnosis</span>
                                         </div>
-                                        <div className="flex items-center gap-2 mb-3">
-                                          <div className="h-6 w-6 rounded-lg bg-amber-500/10 flex items-center justify-center">
-                                            <Activity className="h-3.5 w-3.5 text-amber-500" />
-                                          </div>
-                                          <span className="font-black text-[9px] uppercase tracking-widest text-amber-500">Laboratory Requests</span>
-                                        </div>
-                                        <div className="space-y-2">
-                                          {sections.labs.split("\n").filter((l: string) => l.trim()).map((line: string, i: number) => (
-                                            <div key={i} className="flex items-start gap-2 text-xs font-bold text-foreground">
-                                              <div className="h-1.5 w-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0" />
-                                              <span>{line.replace(/^- /, "")}</span>
-                                            </div>
-                                          ))}
-                                        </div>
+                                        <h4 className="font-bricolage text-3xl font-black text-foreground leading-tight tracking-tight">
+                                          {sections.diagnosis}
+                                        </h4>
+                                        {sections.notes && (
+                                          <p className="text-sm md:text-base font-medium text-black/60 dark:text-white/60 leading-relaxed italic border-l-2 border-primary/20 pl-4 py-1">
+                                            {sections.notes}
+                                          </p>
+                                        )}
                                       </div>
-                                    )}
-
-                                    {sections.lifestyle && (
-                                       <div className="p-6 bg-sky-500/[0.03] dark:bg-sky-500/[0.05] rounded-3xl border border-sky-500/10 relative overflow-hidden group">
-                                        <div className="absolute -right-2 -top-2 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
-                                          <Shield className="h-16 w-16 text-sky-500" />
-                                        </div>
-                                        <div className="flex items-center gap-2 mb-3">
-                                          <div className="h-6 w-6 rounded-lg bg-sky-500/10 flex items-center justify-center">
-                                            <Shield className="h-3.5 w-3.5 text-sky-500" />
-                                          </div>
-                                          <span className="font-black text-[9px] uppercase tracking-widest text-sky-500">Lifestyle Guidance</span>
-                                        </div>
-                                        <div className="space-y-2">
-                                          {sections.lifestyle.split("\n").filter((l: string) => l.trim()).map((line: string, i: number) => (
-                                            <div key={i} className="flex items-start gap-2 text-xs font-bold text-foreground">
-                                              <div className="h-1.5 w-1.5 rounded-full bg-sky-500 mt-1.5 shrink-0" />
-                                              <span>{line.replace(/^- /, "")}</span>
-                                            </div>
-                                          ))}
-                                        </div>
-                                      </div>
-                                    )}
-                                  </div>
-
-                                  {/* Follow-up Footer */}
-                                  {sections.followUp && (
-                                    <div className="flex items-center justify-between p-4 px-6 bg-rose-500/5 rounded-2xl border border-rose-500/10">
-                                      <span className="text-[10px] font-black uppercase tracking-widest text-rose-500">Next Review</span>
-                                      <span className="text-xs font-black text-rose-600">{sections.followUp}</span>
                                     </div>
                                   )}
-                                </>
+
+                                  {/* Secondary Grid: Medications & Labs */}
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {/* Medications Column */}
+                                    {sections.prescriptions && sections.prescriptions !== "None" && (
+                                      <div className="p-6 bg-emerald-500/[0.03] dark:bg-emerald-500/[0.05] rounded-3xl border border-emerald-500/10 flex flex-col gap-6">
+                                        <div className="flex items-center justify-between">
+                                          <div className="flex items-center gap-2">
+                                            <div className="h-8 w-8 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                                              <Plus className="h-4 w-4 text-emerald-500" />
+                                            </div>
+                                            <span className="font-black text-[10px] uppercase tracking-widest text-emerald-500">Therapeutics</span>
+                                          </div>
+                                        </div>
+                                        <div className="space-y-3">
+                                          {sections.prescriptions.split("\n").filter((l: string) => l.trim()).map((line: string, i: number) => (
+                                            <div key={i} className="flex items-start gap-3 p-3 rounded-2xl bg-white/50 dark:bg-white/5 border border-emerald-500/5 shadow-sm">
+                                              <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0 mt-0.5">
+                                                <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                                              </div>
+                                              <span className="text-xs font-bold text-foreground leading-snug">{line.replace(/^- /, "")}</span>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    )}
+
+                                    {/* Labs Column */}
+                                    {sections.labs && !sections.labs.includes("None") && (
+                                      <div className="p-6 bg-amber-500/[0.03] dark:bg-amber-500/[0.05] rounded-3xl border border-amber-500/10 flex flex-col gap-6">
+                                        <div className="flex items-center justify-between">
+                                          <div className="flex items-center gap-2">
+                                            <div className="h-8 w-8 rounded-xl bg-amber-500/10 flex items-center justify-center">
+                                              <Activity className="h-4 w-4 text-amber-500" />
+                                            </div>
+                                            <span className="font-black text-[10px] uppercase tracking-widest text-amber-500">Investigations</span>
+                                          </div>
+                                        </div>
+                                        <div className="space-y-3">
+                                          {sections.labs.split("\n").filter((l: string) => l.trim()).map((line: string, i: number) => (
+                                            <div key={i} className="flex items-start gap-3 p-3 rounded-2xl bg-white/50 dark:bg-white/5 border border-amber-500/5 shadow-sm">
+                                              <div className="h-5 w-5 rounded-lg bg-amber-500/10 flex items-center justify-center shrink-0 mt-0.5">
+                                                <CheckCircle2 className="h-3 w-3 text-amber-500" />
+                                              </div>
+                                              <span className="text-xs font-bold text-foreground leading-snug">{line.replace(/^- /, "")}</span>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    )}
+                                  </div>
+
+                                  {/* Lifestyle & Guidance */}
+                                  {sections.lifestyle && (
+                                    <div className="p-8 bg-sky-500/[0.03] dark:bg-sky-500/[0.05] rounded-[2rem] border border-sky-500/10">
+                                      <div className="flex items-center gap-3 mb-6">
+                                        <div className="h-10 w-10 rounded-2xl bg-sky-500/10 flex items-center justify-center">
+                                          <Shield className="h-5 w-5 text-sky-500" />
+                                        </div>
+                                        <div>
+                                          <span className="font-black text-[10px] uppercase tracking-[0.2em] text-sky-500 block">Guidance</span>
+                                          <h5 className="font-bold text-lg text-foreground tracking-tight">Lifestyle Recommendations</h5>
+                                        </div>
+                                      </div>
+                                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        {sections.lifestyle.split("\n").filter((l: string) => l.trim()).map((line: string, i: number) => (
+                                          <div key={i} className="flex items-center gap-3 p-4 rounded-2xl bg-white/40 dark:bg-white/5 border border-sky-500/5 shadow-none group hover:bg-white transition-all">
+                                            <div className="h-2 w-2 rounded-full bg-sky-500/30 group-hover:bg-sky-500 transition-colors" />
+                                            <span className="text-xs font-black uppercase tracking-widest text-black/60 dark:text-white/60">{line.replace(/^- /, "")}</span>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  {/* Follow-up / Summary Footer */}
+                                  <div className="flex items-center justify-between p-6 bg-black dark:bg-white rounded-3xl shadow-xl shadow-black/10 dark:shadow-none">
+                                    <div className="flex items-center gap-4">
+                                      <div className="h-10 w-10 rounded-full bg-white/10 dark:bg-black/10 flex items-center justify-center">
+                                        <Calendar className="h-5 w-5 text-white dark:text-black" />
+                                      </div>
+                                      <div>
+                                        <p className="text-[9px] font-black uppercase tracking-widest text-white/40 dark:text-black/40">Clinical Follow-up</p>
+                                        <p className="text-sm font-bold text-white dark:text-black">{sections.followUp || "As per clinical schedule"}</p>
+                                      </div>
+                                    </div>
+                                    <Badge className="bg-white/10 dark:bg-black/10 text-white dark:text-black border-none text-[8px] font-black uppercase tracking-[0.2em] px-4 py-2">
+                                      Scheduled
+                                    </Badge>
+                                  </div>
+                                </div>
                               );
                             })()}
                           </div>
@@ -296,21 +335,41 @@ export function RecordDetailsModal({
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.1 }}
-                    className="relative overflow-hidden bg-white/50 dark:bg-white/5 rounded-[2.5rem] p-8 border border-black/[0.03] dark:border-white/[0.03] shadow-sm"
+                    className="relative overflow-hidden bg-white/50 dark:bg-white/5 rounded-[2.5rem] p-8 border border-black/[0.03] dark:border-white/[0.03] shadow-sm group"
                   >
-                    <div className="flex flex-col gap-6">
-                      <div className="flex items-center gap-3 text-primary">
-                        <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                          <Brain className="h-4 w-4" />
+                    {/* Branded Logo Watermark */}
+                    <div className="absolute -top-4 -right-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-700">
+                      <img src="/hilium.png" alt="" className="h-40 w-40 object-contain grayscale" />
+                    </div>
+
+                    <div className="flex flex-col gap-6 relative z-10">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3 text-primary">
+                          <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                            <Brain className="h-4 w-4" />
+                          </div>
+                          <span className="font-black text-[10px] uppercase tracking-[0.2em]">Clinical Intelligence</span>
                         </div>
-                        <span className="font-black text-[10px] uppercase tracking-[0.2em]">Clinical Extraction</span>
+                        <Badge className="bg-primary text-white border-none text-[8px] font-black uppercase tracking-widest px-2 py-0.5">Xerine 1.5 Flash</Badge>
                       </div>
                       
                       <div className="space-y-3">
-                        <h3 className="font-bricolage text-xl font-extrabold text-foreground">Summary</h3>
-                        <p className="text-sm md:text-base text-black/60 dark:text-white/60 font-medium leading-relaxed italic">
-                          "{record.analysis?.summary || record.fallbackSummary || "Our AI engine is currently processing the clinical context of this file. Full report will be available shortly."}"
-                        </p>
+                        <h3 className="font-bricolage text-xl font-extrabold text-foreground">AI Medical Summary</h3>
+                        {isSummarizing ? (
+                          <div className="flex flex-col gap-2">
+                             <div className="h-4 w-full bg-black/5 dark:bg-white/5 rounded-full animate-pulse" />
+                             <div className="h-4 w-3/4 bg-black/5 dark:bg-white/5 rounded-full animate-pulse" />
+                             <div className="h-4 w-1/2 bg-black/5 dark:bg-white/5 rounded-full animate-pulse" />
+                          </div>
+                        ) : (
+                          <p className="text-sm md:text-base text-black/60 dark:text-white/60 font-medium leading-relaxed italic border-l-2 border-primary/20 pl-4 py-1">
+                            "{smartSummary || record.analysis?.summary || record.fallbackSummary || "Our AI engine is currently processing the clinical context of this file."}"
+                          </p>
+                        )}
+                        <div className="flex items-center gap-2 pt-2">
+                          <img src="/hilium.png" alt="Hilium" className="h-3 w-3 object-contain dark:invert" />
+                          <span className="text-[8px] font-black uppercase tracking-widest text-black/20 dark:text-white/20">Verified by Hilium Clinical Platform</span>
+                        </div>
                       </div>
                     </div>
                   </motion.div>

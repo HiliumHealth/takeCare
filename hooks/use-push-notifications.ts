@@ -16,6 +16,22 @@ export function usePushNotifications() {
     }
   }, []);
 
+  useEffect(() => {
+    if (registration) {
+      registration.pushManager.getSubscription().then((sub) => {
+        if (sub) {
+          setSubscription(sub);
+          // Sync with server just in case
+          fetch("/api/notifications/subscribe", {
+            method: "POST",
+            body: JSON.stringify(sub),
+            headers: { "Content-Type": "application/json" },
+          }).catch(console.error);
+        }
+      });
+    }
+  }, [registration]);
+
   const subscribe = async () => {
     if (!registration) {
       console.error("[Push] No service worker registration found");

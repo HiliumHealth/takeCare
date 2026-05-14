@@ -40,9 +40,25 @@ export function PushSubscriptionButton() {
 
   if (permission === "granted" && subscription) {
     return (
-      <div className="flex items-center gap-4 px-4 py-4 rounded-2xl text-green-500 bg-green-500/5 border border-green-500/10">
-        <Bell className="h-6 w-6" />
-        <span className="font-bold text-sm tracking-tight">Mobile Alerts On</span>
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-4 px-4 py-4 rounded-2xl text-green-500 bg-green-500/5 border border-green-500/10">
+          <Bell className="h-6 w-6" />
+          <span className="font-bold text-sm tracking-tight">Mobile Alerts On</span>
+        </div>
+        <button
+          onClick={async () => {
+            const res = await fetch("/api/notifications/test", { method: "POST" });
+            const data = await res.json();
+            if (data.success) {
+              toast.success("Test notification sent!");
+            } else {
+              toast.error(data.message || "Failed to send test");
+            }
+          }}
+          className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline px-4 text-left"
+        >
+          Send Test Notification
+        </button>
       </div>
     );
   }

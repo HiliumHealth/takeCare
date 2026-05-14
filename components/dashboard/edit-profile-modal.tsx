@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 
 import { ModeToggle } from "./mode-toggle";
+import { PushSubscriptionButton } from "@/components/pwa/push-subscription-button";
 
 interface EditProfileModalProps {
   user: {
@@ -180,6 +181,14 @@ export function EditProfileModal({ user, onUpdate, customTrigger }: EditProfileM
           >
             {loading ? <Loader2 className="animate-spin mr-2" /> : "Save Profile Changes"}
           </Button>
+
+          {/* Push Notifications */}
+          <div className="pt-4 mt-4 border-t border-black/5 dark:border-white/5">
+             <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-4 block">Alerts & Notifications</Label>
+             <div className="bg-primary/5 dark:bg-primary/10 rounded-2xl p-2 border border-primary/10">
+               <PushSubscriptionButton />
+             </div>
+          </div>
 
           {/* Danger Zone */}
           <div className="pt-4 mt-4 border-t border-black/5 dark:border-white/5">

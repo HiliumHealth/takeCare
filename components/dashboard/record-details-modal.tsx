@@ -185,13 +185,13 @@ export function RecordDetailsModal({
                               const sections: any = {};
 
                               const patterns = {
-                                diagnosis: /DIAGNOSIS:\s*(.*?)(?=CONSULTATION NOTES:|$)/s,
-                                notes: /CONSULTATION NOTES:\s*(.*?)(?=PRESCRIPTIONS:|$)/s,
-                                prescriptions: /PRESCRIPTIONS:\s*(.*?)(?=LABORATORY INVESTIGATIONS:|$)/s,
-                                labs: /LABORATORY INVESTIGATIONS:\s*(.*?)(?=CLINICAL VITAL TARGETS:|$)/s,
-                                vitals: /CLINICAL VITAL TARGETS:\s*(.*?)(?=LIFESTYLE ADVICE:|$)/s,
-                                lifestyle: /LIFESTYLE ADVICE:\s*(.*?)(?=FOLLOW-UP:|$)/s,
-                                followUp: /FOLLOW-UP:\s*(.*)/s
+                                diagnosis: /DIAGNOSIS:\s*([\s\S]*?)(?=CONSULTATION NOTES:|$)/,
+                                notes: /CONSULTATION NOTES:\s*([\s\S]*?)(?=PRESCRIPTIONS:|$)/,
+                                prescriptions: /PRESCRIPTIONS:\s*([\s\S]*?)(?=LABORATORY INVESTIGATIONS:|$)/,
+                                labs: /LABORATORY INVESTIGATIONS:\s*([\s\S]*?)(?=CLINICAL VITAL TARGETS:|$)/,
+                                vitals: /CLINICAL VITAL TARGETS:\s*([\s\S]*?)(?=LIFESTYLE ADVICE:|$)/,
+                                lifestyle: /LIFESTYLE ADVICE:\s*([\s\S]*?)(?=FOLLOW-UP:|$)/,
+                                followUp: /FOLLOW-UP:\s*([\s\S]*)/
                               };
 
                               Object.entries(patterns).forEach(([key, regex]) => {

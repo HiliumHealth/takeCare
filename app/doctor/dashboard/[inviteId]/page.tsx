@@ -83,15 +83,15 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
         throw new Error(errorData.error || "Failed to submit");
       }
       
-      toast.success("Transmission Successful", {
-        description: "The medical report has been securely synced to the patient's booklet."
+      toast.success("Report Sent Successfully", {
+        description: "Your assessment has been securely added to the patient's record."
       });
       setIsSuccess(true);
       setTimeout(() => router.push("/"), 3000);
     } catch (error: any) {
       console.error("Submission failed:", error);
-      toast.error("Transmission Failed", {
-        description: error.message || "An internal error occurred while syncing data."
+      toast.error("We couldn't send the report", {
+        description: error.message || "Please check your connection and try again."
       });
     } finally {
       setIsSubmitting(false);

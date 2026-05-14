@@ -135,13 +135,13 @@ export function HospitalBookForm({ onDataChange }: HospitalBookFormProps) {
               className="space-y-6"
             >
               <div className="space-y-1">
-                <h3 className="text-2xl font-bricolage font-black tracking-tighter">Clinical Assessment</h3>
+                <h3 className="text-2xl font-bricolage font-black tracking-tighter">Checkup Summary</h3>
                 <p className="text-[11px] text-black/40 font-medium">Record primary diagnosis and supporting observations.</p>
               </div>
 
               <div className="space-y-6">
                 <div className="space-y-2">
-                  <Label className="text-[9px] font-black uppercase tracking-[0.2em] text-black/20 ml-1">Primary Diagnosis</Label>
+                  <Label className="text-[9px] font-black uppercase tracking-[0.2em] text-black/20 ml-1">Main Condition Found</Label>
                   <Input 
                     value={diagnosis}
                     onChange={(e) => {
@@ -154,7 +154,7 @@ export function HospitalBookForm({ onDataChange }: HospitalBookFormProps) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-[9px] font-black uppercase tracking-[0.2em] text-black/20 ml-1">Clinical Observations</Label>
+                  <Label className="text-[9px] font-black uppercase tracking-[0.2em] text-black/20 ml-1">Notes for the Patient</Label>
                   <Textarea 
                     value={notes}
                     onChange={(e) => {
@@ -179,7 +179,7 @@ export function HospitalBookForm({ onDataChange }: HospitalBookFormProps) {
               className="space-y-6"
             >
               <div className="space-y-1">
-                <h3 className="text-2xl font-bricolage font-black tracking-tighter">Vital Signs Update</h3>
+                <h3 className="text-2xl font-bricolage font-black tracking-tighter">Vital Signs</h3>
                 <p className="text-[11px] text-black/40 font-medium">Record the patient's current clinical measurements.</p>
               </div>
 
@@ -228,7 +228,7 @@ export function HospitalBookForm({ onDataChange }: HospitalBookFormProps) {
             >
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <h3 className="text-2xl font-bricolage font-black tracking-tighter">Digital Prescription</h3>
+                  <h3 className="text-2xl font-bricolage font-black tracking-tighter">Prescription & Treatment</h3>
                   <p className="text-[11px] text-black/40 font-medium">Schedule precise medication intake for smart push notifications.</p>
                 </div>
                 <Button 
@@ -284,7 +284,7 @@ export function HospitalBookForm({ onDataChange }: HospitalBookFormProps) {
 
                     <div className="mt-6 space-y-3">
                       <Label className="text-[9px] font-black uppercase tracking-[0.2em] text-black/20 ml-1 flex items-center gap-2">
-                        <Clock size={10} /> Intake Schedule (24h)
+                        <Clock size={10} /> Daily Dose Times (24h)
                       </Label>
                       <div className="flex flex-wrap gap-2">
                         {med.times.map((time, tIdx) => (
@@ -341,7 +341,7 @@ export function HospitalBookForm({ onDataChange }: HospitalBookFormProps) {
                     </div>
 
                     <div className="mt-6 space-y-2">
-                      <Label className="text-[9px] font-black uppercase tracking-[0.2em] text-black/20 ml-1">Administration Instructions</Label>
+                      <Label className="text-[9px] font-black uppercase tracking-[0.2em] text-black/20 ml-1">Special Advice for these Meds</Label>
                       <Textarea 
                         value={med.instructions}
                         onChange={(e) => {
@@ -369,7 +369,7 @@ export function HospitalBookForm({ onDataChange }: HospitalBookFormProps) {
             >
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <h3 className="text-2xl font-bricolage font-black tracking-tighter">Diagnostic Investigations</h3>
+                  <h3 className="text-2xl font-bricolage font-black tracking-tighter">Recommended Tests</h3>
                   <p className="text-[11px] text-black/40 font-medium">Request laboratory tests, imaging, or specialized screenings.</p>
                 </div>
                 <Button 
@@ -396,7 +396,7 @@ export function HospitalBookForm({ onDataChange }: HospitalBookFormProps) {
 
                     <div className="grid md:grid-cols-[1fr_160px] gap-6">
                       <div className="space-y-2">
-                        <Label className="text-[9px] font-black uppercase tracking-[0.2em] text-black/20 ml-1">Test / Investigation Name</Label>
+                        <Label className="text-[9px] font-black uppercase tracking-[0.2em] text-black/20 ml-1">Name of the Test</Label>
                         <Input 
                           value={lab.testName}
                           onChange={(e) => {
@@ -427,7 +427,7 @@ export function HospitalBookForm({ onDataChange }: HospitalBookFormProps) {
                     </div>
 
                     <div className="mt-6 space-y-2">
-                      <Label className="text-[9px] font-black uppercase tracking-[0.2em] text-black/20 ml-1">Clinical Indications / Instructions</Label>
+                      <Label className="text-[9px] font-black uppercase tracking-[0.2em] text-black/20 ml-1">How to prepare for this test</Label>
                       <Textarea 
                         value={lab.instructions}
                         onChange={(e) => {
@@ -465,7 +465,7 @@ export function HospitalBookForm({ onDataChange }: HospitalBookFormProps) {
             >
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <h3 className="text-2xl font-bricolage font-black tracking-tighter">Clinical Thresholds</h3>
+                  <h3 className="text-2xl font-bricolage font-black tracking-tighter">Monitoring Goals</h3>
                   <p className="text-[11px] text-black/40 font-medium">Set targets for wearable device monitoring.</p>
                 </div>
                 <Button 
@@ -549,7 +549,7 @@ export function HospitalBookForm({ onDataChange }: HospitalBookFormProps) {
               className="space-y-6"
             >
               <div className="space-y-1">
-                <h3 className="text-2xl font-bricolage font-black tracking-tighter">Holistic Care Advice</h3>
+                <h3 className="text-2xl font-bricolage font-black tracking-tighter">Healthy Living Tips</h3>
                 <p className="text-[11px] text-black/40 font-medium">Guide lifestyle adjustments for optimal recovery.</p>
               </div>
 
@@ -592,7 +592,7 @@ export function HospitalBookForm({ onDataChange }: HospitalBookFormProps) {
               className="space-y-6"
             >
               <div className="space-y-1">
-                <h3 className="text-2xl font-bricolage font-black tracking-tighter">Next Milestone</h3>
+                <h3 className="text-2xl font-bricolage font-black tracking-tighter">Next Appointment</h3>
                 <p className="text-[11px] text-black/40 font-medium">Schedule the next clinical review.</p>
               </div>
 
@@ -616,7 +616,7 @@ export function HospitalBookForm({ onDataChange }: HospitalBookFormProps) {
                     <div className="p-4 bg-white rounded-xl border border-black/5 flex items-start gap-3">
                       <Brain className="text-black/20 shrink-0 mt-0.5" size={14} />
                       <p className="text-[10px] font-bold text-black/40 leading-relaxed uppercase tracking-wider">
-                        Automated reminders will be dispatched to the patient's device 24h prior.
+                        We'll send a friendly reminder to the patient 24 hours before this date.
                       </p>
                     </div>
                  </div>

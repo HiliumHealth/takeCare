@@ -362,9 +362,7 @@ export default function DashboardPage() {
       {/* Main Content Area Top Bar - Desktop */}
       <div className="hidden lg:flex sticky top-0 z-30 w-full h-24 bg-white/40 dark:bg-black/40 backdrop-blur-3xl border-b border-black/[0.03] dark:border-white/[0.03] items-center px-10 justify-between">
         <div className="flex items-center gap-8 flex-1">
-          <div className="h-16 w-16 flex items-center justify-center overflow-hidden shrink-0">
-             <img src="/hilium.png" alt="Hilium Logo" className="w-full h-full object-contain dark:invert" />
-          </div>
+
           <div className="flex items-center gap-4 group bg-transparent px-2 py-3 transition-all w-96">
             <Search className="h-5 w-5 text-black/30 dark:text-white/30 group-focus-within:text-primary transition-colors" />
             <input 

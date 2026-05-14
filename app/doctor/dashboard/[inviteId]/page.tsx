@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { User, FileText, Send, CheckCircle2, ShieldCheck, FileUp, Loader2, XCircle, LogOut, ChevronLeft, Calendar as CalendarIcon, BookOpen, Clock, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -77,12 +78,21 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
         body: submission,
       });
 
-      if (!res.ok) throw new Error("Failed to submit");
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to submit");
+      }
       
+      toast.success("Transmission Successful", {
+        description: "The medical report has been securely synced to the patient's booklet."
+      });
       setIsSuccess(true);
       setTimeout(() => router.push("/"), 3000);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Submission failed:", error);
+      toast.error("Transmission Failed", {
+        description: error.message || "An internal error occurred while syncing data."
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -113,7 +123,7 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
             <div className="h-8 w-px bg-black/[0.05]" />
             <div className="flex items-center gap-3">
                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-               <span className="text-[10px] font-black uppercase tracking-[0.2em] text-black/40">Clinical Session Active</span>
+               <span className="text-[10px] font-black uppercase tracking-[0.2em] text-black/40">Connected to Patient</span>
             </div>
           </div>
 
@@ -198,9 +208,9 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
                     <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-500 mb-4">
                        <CheckCircle2 size={32} />
                     </div>
-                    <h2 className="text-3xl font-bricolage font-black tracking-tighter">Report Finalized.</h2>
+                    <h2 className="text-3xl font-bricolage font-black tracking-tighter">Report Sent Successfully!</h2>
                     <p className="text-xs font-medium text-black/40 max-w-xs mx-auto leading-relaxed">
-                      Clinical data has been transmitted to the Hilium Health Booklet.
+                      The medical report has been saved to the patient's health booklet.
                     </p>
                  </motion.div>
                ) : (
@@ -226,14 +236,14 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
                    <div className="pt-16 flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className={cn("w-1.5 h-1.5 rounded-full bg-emerald-500", isSubmitting ? "animate-pulse" : "opacity-30")} />
-                        <span className="text-[9px] font-black uppercase tracking-widest text-black/30">{isSubmitting ? "Transmitting..." : "Internal Sync Active"}</span>
+                        <span className="text-[9px] font-black uppercase tracking-widest text-black/30">{isSubmitting ? "Sending to patient..." : "Ready to send"}</span>
                       </div>
                       <Button 
                         onClick={handleSubmit}
                         disabled={isSubmitting || !formData.diagnosis}
                         className="h-14 px-10 bg-black hover:bg-slate-900 text-white rounded-2xl font-black text-sm tracking-widest uppercase transition-all shadow-xl shadow-black/10 active:scale-95 disabled:opacity-30"
                       >
-                        {isSubmitting ? "Processing" : "Sign & Transmit"}
+                        {isSubmitting ? "Sending..." : "Send to Patient"}
                         <Send size={16} className="ml-3" />
                       </Button>
                    </div>

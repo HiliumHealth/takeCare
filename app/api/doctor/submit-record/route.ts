@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendReportNotificationEmail } from "@/lib/mail";
 import { scheduleMedicationReminders } from "@/lib/reminders";
+import { sendPushNotification } from "@/lib/notifications";
 
 export async function POST(req: Request) {
   try {
@@ -24,7 +25,7 @@ export async function POST(req: Request) {
     const files = formData.getAll("files") as File[];
 
     if (!inviteId) {
-      return NextResponse.json({ error: "Missing parameters" }, { status: 400 });
+      return NextResponse.json({ error: "Required information is missing. Please try again." }, { status: 400 });
     }
 
     const invitation = await prisma.doctorInvitation.findUnique({
@@ -33,7 +34,7 @@ export async function POST(req: Request) {
     });
 
     if (!invitation) {
-      return NextResponse.json({ error: "Invalid invitation" }, { status: 401 });
+      return NextResponse.json({ error: "This invitation link is no longer valid or has expired." }, { status: 401 });
     }
 
     // Create the structured Prescription record
@@ -63,6 +64,14 @@ export async function POST(req: Request) {
     // Enable AI Push Notifications
     try {
       await scheduleMedicationReminders(prescription.id);
+      
+      // Immediate Push Alert to Patient
+      await sendPushNotification(invitation.userId, {
+        title: "New Doctor Assessment",
+        body: `Dr. ${invitation.doctorName} has just submitted your medical report and treatment plan.`,
+        url: "/dashboard",
+        icon: "/icons/icon-192x192.png"
+      });
     } catch (pushError) {
       console.error("Failed to schedule push notifications:", pushError);
     }
@@ -89,7 +98,7 @@ LIFESTYLE ADVICE:
 FOLLOW-UP: ${followUpDate || "Not specified"}
     `.trim();
 
-    await prisma.medicalRecord.create({
+    const noteRecord = await prisma.medicalRecord.create({
       data: {
         userId: invitation.userId,
         type: "CLINICAL_CONSULTATION",
@@ -138,6 +147,6 @@ FOLLOW-UP: ${followUpDate || "Not specified"}
 
   } catch (error: any) {
     console.error("[Doctor Submit Record Error]", error);
-    return NextResponse.json({ error: "Internal Error" }, { status: 500 });
+    return NextResponse.json({ error: "Something went wrong while saving the report. Please check your connection and try again." }, { status: 500 });
   }
 }

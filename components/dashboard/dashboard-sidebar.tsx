@@ -1,13 +1,15 @@
 "use client";
 
 import React from "react";
-import { LayoutDashboard, MessageSquare, Bell, Plus, LogOut, Settings, User, Heart, ShieldCheck, Activity } from "lucide-react";
+import { LayoutDashboard, MessageSquare, Bell, Plus, LogOut, Settings, User, Heart, ShieldCheck, Activity, Download } from "lucide-react";
+import { usePWA } from "@/hooks/use-pwa";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
 
 import { EditProfileModal } from "./edit-profile-modal";
+import { PushSubscriptionButton } from "@/components/pwa/push-subscription-button";
 
 const NAV_ITEMS = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
@@ -29,6 +31,8 @@ export function DashboardSidebar({
   messengerCount?: number;
   user?: any;
 }) {
+  const { isInstallable, installApp } = usePWA();
+
   return (
     <aside className="fixed left-0 top-0 bottom-0 w-[260px] bg-white dark:bg-[#0a0a0a] border-r border-black/[0.04] dark:border-white/[0.04] z-50 hidden lg:flex flex-col shadow-[20px_0_50px_-20px_rgba(0,0,0,0.02)] dark:shadow-[20px_0_50px_-20px_rgba(0,0,0,0.2)] transition-colors duration-500">
       {/* Brand Header */}
@@ -105,6 +109,8 @@ export function DashboardSidebar({
           <span className="text-[10px] font-black uppercase tracking-[0.3em] text-black/20 dark:text-white/20">Help & Security</span>
         </div>
 
+        <PushSubscriptionButton />
+
         <EditProfileModal
           user={user}
           onUpdate={() => window.location.reload()}
@@ -115,6 +121,17 @@ export function DashboardSidebar({
             </button>
           }
         />
+        
+        {isInstallable && (
+          <button 
+            onClick={installApp}
+            className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl bg-primary/10 text-primary hover:bg-primary/20 transition-all group border border-primary/10"
+          >
+            <Download className="h-6 w-6 animate-bounce" />
+            <span className="font-bold text-sm tracking-tight">Install App</span>
+          </button>
+        )}
+
         <button className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white hover:bg-black/[0.03] dark:hover:bg-white/[0.03] transition-all group">
           <ShieldCheck className="h-6 w-6" />
           <span className="font-bold text-sm tracking-tight">Secure Records</span>

@@ -6,25 +6,22 @@ const globalForPrisma = global as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-const connectionString = process.env.DATABASE_URL;
-console.log("[Prisma Debug] DATABASE_URL present:", !!connectionString);
-
-if (!connectionString) {
-  throw new Error("DATABASE_URL is not set in environment variables");
-}
-
-// In Prisma 7 with @prisma/adapter-neon, the constructor expects PoolConfig, not a Pool instance
-const adapter = new PrismaNeon({ connectionString });
-
-
-
-export const prisma =
-  globalForPrisma.prisma ||
-  new PrismaClient({
+const prismaClientSingleton = () => {
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    throw new Error("DATABASE_URL is not set in environment variables");
+  }
+  
+  // Create the adapter inside the singleton to avoid re-creation on HMR
+  const adapter = new PrismaNeon({ connectionString });
+  
+  return new PrismaClient({
     adapter,
-    log: ["query"],
+    log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
   });
+};
 
+export const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 

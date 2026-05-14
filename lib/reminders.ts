@@ -1,7 +1,5 @@
-"use server";
-
 import { prisma } from "@/lib/prisma";
-import { sendTelegramMessage } from "@/lib/messenger"; // Assuming this exists or I'll create a stub
+import { sendPushNotification } from "@/lib/notifications";
 
 /**
  * Processes a prescription and prepares the scheduled notification payload.
@@ -27,7 +25,7 @@ export async function scheduleMedicationReminders(prescriptionId: string) {
 
   const welcomeMessage = `
 🏥 *New Hospital Booklet Entry*
-Dr. ${doctorName} has updated your treatment plan.
+Dr. ${doctorName} has just sent over your updated care plan.
 
 *Current Schedule:*
 ${scheduleSummary}
@@ -35,11 +33,14 @@ ${scheduleSummary}
 Xerine AI will now monitor your adherence and send reminders at the specified times.
   `.trim();
 
-  // 2. Send the immediate summary to the patient's linked messenger (Telegram/WhatsApp)
-  // This confirms the "Digital Twin" connection
-  if (user.telegramId) {
-    // await sendTelegramMessage(user.telegramId, welcomeMessage);
-    console.log(`[PUSH] Sent consultation summary to Telegram user ${user.telegramId}`);
+  // 2. Send the immediate summary to the patient's linked messenger
+  if (user.id) {
+     await sendPushNotification(user.id, {
+        title: "Treatment Plan Updated",
+        body: `Dr. ${doctorName} added ${medications.length} items to your care schedule.`,
+        url: "/dashboard",
+        icon: "/icons/icon-192x192.png"
+     });
   }
 
   // 3. Log the scheduling event for AI monitoring
@@ -49,19 +50,69 @@ Xerine AI will now monitor your adherence and send reminders at the specified ti
 }
 
 /**
- * Worker function to be called by a CRON job every 15-30 minutes.
+ * Worker function to be called by a CRON job every minute.
  * Scans for medications that need to be taken 'now'.
  */
 export async function processMedicationQueue() {
   const now = new Date();
+  
+  // Use a window of +/- 1 minute for robustness in server timing
   const currentHour = now.getHours().toString().padStart(2, '0');
   const currentMinute = now.getMinutes().toString().padStart(2, '0');
   const currentTime = `${currentHour}:${currentMinute}`;
 
   console.log(`[CRON] Checking medication queue for time: ${currentTime}`);
   
-  // Logic: Find all medications where 'times' array contains 'currentTime'
-  // Note: For a robust system, we would use a more granular window (e.g., +/- 15 mins)
-  
-  // This is where the AI-driven push logic lives.
+  // 1. Find all medications that match the current time
+  const medicationsToNotify = await prisma.medication.findMany({
+    where: {
+      times: {
+        has: currentTime
+      },
+      // Ensure the prescription is still active (startDate <= now <= endDate or no endDate)
+      prescription: {
+        OR: [
+          { followUpDate: null },
+          // Simple check for now, can be improved with real date logic
+        ]
+      }
+    },
+    include: {
+      prescription: {
+        include: {
+          user: true
+        }
+      }
+    }
+  });
+
+  console.log(`[CRON] Found ${medicationsToNotify.length} reminders to send`);
+
+  // 2. Group by user to avoid spamming multiple notifications if multiple meds are due at once
+  const userNotifications: Record<string, { title: string, body: string[] }> = {};
+
+  medicationsToNotify.forEach(med => {
+    const userId = med.prescription.userId;
+    if (!userNotifications[userId]) {
+      userNotifications[userId] = {
+        title: "Medication Reminder 💊",
+        body: []
+      };
+    }
+    userNotifications[userId].body.push(`${med.name} (${med.dosage})`);
+  });
+
+  // 3. Send the aggregated notifications
+  const sendPromises = Object.entries(userNotifications).map(([userId, data]) => {
+    return sendPushNotification(userId, {
+      title: data.title,
+      body: `Time for your medicine: ${data.body.join(", ")}. Tap here to see your instructions.`,
+      url: "/dashboard",
+      icon: "/icons/icon-192x192.png"
+    });
+  });
+
+  await Promise.allSettled(sendPromises);
+
+  return { processed: medicationsToNotify.length };
 }

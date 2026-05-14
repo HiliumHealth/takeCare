@@ -1,33 +1,54 @@
-import type { Metadata } from "next";
-import { Syne, Inter, Outfit, Geist, Bricolage_Grotesque } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Syne, Inter, Outfit, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const interSans = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  weight: ["300", "400", "500", "600", "700"],
+  preload: false,
+});
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
   variable: "--font-bricolage",
   weight: ["300", "400", "500", "600", "700", "800"],
+  preload: false,
 });
 
 const syne = Syne({
   subsets: ["latin"],
   variable: "--font-syne",
   weight: ["400", "600", "700", "800"],
+  preload: false,
 });
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-space-grotesk", // keeping variable name to avoid breaking tailwind config
   weight: ["300", "400", "500", "600", "700"],
+  preload: false,
 });
 
 const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-outfit",
   weight: ["300", "400", "500", "600"],
+  preload: false,
 });
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
+  ],
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: 'cover',
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://hilium.ai'),
@@ -35,7 +56,25 @@ export const metadata: Metadata = {
     default: "Hilium | Your Intelligent Health Companion",
     template: "%s | Hilium",
   },
-  description: "Hilium is your next-generation healthcare assistant. Powered by advanced artificial intelligence to help you track, optimize, and secure your health data seamlessly.",
+  description: "Health Intelligence Link Improving User Medications. Hilium is your next-generation healthcare assistant powered by advanced AI to help you track and optimize your health.",
+  manifest: '/manifest.json?v=2',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'Hilium',
+    startupImage: '/icons/icon-512x512.png',
+  },
+  icons: {
+    icon: [
+      { url: '/icons/icon-48x48.png', sizes: '48x48', type: 'image/png' },
+      { url: '/icons/icon-96x96.png', sizes: '96x96', type: 'image/png' },
+      { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/icons/icon-152x152.png', sizes: '152x152', type: 'image/png' },
+      { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+    ],
+  },
   keywords: ["healthcare AI", "medical assistant", "AI doctor", "personal health record", "symptom checker", "Hilium", "AI in healthcare", "telemedicine", "medical tracking"],
   authors: [{ name: "Hilium Team" }],
   creator: "Hilium",
@@ -87,12 +126,14 @@ import { BackgroundGrid } from "@/components/ui/background-grid";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/components/providers/session-provider";
 import { ThemeProvider } from "@/components/theme-provider";
+import { PWAProvider } from "@/hooks/use-pwa";
+import { CustomInstallPrompt } from "@/components/pwa/custom-install-prompt";
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={cn("scroll-smooth", "font-sans", geist.variable)} suppressHydrationWarning>
+    <html lang="en" className={cn("scroll-smooth", "font-sans", interSans.variable)} suppressHydrationWarning>
       <body
         className={`${syne.variable} ${inter.variable} ${outfit.variable} ${bricolage.variable} antialiased min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-500`}
       >
@@ -102,23 +143,15 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange={false}
         >
-          <AuthProvider>
-            <BackgroundGrid />
-            {/* Header / Logo */}
-            <header className="mb-6 lg:mb-12 animate-slide-right">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-black shadow-2xl lg:h-14 lg:w-14 overflow-hidden">
-                   <img src="/hilium.png" alt="Hilium Logo" className="w-full h-full object-cover p-1" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-outfit text-lg font-bold tracking-tight lg:text-2xl leading-none text-black">Hilium</span>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-black/40 lg:text-xs">Intelligence</span>
-                </div>
-              </div>
-            </header>
-            {children}
-            <Toaster closeButton position="top-center" expand visibleToasts={1} />
-          </AuthProvider>
+          <PWAProvider>
+            <AuthProvider>
+              <BackgroundGrid />
+
+              {children}
+              <Toaster closeButton position="top-center" expand visibleToasts={1} />
+              <CustomInstallPrompt />
+            </AuthProvider>
+          </PWAProvider>
         </ThemeProvider>
       </body>
     </html>

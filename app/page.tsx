@@ -28,7 +28,7 @@ export default function OnboardingPage() {
 
       <div className="relative mx-auto flex h-full w-full max-w-[1440px] flex-col px-6 py-8 lg:px-16 lg:py-12">
         {/* Header / Logo */}
-        <header className="mb-6 lg:mb-12 animate-slide-right">
+        {/* <header className="mb-6 lg:mb-12 animate-slide-right">
           <div className="flex items-center gap-3">
             <div className="flex h-14 w-14 items-center justify-center lg:h-20 lg:w-20 overflow-hidden">
                <img src="/hilium.png" alt="Hilium Logo" className="w-full h-full object-contain dark:invert" />
@@ -38,7 +38,7 @@ export default function OnboardingPage() {
               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-black/40 lg:text-xs">Intelligence</span>
             </div>
           </div>
-        </header>
+        </header> */}
 
         {/* Hero Section - Responsive Grid */}
         <section className="flex flex-1 flex-col lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">

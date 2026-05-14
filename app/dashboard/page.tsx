@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import { DeleteConfirmationModal } from "@/components/dashboard/delete-confirmation-modal";
 import { RecordDetailsModal } from "@/components/dashboard/record-details-modal";
 import { Input } from "@/components/ui/input";
-import { Search, Filter, XCircle, CheckCircle2, BellRing, ArrowRight, ArrowLeft, Bell, Heart, Activity, Pill, ShieldCheck, Loader2, Brain, Sun, Moon, User, FileText } from "lucide-react";
+import { Search, Filter, XCircle, CheckCircle2, BellRing, ArrowRight, ArrowLeft, Bell, Heart, Activity, Pill, ShieldCheck, Loader2, Brain, Sun, Moon, User, FileText, Eye, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { MobileNav } from "@/components/dashboard/mobile-nav";
@@ -495,12 +495,33 @@ export default function DashboardPage() {
                   </p>
                 </div>
                 
-                {/* Hospital Book Download Button */}
+                {/* Hospital Book Action Buttons */}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.2 }}
+                  className="flex flex-col sm:flex-row items-center gap-3"
                 >
+                  {/* Preview Button */}
+                  <Button
+                    onClick={async () => {
+                      const { generateHospitalBook } = await import("@/lib/pdf-generator");
+                      const url = generateHospitalBook({
+                        user: userData,
+                        records: userData.medicalRecords,
+                        prescriptions: userData.prescriptions,
+                        personalization: userData.personalization,
+                        preview: true
+                      });
+                      if (url) window.open(url as string, "_blank");
+                    }}
+                    className="h-14 px-6 rounded-xl bg-white dark:bg-[#111] text-black dark:text-white border border-black/10 dark:border-white/10 font-black text-[10px] uppercase tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all shadow-md flex items-center gap-3 group cursor-pointer"
+                  >
+                    <Eye className="h-4 w-4 text-primary group-hover:scale-110 transition-transform" />
+                    <span>Preview Record</span>
+                  </Button>
+
+                  {/* Download Button */}
                   <Button
                     onClick={async () => {
                       const { generateHospitalBook } = await import("@/lib/pdf-generator");
@@ -510,22 +531,15 @@ export default function DashboardPage() {
                         prescriptions: userData.prescriptions,
                         personalization: userData.personalization
                       });
-                      toast.success("Compiling Clinical Vault...", {
-                        description: "Your Hospital Book is being generated and signed by Hilium AI.",
-                        icon: <Brain className="h-5 w-5 text-primary" />
+                      toast.success("Downloading Vault...", {
+                        description: "Compiling and signing your official Hilium Hospital Book.",
+                        icon: <CheckCircle2 className="h-5 w-5 text-emerald-500" />
                       });
                     }}
-                    className="h-16 px-8 rounded-2xl bg-black dark:bg-white text-white dark:text-black font-black text-[11px] uppercase tracking-[0.2em] hover:scale-[1.02] active:scale-95 transition-all shadow-2xl shadow-primary/20 flex items-center gap-4 group shrink-0 relative overflow-hidden"
+                    className="h-14 px-6 rounded-xl bg-black dark:bg-white text-white dark:text-black font-black text-[10px] uppercase tracking-widest hover:shadow-xl hover:shadow-primary/20 active:scale-95 transition-all flex items-center gap-3 group cursor-pointer"
                   >
-                    <div className="absolute inset-0 bg-linear-to-r from-primary/10 via-transparent to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                    <div className="h-10 w-10 rounded-xl bg-white/10 dark:bg-black/10 flex items-center justify-center group-hover:rotate-12 transition-transform">
-                      <FileText className="h-5 w-5 text-primary" />
-                    </div>
-                    <div className="flex flex-col items-start leading-none">
-                      <span className="mb-1">Generate</span>
-                      <span className="opacity-40">Hospital Book</span>
-                    </div>
-                    <ArrowRight className="h-4 w-4 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                    <Download className="h-4 w-4 text-primary group-hover:translate-y-0.5 transition-transform" />
+                    <span>Download Book</span>
                   </Button>
                 </motion.div>
               </div>

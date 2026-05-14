@@ -5,6 +5,7 @@ interface HospitalBookData {
   records: any[];
   prescriptions: any[];
   personalization: any;
+  preview?: boolean;
 }
 
 export const generateHospitalBook = (data: HospitalBookData) => {
@@ -164,5 +165,10 @@ export const generateHospitalBook = (data: HospitalBookData) => {
   doc.setTextColor(150, 150, 150);
   doc.text("End of Document • Hilium Clinical OS v2.0", 105, 285, { align: "center" });
 
-  doc.save(`${user.name.replace(/\s+/g, "_")}_Hospital_Book.pdf`);
+  if (data.preview) {
+    return doc.output("bloburl");
+  } else {
+    doc.save(`${user.name.replace(/\s+/g, "_")}_Hospital_Book.pdf`);
+    return null;
+  }
 };

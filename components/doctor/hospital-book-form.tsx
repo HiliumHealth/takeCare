@@ -30,6 +30,7 @@ export interface LabRequest {
 
 interface HospitalBookFormProps {
   onDataChange: (data: any) => void;
+  onFilesChange?: (files: any) => void;
 }
 
 export function HospitalBookForm({ onDataChange }: HospitalBookFormProps) {

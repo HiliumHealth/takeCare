@@ -531,7 +531,7 @@ export default function DashboardPage() {
                             personalization: userData.personalization,
                             preview: true
                           });
-                          if (url) window.open(url as string, "_blank");
+                          if (url) window.open(url.toString(), "_blank");
                         }}
                         className="h-12 md:h-14 w-full sm:w-auto px-6 rounded-xl bg-black/5 dark:bg-white/5 text-black dark:text-white border border-black/5 dark:border-white/5 font-black text-[9px] md:text-[10px] uppercase tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all flex items-center justify-center gap-3 group cursor-pointer"
                       >

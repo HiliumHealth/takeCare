@@ -93,11 +93,13 @@ export function ActivityTable({ records = [], onDelete, onView, deletingId }: Ac
                           record.analysis ? "bg-emerald-500/10 text-emerald-600" : 
                           record.type === "CLINICAL_ASSESSMENT" ? "bg-blue-500/10 text-blue-600" :
                           record.type === "CLINICAL_NOTE" ? "bg-primary/10 text-primary" :
+                          record.type === "CLINICAL_CONSULTATION" ? "bg-emerald-500/10 text-emerald-600" :
                           "bg-amber-500/10 text-amber-600"
                         )}>
                           {record.analysis ? "Verified" : 
                            record.type === "CLINICAL_ASSESSMENT" ? "Evidence" : 
-                           record.type === "CLINICAL_NOTE" ? "Assessment" : "Pending"}
+                           record.type === "CLINICAL_NOTE" ? "Assessment" : 
+                           record.type === "CLINICAL_CONSULTATION" ? "Consultation" : "Pending"}
                         </Badge>
                       </TableCell>
                       <TableCell className="py-7">
@@ -170,9 +172,11 @@ export function ActivityTable({ records = [], onDelete, onView, deletingId }: Ac
                         <Badge className={cn(
                           "rounded-full font-black text-[7px] px-2 py-0.5 uppercase tracking-wider border-none shadow-sm",
                           record.analysis ? "bg-emerald-500/10 text-emerald-600" : 
+                          record.type === "CLINICAL_CONSULTATION" ? "bg-emerald-500/10 text-emerald-600" :
                           "bg-amber-500/10 text-amber-600"
                         )}>
-                          {record.analysis ? "Verified" : "Pending"}
+                          {record.analysis ? "Verified" : 
+                           record.type === "CLINICAL_CONSULTATION" ? "Consultation" : "Pending"}
                         </Badge>
                       </TableCell>
                       <TableCell className="py-6">

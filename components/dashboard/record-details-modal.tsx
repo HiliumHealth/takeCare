@@ -148,19 +148,143 @@ export function RecordDetailsModal({
                         </div>
                       </div>
                       
-                      <div className="space-y-4">
+                      <div className="space-y-6">
                         <div className="flex items-center justify-between">
-                          <h3 className="font-bricolage text-2xl font-black text-foreground tracking-tight">Doctor's Note</h3>
+                          <h3 className="font-bricolage text-2xl font-black text-foreground tracking-tight">Doctor's Assessment</h3>
                           <Badge className="rounded-full bg-[#10B981]/10 text-[#10B981] border-none text-[8px] font-black uppercase tracking-widest px-3 py-1">
                             Official Report
                           </Badge>
                         </div>
                         
-                        <div className="p-6 md:p-8 bg-black/[0.02] dark:bg-white/[0.02] rounded-3xl border border-black/[0.03] dark:border-white/[0.03] relative">
-                          <p className="text-sm md:text-lg text-black/80 dark:text-white/80 font-medium leading-relaxed font-serif italic">
-                            {record.extractedText || "No clinical text available for this record."}
-                          </p>
-                        </div>
+                        {record.type === "CLINICAL_CONSULTATION" ? (
+                          <div className="space-y-6">
+                            {/* Structured Clinical Sections */}
+                            {(() => {
+                              const text = record.extractedText || "";
+                              const sections: any = {};
+                              
+                              const patterns = {
+                                diagnosis: /DIAGNOSIS:\s*(.*?)(?=CONSULTATION NOTES:|$)/s,
+                                notes: /CONSULTATION NOTES:\s*(.*?)(?=PRESCRIPTIONS:|$)/s,
+                                prescriptions: /PRESCRIPTIONS:\s*(.*?)(?=LABORATORY INVESTIGATIONS:|$)/s,
+                                labs: /LABORATORY INVESTIGATIONS:\s*(.*?)(?=CLINICAL VITAL TARGETS:|$)/s,
+                                vitals: /CLINICAL VITAL TARGETS:\s*(.*?)(?=LIFESTYLE ADVICE:|$)/s,
+                                lifestyle: /LIFESTYLE ADVICE:\s*(.*?)(?=FOLLOW-UP:|$)/s,
+                                followUp: /FOLLOW-UP:\s*(.*)/s
+                              };
+
+                              Object.entries(patterns).forEach(([key, regex]) => {
+                                const match = text.match(regex);
+                                if (match && match[1]) sections[key] = match[1].trim();
+                              });
+
+                              return (
+                                <>
+                                  {/* Diagnosis & Notes */}
+                                  <div className="p-6 bg-primary/[0.03] dark:bg-primary/[0.05] rounded-3xl border border-primary/10">
+                                    <div className="flex flex-col gap-4">
+                                      {sections.diagnosis && (
+                                        <div>
+                                          <span className="font-black text-[9px] uppercase tracking-widest text-primary mb-1 block">Primary Diagnosis</span>
+                                          <p className="text-lg font-black text-foreground leading-tight">{sections.diagnosis}</p>
+                                        </div>
+                                      )}
+                                      {sections.notes && (
+                                        <div className="pt-4 border-t border-primary/5">
+                                          <span className="font-black text-[9px] uppercase tracking-widest text-black/40 dark:text-white/40 mb-1 block">Doctor's Observation</span>
+                                          <p className="text-sm font-medium text-black/70 dark:text-white/70 italic leading-relaxed">"{sections.notes}"</p>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+
+                                  {/* Treatment & Labs Grid */}
+                                  <div className="grid grid-cols-1 gap-4">
+                                    {sections.prescriptions && sections.prescriptions !== "None" && (
+                                      <div className="p-6 bg-emerald-500/[0.03] dark:bg-emerald-500/[0.05] rounded-3xl border border-emerald-500/10 relative overflow-hidden group">
+                                        <div className="absolute -right-2 -top-2 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                                          <Plus className="h-16 w-16 text-emerald-500" />
+                                        </div>
+                                        <div className="flex items-center gap-2 mb-3">
+                                          <div className="h-6 w-6 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+                                            <Plus className="h-3.5 w-3.5 text-emerald-500" />
+                                          </div>
+                                          <span className="font-black text-[9px] uppercase tracking-widest text-emerald-500">Treatment Plan</span>
+                                        </div>
+                                        <div className="space-y-2">
+                                          {sections.prescriptions.split("\n").filter((l: string) => l.trim()).map((line: string, i: number) => (
+                                            <div key={i} className="flex items-start gap-2 text-xs font-bold text-foreground">
+                                              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
+                                              <span>{line.replace(/^- /, "")}</span>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    )}
+
+                                    {sections.labs && !sections.labs.includes("None") && (
+                                      <div className="p-6 bg-amber-500/[0.03] dark:bg-amber-500/[0.05] rounded-3xl border border-amber-500/10 relative overflow-hidden group">
+                                        <div className="absolute -right-2 -top-2 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                                          <Activity className="h-16 w-16 text-amber-500" />
+                                        </div>
+                                        <div className="flex items-center gap-2 mb-3">
+                                          <div className="h-6 w-6 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                                            <Activity className="h-3.5 w-3.5 text-amber-500" />
+                                          </div>
+                                          <span className="font-black text-[9px] uppercase tracking-widest text-amber-500">Laboratory Requests</span>
+                                        </div>
+                                        <div className="space-y-2">
+                                          {sections.labs.split("\n").filter((l: string) => l.trim()).map((line: string, i: number) => (
+                                            <div key={i} className="flex items-start gap-2 text-xs font-bold text-foreground">
+                                              <div className="h-1.5 w-1.5 rounded-full bg-amber-500 mt-1.5 shrink-0" />
+                                              <span>{line.replace(/^- /, "")}</span>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    )}
+
+                                    {sections.lifestyle && (
+                                       <div className="p-6 bg-sky-500/[0.03] dark:bg-sky-500/[0.05] rounded-3xl border border-sky-500/10 relative overflow-hidden group">
+                                        <div className="absolute -right-2 -top-2 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                                          <Shield className="h-16 w-16 text-sky-500" />
+                                        </div>
+                                        <div className="flex items-center gap-2 mb-3">
+                                          <div className="h-6 w-6 rounded-lg bg-sky-500/10 flex items-center justify-center">
+                                            <Shield className="h-3.5 w-3.5 text-sky-500" />
+                                          </div>
+                                          <span className="font-black text-[9px] uppercase tracking-widest text-sky-500">Lifestyle Guidance</span>
+                                        </div>
+                                        <div className="space-y-2">
+                                          {sections.lifestyle.split("\n").filter((l: string) => l.trim()).map((line: string, i: number) => (
+                                            <div key={i} className="flex items-start gap-2 text-xs font-bold text-foreground">
+                                              <div className="h-1.5 w-1.5 rounded-full bg-sky-500 mt-1.5 shrink-0" />
+                                              <span>{line.replace(/^- /, "")}</span>
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    )}
+                                  </div>
+
+                                  {/* Follow-up Footer */}
+                                  {sections.followUp && (
+                                    <div className="flex items-center justify-between p-4 px-6 bg-rose-500/5 rounded-2xl border border-rose-500/10">
+                                      <span className="text-[10px] font-black uppercase tracking-widest text-rose-500">Next Review</span>
+                                      <span className="text-xs font-black text-rose-600">{sections.followUp}</span>
+                                    </div>
+                                  )}
+                                </>
+                              );
+                            })()}
+                          </div>
+                        ) : (
+                          <div className="p-6 md:p-8 bg-black/[0.02] dark:bg-white/[0.02] rounded-3xl border border-black/[0.03] dark:border-white/[0.03] relative">
+                            <p className="text-sm md:text-lg text-black/80 dark:text-white/80 font-medium leading-relaxed font-serif italic">
+                              {record.extractedText || "No clinical text available for this record."}
+                            </p>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </motion.div>

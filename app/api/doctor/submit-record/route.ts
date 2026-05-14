@@ -139,6 +139,12 @@ FOLLOW-UP: ${followUpDate || "Not specified"}
       // Don't fail the request if email fails
     }
 
+    // Update the invitation status to COMPLETED so it doesn't show as pending
+    await prisma.doctorInvitation.update({
+      where: { id: inviteId },
+      data: { status: "COMPLETED" }
+    });
+
     return NextResponse.json({ 
       success: true, 
       recordId: noteRecord.id,

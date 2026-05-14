@@ -13,9 +13,9 @@ import { PushSubscriptionButton } from "@/components/pwa/push-subscription-butto
 
 const NAV_ITEMS = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
-  { id: "messenger", label: "Messenger", icon: MessageSquare },
+  { id: "messenger", label: "Send Booklet", icon: MessageSquare },
   { id: "notifications", label: "Notifications", icon: Bell },
-  { id: "smart-care", label: "Xerine AI", icon: Plus, highlight: true },
+  { id: "smart-care", label: "Hilium AI", icon: Plus, highlight: true },
 ];
 
 export function DashboardSidebar({
@@ -168,7 +168,7 @@ export function DashboardSidebar({
         </div>
 
         <div className="px-4 py-2 flex items-center justify-between opacity-20 dark:opacity-40 text-black dark:text-white">
-          <p className="text-[8px] font-black uppercase tracking-widest">XERINE v1.0</p>
+          <p className="text-[8px] font-black uppercase tracking-widest">HILIUM AI v2.0</p>
           <Activity className="h-3 w-3" />
         </div>
       </div>

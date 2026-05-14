@@ -33,7 +33,7 @@ export async function generateSmartSummary(recordId: string) {
   const clinicalData = record.extractedText || record.analysis?.summary || "No clinical data found.";
 
   const prompt = `
-    You are Xerine, an elite medical AI.
+    You are Hilium AI, an elite medical intelligence system.
     Provide a warm, simple, and professional summary of the following clinical record for the patient.
     
     PATIENT CONTEXT:
@@ -54,21 +54,21 @@ export async function generateSmartSummary(recordId: string) {
   try {
     if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
       console.error("[AI-ACTION] GOOGLE_GENERATIVE_AI_API_KEY is not defined in environment.");
-      return "Xerine AI requires an API key to synthesize your clinical data. Please configure your environment.";
+      return "Hilium AI requires an API key to synthesize your clinical data. Please configure your environment.";
     }
 
     const { text } = await generateText({
-      model: google("gemini-2.5-flash"),
+      model: google("gemini-1.5-flash"),
       prompt: prompt,
     });
 
     if (!text) {
-      return "Xerine AI could not extract meaningful insights from this specific record. Manual review recommended.";
+      return "Hilium AI could not extract meaningful insights from this specific record. Manual review recommended.";
     }
 
     return text.trim();
   } catch (error: any) {
     console.error("[AI-SUMMARY-ERROR]", error.message || error);
-    return `Xerine AI encountered a temporary synchronization issue. (Error: ${error.message?.substring(0, 50)}...)`;
+    return `Hilium AI encountered a temporary synchronization issue. (Error: ${error.message?.substring(0, 50)}...)`;
   }
 }

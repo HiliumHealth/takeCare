@@ -481,66 +481,86 @@ export default function DashboardPage() {
       </header>
 
 
-      <main className="flex flex-1 flex-col w-full md:pb-6 px-1 md:px-8 lg:px-10 max-w-none overflow-x-hidden">
+      <main className="flex flex-1 flex-col w-full md:pb-6 px-4 md:px-8 lg:px-10 max-w-none overflow-x-hidden">
         <AnimatePresence mode="wait">
           {activeTab === "overview" && (
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div className="flex flex-col">
-                  <h1 className="font-bricolage text-xl md:text-3xl lg:text-4xl font-extrabold tracking-tighter flex flex-wrap items-center gap-x-2 md:gap-x-4 transition-all text-black dark:text-white">
-                    <span className="opacity-60 whitespace-nowrap">{getGreeting()},</span> 
-                    <span className="inline-block">{userData?.name?.split(' ')[0] || "Patient"}.</span>
-                  </h1>
-                  <p className="mt-2 md:mt-3 text-xs md:text-sm lg:text-base font-semibold text-black/90 dark:text-white/90 max-w-2xl leading-snug md:leading-relaxed">
-                    Your <span className="text-black dark:text-white font-bold italic underline decoration-primary/40 underline-offset-4 cursor-help">comprehensive health profile</span> is ready.
-                  </p>
+              <div className="flex flex-col gap-8">
+                {/* Greeting Section */}
+                <div className="flex flex-col items-center md:items-start text-center md:text-left pt-4 md:pt-0">
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex flex-col items-center md:items-start"
+                  >
+                    <h1 className="font-bricolage text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tighter flex flex-col md:flex-row items-center gap-x-3 transition-all text-black dark:text-white leading-tight">
+                      <span className="opacity-40">{getGreeting()},</span> 
+                      <span className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">{userData?.name?.split(' ')[0] || "Patient"}.</span>
+                    </h1>
+                    <p className="mt-3 text-xs md:text-base font-semibold text-black/60 dark:text-white/60 max-w-md md:max-w-2xl leading-relaxed">
+                      Your <span className="text-primary font-bold italic underline decoration-primary/20 underline-offset-4">comprehensive health profile</span> is analyzed and ready for review.
+                    </p>
+                  </motion.div>
                 </div>
                 
-                {/* Hospital Book Action Buttons */}
+                {/* Clinical Action Hub */}
                 <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.2 }}
-                  className="flex flex-col sm:flex-row items-center gap-3"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.1 }}
+                  className="w-full bg-white dark:bg-white/5 border border-black/[0.03] dark:border-white/[0.03] rounded-3xl p-4 md:p-6 shadow-xl shadow-black/5 dark:shadow-none relative overflow-hidden"
                 >
-                  {/* Preview Button */}
-                  <Button
-                    onClick={async () => {
-                      const { generateHospitalBook } = await import("@/lib/pdf-generator");
-                      const url = generateHospitalBook({
-                        user: userData,
-                        records: userData.medicalRecords,
-                        prescriptions: userData.prescriptions,
-                        personalization: userData.personalization,
-                        preview: true
-                      });
-                      if (url) window.open(url as string, "_blank");
-                    }}
-                    className="h-14 px-6 rounded-xl bg-white dark:bg-[#111] text-black dark:text-white border border-black/10 dark:border-white/10 font-black text-[10px] uppercase tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all shadow-md flex items-center gap-3 group cursor-pointer"
-                  >
-                    <Eye className="h-4 w-4 text-primary group-hover:scale-110 transition-transform" />
-                    <span>Preview Record</span>
-                  </Button>
+                  <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                    <ShieldCheck className="h-24 w-24 text-primary" />
+                  </div>
+                  
+                  <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
+                    <div className="flex flex-col gap-1">
+                      <h3 className="font-bricolage text-sm md:text-lg font-bold text-black dark:text-white">Hospital Book (v2.0)</h3>
+                      <p className="text-[10px] md:text-xs font-medium text-black/40 dark:text-white/40 uppercase tracking-widest">Signed & Verified Clinical History</p>
+                    </div>
 
-                  {/* Download Button */}
-                  <Button
-                    onClick={async () => {
-                      const { generateHospitalBook } = await import("@/lib/pdf-generator");
-                      generateHospitalBook({
-                        user: userData,
-                        records: userData.medicalRecords,
-                        prescriptions: userData.prescriptions,
-                        personalization: userData.personalization
-                      });
-                      toast.success("Downloading Vault...", {
-                        description: "Compiling and signing your official Hilium Hospital Book.",
-                        icon: <CheckCircle2 className="h-5 w-5 text-emerald-500" />
-                      });
-                    }}
-                    className="h-14 px-6 rounded-xl bg-primary text-white font-black text-[10px] uppercase tracking-widest hover:shadow-xl hover:shadow-primary/30 active:scale-95 transition-all flex items-center gap-3 group cursor-pointer border-none"
-                  >
-                    <Download className="h-4 w-4 text-white group-hover:translate-y-0.5 transition-transform" />
-                    <span>Download Book</span>
-                  </Button>
+                    <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+                      {/* Preview Button */}
+                      <Button
+                        onClick={async () => {
+                          const { generateHospitalBook } = await import("@/lib/pdf-generator");
+                          const url = generateHospitalBook({
+                            user: userData,
+                            records: userData.medicalRecords,
+                            prescriptions: userData.prescriptions,
+                            personalization: userData.personalization,
+                            preview: true
+                          });
+                          if (url) window.open(url as string, "_blank");
+                        }}
+                        className="h-12 md:h-14 w-full sm:w-auto px-6 rounded-xl bg-black/5 dark:bg-white/5 text-black dark:text-white border border-black/5 dark:border-white/5 font-black text-[9px] md:text-[10px] uppercase tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all flex items-center justify-center gap-3 group cursor-pointer"
+                      >
+                        <Eye className="h-4 w-4 text-primary group-hover:scale-110 transition-transform" />
+                        <span>Preview Record</span>
+                      </Button>
+
+                      {/* Download Button */}
+                      <Button
+                        onClick={async () => {
+                          const { generateHospitalBook } = await import("@/lib/pdf-generator");
+                          generateHospitalBook({
+                            user: userData,
+                            records: userData.medicalRecords,
+                            prescriptions: userData.prescriptions,
+                            personalization: userData.personalization
+                          });
+                          toast.success("Downloading Vault...", {
+                            description: "Compiling and signing your official Hilium Hospital Book.",
+                            icon: <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+                          });
+                        }}
+                        className="h-12 md:h-14 w-full sm:w-auto px-6 rounded-xl bg-primary text-white font-black text-[9px] md:text-[10px] uppercase tracking-widest hover:shadow-xl hover:shadow-primary/30 active:scale-95 transition-all flex items-center justify-center gap-3 group cursor-pointer border-none"
+                      >
+                        <Download className="h-4 w-4 text-white group-hover:translate-y-0.5 transition-transform" />
+                        <span>Download Book</span>
+                      </Button>
+                    </div>
+                  </div>
                 </motion.div>
               </div>
           )}

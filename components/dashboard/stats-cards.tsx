@@ -96,7 +96,7 @@ export function StatsCards({ stats }: StatsCardsProps) {
   const healthScore = stats?.healthScore ?? 0;
 
   return (
-    <div className="grid grid-cols-3 gap-2 md:gap-8 lg:grid-cols-3 px-0 lg:px-0">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 px-0">
       <StatCard
         title="Network"
         value={doctorsCount.toString()}
@@ -105,22 +105,43 @@ export function StatsCards({ stats }: StatsCardsProps) {
         delay={0.1}
         colorClass="bg-blue-600"
       />
-      <StatCard
-        title="Records"
-        value={recordsCount.toString()}
-        subtitle="Clinical"
-        icon={Building2}
-        delay={0.2}
-        colorClass="bg-vital-orange"
-      />
-      <StatCard
-        title="Health"
-        value={`${healthScore}%`}
-        subtitle="Score"
-        icon={Activity}
-        delay={0.3}
-        colorClass="bg-emerald-500"
-      />
+      <div className="grid grid-cols-2 gap-4 sm:hidden">
+        <StatCard
+          title="Records"
+          value={recordsCount.toString()}
+          subtitle="Clinical"
+          icon={Building2}
+          delay={0.2}
+          colorClass="bg-vital-orange"
+        />
+        <StatCard
+          title="Health"
+          value={`${healthScore}%`}
+          subtitle="Score"
+          icon={Activity}
+          delay={0.3}
+          colorClass="bg-emerald-500"
+        />
+      </div>
+      {/* Desktop view for records/health */}
+      <div className="hidden sm:contents">
+        <StatCard
+          title="Records"
+          value={recordsCount.toString()}
+          subtitle="Clinical"
+          icon={Building2}
+          delay={0.2}
+          colorClass="bg-vital-orange"
+        />
+        <StatCard
+          title="Health"
+          value={`${healthScore}%`}
+          subtitle="Score"
+          icon={Activity}
+          delay={0.3}
+          colorClass="bg-emerald-500"
+        />
+      </div>
     </div>
   );
 }

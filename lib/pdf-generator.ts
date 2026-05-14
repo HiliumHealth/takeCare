@@ -64,13 +64,13 @@ export const generateHospitalBook = (data: HospitalBookData) => {
   // Patient Dossier Box
   doc.setDrawColor(230, 230, 230);
   doc.setLineWidth(0.2);
-  doc.roundedRect(25, 130, 160, 90, 2, 2, "D");
+  doc.roundedRect(25, 120, 160, 80, 2, 2, "D");
   
   doc.setFillColor(248, 250, 255);
-  doc.rect(25.2, 130.2, 159.6, 12, "F");
+  doc.rect(25.2, 120.2, 159.6, 12, "F");
   doc.setTextColor(0, 71, 255);
   doc.setFontSize(8);
-  doc.text("PATIENT DOSSIER (OFFICIAL)", 105, 138, { align: "center" });
+  doc.text("PATIENT DOSSIER (OFFICIAL)", 105, 128, { align: "center" });
 
   doc.setTextColor(60, 60, 60);
   doc.setFontSize(10);
@@ -89,24 +89,41 @@ export const generateHospitalBook = (data: HospitalBookData) => {
     doc.line(40, y + 2, 175, y + 2);
   };
 
-  drawRow("FULL NAME", (user.name || "N/A").toUpperCase(), 155);
-  drawRow("PATIENT ID", (user.id || "").substring(0, 16).toUpperCase(), 165);
-  drawRow("BLOOD GROUP", personalization?.bloodType || "NOT SPECIFIED", 175);
-  drawRow("DATE OF ISSUE", timestamp.split(",")[0], 185);
-  drawRow("SECURITY HASH", (user.id || "HASH").substring(0, 8).toUpperCase(), 195);
-  drawRow("PROVIDER", "HILIUM CLOUD INFRASTRUCTURE", 205);
+  drawRow("FULL NAME", (user.name || "N/A").toUpperCase(), 145);
+  drawRow("PATIENT ID", (user.id || "").substring(0, 16).toUpperCase(), 155);
+  drawRow("BLOOD GROUP", personalization?.bloodType || "NOT SPECIFIED", 165);
+  drawRow("DATE OF ISSUE", timestamp.split(",")[0], 175);
+  drawRow("SECURITY HASH", (user.id || "HASH").substring(0, 8).toUpperCase(), 185);
+  drawRow("PROVIDER", "HILIUM CLOUD INFRASTRUCTURE", 195);
+
+  // AI Executive Summary on Cover
+  doc.setFillColor(250, 250, 250);
+  doc.rect(25, 210, 160, 30, "F");
+  
+  doc.setFontSize(7);
+  doc.setTextColor(100, 100, 100);
+  doc.text("HILIUM AI EXECUTIVE SUMMARY", 30, 218);
+  
+  doc.setTextColor(50, 50, 50);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8.5);
+  
+  // Use the most recent record's summary or a generic one
+  const latestSummary = records[0]?.analysis?.summary || records[0]?.fallbackSummary || "Patient records successfully digitized and secured within the Hilium Clinical Operating System. No immediate clinical anomalies detected in the primary overview.";
+  const coverSummary = doc.splitTextToSize(latestSummary, 150);
+  doc.text(coverSummary.slice(0, 3), 30, 225); // Limit to 3 lines on cover
 
   // Digital Verification Seal
   doc.setDrawColor(0, 71, 255);
   doc.setLineWidth(0.5);
-  doc.circle(165, 255, 18, "D");
+  doc.circle(165, 265, 18, "D");
   doc.setTextColor(0, 71, 255);
   doc.setFontSize(6);
-  doc.text("OFFICIALLY SIGNED", 165, 250, { align: "center" });
+  doc.text("OFFICIALLY SIGNED", 165, 260, { align: "center" });
   doc.setFontSize(10);
-  doc.text("HILIUM AI", 165, 257, { align: "center" });
+  doc.text("HILIUM AI", 165, 267, { align: "center" });
   doc.setFontSize(6);
-  doc.text("VERIFIED RECORD", 165, 262, { align: "center" });
+  doc.text("VERIFIED RECORD", 165, 272, { align: "center" });
 
   // --- PAGE 2: CLINICAL OVERVIEW ---
   addNewPage();

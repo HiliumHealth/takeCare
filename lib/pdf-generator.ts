@@ -27,73 +27,78 @@ export const generateHospitalBook = (data: HospitalBookData) => {
   const addHeader = () => {
     // Top Bar
     doc.setFillColor(0, 71, 255); // Hilium Blue
-    doc.rect(0, 0, 210, 15, "F");
+    doc.rect(0, 0, 210, 12, "F");
     
     doc.setTextColor(255, 255, 255);
-    doc.setFontSize(8);
+    doc.setFontSize(7);
     doc.setFont("helvetica", "bold");
-    doc.text("HILIUM CLINICAL VAULT • OFFICIAL PATIENT BOOKLET", 105, 10, { align: "center" });
+    doc.text("HILIUM CLINICAL VAULT • OFFICIAL PATIENT BOOKLET", 105, 8, { align: "center" });
   };
 
   // --- PAGE 1: COVER ---
   addHeader();
 
-  // Branded Background Elements
-  doc.setFillColor(0, 71, 255, 0.02);
-  doc.rect(0, 0, 210, 297, "F");
-
+  // Clean White Background (Default)
+  
   // Logo
   doc.setTextColor(0, 71, 255);
-  doc.setFontSize(48);
+  doc.setFontSize(44);
   doc.setFont("helvetica", "bold");
-  doc.text("HILIUM", 105, 70, { align: "center" });
+  doc.text("HILIUM", 105, 60, { align: "center" });
   
-  doc.setFontSize(10);
+  doc.setFontSize(9);
   doc.setFont("helvetica", "bold");
-  doc.setTextColor(150, 150, 150);
-  doc.text("INTELLIGENT CLINICAL OPERATING SYSTEM", 105, 80, { align: "center" });
+  doc.setTextColor(100, 100, 100);
+  doc.text("INTELLIGENT CLINICAL OPERATING SYSTEM", 105, 68, { align: "center" });
 
   doc.setDrawColor(0, 71, 255);
-  doc.setLineWidth(0.5);
-  doc.line(80, 85, 130, 85);
+  doc.setLineWidth(0.3);
+  doc.line(85, 72, 125, 72);
 
   doc.setTextColor(0, 0, 0);
-  doc.setFontSize(28);
+  doc.setFontSize(26);
   doc.setFont("helvetica", "bold");
-  doc.text("PERSONAL HEALTH", 105, 110, { align: "center" });
-  doc.text("RECORD BOOK", 105, 122, { align: "center" });
+  doc.text("PERSONAL HEALTH", 105, 95, { align: "center" });
+  doc.text("RECORD BOOK", 105, 107, { align: "center" });
 
   // Patient Dossier Box
-  doc.setFillColor(255, 255, 255);
-  doc.setDrawColor(240, 240, 240);
-  doc.roundedRect(25, 140, 160, 80, 4, 4, "FD");
+  doc.setDrawColor(230, 230, 230);
+  doc.setLineWidth(0.2);
+  doc.roundedRect(25, 130, 160, 90, 2, 2, "D");
   
-  doc.setFillColor(0, 71, 255, 0.05);
-  doc.rect(25, 140, 160, 15, "F");
+  doc.setFillColor(248, 250, 255);
+  doc.rect(25.2, 130.2, 159.6, 12, "F");
   doc.setTextColor(0, 71, 255);
   doc.setFontSize(8);
-  doc.text("PATIENT DOSSIER (CONFIDENTIAL)", 105, 150, { align: "center" });
+  doc.text("PATIENT DOSSIER (OFFICIAL)", 105, 138, { align: "center" });
 
-  doc.setTextColor(50, 50, 50);
+  doc.setTextColor(60, 60, 60);
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
   
   const drawRow = (label: string, value: string, y: number) => {
+    doc.setFontSize(8);
+    doc.setTextColor(120, 120, 120);
     doc.text(label, 40, y);
     doc.setFont("helvetica", "bold");
-    doc.text(value, 90, y);
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(10);
+    doc.text(value, 95, y);
     doc.setFont("helvetica", "normal");
+    doc.setDrawColor(240, 240, 240);
     doc.line(40, y + 2, 175, y + 2);
   };
 
-  drawRow("FULL NAME", user.name.toUpperCase(), 170);
-  drawRow("PATIENT ID", user.id.substring(0, 16).toUpperCase(), 180);
-  drawRow("BLOOD GROUP", personalization?.bloodType || "PENDING", 190);
-  drawRow("DATE OF ISSUE", timestamp.split(",")[0], 200);
-  drawRow("SECURITY HASH", Math.random().toString(36).substring(7).toUpperCase(), 210);
+  drawRow("FULL NAME", (user.name || "N/A").toUpperCase(), 155);
+  drawRow("PATIENT ID", (user.id || "").substring(0, 16).toUpperCase(), 165);
+  drawRow("BLOOD GROUP", personalization?.bloodType || "NOT SPECIFIED", 175);
+  drawRow("DATE OF ISSUE", timestamp.split(",")[0], 185);
+  drawRow("SECURITY HASH", (user.id || "HASH").substring(0, 8).toUpperCase(), 195);
+  drawRow("PROVIDER", "HILIUM CLOUD INFRASTRUCTURE", 205);
 
   // Digital Verification Seal
   doc.setDrawColor(0, 71, 255);
+  doc.setLineWidth(0.5);
   doc.circle(165, 255, 18, "D");
   doc.setTextColor(0, 71, 255);
   doc.setFontSize(6);
@@ -107,110 +112,114 @@ export const generateHospitalBook = (data: HospitalBookData) => {
   addNewPage();
   
   doc.setTextColor(0, 71, 255);
-  doc.setFontSize(18);
+  doc.setFontSize(16);
   doc.setFont("helvetica", "bold");
   doc.text("Clinical History & Intelligent Summary", 20, 30);
-  doc.line(20, 35, 190, 35);
+  doc.setDrawColor(0, 71, 255);
+  doc.setLineWidth(0.5);
+  doc.line(20, 33, 190, 33);
 
   let yPos = 45;
 
   records.forEach((record, index) => {
-    // Check for page break
-    if (yPos > 240) {
+    if (yPos > 230) {
       addNewPage();
       yPos = 30;
     }
 
-    doc.setFillColor(252, 253, 255);
-    doc.setDrawColor(230, 235, 255);
-    doc.roundedRect(15, yPos, 180, 55, 3, 3, "FD");
+    // Record Card
+    doc.setDrawColor(240, 240, 240);
+    doc.setLineWidth(0.2);
+    doc.roundedRect(15, yPos, 180, 50, 1, 1, "D");
 
     // Header within card
-    doc.setFillColor(0, 71, 255, 0.1);
-    doc.rect(15, yPos, 180, 10, "F");
+    doc.setFillColor(250, 252, 255);
+    doc.rect(15.2, yPos + 0.2, 179.6, 8, "F");
     
-    doc.setFontSize(9);
+    doc.setFontSize(7);
     doc.setTextColor(0, 71, 255);
     doc.setFont("helvetica", "bold");
-    doc.text(`ENTRY #${String(index + 1).padStart(3, '0')} • ${record.type}`, 20, yPos + 6.5);
-    doc.text(new Date(record.createdAt).toLocaleDateString(), 185, yPos + 6.5, { align: "right" });
+    doc.text(`ENTRY #${String(index + 1).padStart(3, '0')} • ${record.type}`, 20, yPos + 6);
+    doc.text(new Date(record.createdAt).toLocaleDateString(), 185, yPos + 6, { align: "right" });
 
     doc.setTextColor(0, 0, 0);
-    doc.setFontSize(11);
-    doc.text(record.fileName, 22, yPos + 20);
+    doc.setFontSize(10);
+    doc.text(record.fileName || "Unnamed Clinical Record", 22, yPos + 18);
     
     // AI Summary Section
-    doc.setFillColor(240, 240, 240, 0.5);
-    doc.roundedRect(22, yPos + 25, 166, 22, 1, 1, "F");
+    doc.setFillColor(250, 250, 250);
+    doc.rect(22, yPos + 22, 166, 22, "F");
     
-    doc.setFontSize(8);
-    doc.setTextColor(100, 100, 100);
-    doc.text("XERINE AI CLINICAL SUMMARY", 25, yPos + 30);
+    doc.setFontSize(7);
+    doc.setTextColor(120, 120, 120);
+    doc.text("XERINE AI CLINICAL INSIGHT", 25, yPos + 27);
     
-    doc.setTextColor(50, 50, 50);
+    doc.setTextColor(60, 60, 60);
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
-    const summary = record.analysis?.summary || record.fallbackSummary || "Automated analysis pending synchronization.";
+    doc.setFontSize(8.5);
+    const summary = record.analysis?.summary || record.fallbackSummary || "Clinical synthesis in progress.";
     const splitSummary = doc.splitTextToSize(summary, 160);
-    doc.text(splitSummary, 25, yPos + 35);
+    doc.text(splitSummary, 25, yPos + 32);
 
-    yPos += 65;
+    yPos += 58;
   });
 
   // --- PAGE 3: PRESCRIPTIONS ---
-  if (prescriptions.length > 0) {
+  if (prescriptions && prescriptions.length > 0) {
     addNewPage();
     doc.setTextColor(0, 71, 255);
-    doc.setFontSize(18);
+    doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
     doc.text("Medication & Treatment Logs", 20, 30);
-    doc.line(20, 35, 190, 35);
+    doc.line(20, 33, 190, 33);
 
     yPos = 45;
     prescriptions.forEach((presc) => {
-      presc.medications.forEach((med: any) => {
-        if (yPos > 260) {
-          addNewPage();
-          yPos = 30;
-        }
+      if (presc.medications) {
+        presc.medications.forEach((med: any) => {
+          if (yPos > 260) {
+            addNewPage();
+            yPos = 30;
+          }
 
-        doc.setFillColor(255, 255, 255);
-        doc.setDrawColor(240, 240, 240);
-        doc.roundedRect(15, yPos, 180, 25, 2, 2, "D");
+          doc.setDrawColor(245, 245, 245);
+          doc.roundedRect(15, yPos, 180, 22, 1, 1, "D");
 
-        doc.setFontSize(11);
-        doc.setFont("helvetica", "bold");
-        doc.setTextColor(0, 0, 0);
-        doc.text(med.name, 25, yPos + 8);
-        
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(9);
-        doc.setTextColor(100, 100, 100);
-        doc.text(`${med.dosage} • ${med.frequency}`, 25, yPos + 14);
-        doc.text(`INSTRUCTIONS: ${med.instructions || "Standard medical use"}`, 25, yPos + 20);
-        
-        yPos += 30;
-      });
+          doc.setFontSize(10);
+          doc.setFont("helvetica", "bold");
+          doc.setTextColor(0, 0, 0);
+          doc.text(med.name, 25, yPos + 8);
+          
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(8);
+          doc.setTextColor(100, 100, 100);
+          doc.text(`${med.dosage} • ${med.frequency}`, 25, yPos + 14);
+          doc.text(`INSTRUCTIONS: ${med.instructions || "Standard use"}`, 25, yPos + 19);
+          
+          yPos += 28;
+        });
+      }
     });
   }
 
   // Final Signature Page
-  if (yPos > 220) addNewPage();
+  if (yPos > 210) addNewPage();
   
   doc.setDrawColor(200, 200, 200);
-  doc.line(120, 250, 180, 250);
-  doc.setFontSize(8);
-  doc.text("CHIEF MEDICAL OFFICER (HILIUM AI)", 150, 255, { align: "center" });
-  
+  doc.line(130, 255, 180, 255);
   doc.setFontSize(7);
+  doc.setTextColor(100, 100, 100);
+  doc.text("CERTIFIED BY HILIUM CLINICAL AI", 155, 260, { align: "center" });
+  
+  doc.setFontSize(6);
   doc.setTextColor(180, 180, 180);
-  doc.text(`DOCUMENT UID: ${user.id}-${Date.now()}`, 105, 280, { align: "center" });
-  doc.text("GENUINE HILIUM CLINICAL ASSET • HIPAA COMPLIANT", 105, 285, { align: "center" });
+  doc.text(`UID: ${user.id || 'N/A'}-${Date.now()}`, 105, 280, { align: "center" });
+  doc.text("OFFICIAL CLINICAL RECORD • HIPAA COMPLIANT SECURED", 105, 285, { align: "center" });
 
   if (data.preview) {
     return doc.output("bloburl");
   } else {
-    doc.save(`${user.name.replace(/\s+/g, "_")}_Hospital_Book.pdf`);
+    doc.save(`${(user.name || "Patient").replace(/\s+/g, "_")}_Hospital_Book.pdf`);
     return null;
   }
 };

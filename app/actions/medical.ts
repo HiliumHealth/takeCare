@@ -5,6 +5,8 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { auth } from "@/auth";
 
+// Build ID: TC-MED-V2
+
 // ============================================================
 // SECURE SERVER ACTIONS — all use auth() to identify the user
 // No client-provided IDs are trusted for identity

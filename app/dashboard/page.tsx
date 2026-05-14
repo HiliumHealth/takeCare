@@ -68,7 +68,7 @@ function DashboardLoading() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: "spring", damping: 20 }}
-            className="relative z-20 h-32 w-32 rounded-full bg-white dark:bg-black shadow-[0_0_50px_rgba(0,71,255,0.15)] flex items-center justify-center border border-primary/10 overflow-hidden group"
+            className="relative z-20 h-32 w-32 rounded-full bg-white shadow-[0_0_50px_rgba(0,71,255,0.15)] flex items-center justify-center border border-primary/10 overflow-hidden group"
           >
             <div className="absolute inset-0 bg-linear-to-tr from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             <img src="/hilium.png" alt="Hilium Logo" className="w-16 h-16 object-contain" />
@@ -332,6 +332,11 @@ export default function DashboardPage() {
     }
   }, [activeTab, loading]);
 
+  // Reset to page 1 on search
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
   if (loading || status === "loading") return <DashboardLoading />;
 
   const combinedRecords = [
@@ -375,11 +380,6 @@ export default function DashboardPage() {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
-  // Reset to page 1 on search
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery]);
 
   const getGreeting = () => {
     const hour = new Date().getHours();

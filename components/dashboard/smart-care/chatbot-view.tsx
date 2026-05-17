@@ -175,7 +175,7 @@ ${localInput.trim()}
       {/* Messages Scroll Area - Flex-1 ensures it takes all available space above the dock */}
       <div className="flex-1 min-h-0 relative">
         <ScrollArea className="h-full px-0.5 md:px-10" ref={scrollAreaRef}>
-          <div className="flex flex-col gap-6 md:gap-10 max-w-4xl mx-auto w-full pt-6 pb-10">
+          <div className="flex flex-col gap-6 md:gap-10 max-w-4xl mx-auto w-full pt-6 pb-40 md:pb-10">
             {messages.length <= 1 && (
               <div className="flex flex-col items-center justify-center py-20 text-center">
                 <div className="h-32 w-32 rounded-[2.5rem] overflow-hidden mb-8 border-4 border-white shadow-2xl shadow-black/5 rotate-2 transition-transform hover:rotate-0 duration-500">
@@ -375,8 +375,8 @@ ${localInput.trim()}
         <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white dark:from-[#0a0a0a] to-transparent pointer-events-none z-10" />
       </div>
 
-      {/* Persistent Smart Input Dock - Sticky at bottom of container */}
-      <div className="px-1 md:px-10 pb-8 pt-4 bg-white/40 dark:bg-black/40 backdrop-blur-md border-t border-black/[0.03] dark:border-white/[0.03] relative">
+      {/* Persistent Smart Input Dock - Fixed on mobile, sticky at bottom on desktop */}
+      <div className="fixed bottom-[90px] left-2 right-2 z-40 md:relative md:bottom-auto md:left-auto md:right-auto px-2 md:px-10 pb-4 md:pb-8 pt-4 bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-2xl border border-black/5 dark:border-white/5 md:border-x-0 md:border-b-0 md:border-t md:border-black/[0.03] md:dark:border-white/[0.03] rounded-[2.5rem] md:rounded-none shadow-[0_-20px_40px_-20px_rgba(0,0,0,0.1)] md:shadow-none">
         
         {/* Selected Tool Indicator - Floats above the input dock */}
         <div className="absolute -top-12 left-10 right-10 flex justify-center z-30 pointer-events-none">

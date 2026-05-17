@@ -62,7 +62,7 @@ export function DashboardSidebar({
               key={item.id}
               onClick={() => onValueChange(item.id)}
               className={cn(
-                "w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group relative",
+                "w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 group relative cursor-pointer",
                 isActive
                   ? "bg-blue-600 text-white shadow-xl shadow-blue-600/20"
                   : "text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white hover:bg-black/[0.03] dark:hover:bg-white/[0.03]"
@@ -115,7 +115,7 @@ export function DashboardSidebar({
           user={user}
           onUpdate={() => window.location.reload()}
           customTrigger={
-            <button className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white hover:bg-black/[0.03] dark:hover:bg-white/[0.03] transition-all group">
+            <button className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white hover:bg-black/[0.03] dark:hover:bg-white/[0.03] transition-all group cursor-pointer">
               <Settings className="h-6 w-6 group-hover:rotate-45 transition-transform duration-500" />
               <span className="font-bold text-sm tracking-tight">Account Settings</span>
             </button>
@@ -125,14 +125,14 @@ export function DashboardSidebar({
         {isInstallable && (
           <button 
             onClick={installApp}
-            className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl bg-primary/10 text-primary hover:bg-primary/20 transition-all group border border-primary/10"
+            className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl bg-primary/10 text-primary hover:bg-primary/20 transition-all group border border-primary/10 cursor-pointer"
           >
             <Download className="h-6 w-6 animate-bounce" />
             <span className="font-bold text-sm tracking-tight">Install App</span>
           </button>
         )}
 
-        <button className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white hover:bg-black/[0.03] dark:hover:bg-white/[0.03] transition-all group">
+        <button className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white hover:bg-black/[0.03] dark:hover:bg-white/[0.03] transition-all group cursor-pointer">
           <ShieldCheck className="h-6 w-6" />
           <span className="font-bold text-sm tracking-tight">Secure Records</span>
         </button>
@@ -160,7 +160,7 @@ export function DashboardSidebar({
           <Button
             variant="ghost"
             onClick={() => signOut()}
-            className="w-full justify-start gap-3 h-12 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500 text-black/40 dark:text-white/40 transition-all font-bold text-xs"
+            className="w-full justify-start gap-3 h-12 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500 text-black/40 dark:text-white/40 transition-all font-bold text-xs cursor-pointer"
           >
             <LogOut className="h-4 w-4" />
             Sign Out

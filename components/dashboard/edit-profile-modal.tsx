@@ -89,7 +89,7 @@ export function EditProfileModal({ user, onUpdate, customTrigger }: EditProfileM
     <Dialog>
       <DialogTrigger 
         render={customTrigger as React.ReactElement || (
-          <Button variant="outline" className="rounded-xl lg:rounded-2xl border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 font-black text-[10px] lg:text-xs uppercase tracking-widest hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-all px-4 lg:px-8 h-10 lg:h-12 shadow-sm whitespace-nowrap shrink-0 text-black dark:text-white">
+          <Button variant="outline" className="rounded-xl lg:rounded-2xl border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 font-black text-[10px] lg:text-xs uppercase tracking-widest hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-all px-4 lg:px-8 h-10 lg:h-12 shadow-sm whitespace-nowrap shrink-0 text-black dark:text-white cursor-pointer">
             Edit Profile
           </Button>
         )}
@@ -177,7 +177,7 @@ export function EditProfileModal({ user, onUpdate, customTrigger }: EditProfileM
           <Button 
             onClick={handleUpdate} 
             disabled={loading}
-            className="w-full h-14 bg-black dark:bg-white text-white dark:text-black rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-black/90 dark:hover:bg-white/90 shadow-xl shadow-black/10 dark:shadow-white/10"
+            className="w-full h-14 bg-black dark:bg-white text-white dark:text-black rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-black/90 dark:hover:bg-white/90 shadow-xl shadow-black/10 dark:shadow-white/10 cursor-pointer"
           >
             {loading ? <Loader2 className="animate-spin mr-2" /> : "Save Profile Changes"}
           </Button>
@@ -233,7 +233,7 @@ function DeleteConfirm({ clerkId }: { clerkId: string }) {
       <Button 
         variant="ghost" 
         onClick={() => setOpen(true)}
-        className="h-10 rounded-xl bg-red-100 text-red-600 font-bold text-[10px] uppercase tracking-wider hover:bg-red-600 hover:text-white transition-all px-4"
+        className="h-10 rounded-xl bg-red-100 text-red-600 font-bold text-[10px] uppercase tracking-wider hover:bg-red-600 hover:text-white transition-all px-4 cursor-pointer"
       >
         Delete Data
       </Button>
@@ -252,13 +252,13 @@ function DeleteConfirm({ clerkId }: { clerkId: string }) {
           <div className="flex gap-3 mt-8">
              <Button 
                variant="outline" 
-               className="flex-1 h-12 rounded-xl font-bold border-black/5 dark:border-white/5 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white" 
+               className="flex-1 h-12 rounded-xl font-bold border-black/5 dark:border-white/5 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white cursor-pointer" 
                onClick={() => setOpen(false)}
              >
                Cancel
              </Button>
              <Button 
-               className="flex-1 h-12 rounded-xl bg-red-600 text-white font-bold hover:bg-red-700 shadow-lg shadow-red-200" 
+               className="flex-1 h-12 rounded-xl bg-red-600 text-white font-bold hover:bg-red-700 shadow-lg shadow-red-200 cursor-pointer" 
                onClick={handleDelete}
                disabled={deleting}
              >

@@ -109,12 +109,12 @@ export function RecordDetailsModal({
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-all text-black/20 dark:text-white/20 hover:text-black/60 dark:hover:text-white/60 hidden md:flex">
+                  <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-all text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hidden md:flex cursor-pointer">
                     <Share2 className="h-5 w-5" />
                   </Button>
                   <Button
                     onClick={onClose}
-                    className="h-12 w-12 rounded-full bg-black/[0.03] dark:bg-white/[0.03] hover:bg-black/5 dark:hover:bg-white/5 transition-all text-black/40 dark:text-white/40 hover:text-black/80 dark:hover:text-white/80 flex items-center justify-center p-0"
+                    className="h-12 w-12 rounded-full bg-black/[0.03] dark:bg-white/[0.03] hover:bg-black/5 dark:hover:bg-white/5 transition-all text-neutral-700 dark:text-neutral-200 hover:text-neutral-950 dark:hover:text-white flex items-center justify-center p-0 cursor-pointer"
                   >
                     <X className="h-6 w-6" />
                   </Button>
@@ -126,12 +126,12 @@ export function RecordDetailsModal({
                   {record.fileName}
                 </h2>
 
-                <div className="flex flex-wrap items-center gap-6 text-black/30 dark:text-white/30 font-bold text-xs md:text-sm">
+                <div className="flex flex-wrap items-center gap-6 text-neutral-800 dark:text-neutral-200 font-extrabold text-xs md:text-sm">
                   <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4" />
+                    <Calendar className="h-4 w-4 text-primary" />
                     <span>Created {new Date(record.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-primary/40">
+                  <div className="flex items-center gap-2 text-primary">
                     <Shield className="h-4 w-4" />
                     <span>Encrypted Record</span>
                   </div>
@@ -165,7 +165,7 @@ export function RecordDetailsModal({
                         </div>
                         <div className="flex flex-col">
                           <span className="font-black text-[10px] uppercase tracking-[0.2em] text-primary">Clinical Observation</span>
-                          <span className="text-[9px] font-bold text-black/30 dark:text-white/30 uppercase tracking-widest">Medical Assessment Data</span>
+                          <span className="text-[9px] font-bold text-neutral-800 dark:text-neutral-200 uppercase tracking-widest">Medical Assessment Data</span>
                         </div>
                       </div>
 
@@ -216,7 +216,7 @@ export function RecordDetailsModal({
                                           {sections.diagnosis}
                                         </h4>
                                         {sections.notes && (
-                                          <p className="text-sm md:text-base font-medium text-black/60 dark:text-white/60 leading-relaxed italic border-l-2 border-primary/20 pl-4 py-1">
+                                          <p className="text-sm md:text-base font-bold text-neutral-950 dark:text-neutral-50 leading-relaxed italic border-l-2 border-primary/20 pl-4 py-3 bg-neutral-50 dark:bg-neutral-900/40 p-3 rounded-2xl">
                                             {sections.notes}
                                           </p>
                                         )}
@@ -291,7 +291,7 @@ export function RecordDetailsModal({
                                         {sections.lifestyle.split("\n").filter((l: string) => l.trim()).map((line: string, i: number) => (
                                           <div key={i} className="flex items-center gap-3 p-4 rounded-2xl bg-white/40 dark:bg-white/5 border border-sky-500/5 shadow-none group hover:bg-white transition-all">
                                             <div className="h-2 w-2 rounded-full bg-sky-500/30 group-hover:bg-sky-500 transition-colors" />
-                                            <span className="text-xs font-black uppercase tracking-widest text-black/60 dark:text-white/60">{line.replace(/^- /, "")}</span>
+                                            <span className="text-xs font-black uppercase tracking-widest text-neutral-950 dark:text-neutral-50">{line.replace(/^- /, "")}</span>
                                           </div>
                                         ))}
                                       </div>
@@ -305,7 +305,7 @@ export function RecordDetailsModal({
                                         <Calendar className="h-5 w-5 text-white dark:text-black" />
                                       </div>
                                       <div>
-                                        <p className="text-[9px] font-black uppercase tracking-widest text-white/40 dark:text-black/40">Clinical Follow-up</p>
+                                        <p className="text-[9px] font-black uppercase tracking-widest text-neutral-300 dark:text-neutral-700">Clinical Follow-up</p>
                                         <p className="text-sm font-bold text-white dark:text-black">{sections.followUp || "As per clinical schedule"}</p>
                                       </div>
                                     </div>
@@ -319,7 +319,7 @@ export function RecordDetailsModal({
                           </div>
                         ) : (
                           <div className="p-6 md:p-8 bg-black/[0.02] dark:bg-white/[0.02] rounded-3xl border border-black/[0.03] dark:border-white/[0.03] relative">
-                            <p className="text-sm md:text-lg text-black/80 dark:text-white/80 font-medium leading-relaxed font-serif italic">
+                            <p className="text-sm md:text-lg text-neutral-950 dark:text-neutral-50 font-bold leading-relaxed font-serif italic">
                               {record.extractedText || "No clinical text available for this record."}
                             </p>
                           </div>
@@ -362,13 +362,13 @@ export function RecordDetailsModal({
                             <div className="h-4 w-1/2 bg-black/5 dark:bg-white/5 rounded-full animate-pulse" />
                           </div>
                         ) : (
-                          <p className="text-sm md:text-base text-black/60 dark:text-white/60 font-medium leading-relaxed italic border-l-2 border-primary/20 pl-4 py-1">
+                          <p className="text-sm md:text-base text-neutral-950 dark:text-neutral-50 font-bold leading-relaxed italic border-l-2 border-primary/20 pl-4 py-3 bg-neutral-50 dark:bg-neutral-900/40 p-3 rounded-2xl">
                             "{smartSummary || record.analysis?.summary || record.fallbackSummary || "Our AI engine is currently processing the clinical context of this file."}"
                           </p>
                         )}
                         <div className="flex items-center gap-2 pt-2">
                           <img src="/hilium.png" alt="Hilium" className="h-3 w-3 object-contain dark:invert" />
-                          <span className="text-[8px] font-black uppercase tracking-widest text-black/20 dark:text-white/20">Verified by Hilium Clinical Platform</span>
+                          <span className="text-[8px] font-black uppercase tracking-widest text-neutral-500 dark:text-neutral-400">Verified by Hilium Clinical Platform</span>
                         </div>
                       </div>
                     </div>
@@ -379,7 +379,7 @@ export function RecordDetailsModal({
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 px-2">
                     <Shield className="h-4 w-4 text-primary" />
-                    <span className="font-black text-[10px] uppercase tracking-[0.2em] text-black/40 dark:text-white/40">Clinical Insights</span>
+                    <span className="font-black text-[10px] uppercase tracking-[0.2em] text-neutral-800 dark:text-neutral-200">Clinical Insights</span>
                   </div>
 
                   <div className="grid grid-cols-1 gap-4">
@@ -394,7 +394,7 @@ export function RecordDetailsModal({
                         >
                           <div className="flex gap-4 items-center">
                             <div className="h-10 w-10 rounded-xl bg-black/[0.02] dark:bg-white/[0.02] group-hover:bg-primary/5 flex items-center justify-center shrink-0 transition-colors">
-                              <ChevronRight className="h-4 w-4 text-black/20 dark:text-white/20 group-hover:text-primary transition-colors" />
+                              <ChevronRight className="h-4 w-4 text-neutral-400 dark:text-neutral-500 group-hover:text-primary transition-colors" />
                             </div>
                             <p className="text-sm text-foreground font-bold leading-snug">{insight}</p>
                           </div>
@@ -407,13 +407,13 @@ export function RecordDetailsModal({
                         </div>
                         <div>
                           <p className="text-sm font-bold text-foreground">Professional Assessment</p>
-                          <p className="text-[10px] text-black/40 dark:text-white/40 font-bold uppercase tracking-widest">This record contains direct medical feedback.</p>
+                          <p className="text-[10px] text-neutral-800 dark:text-neutral-200 font-bold uppercase tracking-widest">This record contains direct medical feedback.</p>
                         </div>
                       </div>
                     ) : (
                       <div className="py-12 bg-white/50 dark:bg-white/5 rounded-3xl border border-dashed border-black/10 dark:border-white/10 flex flex-col items-center justify-center gap-4">
                         <ClipboardList className="h-10 w-10 text-black/10 dark:text-white/10" />
-                        <p className="text-xs text-black/30 dark:text-white/30 font-bold uppercase tracking-widest text-center px-10">
+                        <p className="text-xs text-neutral-800 dark:text-neutral-200 font-bold uppercase tracking-widest text-center px-10">
                           Extracting detailed insights...
                         </p>
                       </div>
@@ -433,11 +433,11 @@ export function RecordDetailsModal({
                       <span className="font-black text-[10px] uppercase tracking-widest text-primary/80">Security Protocol</span>
                     </div>
                     <h4 className="font-bricolage text-lg font-extrabold">Data Governance</h4>
-                    <p className="text-xs text-black/40 dark:text-white/40 font-medium leading-relaxed">
+                    <p className="text-xs text-neutral-900 dark:text-neutral-200 font-medium leading-relaxed">
                       This clinical record is encrypted using AES-256 standards. Only you and authorized medical entities can view the full metadata.
                     </p>
                   </div>
-                  <Button className="w-full h-14 rounded-2xl bg-foreground text-background font-black text-xs uppercase tracking-widest hover:bg-primary transition-all shadow-lg shadow-black/10">
+                  <Button className="w-full h-14 rounded-2xl bg-foreground text-background font-black text-xs uppercase tracking-widest hover:bg-primary transition-all shadow-lg shadow-black/10 cursor-pointer">
                     View Audit Log
                   </Button>
                 </div>
@@ -457,7 +457,7 @@ export function RecordDetailsModal({
                     });
                   }
                 }}
-                className="flex-1 h-16 rounded-2xl bg-background border border-black/5 dark:border-white/5 text-foreground font-black text-xs uppercase tracking-widest hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-all shadow-xl shadow-black/[0.03] dark:shadow-black/20 flex items-center justify-center gap-3 relative overflow-hidden group"
+                className="flex-1 h-16 rounded-2xl bg-background border border-black/5 dark:border-white/5 text-foreground font-black text-xs uppercase tracking-widest hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-all shadow-xl shadow-black/[0.03] dark:shadow-black/20 flex items-center justify-center gap-3 relative overflow-hidden group cursor-pointer"
               >
                 <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 <Download className="h-5 w-5 text-primary" />
@@ -466,7 +466,7 @@ export function RecordDetailsModal({
               <Button
                 variant="outline"
                 onClick={() => record.url && window.open(record.url, "_blank")}
-                className="h-16 w-16 rounded-2xl border-black/5 dark:border-white/5 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center text-black/40 dark:text-white/40 shadow-sm"
+                className="h-16 w-16 rounded-2xl border-neutral-300 dark:border-neutral-700 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center text-neutral-800 dark:text-neutral-200 shadow-sm cursor-pointer"
               >
                 <ExternalLink className="h-5 w-5" />
               </Button>

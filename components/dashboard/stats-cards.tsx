@@ -59,7 +59,7 @@ export function StatsCards({ stats }: { stats?: { doctorsCount: number; recordsC
   return (
     <div className="grid grid-cols-3 gap-2 md:gap-6 px-0">
       <StatCard
-        title="Network"
+        title="Care Team"
         value={doctorsCount.toString()}
         subtitle="Specialists"
         icon={Users}
@@ -68,7 +68,7 @@ export function StatsCards({ stats }: { stats?: { doctorsCount: number; recordsC
         cardBg="bg-blue-50/30 dark:bg-blue-950/20"
       />
       <StatCard
-        title="Vault"
+        title="My Records"
         value={recordsCount.toString()}
         subtitle="Reports"
         icon={FileText}
@@ -77,9 +77,9 @@ export function StatsCards({ stats }: { stats?: { doctorsCount: number; recordsC
         cardBg="bg-amber-50/30 dark:bg-amber-950/20"
       />
       <StatCard
-        title="Integrity"
+        title="AI Insights"
         value={`${healthScore}%`}
-        subtitle="Analyses"
+        subtitle="AI Analyzed"
         icon={Heart}
         delay={0.15}
         colorClass="bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300"

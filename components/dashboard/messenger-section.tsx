@@ -57,7 +57,7 @@ interface Message {
   mediaUrl?: string; // URL for the media
 }
 
-export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNotificationSync?: (count: number) => void; onInviteSuccess?: () => void; }) {
+export function MessengerSection({ onNotificationSync, onInviteSuccess, invitedDoctors }: { onNotificationSync?: (count: number) => void; onInviteSuccess?: () => void; invitedDoctors?: any[]; }) {
   const [mode, setMode] = useState("fast");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isInvited, setIsInvited] = useState(false);
@@ -154,13 +154,33 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
     }
   };
 
+  const combinedDoctors = React.useMemo(() => {
+    const list = [...myDoctors];
+    if (invitedDoctors && Array.isArray(invitedDoctors)) {
+      invitedDoctors.forEach((inv: any) => {
+        const exists = list.some(
+          (d: any) => d.email.toLowerCase().trim() === inv.contactInfo.toLowerCase().trim()
+        );
+        if (!exists) {
+          list.push({
+            name: inv.doctorName,
+            email: inv.contactInfo,
+            specialty: inv.status === "ACCEPTED" ? "Your Connected Doctor" : "Invitation Pending",
+            avatar: `https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=${encodeURIComponent(inv.doctorName)}`
+          });
+        }
+      });
+    }
+    return list;
+  }, [myDoctors, invitedDoctors]);
+
   const filteredPopularDoctors = POPULAR_DOCTORS.filter(doc => 
     doc.name.toLowerCase().includes(doctorSearchQuery.toLowerCase()) || 
     doc.specialty.toLowerCase().includes(doctorSearchQuery.toLowerCase()) ||
     doc.email.toLowerCase().includes(doctorSearchQuery.toLowerCase())
   );
 
-  const filteredMyDoctors = myDoctors.filter(doc => 
+  const filteredMyDoctors = combinedDoctors.filter(doc => 
     doc.name.toLowerCase().includes(doctorSearchQuery.toLowerCase()) || 
     doc.specialty.toLowerCase().includes(doctorSearchQuery.toLowerCase()) ||
     doc.email.toLowerCase().includes(doctorSearchQuery.toLowerCase())
@@ -441,13 +461,13 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
                                 Doctor scans this code to instantly securely access your Hilium Dossier.
                               </p>
                               
-                              {myDoctors.length > 0 && (
+                              {combinedDoctors.length > 0 && (
                                 <div className="w-full max-w-sm mt-6">
                                   <div className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-3 text-left">
                                     Quick Select from My Doctors
                                   </div>
                                   <div className="flex gap-2 overflow-x-auto pb-2">
-                                    {myDoctors.slice(0, 3).map((doc, idx) => (
+                                    {combinedDoctors.slice(0, 3).map((doc, idx) => (
                                       <button
                                         type="button"
                                         key={`fast-my-${idx}`}
@@ -628,7 +648,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
                                         </div>
                                       ))}
 
-                                      {myDoctors.map((doc, idx) => (
+                                      {combinedDoctors.map((doc, idx) => (
                                         <div
                                           key={`suggest-my-${idx}`}
                                           onMouseDown={() => {

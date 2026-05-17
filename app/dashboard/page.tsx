@@ -691,6 +691,7 @@ export default function DashboardPage() {
                     await fetchData();
                     setActiveTab("overview");
                   }}
+                  invitedDoctors={userData?.doctorInvitations || []}
                 />
               </div>
             </motion.div>

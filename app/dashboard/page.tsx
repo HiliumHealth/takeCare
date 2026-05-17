@@ -666,7 +666,7 @@ export default function DashboardPage() {
             >
               <HealthBookSection 
                 prescriptions={userData?.prescriptions || []} 
-                clinicalRecords={userData?.medicalRecords?.filter((r: any) => r.type === "CLINICAL_CONSULTATION") || []}
+                clinicalRecords={userData?.medicalRecords || []}
               />
             </motion.div>
           ) : activeTab === "messenger" ? (

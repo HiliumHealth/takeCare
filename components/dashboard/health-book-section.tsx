@@ -27,39 +27,73 @@ function extractDoctor(record: any): string | null {
   return match ? `Dr. ${match[1]}` : null;
 }
 
-// Vitals Extractor (Regex for blood pressure, pulse, temp, spo2, weight)
+// Helper to deduplicate medications by name (case-insensitive)
+const deduplicateMedications = (meds: any[]) => {
+  if (!Array.isArray(meds)) return [];
+  const unique: any[] = [];
+  const seen = new Set<string>();
+  meds.forEach((m: any) => {
+    if (!m || !m.name) return;
+    const normalizedName = m.name.toLowerCase().trim();
+    if (!seen.has(normalizedName)) {
+      seen.add(normalizedName);
+      unique.push(m);
+    }
+  });
+  return unique;
+};
+
+// Vitals Extractor (Uses structured AI rawJson if available, falls back to regex)
 function parseVitals(record: any) {
+  const rawJson = record.analysis?.rawJson;
+  const structuredVitals = rawJson?.patient_summary?.latest_vitals || rawJson?.latest_vitals;
+  
+  if (structuredVitals) {
+    let bp = structuredVitals.blood_pressure || structuredVitals.bp;
+    let pulse = structuredVitals.heart_rate || structuredVitals.pulse;
+    let temp = structuredVitals.temperature || structuredVitals.temp;
+    let spo2 = structuredVitals.spo2;
+    let weight = structuredVitals.weight;
+    
+    // Add appropriate units if not already present
+    if (bp && typeof bp === "string" && !bp.toLowerCase().includes("mm")) bp = `${bp} mmHg`;
+    if (pulse && typeof pulse === "string" && !pulse.toLowerCase().includes("bp")) pulse = `${pulse} bpm`;
+    if (temp && typeof temp === "string" && !temp.toLowerCase().includes("°") && !temp.toLowerCase().includes("c") && !temp.toLowerCase().includes("f")) temp = `${temp}°C`;
+    if (spo2 && typeof spo2 === "string" && !spo2.toLowerCase().includes("%")) spo2 = `${spo2}%`;
+    if (weight && typeof weight === "string" && !weight.toLowerCase().includes("kg") && !weight.toLowerCase().includes("lb")) weight = `${weight} kg`;
+    
+    if (bp || pulse || temp || spo2 || weight) {
+      return { bp, pulse, temp, spo2, weight };
+    }
+  }
+
+  // Fallback to Heuristic Regex Parser
   const text = (record.extractedText || "") + " " + (record.analysis?.summary || "");
   
-  // Blood Pressure
   let bp = undefined;
   const bpMatch = text.match(/(\d{2,3})\s*\/\s*(\d{2,3})/);
   if (bpMatch) {
     bp = `${bpMatch[1]}/${bpMatch[2]} mmHg`;
   }
   
-  // Pulse / Heart Rate
   let pulse = undefined;
   const pulseMatch = text.match(/(?:HR|pulse|heart rate)\s*(?::|is)?\s*(\d{2,3})\s*(?:bpm)?/i) || text.match(/(\d{2,3})\s*(?:bpm)/i);
   if (pulseMatch) {
     pulse = `${pulseMatch[1]} bpm`;
   }
   
-  // Temperature
   let temp = undefined;
   const tempMatch = text.match(/(\d{2,3}(?:\.\d)?)\s*(?:°F|F|°C|C)/);
   if (tempMatch) {
     temp = tempMatch[0];
   }
   
-  // SpO2
   let spo2 = undefined;
   const spo2Match = text.match(/(?:SpO2|oxygen saturation|O2)\s*(?::|is)?\s*(\d{2})\s*%/i) || text.match(/(\d{2})\s*%\s*(?:SpO2|O2)/i);
   if (spo2Match) {
     spo2 = `${spo2Match[1]}%`;
   }
 
-  // Weight
   let weight = undefined;
   const weightMatch = text.match(/(\d{2,3})\s*(?:kg|lbs)/i);
   if (weightMatch) {
@@ -72,8 +106,45 @@ function parseVitals(record: any) {
   return null;
 }
 
-// Medications Extractor (Matching patterns from medical texts)
+// Medications Extractor (Uses structured AI rawJson if available, falls back to regex)
 function parseMedications(record: any) {
+  const rawJson = record.analysis?.rawJson;
+  const structuredMeds = rawJson?.patient_summary?.medications || rawJson?.medications;
+  
+  if (Array.isArray(structuredMeds) && structuredMeds.length > 0) {
+    const medsList: any[] = [];
+    structuredMeds.forEach((item: any) => {
+      if (!item || !item.name) return;
+      const name = item.name.trim();
+      const dosage = item.dosage || "Standard Dose";
+      const frequency = item.frequency || "As directed";
+      
+      let times = ["09:00"];
+      const freqLower = frequency.toLowerCase();
+      if (freqLower.includes("twice") || freqLower.includes("2 times") || freqLower.includes("12h") || freqLower.includes("bid")) {
+        times = ["08:00", "20:00"];
+      } else if (freqLower.includes("three") || freqLower.includes("3 times") || freqLower.includes("8h") || freqLower.includes("tid")) {
+        times = ["08:00", "14:00", "20:00"];
+      } else if (freqLower.includes("four") || freqLower.includes("4 times") || freqLower.includes("6h") || freqLower.includes("qid")) {
+        times = ["06:00", "12:00", "18:00", "00:00"];
+      }
+      
+      medsList.push({
+        name,
+        dosage,
+        frequency,
+        times,
+        instructions: item.instructions || `Extracted from structured clinical analysis.`
+      });
+    });
+    
+    const unique = deduplicateMedications(medsList);
+    if (unique.length > 0) {
+      return unique;
+    }
+  }
+
+  // Fallback to Heuristic Regex Parser
   const text = (record.extractedText || "") + " " + (record.analysis?.summary || "") + " " + (record.analysis?.recommendations?.join(" ") || "");
   const meds: any[] = [];
   
@@ -91,7 +162,12 @@ function parseMedications(record: any) {
     { name: "Pantoprazole", defaultDosage: "40mg", defaultFreq: "Once daily before breakfast" },
     { name: "Aspirin", defaultDosage: "81mg", defaultFreq: "Once daily" },
     { name: "Levothyroxine", defaultDosage: "75mcg", defaultFreq: "Once daily on empty stomach" },
-    { name: "Albuterol", defaultDosage: "2 puffs", defaultFreq: "Every 4 hours as needed" }
+    { name: "Albuterol", defaultDosage: "2 puffs", defaultFreq: "Every 4 hours as needed" },
+    { name: "Gentamycin", defaultDosage: "80mg", defaultFreq: "Twice daily" },
+    { name: "Ampicillin", defaultDosage: "500mg", defaultFreq: "Every 6 hours" },
+    { name: "Analgin", defaultDosage: "500mg", defaultFreq: "Once daily" },
+    { name: "Tagamet", defaultDosage: "400mg", defaultFreq: "Twice daily" },
+    { name: "B-complex", defaultDosage: "Standard Dose", defaultFreq: "Once daily" }
   ];
   
   commonMeds.forEach(med => {
@@ -118,11 +194,66 @@ function parseMedications(record: any) {
     }
   });
   
-  return meds;
+  return deduplicateMedications(meds);
 }
 
-// Lab Requests Extractor
+// Lab Requests Extractor (Uses structured AI rawJson if available, falls back to regex)
 function parseLabRequests(record: any) {
+  const rawJson = record.analysis?.rawJson;
+  const structuredLabs = rawJson?.patient_summary?.lab_results || rawJson?.lab_results;
+  
+  if (structuredLabs) {
+    const labs: any[] = [];
+    if (typeof structuredLabs === "string") {
+      labs.push({
+        testName: structuredLabs,
+        urgency: "Routine",
+        instructions: "See full medical report for details."
+      });
+    } else if (Array.isArray(structuredLabs)) {
+      structuredLabs.forEach((lab: any) => {
+        if (typeof lab === "string") {
+          labs.push({
+            testName: lab,
+            urgency: "Routine",
+            instructions: "See full medical report for details."
+          });
+        } else if (lab && typeof lab === "object") {
+          labs.push({
+            testName: lab.name || lab.testName || "Clinical Test",
+            urgency: lab.urgency || "Routine",
+            instructions: lab.instructions || "Monitor levels as indicated in the report."
+          });
+        }
+      });
+    } else if (structuredLabs && typeof structuredLabs === "object") {
+      const summaryText = structuredLabs.summary;
+      if (summaryText) {
+        labs.push({
+          testName: summaryText,
+          urgency: "Routine",
+          instructions: "See full medical report for details."
+        });
+      }
+      
+      const details = structuredLabs.details;
+      if (details && typeof details === "object") {
+        Object.keys(details).forEach(key => {
+          labs.push({
+            testName: key,
+            urgency: "Routine",
+            instructions: `Result value: ${details[key]}`
+          });
+        });
+      }
+    }
+    
+    if (labs.length > 0) {
+      return labs;
+    }
+  }
+
+  // Fallback to Heuristic Regex Parser
   const text = (record.extractedText || "") + " " + (record.analysis?.summary || "");
   const labs: any[] = [];
   
@@ -174,7 +305,7 @@ export function HealthBookSection({ prescriptions = [], clinicalRecords = [] }: 
     diagnosis: p.diagnosis || "General Clinical Review",
     doctorName: p.doctorName || "Connected Doctor",
     notes: p.notes || "Treatment timeline synchronized securely.",
-    medications: p.medications || [],
+    medications: deduplicateMedications(p.medications || []),
     vitals: p.vitals || null,
     labRequests: p.labRequests || null,
     vitalTargets: p.vitalTargets || null,
@@ -204,7 +335,7 @@ export function HealthBookSection({ prescriptions = [], clinicalRecords = [] }: 
         diagnosis: `${severityPrefix}${diagnosisText}`,
         doctorName: extractDoctor(r) || "Hilium Clinical AI",
         notes: r.analysis?.summary || "No automated summary available.",
-        medications: extractedMeds,
+        medications: deduplicateMedications(extractedMeds),
         vitals: extractedVitals,
         labRequests: extractedLabs,
         vitalTargets: null,
@@ -219,10 +350,37 @@ export function HealthBookSection({ prescriptions = [], clinicalRecords = [] }: 
       };
     });
 
-  // 3. Merge both timeline data feeds
-  const unifiedPrescriptions = [...formalPrescriptions, ...extractedPrescriptions].sort(
+  // 3. Merge both timeline data feeds and robustly deduplicate them
+  let unifiedPrescriptions = [...formalPrescriptions, ...extractedPrescriptions].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
+
+  const seenFormalKeys = new Set<string>();
+  
+  // Register formal entries to prevent duplicate extracted matching entries
+  formalPrescriptions.forEach((p: any) => {
+    const dateStr = new Date(p.createdAt).toDateString();
+    const docName = (p.doctorName || "").toLowerCase().replace(/^(dr\.\s*|doctor\s*)/i, "").trim();
+    const diag = (p.diagnosis || "").toLowerCase().trim();
+    
+    seenFormalKeys.add(`${dateStr}|${docName}`);
+    seenFormalKeys.add(`${dateStr}|${diag}`);
+  });
+
+  // Filter unified timeline
+  unifiedPrescriptions = unifiedPrescriptions.filter((p: any) => {
+    if (p.type === "extracted") {
+      const dateStr = new Date(p.createdAt).toDateString();
+      const docName = (p.doctorName || "").toLowerCase().replace(/^(dr\.\s*|doctor\s*)/i, "").trim();
+      const diag = (p.diagnosis || "").toLowerCase().replace(/^\[.*?\]\s*/i, "").trim();
+      
+      if (seenFormalKeys.has(`${dateStr}|${docName}`) || seenFormalKeys.has(`${dateStr}|${diag}`)) {
+        console.log(`Deduplicated duplicate extracted consultation entry: "${p.diagnosis}" on ${dateStr}`);
+        return false; // Exclude
+      }
+    }
+    return true;
+  });
 
   const [selectedPrescriptionId, setSelectedPrescriptionId] = useState<string | null>(
     unifiedPrescriptions[0]?.id || null

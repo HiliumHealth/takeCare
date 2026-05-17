@@ -468,17 +468,17 @@ ${localInput.trim()}
               ref={inputRef}
               value={localInput}
               onChange={(e) => setLocalInput(e.target.value)}
-              placeholder="Describe your health concern or ask Dr. Leo..."
-              className="flex-1 bg-transparent border-none focus:ring-0 focus:outline-none focus-visible:outline-none px-6 py-4 text-lg font-medium placeholder:text-black/20 dark:placeholder:text-white/20 text-black dark:text-white"
+              placeholder="Describe your concern..."
+              className="flex-1 bg-transparent border-none focus:ring-0 focus:outline-none focus-visible:outline-none px-3 md:px-6 py-4 text-base md:text-lg font-medium placeholder:text-black/20 dark:placeholder:text-white/20 text-black dark:text-white min-w-0"
               disabled={isLoading}
             />
 
-            <div className="flex items-center gap-2 pr-2">
+            <div className="flex items-center gap-2 pr-1 md:pr-2">
               <Button 
                 type="button" 
                 variant="ghost" 
                 size="icon" 
-                className="h-14 w-14 rounded-[1.8rem] text-black/20 dark:text-white/20 hover:text-black/40 dark:hover:text-white/40 hover:bg-black/5 dark:hover:bg-white/5 transition-all"
+                className="hidden md:inline-flex h-14 w-14 rounded-[1.8rem] text-black/20 dark:text-white/20 hover:text-black/40 dark:hover:text-white/40 hover:bg-black/5 dark:hover:bg-white/5 transition-all cursor-pointer"
               >
                 <Paperclip className="h-6 w-6" />
               </Button>
@@ -486,7 +486,7 @@ ${localInput.trim()}
                 type="submit" 
                 disabled={(!localInput.trim() && selectedTools.length === 0) || isLoading}
                 className={cn(
-                  "h-14 px-8 rounded-[1.8rem] font-black flex items-center gap-3 transition-all duration-500 shadow-lg shadow-primary/20",
+                  "h-14 px-4 md:px-8 rounded-[1.8rem] font-black flex items-center gap-3 transition-all duration-500 shadow-lg shadow-primary/20 cursor-pointer",
                   (localInput.trim() || selectedTools.length > 0) ? "bg-primary text-white scale-100" : "bg-black/5 dark:bg-white/5 text-black/20 dark:text-white/20 scale-95 opacity-50"
                 )}
               >

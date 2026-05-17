@@ -68,10 +68,10 @@ function DashboardLoading() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: "spring", damping: 20 }}
-            className="relative z-20 h-32 w-32 rounded-full bg-white shadow-[0_0_50px_rgba(0,71,255,0.15)] flex items-center justify-center border border-primary/10 overflow-hidden group"
+            className="relative z-20 h-32 w-32 rounded-full bg-white dark:bg-black shadow-[0_0_50px_rgba(0,71,255,0.15)] flex items-center justify-center border border-primary/10 overflow-hidden group"
           >
             <div className="absolute inset-0 bg-linear-to-tr from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            <img src="/hilium.png" alt="Hilium Logo" className="w-16 h-16 object-contain" />
+            <img src="/hilium.png" alt="Hilium Logo" className="w-16 h-16 object-contain dark:invert" />
             
             {/* Inner Scanning Effect */}
             <motion.div 

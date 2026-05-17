@@ -68,7 +68,7 @@ export function ChatbotView({
   const [selectedTools, setSelectedTools] = useState<any[]>([]);
 
   const tools = [
-    { id: "records", label: "Medical History", icon: History, prompt: "[DIRECTIVE: Access and analyze XERINE medical records for relevant patient history.]" },
+    { id: "records", label: "Medical History", icon: History, prompt: "[DIRECTIVE: Access and analyze Hilium medical records for relevant patient history.]" },
     { id: "vitals", label: "Check Vitals", icon: Activity, prompt: "[DIRECTIVE: Retrieve and interpret latest vitals from the patient profile.]" },
     { id: "notes", label: "Doctor Notes", icon: FileSearch, prompt: "[DIRECTIVE: Examine clinical consultation notes and doctor observations.]" },
     { id: "literature", label: "Medical Research", icon: Microscope, prompt: "[DIRECTIVE: Research medical literature for current evidence-based guidance on this topic.]" },

@@ -34,7 +34,7 @@ export function MobileNav({ activeTab, onTabChange, messengerCount = 0, notifica
                 <button
                   key={item.id}
                   onClick={() => onTabChange(item.id)}
-                  className="relative -top-4 bg-white h-14 w-14 rounded-full flex items-center justify-center shadow-2xl shadow-black/10 active:scale-90 transition-transform group border-4 border-primary"
+                  className="relative -top-4 bg-white h-14 w-14 rounded-full flex items-center justify-center shadow-2xl shadow-black/10 active:scale-90 transition-transform group border-4 border-primary cursor-pointer"
                 >
                   <Icon className="h-7 w-7 text-primary group-hover:scale-110 transition-transform" />
                   <motion.div
@@ -50,7 +50,7 @@ export function MobileNav({ activeTab, onTabChange, messengerCount = 0, notifica
               <button
                 key={item.id}
                 onClick={() => onTabChange(item.id)}
-                className="relative flex-1 flex flex-col items-center justify-center py-2 gap-1 group"
+                className="relative flex-1 flex flex-col items-center justify-center py-2 gap-1 group cursor-pointer"
               >
                 <div className={cn(
                   "relative p-2 rounded-2xl transition-all duration-300",

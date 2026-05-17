@@ -25,7 +25,7 @@ export function DashboardHeader({ user, notificationCount = 0 }: DashboardHeader
 
   const handleLogout = async () => {
     // Clear the personalized cookie server-side
-    const { logoutUser } = await import("@/app/actions/medical");
+    const { logoutUser } = await import("@/app/actions/user");
     await logoutUser();
     // Sign out via NextAuth (clears session cookie)
     await signOut({ callbackUrl: "/" });
@@ -56,7 +56,7 @@ export function DashboardHeader({ user, notificationCount = 0 }: DashboardHeader
         
         <div className="flex items-center gap-2 lg:gap-3">
           <div className="relative">
-            <Button variant="ghost" size="icon" className="flex rounded-full hover:bg-black/5 dark:hover:bg-white/5 h-9 w-9 lg:h-10 lg:w-10">
+            <Button variant="ghost" size="icon" className="flex rounded-full hover:bg-black/5 dark:hover:bg-white/5 h-9 w-9 lg:h-10 lg:w-10 cursor-pointer">
               <Bell className="h-5 w-5 text-black dark:text-white" />
             </Button>
             {notificationCount > 0 && (

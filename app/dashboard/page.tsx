@@ -483,44 +483,61 @@ export default function DashboardPage() {
 
       <main className="flex flex-1 flex-col w-full md:pb-6 px-4 md:px-8 lg:px-10 max-w-none overflow-x-hidden">
         <AnimatePresence mode="wait">
-          {activeTab === "overview" && (
-              <div className="flex flex-col gap-8">
-                {/* Greeting Section */}
-                <div className="flex flex-col items-center md:items-start text-center md:text-left pt-4 md:pt-0">
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="flex flex-col items-center md:items-start"
-                  >
-                    <h1 className="font-bricolage text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tighter flex flex-col md:flex-row items-center gap-x-3 transition-all text-black dark:text-white leading-tight">
-                      <span className="opacity-40">{getGreeting()},</span> 
-                      <span className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">{userData?.name?.split(' ')[0] || "Patient"}.</span>
-                    </h1>
-                    <p className="mt-3 text-xs md:text-base font-semibold text-black/60 dark:text-white/60 max-w-md md:max-w-2xl leading-relaxed">
-                      Your <span className="text-primary font-bold italic underline decoration-primary/20 underline-offset-4">comprehensive health profile</span> is analyzed and ready for review.
-                    </p>
-                  </motion.div>
-                </div>
+          {activeTab === "overview" ? (
+            <motion.div
+              key="overview"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div className="mt-4 flex flex-col gap-6">
                 
-                {/* Clinical Action Hub */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.1 }}
-                  className="w-full bg-white dark:bg-white/5 border border-black/[0.03] dark:border-white/[0.03] rounded-3xl p-4 md:p-6 shadow-xl shadow-black/5 dark:shadow-none relative overflow-hidden"
-                >
-                  <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
-                    <ShieldCheck className="h-24 w-24 text-primary" />
+                {/* Clean Welcoming Header */}
+                <div className="flex flex-col items-center md:items-start text-center md:text-left pt-4 md:pt-2 border-b border-neutral-100 dark:border-neutral-800 pb-4">
+                  <h1 className="font-bricolage text-2xl md:text-4xl font-black tracking-tight text-black dark:text-white leading-none">
+                    {getGreeting()}, <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">{userData?.name?.split(' ')[0] || "Patient"}.</span>
+                  </h1>
+                  <p className="mt-2 text-xs md:text-sm font-extrabold text-neutral-900 dark:text-neutral-200">
+                    Your complete health profile is fully compiled, verified, and secured.
+                  </p>
+                </div>
+
+                <StatsCards stats={{
+                  doctorsCount: userData?.doctorInvitations?.length || 0,
+                  recordsCount: userData?.medicalRecords?.length || 0,
+                  healthScore: userData?.medicalRecords?.length > 0 
+                    ? Math.round((userData.medicalRecords.filter((r: any) => r.analysis).length / userData.medicalRecords.length) * 100)
+                    : 0
+                }} />
+
+                {/* Simplified Search & Header & Actions */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mt-8">
+                  <div className="flex flex-col gap-1">
+                    <h2 className="font-bricolage text-xl font-black tracking-tight text-black dark:text-white">Clinical History</h2>
+                    <p className="text-xs font-bold text-neutral-800 dark:text-neutral-200">A secure ledger of your compiled medical reports</p>
                   </div>
                   
-                  <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
-                    <div className="flex flex-col gap-1">
-                      <h3 className="font-bricolage text-sm md:text-lg font-bold text-black dark:text-white">Hospital Book (v2.0)</h3>
-                      <p className="text-[10px] md:text-xs font-medium text-black/40 dark:text-white/40 uppercase tracking-widest">Signed & Verified Clinical History</p>
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+                    <div className="relative group w-full sm:w-60 shrink-0">
+                      <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-900 dark:text-neutral-100 group-focus-within:text-primary transition-colors" />
+                      <Input
+                        placeholder="Search records..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="h-10 pl-10 pr-10 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-[#0c0c0c] focus:ring-2 focus:ring-primary/10 transition-all font-semibold text-xs placeholder:text-neutral-500 dark:placeholder:text-neutral-400 text-neutral-950 dark:text-white"
+                      />
+                      {searchQuery && (
+                        <button 
+                          onClick={() => setSearchQuery("")}
+                          className="absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-900 dark:text-neutral-100 transition-colors"
+                        >
+                          <XCircle className="h-4 w-4" />
+                        </button>
+                      )}
                     </div>
 
-                    <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
-                      {/* Preview Button */}
+                    <div className="flex items-center gap-2 shrink-0">
                       <Button
                         onClick={async () => {
                           const { generateHospitalBook } = await import("@/lib/pdf-generator");
@@ -533,13 +550,12 @@ export default function DashboardPage() {
                           });
                           if (url) window.open(url.toString(), "_blank");
                         }}
-                        className="h-12 md:h-14 w-full sm:w-auto px-6 rounded-xl bg-black/5 dark:bg-white/5 text-black dark:text-white border border-black/5 dark:border-white/5 font-black text-[9px] md:text-[10px] uppercase tracking-widest hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all flex items-center justify-center gap-3 group cursor-pointer"
+                        className="h-10 px-4 rounded-xl bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-950 dark:text-white border border-neutral-300 dark:border-neutral-700 font-bold text-xs transition-all flex items-center gap-2 cursor-pointer shrink-0"
                       >
-                        <Eye className="h-4 w-4 text-primary group-hover:scale-110 transition-transform" />
-                        <span>Preview Record</span>
+                        <Eye className="h-4 w-4 text-primary" />
+                        <span>Preview Booklet</span>
                       </Button>
 
-                      {/* Download Button */}
                       <Button
                         onClick={async () => {
                           const { generateHospitalBook } = await import("@/lib/pdf-generator");
@@ -549,105 +565,33 @@ export default function DashboardPage() {
                             prescriptions: userData.prescriptions,
                             personalization: userData.personalization
                           });
-                          toast.success("Downloading Vault...", {
-                            description: "Compiling and signing your official Hilium Hospital Book.",
+                          toast.success("Downloading Booklet...", {
+                            description: "Compiling and signing your official health ledger.",
                             icon: <CheckCircle2 className="h-5 w-5 text-emerald-500" />
                           });
                         }}
-                        className="h-12 md:h-14 w-full sm:w-auto px-6 rounded-xl bg-primary text-white font-black text-[9px] md:text-[10px] uppercase tracking-widest hover:shadow-xl hover:shadow-primary/30 active:scale-95 transition-all flex items-center justify-center gap-3 group cursor-pointer border-none"
+                        className="h-10 px-4 rounded-xl bg-primary hover:bg-primary/95 text-white font-bold text-xs hover:shadow-lg active:scale-98 transition-all flex items-center gap-2 cursor-pointer border-none shrink-0"
                       >
-                        <Download className="h-4 w-4 text-white group-hover:translate-y-0.5 transition-transform" />
-                        <span>Download Book</span>
+                        <Download className="h-4 w-4 text-white" />
+                        <span>Download Booklet</span>
                       </Button>
                     </div>
                   </div>
-                </motion.div>
-              </div>
-          )}
-        </AnimatePresence>
-
-
-        <AnimatePresence mode="wait">
-          {activeTab === "overview" ? (
-            <motion.div
-              key="overview"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <div className="mt-4 flex flex-col gap-6">
-                <StatsCards stats={{
-                  doctorsCount: userData?.doctorInvitations?.length || 0,
-                  recordsCount: userData?.medicalRecords?.length || 0,
-                  healthScore: userData?.medicalRecords?.length > 0 
-                    ? Math.round((userData.medicalRecords.filter((r: any) => r.analysis).length / userData.medicalRecords.length) * 100)
-                    : 0
-                }} />
-                
-                {/* Search & Filter Header */}
-                <div className="flex flex-col gap-6">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div className="flex flex-col gap-1">
-                      <div className="flex items-center">
-                        <h2 className="font-bricolage text-lg md:text-xl font-extrabold tracking-tight text-black dark:text-white">Health History</h2>
-                        <div className="flex -space-x-2 overflow-hidden ml-4">
-                          {/* Experts Circle */}
-                          {[
-                            "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=100&auto=format&fit=crop",
-                            "https://images.unsplash.com/photo-1594824476967-48c8b964273f?q=80&w=100&auto=format&fit=crop",
-                            "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=100&auto=format&fit=crop"
-                          ].map((src, i) => (
-                            <div key={i} className="relative inline-block h-8 w-8 rounded-full ring-[4px] ring-white/10 dark:ring-black/40 overflow-hidden transition-transform hover:scale-110 cursor-pointer">
-                              <img
-                                className="h-full w-full object-cover"
-                                src={src}
-                                alt="Medical Expert"
-                              />
-                              <div className="absolute inset-0 bg-black/10 dark:bg-black/40 pointer-events-none" />
-                            </div>
-                          ))}
-                          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary font-black text-[8px] ring-[4px] ring-[#f8f9fa] dark:ring-[#0a0a0a] transition-all hover:bg-primary hover:text-white cursor-pointer">
-                            +12
-                          </div>
-                        </div>
-                      </div>
-                      <p className="text-[9px] md:text-[10px] font-bold text-black/80 dark:text-white/80 uppercase tracking-widest mt-1">Manage and search your clinical records</p>
-                    </div>
-                    <div className="relative group w-full md:w-96">
-                      <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-black/20 dark:text-white/20 group-focus-within:text-primary transition-colors">
-                        <Search className="h-5 w-5" />
-                      </div>
-                      <Input
-                        placeholder="Search by doctor, date, or clinical diagnosis..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="h-12 pl-12 pr-12 rounded-xl border-black/5 dark:border-white/5 bg-white dark:bg-[#0f0f0f] shadow-xl shadow-black/5 dark:shadow-black/20 focus:ring-4 focus:ring-primary/5 transition-all font-bold text-sm placeholder:text-black/30 dark:placeholder:text-white/30 text-black dark:text-white"
-                      />
-                      {searchQuery && (
-                        <button 
-                          onClick={() => setSearchQuery("")}
-                          className="absolute inset-y-0 right-4 flex items-center text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors p-2"
-                        >
-                          <XCircle className="h-5 w-5 fill-black/10 dark:fill-white/10" />
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                  
-                  {searchQuery && (
-                    <motion.div 
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="flex items-center gap-2 px-4 py-2 bg-primary/5 rounded-xl border border-primary/10 w-fit"
-                    >
-                      <Filter className="h-3 w-3 text-primary" />
-                      <span className="text-[10px] font-black text-primary uppercase tracking-widest">
-                        Filtered by: "{searchQuery}" — {filteredRecords.length} results
-                      </span>
-                    </motion.div>
-                  )}
                 </div>
+
+
+                {searchQuery && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex items-center gap-2 px-3 py-1.5 bg-primary/5 rounded-xl border border-primary/10 w-fit"
+                  >
+                    <Filter className="h-3.5 w-3.5 text-primary" />
+                    <span className="text-[10px] font-black text-primary uppercase tracking-widest">
+                      Filtered by: "{searchQuery}" — {filteredRecords.length} results
+                    </span>
+                  </motion.div>
+                )}
 
                 <ActivityTable 
                   records={paginatedRecords} 
@@ -661,7 +605,7 @@ export default function DashboardPage() {
                   <motion.div 
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex flex-col sm:flex-row items-center justify-between gap-6 px-6 py-8 bg-white dark:bg-black/20 rounded-[2.5rem] border border-black/5 dark:border-white/5 shadow-sm"
+                    className="flex flex-col sm:flex-row items-center justify-between gap-6 px-6 py-6 bg-white dark:bg-[#0a0a0a]/80 backdrop-blur-md rounded-[2rem] border border-black/5 dark:border-white/5 shadow-xs"
                   >
                     <div className="flex flex-col">
                       <span className="text-[10px] font-black uppercase tracking-[0.2em] text-black/20 dark:text-white/20">Data Navigation</span>
@@ -676,20 +620,20 @@ export default function DashboardPage() {
                         size="icon"
                         onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                         disabled={currentPage === 1}
-                        className="h-12 w-12 rounded-2xl bg-black/5 dark:bg-white/5 hover:bg-primary hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-black/5"
+                        className="h-10 w-10 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-primary hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-black/5 cursor-pointer"
                       >
-                        <ArrowLeft className="h-5 w-5" />
+                        <ArrowLeft className="h-4 w-4" />
                       </Button>
                       
-                      <div className="flex items-center gap-1 mx-4">
+                      <div className="flex items-center gap-1 mx-2">
                         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                           <button
                             key={page}
                             onClick={() => setCurrentPage(page)}
                             className={cn(
-                              "h-10 w-10 rounded-xl text-[10px] font-black transition-all",
+                              "h-8 w-8 rounded-lg text-[10px] font-black transition-all cursor-pointer",
                               currentPage === page 
-                                ? "bg-primary text-white shadow-lg shadow-primary/20 scale-110" 
+                                ? "bg-primary text-white shadow-md shadow-primary/20 scale-105" 
                                 : "text-black/30 dark:text-white/30 hover:bg-black/5 dark:hover:bg-white/5"
                             )}
                           >
@@ -703,9 +647,9 @@ export default function DashboardPage() {
                         size="icon"
                         onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                         disabled={currentPage === totalPages}
-                        className="h-12 w-12 rounded-2xl bg-black/5 dark:bg-white/5 hover:bg-primary hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-black/5"
+                        className="h-10 w-10 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-primary hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-black/5 cursor-pointer"
                       >
-                        <ArrowRight className="h-5 w-5" />
+                        <ArrowRight className="h-4 w-4" />
                       </Button>
                     </div>
                   </motion.div>

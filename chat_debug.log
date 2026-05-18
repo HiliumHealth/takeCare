@@ -424,3 +424,11 @@
 [2026-05-08T18:58:43.793Z] Messages count: 5
 [2026-05-08T18:58:45.993Z] Starting streamText with gemini-2.5-flash...
 [2026-05-08T18:58:45.998Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-05-18T08:50:03.878Z] --- POST REQUEST START ---
+[2026-05-18T08:50:03.880Z] API Key present: true, Length: 39
+[2026-05-18T08:50:03.985Z] Auth User: cmnm9stin000038v5uo82ijcs
+[2026-05-18T08:50:04.000Z] Messages count: 2
+[2026-05-18T08:50:08.450Z] Starting streamText with gemini-2.5-flash...
+[2026-05-18T08:50:08.461Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-05-18T08:50:13.716Z] TOOL: getDoctorNotes | User: cmnm9stin000038v5uo82ijcs | Limit: undefined
+[2026-05-18T08:50:14.769Z] TOOL: getDoctorNotes | Notes found: 4

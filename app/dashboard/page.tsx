@@ -174,6 +174,12 @@ export default function DashboardPage() {
   const [unreadNotifications, setUnreadNotifications] = useState(3);
   const [messengerUnreadCount, setMessengerUnreadCount] = useState(0);
   const [userData, setUserData] = useState<any>(null);
+  const userDataRef = useRef<any>(null);
+
+  useEffect(() => {
+    userDataRef.current = userData;
+  }, [userData]);
+
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -189,9 +195,10 @@ export default function DashboardPage() {
          return;
       }
 
-      // Check for status changes to trigger notifications
-      if (userData) {
-        const oldInvites = userData.doctorInvitations || [];
+      // Check for status changes to trigger notifications using up-to-date ref
+      const currentuserData = userDataRef.current;
+      if (currentuserData) {
+        const oldInvites = currentuserData.doctorInvitations || [];
         const newInvites = data.doctorInvitations || [];
 
         newInvites.forEach((newInv: any) => {
@@ -215,9 +222,9 @@ export default function DashboardPage() {
         });
       }
 
-      // Check for new medical records to trigger a "World-Class" notification
-      if (userData && userData.medicalRecords) {
-        const oldRecordsCount = userData.medicalRecords.length;
+      // Check for new medical records to trigger a "World-Class" notification using up-to-date ref
+      if (currentuserData && currentuserData.medicalRecords) {
+        const oldRecordsCount = currentuserData.medicalRecords.length;
         const newRecordsCount = data.medicalRecords.length;
 
         if (newRecordsCount > oldRecordsCount) {
@@ -666,7 +673,7 @@ export default function DashboardPage() {
             >
               <HealthBookSection 
                 prescriptions={userData?.prescriptions || []} 
-                clinicalRecords={userData?.medicalRecords?.filter((r: any) => r.type === "CLINICAL_CONSULTATION") || []}
+                clinicalRecords={userData?.medicalRecords || []}
               />
             </motion.div>
           ) : activeTab === "messenger" ? (
@@ -684,6 +691,7 @@ export default function DashboardPage() {
                     await fetchData();
                     setActiveTab("overview");
                   }}
+                  invitedDoctors={userData?.doctorInvitations || []}
                 />
               </div>
             </motion.div>

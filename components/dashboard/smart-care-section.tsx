@@ -70,8 +70,8 @@ import { ChatbotView } from "./smart-care/chatbot-view";
 
 
 const SMART_CARE_TABS = [
-  { id: "talk", label: "Talk", icon: Mic, description: "Voice interaction with Xerine medical agent" },
-  { id: "text", label: "Chat", icon: MessageSquareText, description: "Secure chat with Xerine AI" },
+  { id: "talk", label: "Talk", icon: Mic, description: "Voice interaction with Hilium medical agent" },
+  { id: "text", label: "Chat", icon: MessageSquareText, description: "Secure chat with Hilium AI" },
   { id: "analyze", label: "Analyze", icon: BarChart3, description: "Deep analysis of health records" },
 ];
 
@@ -100,7 +100,7 @@ export function SmartCareSection({
       parts: [
         {
           type: "text" as const,
-          text: `Hello ${userName.split(" ")[0]}! I'm Dr. Leo. I have access to your medical records and consultation history. How can I assist you with your health today?`,
+          text: `Hello ${userName.split(" ")[0]}! I'm Dr. Gita. I have access to your medical records and consultation history. How can I assist you with your health today?`,
         },
       ],
     },
@@ -109,6 +109,7 @@ export function SmartCareSection({
   // useChat v6: simpler configuration
   const { messages, sendMessage: sdkSendMessage, status: chatStatus, setMessages } = useChat({
     id: "smart-care-chat",
+    maxSteps: 5,
     // In AI SDK v6, default is /api/chat which is what we want here.
     messages: initialChatMessages,
     onError: (error) => {
@@ -199,7 +200,7 @@ export function SmartCareSection({
               >
                 <div className="flex justify-center mb-6">
                   <Badge className="bg-primary/10 text-primary border-primary/20 px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-full">
-                    Xerine Health Assistant
+                    Hilium Health Assistant
                   </Badge>
                 </div>
                 
@@ -427,7 +428,7 @@ function VoiceAgentView({
         ${JSON.stringify(selectedMedDetails, null, 2)}
 
         INSTRUCTIONS:
-        You are Dr. Leo, a compassionate AI health assistant for XERINE. Use the latest records to provide advice.
+        You are Dr. Gita, a compassionate AI health assistant for Hilium. Use the latest records to provide advice.
         - Discuss specific medications: ${selectedMeds.join(", ")}.
         - Address symptoms and provide empathetic, clear guidance.
         - Address the user by their first name: ${userName.split(' ')[0]}.
@@ -516,7 +517,7 @@ function VoiceAgentView({
           <div className="relative h-44 w-44 md:h-64 md:w-64 rounded-full overflow-hidden shadow-2xl shadow-primary/20 border-4 md:border-[8px] border-white z-10">
             <img
               src="https://i.ibb.co/fYy0cwxb/Chat-GPT-Image-Apr-16-2026-09-01-03-AM.png"
-              alt="Dr. Leo"
+              alt="Dr. Gita"
               className={cn(
                 "h-full w-full object-cover transition-all duration-700",
                 callStatus === "active" ? "scale-105" : "scale-100 grayscale-[10%]"
@@ -528,7 +529,7 @@ function VoiceAgentView({
           
           <div className="mt-6 text-center z-10">
             <h3 className="font-bricolage text-2xl md:text-4xl font-extrabold text-black dark:text-white tracking-tighter flex items-center justify-center gap-2">
-              Dr. Leo
+              Dr. Gita
               {callStatus === "active" && (
                 <span className="relative flex h-3 w-3 md:h-4 md:w-4 -mt-1 md:-mt-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>

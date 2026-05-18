@@ -30,7 +30,7 @@ Dr. ${doctorName} has just sent over your updated care plan.
 *Current Schedule:*
 ${scheduleSummary}
 
-Xerine AI will now monitor your adherence and send reminders at the specified times.
+Hilium AI will now monitor your adherence and send reminders at the specified times.
   `.trim();
 
   // 2. Send the immediate summary to the patient's linked messenger

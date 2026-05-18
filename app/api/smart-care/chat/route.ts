@@ -59,7 +59,7 @@ export async function POST(req: Request) {
     logToFile("Starting streamText with gemini-2.5-flash...");
     const result = streamText({
       model: google('gemini-2.5-flash'),
-      system: `You are Dr. Leo, a compassionate and precise AI health assistant for XERINE. 
+      system: `You are Dr. Leo, a compassionate and precise AI health assistant for Hilium. 
       Your mission is to provide evidence-based medical guidance by integrating the patient's personal history with current clinical research.
 
       Operational Guidelines:
@@ -69,7 +69,7 @@ export async function POST(req: Request) {
       Patient Profile:
       ${context.profile}
       
-      Status: This patient has ${context.recordCount} records in the XERINE database.`,
+      Status: This patient has ${context.recordCount} records in the Hilium database.`,
       messages: modelMessages,
       tools,
       maxSteps: 5,

@@ -169,7 +169,7 @@ export const generateHospitalBook = (data: HospitalBookData) => {
     
     doc.setFontSize(7);
     doc.setTextColor(120, 120, 120);
-    doc.text("XERINE AI CLINICAL INSIGHT", 25, yPos + 27);
+    doc.text("HILIUM AI CLINICAL INSIGHT", 25, yPos + 27);
     
     doc.setTextColor(60, 60, 60);
     doc.setFont("helvetica", "normal");

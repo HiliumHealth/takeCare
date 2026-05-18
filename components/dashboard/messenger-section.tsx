@@ -5,13 +5,47 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Send, Phone, UserPlus, ArrowRight, CheckCircle2, Bell, BellRing, Settings, MoreVertical, Paperclip, Smile, Mic, Mail, X, ArrowUp, Plus, Wrench, QrCode, Zap, ShieldCheck } from "lucide-react";
+import { MessageCircle, Send, Phone, UserPlus, ArrowRight, CheckCircle2, Bell, BellRing, Settings, MoreVertical, Paperclip, Smile, Mic, Mail, X, ArrowUp, Plus, Wrench, QrCode, Zap, ShieldCheck, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const MODES = [
   { id: "fast", label: "Fast Mode", icon: Zap, color: "text-blue-500", bg: "bg-blue-500/10", desc: "Instant QR Scan" },
   { id: "secure", label: "Secure Mode", icon: ShieldCheck, color: "text-emerald-500", bg: "bg-emerald-500/10", desc: "Encrypted Gmail Link" },
+  { id: "select", label: "Choose Doctor", icon: UserPlus, color: "text-purple-500", bg: "bg-purple-500/10", desc: "One-Click Quick Invite" },
+];
+
+const POPULAR_DOCTORS = [
+  {
+    name: "Dr. Sarah Jenkins",
+    email: "sarah.jenkins@takecare.com",
+    specialty: "Chief of Cardiology",
+    avatar: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=150"
+  },
+  {
+    name: "Dr. Paul Ndip",
+    email: "paul.ndip@takecare.com",
+    specialty: "General Practitioner",
+    avatar: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=150"
+  },
+  {
+    name: "Dr. Augustin Fonyuy",
+    email: "augustin.fonyuy@takecare.com",
+    specialty: "General Practitioner",
+    avatar: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=150"
+  },
+  {
+    name: "Dr. Fien Clarisse",
+    email: "fien.clarisse@takecare.com",
+    specialty: "Consultant Pediatrician",
+    avatar: "https://images.unsplash.com/photo-1594824813573-246434de83fb?auto=format&fit=crop&q=80&w=150"
+  },
+  {
+    name: "Dr. Amos Vernsyuy",
+    email: "amos.vernsyuy@takecare.com",
+    specialty: "Senior Neurologist",
+    avatar: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=150"
+  }
 ];
 
 interface Message {
@@ -23,7 +57,7 @@ interface Message {
   mediaUrl?: string; // URL for the media
 }
 
-export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNotificationSync?: (count: number) => void; onInviteSuccess?: () => void; }) {
+export function MessengerSection({ onNotificationSync, onInviteSuccess, invitedDoctors }: { onNotificationSync?: (count: number) => void; onInviteSuccess?: () => void; invitedDoctors?: any[]; }) {
   const [mode, setMode] = useState("fast");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isInvited, setIsInvited] = useState(false);
@@ -38,6 +72,119 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
   const [isTyping, setIsTyping] = useState(false);
   const [lastSeenTimestamp, setLastSeenTimestamp] = useState<string | null>(new Date().toISOString());
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const [myDoctors, setMyDoctors] = useState<any[]>([]);
+  const [doctorSearchQuery, setDoctorSearchQuery] = useState("");
+  const [showDoctorSuggestions, setShowDoctorSuggestions] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("takecare_my_doctors");
+      if (saved) {
+        setMyDoctors(JSON.parse(saved));
+      }
+    }
+  }, []);
+
+  const saveDoctorToMyDoctors = (name: string, email: string) => {
+    const avatar = `https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=${encodeURIComponent(name)}`;
+    const specialty = "Private Practitioner";
+    const newDoc = { name, email, specialty, avatar };
+    
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("takecare_my_doctors");
+      let currentDocs = saved ? JSON.parse(saved) : [];
+      
+      const exists = currentDocs.some((d: any) => d.email.toLowerCase().trim() === email.toLowerCase().trim());
+      if (!exists) {
+        currentDocs.push(newDoc);
+        localStorage.setItem("takecare_my_doctors", JSON.stringify(currentDocs));
+        setMyDoctors(currentDocs);
+      }
+    }
+  };
+
+  const handleAutoInvite = async (name: string, email: string) => {
+    setIsSubmitting(true);
+    setDoctorName(name);
+    setContactInfo(email);
+    
+    saveDoctorToMyDoctors(name, email);
+
+    try {
+      const endpoint = `/api/messenger/gmail`;
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          whatsappNumber: email,
+          contactInfo: email, 
+          contactName: name,
+          doctorName: name,
+          initialMessage: `Connection request automatically sent via secure link.`,
+          platform: "gmail", 
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setIsInvited(true);
+        setIsPopupOpen(false);
+        setTimeout(() => {
+          setIsInvited(false);
+          setDoctorName("");
+          setContactInfo("");
+          setInitialMessage("");
+          
+          if (onInviteSuccess) {
+            onInviteSuccess();
+          } else {
+            setIsChatActive(true);
+          }
+        }, 1500);
+      } else {
+        alert(`WhatsApp Delivery Error: ${result.error}. Check campaign: ${process.env.NEXT_PUBLIC_CAMPAIGN || 'health_check'}`);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Network Error: Could not reach communication gateway.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const combinedDoctors = React.useMemo(() => {
+    const list = [...myDoctors];
+    if (invitedDoctors && Array.isArray(invitedDoctors)) {
+      invitedDoctors.forEach((inv: any) => {
+        const exists = list.some(
+          (d: any) => d.email.toLowerCase().trim() === inv.contactInfo.toLowerCase().trim()
+        );
+        if (!exists) {
+          list.push({
+            name: inv.doctorName,
+            email: inv.contactInfo,
+            specialty: inv.status === "ACCEPTED" ? "Your Connected Doctor" : "Invitation Pending",
+            avatar: `https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=${encodeURIComponent(inv.doctorName)}`
+          });
+        }
+      });
+    }
+    return list;
+  }, [myDoctors, invitedDoctors]);
+
+  const filteredPopularDoctors = POPULAR_DOCTORS.filter(doc => 
+    doc.name.toLowerCase().includes(doctorSearchQuery.toLowerCase()) || 
+    doc.specialty.toLowerCase().includes(doctorSearchQuery.toLowerCase()) ||
+    doc.email.toLowerCase().includes(doctorSearchQuery.toLowerCase())
+  );
+
+  const filteredMyDoctors = combinedDoctors.filter(doc => 
+    doc.name.toLowerCase().includes(doctorSearchQuery.toLowerCase()) || 
+    doc.specialty.toLowerCase().includes(doctorSearchQuery.toLowerCase()) ||
+    doc.email.toLowerCase().includes(doctorSearchQuery.toLowerCase())
+  );
 
   // Sync with parent
   useEffect(() => {
@@ -95,9 +242,10 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
   const handleInvite = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Secure mode strictly uses the Gmail OTP flow
     let formattedNumber = contactInfo; 
     setIsSubmitting(true);
+
+    saveDoctorToMyDoctors(doctorName, contactInfo);
 
     try {
       const endpoint = `/api/messenger/gmail`;
@@ -105,7 +253,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          whatsappNumber: formattedNumber, // Kept for backward compatibility
+          whatsappNumber: formattedNumber,
           contactInfo: formattedNumber, 
           contactName: doctorName,
           doctorName: doctorName,
@@ -118,9 +266,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
 
       if (response.ok) {
         setIsInvited(true);
-        setIsPopupOpen(false); // Close the popup upon success
-        // After showing the success modal, we stay on this page 
-        // briefly, then reset the form and trigger the success callback
+        setIsPopupOpen(false);
         setTimeout(() => {
           setIsInvited(false);
           setDoctorName("");
@@ -130,7 +276,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
           if (onInviteSuccess) {
             onInviteSuccess();
           } else {
-            setIsChatActive(true); // Fallback if no callback
+            setIsChatActive(true);
           }
         }, 1500);
       } else {
@@ -309,18 +455,37 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
                                   alt="Secure QR Code" 
                                   className="w-56 h-56 rounded-2xl mix-blend-multiply relative z-10 pointer-events-none" 
                                 />
-                                {/* Scanning line animation */}
                                 <div className="absolute top-4 left-4 right-4 h-0.5 bg-blue-500 z-20 shadow-[0_0_15px_rgba(59,130,246,0.8)] opacity-70 animate-[scan_2s_ease-in-out_infinite]" />
                               </div>
                               <p className="text-sm font-bold text-black/50 dark:text-white/50 mt-8 max-w-xs text-center leading-relaxed">
                                 Doctor scans this code to instantly securely access your Hilium Dossier.
                               </p>
+                              
+                              {combinedDoctors.length > 0 && (
+                                <div className="w-full max-w-sm mt-6">
+                                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-3 text-left">
+                                    Quick Select from My Doctors
+                                  </div>
+                                  <div className="flex gap-2 overflow-x-auto pb-2">
+                                    {combinedDoctors.slice(0, 3).map((doc, idx) => (
+                                      <button
+                                        type="button"
+                                        key={`fast-my-${idx}`}
+                                        onClick={() => handleAutoInvite(doc.name, doc.email)}
+                                        className="flex items-center gap-2 bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 rounded-2xl p-2 pr-3 hover:bg-primary/10 transition-all cursor-pointer shrink-0"
+                                      >
+                                        <img src={doc.avatar} className="w-6 h-6 rounded-lg object-cover" />
+                                        <span className="text-xs font-bold text-black dark:text-white truncate max-w-[80px]">{doc.name}</span>
+                                      </button>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+
                               <Button 
                                 onClick={() => {
                                   setIsPopupOpen(false);
                                   setIsChatActive(true);
-                                  // Optionally open doctor's dashboard in a new tab to simulate the scan
-                                  // window.open("https://takecare-doctor.vercel.app", "_blank");
                                 }}
                                 className="mt-8 h-14 px-10 rounded-full bg-black dark:bg-white text-white dark:text-black font-black hover:scale-105 active:scale-95 shadow-xl transition-all cursor-pointer"
                               >
@@ -333,9 +498,82 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
                                 }
                               `}</style>
                             </div>
+                          ) : mode === "select" ? (
+                            <div className="flex flex-col gap-6 z-10 py-2">
+                              {/* Search Input for Quick Filtering */}
+                              <div className="relative">
+                                <Input
+                                  placeholder="Search by name, specialization, or email..."
+                                  value={doctorSearchQuery}
+                                  onChange={(e) => setDoctorSearchQuery(e.target.value)}
+                                  className="h-12 rounded-2xl border-black/5 bg-black/5 dark:bg-white/5 pl-10 text-sm font-bold transition-all focus:bg-white focus:ring-4 focus:ring-primary/5 shadow-inner text-black dark:text-white"
+                                />
+                                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-black/40 dark:text-white/40" />
+                              </div>
+
+                              {/* Conditionally Render My Doctors Section */}
+                              {filteredMyDoctors.length > 0 && (
+                                <div className="space-y-3">
+                                  <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary flex items-center gap-1.5">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                                    My Doctors ({filteredMyDoctors.length})
+                                  </h4>
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-48 overflow-y-auto pr-1">
+                                    {filteredMyDoctors.map((doc, idx) => (
+                                      <motion.div
+                                        key={`my-${doc.email}-${idx}`}
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        onClick={() => handleAutoInvite(doc.name, doc.email)}
+                                        className="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 hover:border-primary/20 dark:hover:border-primary/20 hover:bg-primary/[0.02] dark:hover:bg-primary/[0.02] p-4 rounded-3xl flex items-center gap-4 cursor-pointer transition-all duration-300 group"
+                                      >
+                                        <div className="relative w-12 h-12 rounded-2xl overflow-hidden shrink-0 border border-black/5 dark:border-white/10 bg-white dark:bg-black/30 flex items-center justify-center">
+                                          <img src={doc.avatar} alt={doc.name} className="w-full h-full object-cover" />
+                                        </div>
+                                        <div className="text-left flex-1 min-w-0">
+                                          <h5 className="font-bricolage text-sm font-black text-black dark:text-white truncate group-hover:text-primary transition-colors">{doc.name}</h5>
+                                          <p className="text-[10px] text-black/40 dark:text-white/40 font-bold truncate">{doc.specialty}</p>
+                                          <p className="text-[10px] text-black/30 dark:text-white/30 font-medium truncate">{doc.email}</p>
+                                        </div>
+                                        <ArrowRight className="w-4 h-4 text-black/20 group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                                      </motion.div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Preset/Popular Doctors Section */}
+                              <div className="space-y-3">
+                                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary flex items-center gap-1.5">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                                  Popular Doctors
+                                </h4>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[300px] overflow-y-auto pr-1">
+                                  {filteredPopularDoctors.map((doc, idx) => (
+                                    <motion.div
+                                      key={`popular-${doc.email}-${idx}`}
+                                      whileHover={{ scale: 1.02 }}
+                                      whileTap={{ scale: 0.98 }}
+                                      onClick={() => handleAutoInvite(doc.name, doc.email)}
+                                      className="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 hover:border-primary/20 dark:hover:border-primary/20 hover:bg-primary/[0.02] dark:hover:bg-primary/[0.02] p-4 rounded-3xl flex items-center gap-4 cursor-pointer transition-all duration-300 group"
+                                    >
+                                      <div className="relative w-12 h-12 rounded-2xl overflow-hidden shrink-0 border border-black/5 dark:border-white/10 bg-white dark:bg-black/30 flex items-center justify-center">
+                                        <img src={doc.avatar} alt={doc.name} className="w-full h-full object-cover" />
+                                      </div>
+                                      <div className="text-left flex-1 min-w-0">
+                                        <h5 className="font-bricolage text-sm font-black text-black dark:text-white truncate group-hover:text-primary transition-colors">{doc.name}</h5>
+                                        <p className="text-[10px] text-black/40 dark:text-white/40 font-bold truncate">{doc.specialty}</p>
+                                        <p className="text-[10px] text-black/30 dark:text-white/30 font-medium truncate">{doc.email}</p>
+                                      </div>
+                                      <ArrowRight className="w-4 h-4 text-black/20 group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                                    </motion.div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
                           ) : (
                             <form onSubmit={handleInvite} className="grid gap-5 z-10">
-                              <div className="grid gap-2">
+                              <div className="grid gap-2 relative">
                                 <Label htmlFor="doctor-name" className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">
                                   Doctor's Full Name
                                 </Label>
@@ -344,12 +582,16 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
                                   placeholder="e.g. Dr. Sarah Jenkins"
                                   required
                                   value={doctorName}
-                                  onChange={(e) => setDoctorName(e.target.value)}
-                                  className="h-14 sm:h-16 rounded-2xl border-black/5 bg-black/5 pl-6 text-base sm:text-lg font-bold transition-all focus:bg-white focus:ring-4 focus:ring-primary/5 shadow-inner hover:bg-black/10"
+                                  onChange={(e) => {
+                                    setDoctorName(e.target.value);
+                                    setShowDoctorSuggestions(true);
+                                  }}
+                                  onFocus={() => setShowDoctorSuggestions(true)}
+                                  className="h-14 sm:h-16 rounded-2xl border-black/5 bg-black/5 pl-6 text-base sm:text-lg font-bold transition-all focus:bg-white focus:ring-4 focus:ring-primary/5 shadow-inner hover:bg-black/10 dark:hover:bg-white/10 text-black dark:text-white"
                                 />
                               </div>
 
-                              <div className="grid gap-2">
+                              <div className="grid gap-2 relative">
                                 <Label htmlFor="contact-email" className="text-[10px] font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">
                                   Doctor's Secure Email
                                 </Label>
@@ -359,9 +601,73 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess }: { onNo
                                   required
                                   placeholder="dr.jenkins@hospital.com"
                                   value={contactInfo}
-                                  onChange={(e) => setContactInfo(e.target.value)}
-                                  className="h-14 sm:h-16 rounded-2xl border-black/5 bg-black/5 pl-6 text-base sm:text-lg font-bold transition-all focus:bg-white focus:ring-4 focus:ring-primary/5 shadow-inner hover:bg-black/10"
+                                  onChange={(e) => {
+                                    setContactInfo(e.target.value);
+                                    setShowDoctorSuggestions(true);
+                                  }}
+                                  onFocus={() => setShowDoctorSuggestions(true)}
+                                  className="h-14 sm:h-16 rounded-2xl border-black/5 bg-black/5 pl-6 text-base sm:text-lg font-bold transition-all focus:bg-white focus:ring-4 focus:ring-primary/5 shadow-inner hover:bg-black/10 dark:hover:bg-white/10 text-black dark:text-white"
                                 />
+
+                                {showDoctorSuggestions && (
+                                  <>
+                                    <div 
+                                      className="fixed inset-0 z-40 cursor-default" 
+                                      onClick={() => setShowDoctorSuggestions(false)} 
+                                    />
+                                    <div className="absolute left-0 right-0 top-full mt-2 bg-white dark:bg-[#121212] border border-black/5 dark:border-white/10 rounded-3xl shadow-2xl z-50 overflow-hidden max-h-60 overflow-y-auto p-2 backdrop-blur-xl bg-white/95 dark:bg-[#0c0c0c]/95">
+                                      <div className="text-[9px] font-black uppercase tracking-wider text-black/40 dark:text-white/40 px-3 py-2 flex justify-between items-center">
+                                        <span>Quick Autocomplete</span>
+                                        <button 
+                                          type="button" 
+                                          className="text-[9px] text-primary font-bold hover:underline cursor-pointer"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setShowDoctorSuggestions(false);
+                                          }}
+                                        >
+                                          Close
+                                        </button>
+                                      </div>
+                                      
+                                      {POPULAR_DOCTORS.map((doc, idx) => (
+                                        <div
+                                          key={`suggest-pop-${idx}`}
+                                          onMouseDown={() => {
+                                            setDoctorName(doc.name);
+                                            setContactInfo(doc.email);
+                                            setShowDoctorSuggestions(false);
+                                          }}
+                                          className="flex items-center gap-3 p-2 hover:bg-primary/10 rounded-2xl cursor-pointer text-left transition-all"
+                                        >
+                                          <img src={doc.avatar} className="w-8 h-8 rounded-xl object-cover" />
+                                          <div className="flex-1 min-w-0">
+                                            <div className="text-xs font-bold text-black dark:text-white truncate">{doc.name}</div>
+                                            <div className="text-[10px] text-black/40 dark:text-white/40 font-medium truncate">{doc.email}</div>
+                                          </div>
+                                        </div>
+                                      ))}
+
+                                      {combinedDoctors.map((doc, idx) => (
+                                        <div
+                                          key={`suggest-my-${idx}`}
+                                          onMouseDown={() => {
+                                            setDoctorName(doc.name);
+                                            setContactInfo(doc.email);
+                                            setShowDoctorSuggestions(false);
+                                          }}
+                                          className="flex items-center gap-3 p-2 hover:bg-primary/10 rounded-2xl cursor-pointer text-left transition-all"
+                                        >
+                                          <img src={doc.avatar} className="w-8 h-8 rounded-xl object-cover" />
+                                          <div className="flex-1 min-w-0">
+                                            <div className="text-xs font-bold text-black dark:text-white truncate">{doc.name}</div>
+                                            <div className="text-[10px] text-black/40 dark:text-white/40 font-medium truncate">{doc.email}</div>
+                                          </div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </>
+                                )}
                               </div>
 
                               <div className="grid gap-2">

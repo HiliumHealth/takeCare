@@ -159,7 +159,7 @@ ${localInput.trim()}
             <div className="h-14 w-14 rounded-2xl overflow-hidden shadow-lg shadow-primary/10 rotate-3 border-2 border-white">
               <img 
                 src="https://i.ibb.co/fYy0cwxb/Chat-GPT-Image-Apr-16-2026-09-01-03-AM.png" 
-                alt="Dr. Leo" 
+                alt="Dr. Gita" 
                 className="h-full w-full object-cover"
               />
             </div>
@@ -167,7 +167,7 @@ ${localInput.trim()}
           </div>
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="font-bricolage font-black text-xl tracking-tight text-black dark:text-white">Dr. Leo</h3>
+              <h3 className="font-bricolage font-black text-xl tracking-tight text-black dark:text-white">Dr. Gita</h3>
               <Badge className="bg-primary/5 text-primary border-primary/10 text-[9px] font-black uppercase tracking-widest px-2 py-0">Active Intelligence</Badge>
             </div>
             <p className="text-[11px] font-bold text-black/60 dark:text-white/60 uppercase tracking-[0.1em]">Verified Health Assistant • Encryption Active</p>
@@ -197,7 +197,7 @@ ${localInput.trim()}
                 <div className="h-32 w-32 rounded-[2.5rem] overflow-hidden mb-8 border-2 border-black/10 dark:border-white/10 rotate-2 transition-transform hover:rotate-0 duration-500">
                   <img 
                     src="https://i.ibb.co/fYy0cwxb/Chat-GPT-Image-Apr-16-2026-09-01-03-AM.png" 
-                    alt="Dr. Leo" 
+                    alt="Dr. Gita" 
                     className="h-full w-full object-cover"
                   />
                 </div>
@@ -221,41 +221,48 @@ ${localInput.trim()}
               </div>
             )}
 
-            {messages.map((msg, idx) => (
-              <motion.div
-                key={msg.id}
-                initial={{ opacity: 0, y: 20, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.4, delay: 0.1 }}
-                className={cn(
-                  "flex flex-col md:flex-row md:items-end gap-2 md:gap-3 mb-8 md:mb-10 w-full",
-                  msg.role === "user" ? "items-end md:flex-row-reverse" : "items-start md:flex-row"
-                )}
-              >
-                {/* Avatar Wrapper - Small and above the bubble on mobile */}
-                <div className="flex items-center gap-2 mb-1 md:mb-0 md:contents">
-                  <Avatar className={cn(
-                    "h-6 w-6 md:h-10 md:w-10 border-2 shadow-sm shrink-0",
-                    msg.role === "user" ? "border-primary/20" : "border-white dark:border-white/10"
-                  )}>
-                    {msg.role === "assistant" ? (
-                      <>
-                        <AvatarImage src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=200&h=200" alt="Dr. Leo" />
-                        <AvatarFallback className="bg-primary text-white text-[10px] font-black">LEO</AvatarFallback>
-                      </>
-                    ) : (
-                      <>
-                        <AvatarImage src={session?.user?.image || ""} alt={userName} />
-                        <AvatarFallback className="bg-black text-white text-[10px] font-black">
-                          {userName.substring(0, 2).toUpperCase()}
-                        </AvatarFallback>
-                      </>
-                    )}
-                  </Avatar>
-                  <span className="md:hidden text-[9px] font-black uppercase tracking-widest text-black/40 dark:text-white/40">
-                    {msg.role === "user" ? "You" : "Dr. Leo"}
-                  </span>
-                </div>
+            {messages.map((msg, idx) => {
+              // Avoid rendering empty assistant messages (e.g. while tool is executing but before stream has text/parts)
+              const hasParts = msg.parts && msg.parts.length > 0;
+              const hasContent = msg.content && msg.content.trim().length > 0;
+              if (msg.role === "assistant" && !hasContent && !hasParts) {
+                return null;
+              }
+              return (
+                <motion.div
+                  key={msg.id}
+                  initial={{ opacity: 0, y: 20, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.4, delay: 0.1 }}
+                  className={cn(
+                    "flex flex-col md:flex-row md:items-end gap-2 md:gap-3 mb-8 md:mb-10 w-full",
+                    msg.role === "user" ? "items-end md:flex-row-reverse" : "items-start md:flex-row"
+                  )}
+                >
+                  {/* Avatar Wrapper - Small and above the bubble on mobile */}
+                  <div className="flex items-center gap-2 mb-1 md:mb-0 md:contents">
+                    <Avatar className={cn(
+                      "h-6 w-6 md:h-10 md:w-10 border-2 shadow-sm shrink-0",
+                      msg.role === "user" ? "border-primary/20" : "border-white dark:border-white/10"
+                    )}>
+                      {msg.role === "assistant" ? (
+                        <>
+                          <AvatarImage src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=200&h=200" alt="Dr. Gita" />
+                          <AvatarFallback className="bg-primary text-white text-[10px] font-black">GITA</AvatarFallback>
+                        </>
+                      ) : (
+                        <>
+                          <AvatarImage src={session?.user?.image || ""} alt={userName} />
+                          <AvatarFallback className="bg-black text-white text-[10px] font-black">
+                            {userName.substring(0, 2).toUpperCase()}
+                          </AvatarFallback>
+                        </>
+                      )}
+                    </Avatar>
+                    <span className="md:hidden text-[9px] font-black uppercase tracking-widest text-black/40 dark:text-white/40">
+                      {msg.role === "user" ? "You" : "Dr. Gita"}
+                    </span>
+                  </div>
 
                 <div
                   className={cn(
@@ -319,6 +326,7 @@ ${localInput.trim()}
                                   {call.toolName === "searchMedicalLiterature" && "Consulting Research Nodes"}
                                   {call.toolName === "getDoctorNotes" && "Decoding Clinical Insights"}
                                   {call.toolName === "searchVoiceHistory" && "Analyzing Audio Transcripts"}
+                                  {call.toolName === "getDoctorIntelligence" && "Synthesizing Clinical Intelligence"}
                                 </span>
                               </div>
                               {call.state === "result" ? (
@@ -356,7 +364,7 @@ ${localInput.trim()}
                   msg.role === "user" ? "flex-row-reverse" : "flex-row"
                 )}>
                   <span className="text-[9px] font-black text-black/10 dark:text-white/10 uppercase tracking-[0.2em] transition-opacity group-hover:opacity-100 opacity-0">
-                    {msg.role === "user" ? "Sent by You" : "Origin: Dr. Leo"}
+                    {msg.role === "user" ? "Sent by You" : "Origin: Dr. Gita"}
                   </span>
                   <div className="h-1 w-1 rounded-full bg-black/5 dark:bg-white/5" />
                   <span className="text-[9px] font-black text-black/10 dark:text-white/10 uppercase tracking-[0.2em]">
@@ -364,37 +372,37 @@ ${localInput.trim()}
                   </span>
                 </div>
               </motion.div>
-            ))}
+            )})}
             
             {isLoading && (
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="w-[99%] md:max-w-[85%] bg-white dark:bg-[#0f0f0f] border border-black/10 dark:border-white/10 rounded-[2rem] p-6 space-y-4"
+                className="w-[99%] md:max-w-[85%] bg-white/50 dark:bg-black/50 backdrop-blur-xl border border-black/10 dark:border-white/10 rounded-2xl p-3.5 space-y-2.5 shadow-none"
               >
-                <div className="flex items-center gap-3">
-                  <div className="relative flex h-2.5 w-2.5 shrink-0">
+                <div className="flex items-center gap-2">
+                  <div className="relative flex h-1.5 w-1.5 shrink-0">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary"></span>
                   </div>
-                  <span className="text-[11px] font-black uppercase tracking-[0.2em] text-primary">Hilium Clinical Insight Core</span>
-                  <span className="text-[10px] font-bold text-black/40 dark:text-white/40 uppercase tracking-wider ml-auto">Active Reasoning</span>
+                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-primary">Dr. Gita's Insight Engine</span>
+                  <span className="text-[8px] font-bold text-black/40 dark:text-white/40 uppercase tracking-wider ml-auto">Active Reasoning</span>
                 </div>
 
-                <div className="space-y-3 pl-2.5 border-l border-black/[0.08] dark:border-white/[0.08]">
+                <div className="space-y-1.5 pl-2 border-l border-black/[0.08] dark:border-white/[0.08]">
                   {/* Step 1: Tool scan */}
                   <motion.div 
                     initial={{ opacity: 0, x: -4 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="flex items-center gap-3 text-xs font-semibold text-black/60 dark:text-white/60"
+                    className="flex items-center gap-2 text-[10px] font-bold text-black/50 dark:text-white/50"
                   >
                     {thinkingStep === 0 ? (
-                      <Loader2 className="h-3.5 w-3.5 text-primary animate-spin shrink-0" />
+                      <Loader2 className="h-3 w-3 text-primary animate-spin shrink-0" />
                     ) : (
-                      <ShieldCheck className="h-3.5 w-3.5 text-green-500 shrink-0" />
+                      <ShieldCheck className="h-3 w-3 text-green-500 shrink-0" />
                     )}
-                    <span className={cn(thinkingStep === 0 && "text-black dark:text-white font-bold")}>
-                      {thinkingStep === 0 ? "Using Tool: Accessing secure patient medical history booklet..." : "Accessed medical records booklet successfully"}
+                    <span className={cn(thinkingStep === 0 && "text-primary font-black")}>
+                      {thinkingStep === 0 ? "Accessing secure patient medical history booklet..." : "Accessed medical records booklet successfully"}
                     </span>
                   </motion.div>
 
@@ -403,15 +411,15 @@ ${localInput.trim()}
                     <motion.div 
                       initial={{ opacity: 0, x: -4 }}
                       animate={{ opacity: 1, x: 0 }}
-                      className="flex items-center gap-3 text-xs font-semibold text-black/60 dark:text-white/60"
+                      className="flex items-center gap-2 text-[10px] font-bold text-black/50 dark:text-white/50"
                     >
                       {thinkingStep === 1 ? (
-                        <Loader2 className="h-3.5 w-3.5 text-primary animate-spin shrink-0" />
+                        <Loader2 className="h-3 w-3 text-primary animate-spin shrink-0" />
                       ) : (
-                        <ShieldCheck className="h-3.5 w-3.5 text-green-500 shrink-0" />
+                        <ShieldCheck className="h-3 w-3 text-green-500 shrink-0" />
                       )}
-                      <span className={cn(thinkingStep === 1 && "text-black dark:text-white font-bold")}>
-                        {thinkingStep === 1 ? "Using Tool: Examining clinical vital signs and doctor consultations..." : "Extracted vital telemetry and expert consultations"}
+                      <span className={cn(thinkingStep === 1 && "text-primary font-black")}>
+                        {thinkingStep === 1 ? "Examining clinical vital signs and doctor consultations..." : "Extracted vital telemetry and expert consultations"}
                       </span>
                     </motion.div>
                   )}
@@ -421,15 +429,15 @@ ${localInput.trim()}
                     <motion.div 
                       initial={{ opacity: 0, x: -4 }}
                       animate={{ opacity: 1, x: 0 }}
-                      className="flex items-center gap-3 text-xs font-semibold text-black/60 dark:text-white/60"
+                      className="flex items-center gap-2 text-[10px] font-bold text-black/50 dark:text-white/50"
                     >
                       {thinkingStep === 2 ? (
-                        <Loader2 className="h-3.5 w-3.5 text-primary animate-spin shrink-0" />
+                        <Loader2 className="h-3 w-3 text-primary animate-spin shrink-0" />
                       ) : (
-                        <ShieldCheck className="h-3.5 w-3.5 text-green-500 shrink-0" />
+                        <ShieldCheck className="h-3 w-3 text-green-500 shrink-0" />
                       )}
-                      <span className={cn(thinkingStep === 2 && "text-black dark:text-white font-bold")}>
-                        {thinkingStep === 2 ? "Using Tool: Querying peer-reviewed medical research literature..." : "Synthesized medical research node insights"}
+                      <span className={cn(thinkingStep === 2 && "text-primary font-black")}>
+                        {thinkingStep === 2 ? "Querying peer-reviewed medical research literature..." : "Synthesized medical research node insights"}
                       </span>
                     </motion.div>
                   )}
@@ -439,10 +447,10 @@ ${localInput.trim()}
                     <motion.div 
                       initial={{ opacity: 0, x: -4 }}
                       animate={{ opacity: 1, x: 0 }}
-                      className="flex items-center gap-3 text-xs font-semibold text-black/60 dark:text-white/60"
+                      className="flex items-center gap-2 text-[10px] font-bold text-black/50 dark:text-white/50"
                     >
-                      <Loader2 className="h-3.5 w-3.5 text-primary animate-spin shrink-0" />
-                      <span className="text-black dark:text-white font-bold">
+                      <Loader2 className="h-3 w-3 text-primary animate-spin shrink-0" />
+                      <span className="text-primary font-black">
                         Formulating verified evidence-based health guidance...
                       </span>
                     </motion.div>

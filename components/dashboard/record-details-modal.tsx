@@ -89,13 +89,13 @@ export function RecordDetailsModal({
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 bottom-0 w-full sm:w-[500px] md:w-[650px] bg-background dark:bg-[#0A0A0A] z-[101] shadow-[-20px_0_50px_rgba(0,0,0,0.05)] flex flex-col border-l border-black/5 dark:border-white/5"
+            className="fixed right-0 top-0 bottom-0 w-full sm:w-[500px] md:w-[650px] bg-background dark:bg-[#0A0A0A] z-[101] flex flex-col border-l border-black/5 dark:border-white/5"
           >
             {/* High-End Header */}
             <div className="relative px-6 py-8 md:px-10 md:py-10 bg-background dark:bg-[#0A0A0A] border-b border-black/[0.03] dark:border-white/[0.03] shrink-0">
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-3">
-                  <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shadow-inner">
+                  <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
                     <FileText className="h-6 w-6" />
                   </div>
                   <div className="flex flex-col">
@@ -152,7 +152,7 @@ export function RecordDetailsModal({
                   <motion.div
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    className="relative overflow-hidden bg-white/50 dark:bg-white/5 rounded-[2.5rem] p-8 md:p-10 border border-black/[0.03] dark:border-white/[0.03] shadow-xl shadow-black/[0.02] dark:shadow-black/20"
+                    className="relative overflow-hidden bg-white/50 dark:bg-white/5 rounded-[2.5rem] p-8 md:p-10 border border-black/[0.03] dark:border-white/[0.03]"
                   >
                     <div className="absolute top-0 right-0 p-10 opacity-[0.03] pointer-events-none">
                       <ClipboardList className="h-24 w-24" />
@@ -239,7 +239,7 @@ export function RecordDetailsModal({
                                         </div>
                                         <div className="space-y-3">
                                           {sections.prescriptions.split("\n").filter((l: string) => l.trim()).map((line: string, i: number) => (
-                                            <div key={i} className="flex items-start gap-3 p-3 rounded-2xl bg-white/50 dark:bg-white/5 border border-emerald-500/5 shadow-sm">
+                                            <div key={i} className="flex items-start gap-3 p-3 rounded-2xl bg-white/50 dark:bg-white/5 border border-emerald-500/5">
                                               <div className="h-5 w-5 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0 mt-0.5">
                                                 <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                                               </div>
@@ -263,7 +263,7 @@ export function RecordDetailsModal({
                                         </div>
                                         <div className="space-y-3">
                                           {sections.labs.split("\n").filter((l: string) => l.trim()).map((line: string, i: number) => (
-                                            <div key={i} className="flex items-start gap-3 p-3 rounded-2xl bg-white/50 dark:bg-white/5 border border-amber-500/5 shadow-sm">
+                                            <div key={i} className="flex items-start gap-3 p-3 rounded-2xl bg-white/50 dark:bg-white/5 border border-amber-500/5">
                                               <div className="h-5 w-5 rounded-lg bg-amber-500/10 flex items-center justify-center shrink-0 mt-0.5">
                                                 <CheckCircle2 className="h-3 w-3 text-amber-500" />
                                               </div>
@@ -299,7 +299,7 @@ export function RecordDetailsModal({
                                   )}
 
                                   {/* Follow-up / Summary Footer */}
-                                  <div className="flex items-center justify-between p-6 bg-black dark:bg-white rounded-3xl shadow-xl shadow-black/10 dark:shadow-none">
+                                  <div className="flex items-center justify-between p-6 bg-black dark:bg-white rounded-3xl">
                                     <div className="flex items-center gap-4">
                                       <div className="h-10 w-10 rounded-full bg-white/10 dark:bg-black/10 flex items-center justify-center">
                                         <Calendar className="h-5 w-5 text-white dark:text-black" />
@@ -335,7 +335,7 @@ export function RecordDetailsModal({
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.1 }}
-                    className="relative overflow-hidden bg-white/50 dark:bg-white/5 rounded-[2.5rem] p-8 border border-black/[0.03] dark:border-white/[0.03] shadow-sm group"
+                    className="relative overflow-hidden bg-white/50 dark:bg-white/5 rounded-[2.5rem] p-8 border border-black/[0.03] dark:border-white/[0.03] group"
                   >
                     {/* Branded Logo Watermark */}
                     <div className="absolute -top-4 -right-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-700">
@@ -390,7 +390,7 @@ export function RecordDetailsModal({
                           animate={{ x: 0, opacity: 1 }}
                           transition={{ delay: 0.2 + (idx * 0.05) }}
                           key={idx}
-                          className="bg-white/50 dark:bg-white/5 p-6 rounded-3xl border border-black/[0.03] dark:border-white/[0.03] shadow-sm group hover:border-primary/20 transition-all cursor-default"
+                          className="bg-white/50 dark:bg-white/5 p-6 rounded-3xl border border-black/[0.03] dark:border-white/[0.03] group hover:border-primary/20 transition-all cursor-default"
                         >
                           <div className="flex gap-4 items-center">
                             <div className="h-10 w-10 rounded-xl bg-black/[0.02] dark:bg-white/[0.02] group-hover:bg-primary/5 flex items-center justify-center shrink-0 transition-colors">
@@ -422,7 +422,7 @@ export function RecordDetailsModal({
                 </div>
 
                 {/* Security & Action Footer */}
-                <div className="bg-white/50 dark:bg-white/5 text-foreground p-8 rounded-[2.5rem] shadow-xl shadow-black/5 dark:shadow-black/20 border border-black/5 dark:border-white/5 flex flex-col gap-6 relative overflow-hidden">
+                <div className="bg-white/50 dark:bg-white/5 text-foreground p-8 rounded-[2.5rem] border border-black/5 dark:border-white/5 flex flex-col gap-6 relative overflow-hidden">
                   <div className="absolute top-0 inset-x-0 h-1.5 bg-linear-to-r from-primary/40 via-primary to-primary/40 opacity-50" />
                   <div className="absolute top-0 right-0 p-8 opacity-[0.03]">
                     <Lock className="h-20 w-20" />
@@ -437,7 +437,7 @@ export function RecordDetailsModal({
                       This clinical record is encrypted using AES-256 standards. Only you and authorized medical entities can view the full metadata.
                     </p>
                   </div>
-                  <Button className="w-full h-14 rounded-2xl bg-foreground text-background font-black text-xs uppercase tracking-widest hover:bg-primary transition-all shadow-lg shadow-black/10 cursor-pointer">
+                  <Button className="w-full h-14 rounded-2xl bg-foreground text-background font-black text-xs uppercase tracking-widest hover:bg-primary transition-all cursor-pointer">
                     View Audit Log
                   </Button>
                 </div>
@@ -457,7 +457,7 @@ export function RecordDetailsModal({
                     });
                   }
                 }}
-                className="flex-1 h-16 rounded-2xl bg-background border border-black/5 dark:border-white/5 text-foreground font-black text-xs uppercase tracking-widest hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-all shadow-xl shadow-black/[0.03] dark:shadow-black/20 flex items-center justify-center gap-3 relative overflow-hidden group cursor-pointer"
+                className="flex-1 h-16 rounded-2xl bg-background border border-black/5 dark:border-white/5 text-foreground font-black text-xs uppercase tracking-widest hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-all flex items-center justify-center gap-3 relative overflow-hidden group cursor-pointer"
               >
                 <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 <Download className="h-5 w-5 text-primary" />
@@ -466,7 +466,7 @@ export function RecordDetailsModal({
               <Button
                 variant="outline"
                 onClick={() => record.url && window.open(record.url, "_blank")}
-                className="h-16 w-16 rounded-2xl border-neutral-300 dark:border-neutral-700 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center text-neutral-800 dark:text-neutral-200 shadow-sm cursor-pointer"
+                className="h-16 w-16 rounded-2xl border-neutral-300 dark:border-neutral-700 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/5 dark:hover:bg-white/5 flex items-center justify-center text-neutral-800 dark:text-neutral-200 cursor-pointer"
               >
                 <ExternalLink className="h-5 w-5" />
               </Button>

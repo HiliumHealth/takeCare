@@ -57,6 +57,27 @@ const getSpecialtyBadgeStyles = (specialty: string) => {
   return "bg-slate-500/10 text-slate-600 dark:text-slate-400 border-slate-500/20";
 };
 
+const getRealDoctorAvatar = (name: string) => {
+  const images = [
+    "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=150",
+    "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=150",
+    "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=150",
+    "https://images.unsplash.com/photo-1594824813573-246434de83fb?auto=format&fit=crop&q=80&w=150",
+    "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=150",
+    "https://images.unsplash.com/photo-1582750433449-649350146c42?auto=format&fit=crop&q=80&w=150",
+    "https://images.unsplash.com/photo-1550831107-1553da8c8464?auto=format&fit=crop&q=80&w=150",
+    "https://images.unsplash.com/photo-1591604021695-0c69b7c05981?auto=format&fit=crop&q=80&w=150",
+    "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?auto=format&fit=crop&q=80&w=150",
+    "https://images.unsplash.com/photo-1607990283143-e81e7a2c93ab?auto=format&fit=crop&q=80&w=150"
+  ];
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % images.length;
+  return images[index];
+};
+
 interface Message {
   id: string;
   text: string;
@@ -90,13 +111,19 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess, invitedD
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("takecare_my_doctors");
       if (saved) {
-        setMyDoctors(JSON.parse(saved));
+        // Hydrate saved doctors but ensure their avatars use the new high-fidelity real doctor images dynamically!
+        const parsed = JSON.parse(saved);
+        const hydrated = parsed.map((doc: any) => ({
+          ...doc,
+          avatar: getRealDoctorAvatar(doc.name)
+        }));
+        setMyDoctors(hydrated);
       }
     }
   }, []);
 
   const saveDoctorToMyDoctors = (name: string, email: string) => {
-    const avatar = `https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=${encodeURIComponent(name)}`;
+    const avatar = getRealDoctorAvatar(name);
     const specialty = "Private Practitioner";
     const newDoc = { name, email, specialty, avatar };
     
@@ -108,7 +135,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess, invitedD
       if (!exists) {
         currentDocs.push(newDoc);
         localStorage.setItem("takecare_my_doctors", JSON.stringify(currentDocs));
-        setMyDoctors(currentDocs);
+        setMyDoctors(currentDocs.map((d: any) => ({ ...d, avatar: getRealDoctorAvatar(d.name) })));
       }
     }
   };
@@ -522,41 +549,40 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess, invitedD
 
                               {/* Conditionally Render My Doctors Section */}
                               {filteredMyDoctors.length > 0 && (
-                                <div className="space-y-4">
+                                <div className="space-y-3">
                                   <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary flex items-center gap-1.5 pl-1">
                                     <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                                     My Connected Doctors ({filteredMyDoctors.length})
                                   </h4>
-                                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 max-h-[220px] overflow-y-auto pr-1 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-black/10 dark:[&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full">
+                                  <div className="grid grid-cols-2 md:grid-cols-3 bg-black/5 dark:bg-white/10 gap-[1px] border border-black/5 dark:border-white/10 rounded-2xl overflow-hidden max-h-[220px] overflow-y-auto pr-[1px] [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-black/10 dark:[&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full shadow-inner">
                                     {filteredMyDoctors.map((doc, idx) => (
                                       <motion.div
                                         key={`my-${doc.email}-${idx}`}
-                                        whileHover={{ y: -4, scale: 1.02 }}
-                                        whileTap={{ scale: 0.98 }}
+                                        whileTap={{ scale: 0.97 }}
                                         onClick={() => handleAutoInvite(doc.name, doc.email)}
-                                        className="bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/10 rounded-[24px] p-4 flex flex-col items-center text-center transition-all duration-300 relative overflow-hidden hover:shadow-[0_12px_24px_-10px_rgba(0,0,0,0.06)] hover:bg-white dark:hover:bg-white/5 cursor-pointer group"
+                                        className="bg-white dark:bg-[#0c0c0c] p-3 aspect-square flex flex-col items-center justify-between text-center transition-all duration-300 hover:bg-black/[0.01] dark:hover:bg-white/[0.02] cursor-pointer group relative overflow-hidden"
                                       >
-                                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/30 to-purple-500/30 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                        
-                                        <div className="relative w-14 h-14 rounded-full border-2 border-black/5 dark:border-white/10 p-0.5 mb-3 group-hover:scale-105 group-hover:border-primary transition-all duration-500 bg-white dark:bg-black/30">
-                                          <img src={doc.avatar} alt={doc.name} className="w-full h-full rounded-full object-cover" />
-                                          <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-[#0a0a0a] shadow-sm animate-pulse" />
-                                        </div>
-
-                                        <span className={cn("text-[9px] font-black tracking-wider uppercase px-2 py-0.5 rounded-full border mb-2 shrink-0 truncate max-w-full", getSpecialtyBadgeStyles(doc.specialty))}>
+                                        <span className={cn("text-[7.5px] font-black tracking-wider uppercase px-2 py-0.5 rounded border shrink-0 truncate max-w-full font-outfit", getSpecialtyBadgeStyles(doc.specialty))}>
                                           {doc.specialty}
                                         </span>
 
-                                        <h5 className="font-bricolage text-xs sm:text-sm font-extrabold tracking-tight text-black dark:text-white leading-tight mt-1 mb-0.5 group-hover:text-primary transition-colors truncate max-w-full">
-                                          {doc.name}
-                                        </h5>
-                                        <p className="text-[9px] text-black/40 dark:text-white/40 font-bold mb-3 font-outfit truncate max-w-full">
-                                          {doc.email}
-                                        </p>
+                                        <div className="relative w-11 h-11 rounded-xl border border-black/5 dark:border-white/10 p-0.5 group-hover:scale-105 group-hover:border-primary transition-all duration-500 bg-white dark:bg-black/30 shrink-0">
+                                          <img src={doc.avatar} alt={doc.name} className="w-full h-full rounded-lg object-cover" />
+                                          <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white dark:border-[#0c0c0c] shadow-sm animate-pulse" />
+                                        </div>
 
-                                        <div className="w-full mt-auto py-1.5 px-2 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/5 dark:border-white/5 text-[9px] font-black uppercase tracking-wider text-black/60 dark:text-white/60 group-hover:bg-primary group-hover:text-white group-hover:border-transparent transition-all duration-300 flex items-center justify-center gap-1">
+                                        <div className="w-full flex flex-col items-center gap-0.5 min-w-0">
+                                          <h5 className="font-bricolage text-[11px] sm:text-xs font-black tracking-tight text-black dark:text-white leading-tight group-hover:text-primary transition-colors truncate w-full">
+                                            {doc.name}
+                                          </h5>
+                                          <p className="text-[8.5px] text-black/40 dark:text-white/40 font-bold font-outfit truncate w-full">
+                                            {doc.email}
+                                          </p>
+                                        </div>
+
+                                        <div className="text-[8px] font-black uppercase tracking-wider text-black/40 dark:text-white/40 group-hover:text-primary transition-colors flex items-center justify-center gap-0.5 shrink-0 mt-1">
                                           <span>Connect</span>
-                                          <ArrowRight className="w-3 h-3 text-black/40 dark:text-white/40 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
+                                          <ArrowRight className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-all text-black/40 dark:text-white/40 group-hover:text-primary" />
                                         </div>
                                       </motion.div>
                                     ))}
@@ -565,41 +591,40 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess, invitedD
                               )}
 
                               {/* Preset/Popular Doctors Section */}
-                              <div className="space-y-4">
+                              <div className="space-y-3">
                                 <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary flex items-center gap-1.5 pl-1">
                                   <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                                   Popular Doctors
                                 </h4>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 max-h-[320px] overflow-y-auto pr-1 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-black/10 dark:[&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full">
+                                <div className="grid grid-cols-2 md:grid-cols-3 bg-black/5 dark:bg-white/10 gap-[1px] border border-black/5 dark:border-white/10 rounded-2xl overflow-hidden max-h-[320px] overflow-y-auto pr-[1px] [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-black/10 dark:[&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full shadow-inner">
                                   {filteredPopularDoctors.map((doc, idx) => (
                                     <motion.div
                                       key={`popular-${doc.email}-${idx}`}
-                                      whileHover={{ y: -4, scale: 1.02 }}
-                                      whileTap={{ scale: 0.98 }}
+                                      whileTap={{ scale: 0.97 }}
                                       onClick={() => handleAutoInvite(doc.name, doc.email)}
-                                      className="bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/10 rounded-[24px] p-4 flex flex-col items-center text-center transition-all duration-300 relative overflow-hidden hover:shadow-[0_12px_24px_-10px_rgba(0,0,0,0.06)] hover:bg-white dark:hover:bg-white/5 cursor-pointer group"
+                                      className="bg-white dark:bg-[#0c0c0c] p-3 aspect-square flex flex-col items-center justify-between text-center transition-all duration-300 hover:bg-black/[0.01] dark:hover:bg-white/[0.02] cursor-pointer group relative overflow-hidden"
                                     >
-                                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/30 to-purple-500/30 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                      
-                                      <div className="relative w-14 h-14 rounded-full border-2 border-black/5 dark:border-white/10 p-0.5 mb-3 group-hover:scale-105 group-hover:border-primary transition-all duration-500 bg-white dark:bg-black/30">
-                                        <img src={doc.avatar} alt={doc.name} className="w-full h-full rounded-full object-cover" />
-                                        <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-[#0a0a0a] shadow-sm animate-pulse" />
-                                      </div>
-
-                                      <span className={cn("text-[9px] font-black tracking-wider uppercase px-2 py-0.5 rounded-full border mb-2 shrink-0 truncate max-w-full", getSpecialtyBadgeStyles(doc.specialty))}>
+                                      <span className={cn("text-[7.5px] font-black tracking-wider uppercase px-2 py-0.5 rounded border shrink-0 truncate max-w-full font-outfit", getSpecialtyBadgeStyles(doc.specialty))}>
                                         {doc.specialty}
                                       </span>
 
-                                      <h5 className="font-bricolage text-xs sm:text-sm font-extrabold tracking-tight text-black dark:text-white leading-tight mt-1 mb-0.5 group-hover:text-primary transition-colors truncate max-w-full">
-                                        {doc.name}
-                                      </h5>
-                                      <p className="text-[9px] text-black/40 dark:text-white/40 font-bold mb-3 font-outfit truncate max-w-full">
-                                        {doc.email}
-                                      </p>
+                                      <div className="relative w-11 h-11 rounded-xl border border-black/5 dark:border-white/10 p-0.5 group-hover:scale-105 group-hover:border-primary transition-all duration-500 bg-white dark:bg-black/30 shrink-0">
+                                        <img src={doc.avatar} alt={doc.name} className="w-full h-full rounded-lg object-cover" />
+                                        <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white dark:border-[#0c0c0c] shadow-sm animate-pulse" />
+                                      </div>
 
-                                      <div className="w-full mt-auto py-1.5 px-2 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/5 dark:border-white/5 text-[9px] font-black uppercase tracking-wider text-black/60 dark:text-white/60 group-hover:bg-primary group-hover:text-white group-hover:border-transparent transition-all duration-300 flex items-center justify-center gap-1">
+                                      <div className="w-full flex flex-col items-center gap-0.5 min-w-0">
+                                        <h5 className="font-bricolage text-[11px] sm:text-xs font-black tracking-tight text-black dark:text-white leading-tight group-hover:text-primary transition-colors truncate w-full">
+                                          {doc.name}
+                                        </h5>
+                                        <p className="text-[8.5px] text-black/40 dark:text-white/40 font-bold font-outfit truncate w-full">
+                                          {doc.email}
+                                        </p>
+                                      </div>
+
+                                      <div className="text-[8px] font-black uppercase tracking-wider text-black/40 dark:text-white/40 group-hover:text-primary transition-colors flex items-center justify-center gap-0.5 shrink-0 mt-1">
                                         <span>Connect</span>
-                                        <ArrowRight className="w-3 h-3 text-black/40 dark:text-white/40 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
+                                        <ArrowRight className="w-2.5 h-2.5 group-hover:translate-x-0.5 transition-all text-black/40 dark:text-white/40 group-hover:text-primary" />
                                       </div>
                                     </motion.div>
                                   ))}

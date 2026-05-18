@@ -500,24 +500,49 @@ export default function DashboardPage() {
             >
               <div className="mt-4 flex flex-col gap-6">
                 
-                {/* Clean Welcoming Header - Perfectly Scaled & Left Aligned on Mobile */}
-                <div className="flex flex-col items-start text-left pt-4 md:pt-2 border-b border-neutral-100 dark:border-neutral-800 pb-4">
-                  <h1 className="font-bricolage text-xl md:text-4xl font-black tracking-tight text-black dark:text-white leading-none">
-                    {getGreeting()}, <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">{userData?.name?.split(' ')[0] || "Patient"}.</span>
-                  </h1>
-                  <p className="mt-2 text-[10px] md:text-sm font-extrabold text-neutral-900 dark:text-neutral-200">
-                    Your complete health profile is fully compiled, verified, and secured.
-                  </p>
+                {/* Mobile Blue Welcoming Card & Theme-Adaptive Stats (Visible ONLY on mobile) */}
+                <div className="block md:hidden w-full space-y-4">
+                  <div className="bg-[#0f62fe] text-white rounded-2xl p-4 shadow-md relative overflow-hidden border border-blue-500/20">
+                    <div className="flex flex-col text-left">
+                      <span className="text-[8px] font-black text-white/50 uppercase tracking-[0.2em]">{getGreeting()}</span>
+                      <h1 className="font-bricolage text-lg font-black tracking-tight text-white mt-0.5 leading-none">
+                        {userData?.name?.split(' ')[0] || "Patient"}.
+                      </h1>
+                      <p className="mt-1.5 text-[9px] font-medium text-white/80 leading-normal max-w-[240px]">
+                        Your health profile is compiled, verified & secured.
+                      </p>
+                    </div>
+                  </div>
+
+                  <StatsCards stats={{
+                    doctorsCount: userData?.doctorInvitations?.length || 0,
+                    recordsCount: userData?.medicalRecords?.length || 0,
+                    healthScore: userData?.medicalRecords?.length > 0 
+                      ? Math.round((userData.medicalRecords.filter((r: any) => r.analysis).length / userData.medicalRecords.length) * 100)
+                      : 0
+                  }} />
                 </div>
 
-                {/* Original Theme-Adaptive & Color-Coded Stats Cards */}
-                <StatsCards stats={{
-                  doctorsCount: userData?.doctorInvitations?.length || 0,
-                  recordsCount: userData?.medicalRecords?.length || 0,
-                  healthScore: userData?.medicalRecords?.length > 0 
-                    ? Math.round((userData.medicalRecords.filter((r: any) => r.analysis).length / userData.medicalRecords.length) * 100)
-                    : 0
-                }} />
+                {/* Desktop Welcoming Header & Stats (Visible ONLY on desktop) */}
+                <div className="hidden md:flex flex-col gap-6">
+                  {/* Clean Welcoming Header */}
+                  <div className="flex flex-col items-start text-left pt-4 md:pt-2 border-b border-neutral-100 dark:border-neutral-800 pb-4">
+                    <h1 className="font-bricolage text-2xl md:text-4xl font-black tracking-tight text-black dark:text-white leading-none">
+                      {getGreeting()}, <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">{userData?.name?.split(' ')[0] || "Patient"}.</span>
+                    </h1>
+                    <p className="mt-2 text-xs md:text-sm font-extrabold text-neutral-900 dark:text-neutral-200">
+                      Your complete health profile is fully compiled, verified, and secured.
+                    </p>
+                  </div>
+
+                  <StatsCards stats={{
+                    doctorsCount: userData?.doctorInvitations?.length || 0,
+                    recordsCount: userData?.medicalRecords?.length || 0,
+                    healthScore: userData?.medicalRecords?.length > 0 
+                      ? Math.round((userData.medicalRecords.filter((r: any) => r.analysis).length / userData.medicalRecords.length) * 100)
+                      : 0
+                  }} />
+                </div>
 
                 {/* Simplified Search & Header & Actions */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mt-8">

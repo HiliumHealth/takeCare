@@ -500,101 +500,24 @@ export default function DashboardPage() {
             >
               <div className="mt-4 flex flex-col gap-6">
                 
-                {/* Mobile Blue Welcoming Card & Stats (Visible ONLY on mobile) */}
-                <div className="block md:hidden w-full">
-                  <div className="bg-[#0f62fe] text-white rounded-3xl p-6 shadow-xl relative overflow-hidden border border-blue-500/20">
-                    {/* Subtle glowing ambient circles */}
-                    <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none" />
-                    
-                    <div className="flex flex-col gap-4 relative z-10">
-                      {/* Greetings Header - Left Aligned */}
-                      <div className="flex flex-col text-left">
-                        <span className="text-[9px] font-black text-white/50 uppercase tracking-[0.2em]">{getGreeting()}</span>
-                        <h1 className="font-bricolage text-2xl font-black tracking-tight text-white mt-1 leading-none">
-                          {userData?.name?.split(' ')[0] || "Patient"}.
-                        </h1>
-                        <p className="mt-2 text-[11px] font-medium text-white/80 leading-relaxed">
-                          Your complete health profile is fully compiled, verified, and secured.
-                        </p>
-                      </div>
-
-                      {/* Divider */}
-                      <div className="h-px bg-white/15 w-full my-0.5" />
-
-                      {/* Embedded Stats Cards inside the same rectangular blue container */}
-                      <div className="grid grid-cols-3 gap-2">
-                        {/* Care Team */}
-                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/5 flex flex-col justify-between">
-                          <span className="text-[8px] font-black uppercase tracking-widest text-white/60 leading-none">
-                            Care Team
-                          </span>
-                          <div className="mt-2">
-                            <span className="font-bricolage text-base font-black tracking-tight text-white leading-none">
-                              {userData?.doctorInvitations?.length || 0}
-                            </span>
-                            <span className="block text-[8px] font-medium text-white/60 mt-1 truncate">
-                              Specialists
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* My Records */}
-                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/5 flex flex-col justify-between">
-                          <span className="text-[8px] font-black uppercase tracking-widest text-white/60 leading-none">
-                            My Records
-                          </span>
-                          <div className="mt-2">
-                            <span className="font-bricolage text-base font-black tracking-tight text-white leading-none">
-                              {userData?.medicalRecords?.length || 0}
-                            </span>
-                            <span className="block text-[8px] font-medium text-white/60 mt-1 truncate">
-                              Reports
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* AI Insights */}
-                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/5 flex flex-col justify-between">
-                          <span className="text-[8px] font-black uppercase tracking-widest text-white/60 leading-none">
-                            AI Insights
-                          </span>
-                          <div className="mt-2">
-                            <span className="font-bricolage text-base font-black tracking-tight text-white leading-none">
-                              {userData?.medicalRecords?.length > 0 
-                                ? Math.round((userData.medicalRecords.filter((r: any) => r.analysis).length / userData.medicalRecords.length) * 100)
-                                : 0}%
-                            </span>
-                            <span className="block text-[8px] font-medium text-white/60 mt-1 truncate">
-                              AI Analyzed
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
+                {/* Clean Welcoming Header - Perfectly Scaled & Left Aligned on Mobile */}
+                <div className="flex flex-col items-start text-left pt-4 md:pt-2 border-b border-neutral-100 dark:border-neutral-800 pb-4">
+                  <h1 className="font-bricolage text-xl md:text-4xl font-black tracking-tight text-black dark:text-white leading-none">
+                    {getGreeting()}, <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">{userData?.name?.split(' ')[0] || "Patient"}.</span>
+                  </h1>
+                  <p className="mt-2 text-[10px] md:text-sm font-extrabold text-neutral-900 dark:text-neutral-200">
+                    Your complete health profile is fully compiled, verified, and secured.
+                  </p>
                 </div>
 
-                {/* Original Welcoming Header & Stats (Visible ONLY on desktop) */}
-                <div className="hidden md:flex flex-col gap-6">
-                  {/* Clean Welcoming Header */}
-                  <div className="flex flex-col items-center md:items-start text-center md:text-left pt-4 md:pt-2 border-b border-neutral-100 dark:border-neutral-800 pb-4">
-                    <h1 className="font-bricolage text-2xl md:text-4xl font-black tracking-tight text-black dark:text-white leading-none">
-                      {getGreeting()}, <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">{userData?.name?.split(' ')[0] || "Patient"}.</span>
-                    </h1>
-                    <p className="mt-2 text-xs md:text-sm font-extrabold text-neutral-900 dark:text-neutral-200">
-                      Your complete health profile is fully compiled, verified, and secured.
-                    </p>
-                  </div>
-
-                  <StatsCards stats={{
-                    doctorsCount: userData?.doctorInvitations?.length || 0,
-                    recordsCount: userData?.medicalRecords?.length || 0,
-                    healthScore: userData?.medicalRecords?.length > 0 
-                      ? Math.round((userData.medicalRecords.filter((r: any) => r.analysis).length / userData.medicalRecords.length) * 100)
-                      : 0
-                  }} />
-                </div>
+                {/* Original Theme-Adaptive & Color-Coded Stats Cards */}
+                <StatsCards stats={{
+                  doctorsCount: userData?.doctorInvitations?.length || 0,
+                  recordsCount: userData?.medicalRecords?.length || 0,
+                  healthScore: userData?.medicalRecords?.length > 0 
+                    ? Math.round((userData.medicalRecords.filter((r: any) => r.analysis).length / userData.medicalRecords.length) * 100)
+                    : 0
+                }} />
 
                 {/* Simplified Search & Header & Actions */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mt-8">

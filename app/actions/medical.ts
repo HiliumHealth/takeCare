@@ -354,3 +354,39 @@ export async function deleteDoctorInvitation(inviteId: string) {
   return { success: true };
 }
 
+/**
+ * Get or create a fast-mode/QR doctor invitation for the authenticated user.
+ */
+export async function getOrCreateFastModeInvitation() {
+  const session = await auth();
+  if (!session?.user?.id) return null;
+
+  // Try to find an existing PENDING fast mode invitation
+  let invitation = await prisma.doctorInvitation.findFirst({
+    where: {
+      userId: session.user.id,
+      doctorName: "Fast Mode Doctor",
+      status: "PENDING"
+    },
+    orderBy: { createdAt: "desc" }
+  });
+
+  if (!invitation) {
+    // Create a new one
+    invitation = await prisma.doctorInvitation.create({
+      data: {
+        userId: session.user.id,
+        doctorName: "Fast Mode Doctor",
+        contactInfo: "fastmode@takecareai.vercel.app",
+        platform: "gmail",
+        status: "PENDING",
+        otp: "123456",
+        otpExpires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) // 1 year
+      }
+    });
+  }
+
+  return invitation;
+}
+
+

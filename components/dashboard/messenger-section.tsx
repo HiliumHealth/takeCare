@@ -5,9 +5,11 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Send, Phone, UserPlus, ArrowRight, CheckCircle2, Bell, BellRing, Settings, MoreVertical, Paperclip, Smile, Mic, Mail, X, ArrowUp, Plus, Wrench, QrCode, Zap, ShieldCheck, Search } from "lucide-react";
+import { MessageCircle, Send, Phone, UserPlus, ArrowRight, CheckCircle2, Bell, BellRing, Settings, MoreVertical, Paperclip, Smile, Mic, Mail, X, ArrowUp, Plus, Wrench, QrCode, Zap, ShieldCheck, Search, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { getOrCreateFastModeInvitation } from "@/app/actions/medical";
+
 
 const MODES = [
   { id: "fast", label: "Fast Mode", icon: Zap, color: "text-sky-500", bg: "bg-sky-500/10", desc: "Instant QR Scan" },
@@ -106,6 +108,24 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess, invitedD
   const [myDoctors, setMyDoctors] = useState<any[]>([]);
   const [doctorSearchQuery, setDoctorSearchQuery] = useState("");
   const [showDoctorSuggestions, setShowDoctorSuggestions] = useState(false);
+  const [fastModeInviteId, setFastModeInviteId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isPopupOpen && mode === "fast") {
+      async function prepareFastMode() {
+        try {
+          const invite = await getOrCreateFastModeInvitation();
+          if (invite) {
+            setFastModeInviteId(invite.id);
+          }
+        } catch (error) {
+          console.error("Failed to get/create Fast Mode invitation:", error);
+        }
+      }
+      prepareFastMode();
+    }
+  }, [isPopupOpen, mode]);
+
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -486,15 +506,24 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess, invitedD
                             <div className="flex flex-col items-center justify-center py-8 z-10">
                               <div className="bg-white p-4 rounded-[32px] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] border border-black/5 flex items-center justify-center relative group">
                                 <div className="absolute inset-0 bg-blue-500/10 rounded-[32px] blur-2xl group-hover:bg-blue-500/20 transition-all duration-500" />
-                                <img 
-                                  src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://takecare-doctor.vercel.app/dashboard/patient/scan&margin=20" 
-                                  alt="Secure QR Code" 
-                                  className="w-56 h-56 rounded-2xl mix-blend-multiply relative z-10 pointer-events-none" 
-                                />
-                                <div className="absolute top-4 left-4 right-4 h-0.5 bg-blue-500 z-20 shadow-[0_0_15px_rgba(59,130,246,0.8)] opacity-70 animate-[scan_2s_ease-in-out_infinite]" />
+                                {fastModeInviteId ? (
+                                  <>
+                                    <img 
+                                      src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(`https://takecareai.vercel.app/doctor/dashboard/${fastModeInviteId}`)}&margin=20`} 
+                                      alt="Secure QR Code" 
+                                      className="w-56 h-56 rounded-2xl mix-blend-multiply relative z-10 pointer-events-none" 
+                                    />
+                                    <div className="absolute top-4 left-4 right-4 h-0.5 bg-blue-500 z-20 shadow-[0_0_15px_rgba(59,130,246,0.8)] opacity-70 animate-[scan_2s_ease-in-out_infinite]" />
+                                  </>
+                                ) : (
+                                  <div className="w-56 h-56 flex flex-col items-center justify-center gap-3 relative z-10">
+                                    <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-black/40">Encrypting Portal...</span>
+                                  </div>
+                                )}
                               </div>
                               <p className="text-sm font-bold text-black/50 dark:text-white/50 mt-8 max-w-xs text-center leading-relaxed">
-                                Doctor scans this code to instantly securely access your Hilium Dossier.
+                                Doctor scans this code to instantly securely access your Hilium Dossier and prescribe medication.
                               </p>
                               
                               {combinedDoctors.length > 0 && (
@@ -520,8 +549,12 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess, invitedD
 
                               <Button 
                                 onClick={() => {
-                                  setIsPopupOpen(false);
-                                  setIsChatActive(true);
+                                  if (fastModeInviteId) {
+                                    window.open(`/doctor/dashboard/${fastModeInviteId}`, "_blank");
+                                  } else {
+                                    setIsPopupOpen(false);
+                                    setIsChatActive(true);
+                                  }
                                 }}
                                 className="mt-8 h-14 px-10 rounded-full bg-black dark:bg-white text-white dark:text-black font-black hover:scale-105 active:scale-95 shadow-xl transition-all cursor-pointer"
                               >
@@ -533,6 +566,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess, invitedD
                                   50% { top: calc(100% - 1rem); }
                                 }
                               `}</style>
+
                             </div>
                           ) : mode === "select" ? (
                             <div className="flex flex-col gap-6 z-10 py-2">

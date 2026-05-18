@@ -95,21 +95,21 @@ export function EditProfileModal({ user, onUpdate, customTrigger }: EditProfileM
         )}
       />
 
-      <DialogContent className="sm:max-w-xl rounded-3xl md:rounded-5xl bg-white dark:bg-[#0a0a0a] border-black/5 dark:border-white/5 p-8 overflow-hidden">
-        <DialogHeader className="px-0 md:px-2 flex flex-row items-center justify-between">
-          <DialogTitle className="font-bricolage text-2xl md:text-3xl font-extrabold tracking-tighter text-black dark:text-white">Edit Patient Profile</DialogTitle>
+      <DialogContent className="sm:max-w-[440px] rounded-2xl md:rounded-3xl bg-white dark:bg-[#0a0a0a] border-black/5 dark:border-white/5 p-5 md:p-6 overflow-hidden antialiased">
+        <DialogHeader className="px-0 flex flex-row items-center justify-between border-b border-black/5 dark:border-white/5 pb-3 mb-2">
+          <DialogTitle className="font-bricolage text-base md:text-lg font-black tracking-tight text-black dark:text-white">Edit Patient Profile</DialogTitle>
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-black uppercase tracking-widest text-black/30 dark:text-white/30 hidden sm:block">Theme</span>
+            <span className="text-[9px] font-black uppercase tracking-widest text-black/30 dark:text-white/30 hidden sm:block">Theme</span>
             <ModeToggle />
           </div>
         </DialogHeader>
 
-        <div className="space-y-6 mt-6">
+        <div className="space-y-4.5 mt-2">
           {/* Cover Image */}
-          <div className="space-y-2">
-            <Label className="text-xs font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">Cover Image</Label>
+          <div className="space-y-1.5">
+            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-black/45 dark:text-white/45">Cover Image</Label>
             <div 
-              className="relative group rounded-3xl overflow-hidden h-32 bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 cursor-pointer"
+              className="relative group rounded-xl overflow-hidden h-24 bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 cursor-pointer"
               onClick={() => coverInputRef.current?.click()}
             >
               <input 
@@ -122,22 +122,22 @@ export function EditProfileModal({ user, onUpdate, customTrigger }: EditProfileM
               {formData.coverImageUrl && isValidUrl(formData.coverImageUrl) && (
                 <div className="relative h-full w-full">
                   <img src={formData.coverImageUrl} alt="Cover" className="h-full w-full object-cover" />
-                  <div className="absolute inset-0 bg-black/10 dark:bg-black/50 pointer-events-none" />
+                  <div className="absolute inset-0 bg-black/10 dark:bg-black/40 pointer-events-none" />
                 </div>
               )}
-              <div className="absolute inset-0 bg-black/20 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <ImageIcon className="text-white h-8 w-8" />
-                <span className="text-[10px] text-white font-black uppercase mt-2">Click to Upload</span>
+              <div className="absolute inset-0 bg-black/25 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <ImageIcon className="text-white h-5 w-5" />
+                <span className="text-[8px] text-white font-black uppercase mt-1">Upload Cover</span>
               </div>
             </div>
           </div>
 
           {/* Avatar and Name */}
-          <div className="flex gap-6 items-start">
-             <div className="space-y-2">
-                <Label className="text-xs font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">Avatar</Label>
+          <div className="flex gap-4 items-start">
+             <div className="space-y-1.5">
+                <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-black/45 dark:text-white/45">Avatar</Label>
                 <div 
-                  className="relative h-24 w-24 rounded-3xl bg-primary/10 border-4 border-white/0 dark:border-white/5 shadow-xl overflow-hidden group cursor-pointer"
+                  className="relative h-16 w-16 rounded-xl bg-primary/10 border-2 border-white/0 dark:border-white/5 shadow-md overflow-hidden group cursor-pointer"
                   onClick={() => avatarInputRef.current?.click()}
                 >
                    <input 
@@ -150,25 +150,25 @@ export function EditProfileModal({ user, onUpdate, customTrigger }: EditProfileM
                    {formData.avatarUrl && isValidUrl(formData.avatarUrl) ? (
                      <>
                        <img src={formData.avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
-                       <div className="absolute inset-0 bg-black/10 dark:bg-black/40 pointer-events-none transition-colors" />
+                       <div className="absolute inset-0 bg-black/10 dark:bg-black/30 pointer-events-none transition-colors" />
                      </>
                    ) : (
-                     <User className="h-full w-full p-4 text-primary/40" />
+                     <User className="h-full w-full p-3 text-primary/40" />
                    )}
-                   <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-center">
-                      <Camera className="text-white h-5 w-5" />
-                      <span className="text-[8px] text-white font-black uppercase mt-1">Upload</span>
+                   <div className="absolute inset-0 bg-black/45 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-center">
+                      <Camera className="text-white h-4 w-4" />
+                      <span className="text-[7px] text-white font-black uppercase mt-0.5">Upload</span>
                    </div>
                 </div>
              </div>
 
-             <div className="flex-1 space-y-4">
-               <div className="space-y-2">
-                 <Label className="text-xs font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">Full Name</Label>
+             <div className="flex-1 space-y-3">
+               <div className="space-y-1.5">
+                 <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-black/45 dark:text-white/45">Full Name</Label>
                  <Input
                    value={formData.name}
                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                   className="h-14 rounded-2xl border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 px-6 text-lg font-bold text-black dark:text-white focus:bg-white dark:focus:bg-[#1a1a1a]"
+                   className="h-10 rounded-xl border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 px-4 text-xs font-bold text-black dark:text-white focus:bg-white dark:focus:bg-[#1a1a1a]"
                  />
                </div>
              </div>
@@ -177,26 +177,26 @@ export function EditProfileModal({ user, onUpdate, customTrigger }: EditProfileM
           <Button 
             onClick={handleUpdate} 
             disabled={loading}
-            className="w-full h-14 bg-black dark:bg-white text-white dark:text-black rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-black/90 dark:hover:bg-white/90 shadow-xl shadow-black/10 dark:shadow-white/10 cursor-pointer"
+            className="w-full h-10 bg-black dark:bg-white text-white dark:text-black rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-black/90 dark:hover:bg-white/90 shadow-md shadow-black/5 dark:shadow-white/5 cursor-pointer hover:scale-[1.01] transition-transform"
           >
-            {loading ? <Loader2 className="animate-spin mr-2" /> : "Save Profile Changes"}
+            {loading ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : "Save Profile Changes"}
           </Button>
 
           {/* Push Notifications */}
-          <div className="pt-4 mt-4 border-t border-black/5 dark:border-white/5">
-             <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-4 block">Alerts & Notifications</Label>
-             <div className="bg-primary/5 dark:bg-primary/10 rounded-2xl p-2 border border-primary/10">
+          <div className="pt-3.5 mt-1 border-t border-black/5 dark:border-white/5">
+             <Label className="text-[9px] font-black uppercase tracking-[0.2em] text-primary mb-2 block">Alerts & Notifications</Label>
+             <div className="bg-primary/5 dark:bg-primary/10 rounded-xl p-1.5 border border-primary/10">
                <PushSubscriptionButton />
              </div>
           </div>
 
           {/* Danger Zone */}
-          <div className="pt-4 mt-4 border-t border-black/5 dark:border-white/5">
-             <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-red-500/50 mb-4 block">Clinical Danger Zone</Label>
-             <div className="p-5 rounded-2xl bg-red-50/50 dark:bg-red-950/20 border border-red-100 dark:border-red-900/30 flex items-center justify-between gap-4">
+          <div className="pt-3.5 mt-1 border-t border-black/5 dark:border-white/5">
+             <Label className="text-[9px] font-black uppercase tracking-[0.2em] text-red-500/50 mb-2 block">Clinical Danger Zone</Label>
+             <div className="p-3.5 rounded-xl bg-red-50/50 dark:bg-red-950/20 border border-red-100 dark:border-red-900/30 flex items-center justify-between gap-3">
                 <div className="flex flex-col gap-0.5">
-                   <span className="text-sm font-bold text-red-600 dark:text-red-400">Delete medical records</span>
-                   <span className="text-[10px] font-medium text-red-900/40 dark:text-red-400/40">This will permanently wipe all your clinical data.</span>
+                   <span className="text-xs font-bold text-red-600 dark:text-red-400">Delete medical records</span>
+                   <span className="text-[9px] font-medium text-red-900/40 dark:text-red-400/45">This action permanently wipes all clinical data.</span>
                 </div>
                 <DeleteConfirm clerkId={user.clerkId} />
              </div>
@@ -233,36 +233,36 @@ function DeleteConfirm({ clerkId }: { clerkId: string }) {
       <Button 
         variant="ghost" 
         onClick={() => setOpen(true)}
-        className="h-10 rounded-xl bg-red-100 text-red-600 font-bold text-[10px] uppercase tracking-wider hover:bg-red-600 hover:text-white transition-all px-4 cursor-pointer"
+        className="h-8.5 rounded-lg bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 font-bold text-[9px] uppercase tracking-wider hover:bg-red-600 hover:text-white dark:hover:bg-red-500 dark:hover:text-white transition-all px-3 cursor-pointer"
       >
         Delete Data
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-md rounded-4xl bg-white dark:bg-[#0a0a0a] p-8 border-none shadow-2xl dark:shadow-black/50">
+        <DialogContent className="sm:max-w-sm rounded-2xl bg-white dark:bg-[#0a0a0a] p-5.5 border border-black/5 dark:border-white/5 shadow-2xl dark:shadow-black/50">
           <DialogHeader className="items-center text-center">
-             <div className="h-16 w-16 rounded-3xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center mb-4">
-                <Trash2 className="h-8 w-8 text-red-600 dark:text-red-400" />
+             <div className="h-11 w-11 rounded-xl bg-red-50 dark:bg-red-950/20 flex items-center justify-center mb-3">
+                <Trash2 className="h-5 w-5 text-red-600 dark:text-red-400" />
              </div>
-             <DialogTitle className="font-bricolage text-2xl font-extrabold tracking-tight text-black dark:text-white">Are you absolutely sure?</DialogTitle>
-             <p className="text-sm text-black/50 dark:text-white/50 font-medium mt-2">
+             <DialogTitle className="font-bricolage text-base font-black tracking-tight text-black dark:text-white">Are you absolutely sure?</DialogTitle>
+             <p className="text-xs text-black/50 dark:text-white/50 font-semibold mt-1.5 leading-relaxed">
                 This action is IRREVERSIBLE. It will permanently delete your medical history, health goals, and AI analysis reports.
              </p>
           </DialogHeader>
-          <div className="flex gap-3 mt-8">
+          <div className="flex gap-2.5 mt-5">
              <Button 
                variant="outline" 
-               className="flex-1 h-12 rounded-xl font-bold border-black/5 dark:border-white/5 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white cursor-pointer" 
+               className="flex-1 h-9.5 rounded-lg font-bold text-xs border-black/5 dark:border-white/5 hover:bg-black/5 dark:hover:bg-white/5 text-black dark:text-white cursor-pointer" 
                onClick={() => setOpen(false)}
              >
                Cancel
              </Button>
              <Button 
-               className="flex-1 h-12 rounded-xl bg-red-600 text-white font-bold hover:bg-red-700 shadow-lg shadow-red-200 cursor-pointer" 
+               className="flex-1 h-9.5 rounded-lg bg-red-600 text-white font-bold text-xs hover:bg-red-700 shadow-md shadow-red-200/50 cursor-pointer" 
                onClick={handleDelete}
                disabled={deleting}
              >
-               {deleting ? "Deleting..." : "Yes, Delete Everything"}
+               {deleting ? "Deleting..." : "Yes, Wipe It"}
              </Button>
           </div>
         </DialogContent>

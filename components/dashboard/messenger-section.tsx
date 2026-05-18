@@ -10,9 +10,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const MODES = [
-  { id: "fast", label: "Fast Mode", icon: Zap, color: "text-blue-500", bg: "bg-blue-500/10", desc: "Instant QR Scan" },
+  { id: "fast", label: "Fast Mode", icon: Zap, color: "text-sky-500", bg: "bg-sky-500/10", desc: "Instant QR Scan" },
   { id: "secure", label: "Secure Mode", icon: ShieldCheck, color: "text-emerald-500", bg: "bg-emerald-500/10", desc: "Encrypted Gmail Link" },
-  { id: "select", label: "Choose Doctor", icon: UserPlus, color: "text-purple-500", bg: "bg-purple-500/10", desc: "One-Click Quick Invite" },
+  { id: "select", label: "Choose Doctor", icon: UserPlus, color: "text-blue-500", bg: "bg-blue-500/10", desc: "One-Click Quick Invite" },
 ];
 
 const POPULAR_DOCTORS = [
@@ -47,6 +47,15 @@ const POPULAR_DOCTORS = [
     avatar: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=150"
   }
 ];
+
+const getSpecialtyBadgeStyles = (specialty: string) => {
+  const spec = specialty.toLowerCase();
+  if (spec.includes("cardio")) return "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20";
+  if (spec.includes("pediat")) return "bg-pink-500/10 text-pink-600 dark:text-pink-400 border-pink-500/20";
+  if (spec.includes("neuro")) return "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20";
+  if (spec.includes("general") || spec.includes("practitioner")) return "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20";
+  return "bg-slate-500/10 text-slate-600 dark:text-slate-400 border-slate-500/20";
+};
 
 interface Message {
   id: string;
@@ -333,7 +342,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess, invitedD
 
       {!isChatActive ? (
         <div className="w-full">
-          <div className="bg-black/5 dark:bg-white/5 p-1 rounded-2xl w-full lg:w-fit h-auto flex gap-1 transition-colors">
+          <div className="bg-black/5 dark:bg-white/5 p-1 rounded-2xl w-full lg:w-fit flex overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] gap-1 transition-colors flex-nowrap shrink-0">
             {MODES.map((m) => (
               <button
                 type="button"
@@ -343,13 +352,13 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess, invitedD
                   setIsPopupOpen(true);
                 }}
                 className={cn(
-                  "rounded-xl px-6 py-2.5 transition-all duration-300 cursor-pointer flex-1 lg:flex-none flex items-center justify-center gap-2 font-outfit font-bold text-sm",
+                  "rounded-xl px-4 sm:px-6 py-2.5 transition-all duration-300 cursor-pointer flex-1 lg:flex-none flex items-center justify-center gap-2 font-outfit font-bold text-xs sm:text-sm whitespace-nowrap shrink-0",
                   "hover:bg-white dark:hover:bg-white/10 hover:shadow-sm text-black/80 dark:text-white focus:outline-none active:scale-95",
                   mode === m.id ? "bg-white dark:bg-white/10 shadow-sm" : ""
                 )}
               >
-                <m.icon className={cn("h-4 w-4 transition-colors", m.color)} />
-                {m.label}
+                <m.icon className={cn("h-4 w-4 transition-colors shrink-0", m.color)} />
+                <span>{m.label}</span>
               </button>
             ))}
           </div>
@@ -415,7 +424,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess, invitedD
                   exit={{ y: "100%", opacity: 0 }}
                   transition={{ type: "spring", damping: 25, stiffness: 200 }}
                   onClick={(e) => e.stopPropagation()}
-                  className="w-full sm:max-w-2xl bg-white dark:bg-[#0a0a0a] rounded-t-[40px] sm:rounded-4xl max-h-[90vh] overflow-y-auto p-6 md:p-10 shadow-2xl relative cursor-default transition-colors duration-500"
+                  className="w-full sm:max-w-3xl bg-white dark:bg-[#0a0a0a] rounded-t-[40px] sm:rounded-[36px] max-h-[90vh] overflow-y-auto p-6 md:p-10 shadow-2xl relative cursor-default transition-colors duration-500 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                 >
                   <button
                     onClick={() => setIsPopupOpen(false)}
@@ -506,36 +515,49 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess, invitedD
                                   placeholder="Search by name, specialization, or email..."
                                   value={doctorSearchQuery}
                                   onChange={(e) => setDoctorSearchQuery(e.target.value)}
-                                  className="h-12 rounded-2xl border-black/5 bg-black/5 dark:bg-white/5 pl-10 text-sm font-bold transition-all focus:bg-white focus:ring-4 focus:ring-primary/5 shadow-inner text-black dark:text-white"
+                                  className="h-12 sm:h-14 rounded-3xl border-black/5 bg-black/5 dark:bg-white/5 pl-12 text-sm font-bold transition-all focus:bg-white dark:focus:bg-white/10 focus:ring-4 focus:ring-primary/5 shadow-inner text-black dark:text-white"
                                 />
-                                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-black/40 dark:text-white/40" />
+                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-black/40 dark:text-white/40" />
                               </div>
 
                               {/* Conditionally Render My Doctors Section */}
                               {filteredMyDoctors.length > 0 && (
-                                <div className="space-y-3">
-                                  <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary flex items-center gap-1.5">
+                                <div className="space-y-4">
+                                  <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary flex items-center gap-1.5 pl-1">
                                     <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                                    My Doctors ({filteredMyDoctors.length})
+                                    My Connected Doctors ({filteredMyDoctors.length})
                                   </h4>
-                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-48 overflow-y-auto pr-1">
+                                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 max-h-[220px] overflow-y-auto pr-1 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-black/10 dark:[&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full">
                                     {filteredMyDoctors.map((doc, idx) => (
                                       <motion.div
                                         key={`my-${doc.email}-${idx}`}
-                                        whileHover={{ scale: 1.02 }}
+                                        whileHover={{ y: -4, scale: 1.02 }}
                                         whileTap={{ scale: 0.98 }}
                                         onClick={() => handleAutoInvite(doc.name, doc.email)}
-                                        className="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 hover:border-primary/20 dark:hover:border-primary/20 hover:bg-primary/[0.02] dark:hover:bg-primary/[0.02] p-4 rounded-3xl flex items-center gap-4 cursor-pointer transition-all duration-300 group"
+                                        className="bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/10 rounded-[24px] p-4 flex flex-col items-center text-center transition-all duration-300 relative overflow-hidden hover:shadow-[0_12px_24px_-10px_rgba(0,0,0,0.06)] hover:bg-white dark:hover:bg-white/5 cursor-pointer group"
                                       >
-                                        <div className="relative w-12 h-12 rounded-2xl overflow-hidden shrink-0 border border-black/5 dark:border-white/10 bg-white dark:bg-black/30 flex items-center justify-center">
-                                          <img src={doc.avatar} alt={doc.name} className="w-full h-full object-cover" />
+                                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/30 to-purple-500/30 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        
+                                        <div className="relative w-14 h-14 rounded-full border-2 border-black/5 dark:border-white/10 p-0.5 mb-3 group-hover:scale-105 group-hover:border-primary transition-all duration-500 bg-white dark:bg-black/30">
+                                          <img src={doc.avatar} alt={doc.name} className="w-full h-full rounded-full object-cover" />
+                                          <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-[#0a0a0a] shadow-sm animate-pulse" />
                                         </div>
-                                        <div className="text-left flex-1 min-w-0">
-                                          <h5 className="font-bricolage text-sm font-black text-black dark:text-white truncate group-hover:text-primary transition-colors">{doc.name}</h5>
-                                          <p className="text-[10px] text-black/40 dark:text-white/40 font-bold truncate">{doc.specialty}</p>
-                                          <p className="text-[10px] text-black/30 dark:text-white/30 font-medium truncate">{doc.email}</p>
+
+                                        <span className={cn("text-[9px] font-black tracking-wider uppercase px-2 py-0.5 rounded-full border mb-2 shrink-0 truncate max-w-full", getSpecialtyBadgeStyles(doc.specialty))}>
+                                          {doc.specialty}
+                                        </span>
+
+                                        <h5 className="font-bricolage text-xs sm:text-sm font-extrabold tracking-tight text-black dark:text-white leading-tight mt-1 mb-0.5 group-hover:text-primary transition-colors truncate max-w-full">
+                                          {doc.name}
+                                        </h5>
+                                        <p className="text-[9px] text-black/40 dark:text-white/40 font-bold mb-3 font-outfit truncate max-w-full">
+                                          {doc.email}
+                                        </p>
+
+                                        <div className="w-full mt-auto py-1.5 px-2 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/5 dark:border-white/5 text-[9px] font-black uppercase tracking-wider text-black/60 dark:text-white/60 group-hover:bg-primary group-hover:text-white group-hover:border-transparent transition-all duration-300 flex items-center justify-center gap-1">
+                                          <span>Connect</span>
+                                          <ArrowRight className="w-3 h-3 text-black/40 dark:text-white/40 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
                                         </div>
-                                        <ArrowRight className="w-4 h-4 text-black/20 group-hover:text-primary group-hover:translate-x-1 transition-all" />
                                       </motion.div>
                                     ))}
                                   </div>
@@ -543,29 +565,42 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess, invitedD
                               )}
 
                               {/* Preset/Popular Doctors Section */}
-                              <div className="space-y-3">
-                                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary flex items-center gap-1.5">
+                              <div className="space-y-4">
+                                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-primary flex items-center gap-1.5 pl-1">
                                   <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                                   Popular Doctors
                                 </h4>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[300px] overflow-y-auto pr-1">
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 max-h-[320px] overflow-y-auto pr-1 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-black/10 dark:[&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full">
                                   {filteredPopularDoctors.map((doc, idx) => (
                                     <motion.div
                                       key={`popular-${doc.email}-${idx}`}
-                                      whileHover={{ scale: 1.02 }}
+                                      whileHover={{ y: -4, scale: 1.02 }}
                                       whileTap={{ scale: 0.98 }}
                                       onClick={() => handleAutoInvite(doc.name, doc.email)}
-                                      className="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 hover:border-primary/20 dark:hover:border-primary/20 hover:bg-primary/[0.02] dark:hover:bg-primary/[0.02] p-4 rounded-3xl flex items-center gap-4 cursor-pointer transition-all duration-300 group"
+                                      className="bg-black/[0.02] dark:bg-white/[0.02] border border-black/5 dark:border-white/10 rounded-[24px] p-4 flex flex-col items-center text-center transition-all duration-300 relative overflow-hidden hover:shadow-[0_12px_24px_-10px_rgba(0,0,0,0.06)] hover:bg-white dark:hover:bg-white/5 cursor-pointer group"
                                     >
-                                      <div className="relative w-12 h-12 rounded-2xl overflow-hidden shrink-0 border border-black/5 dark:border-white/10 bg-white dark:bg-black/30 flex items-center justify-center">
-                                        <img src={doc.avatar} alt={doc.name} className="w-full h-full object-cover" />
+                                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/30 to-purple-500/30 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                      
+                                      <div className="relative w-14 h-14 rounded-full border-2 border-black/5 dark:border-white/10 p-0.5 mb-3 group-hover:scale-105 group-hover:border-primary transition-all duration-500 bg-white dark:bg-black/30">
+                                        <img src={doc.avatar} alt={doc.name} className="w-full h-full rounded-full object-cover" />
+                                        <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-[#0a0a0a] shadow-sm animate-pulse" />
                                       </div>
-                                      <div className="text-left flex-1 min-w-0">
-                                        <h5 className="font-bricolage text-sm font-black text-black dark:text-white truncate group-hover:text-primary transition-colors">{doc.name}</h5>
-                                        <p className="text-[10px] text-black/40 dark:text-white/40 font-bold truncate">{doc.specialty}</p>
-                                        <p className="text-[10px] text-black/30 dark:text-white/30 font-medium truncate">{doc.email}</p>
+
+                                      <span className={cn("text-[9px] font-black tracking-wider uppercase px-2 py-0.5 rounded-full border mb-2 shrink-0 truncate max-w-full", getSpecialtyBadgeStyles(doc.specialty))}>
+                                        {doc.specialty}
+                                      </span>
+
+                                      <h5 className="font-bricolage text-xs sm:text-sm font-extrabold tracking-tight text-black dark:text-white leading-tight mt-1 mb-0.5 group-hover:text-primary transition-colors truncate max-w-full">
+                                        {doc.name}
+                                      </h5>
+                                      <p className="text-[9px] text-black/40 dark:text-white/40 font-bold mb-3 font-outfit truncate max-w-full">
+                                        {doc.email}
+                                      </p>
+
+                                      <div className="w-full mt-auto py-1.5 px-2 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-black/5 dark:border-white/5 text-[9px] font-black uppercase tracking-wider text-black/60 dark:text-white/60 group-hover:bg-primary group-hover:text-white group-hover:border-transparent transition-all duration-300 flex items-center justify-center gap-1">
+                                        <span>Connect</span>
+                                        <ArrowRight className="w-3 h-3 text-black/40 dark:text-white/40 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
                                       </div>
-                                      <ArrowRight className="w-4 h-4 text-black/20 group-hover:text-primary group-hover:translate-x-1 transition-all" />
                                     </motion.div>
                                   ))}
                                 </div>

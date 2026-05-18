@@ -32,19 +32,19 @@ export function DashboardHeader({ user, notificationCount = 0 }: DashboardHeader
   };
 
   return (
-    <header className="flex items-center justify-between px-4 py-2 lg:px-0 lg:py-4 w-full">
+    <header className="flex items-center justify-between px-4 py-3 lg:px-0 lg:py-4 w-full bg-white dark:bg-black lg:bg-transparent">
 
       <div className="flex items-center gap-2 md:gap-3 min-w-0">
-        <div className="flex h-12 w-12 items-center justify-center lg:h-16 lg:w-16 overflow-hidden">
+        <div className="flex h-10 w-10 items-center justify-center lg:h-16 lg:w-16 overflow-hidden shrink-0">
            <img src="/hilium.png" alt="Hilium Logo" className="w-full h-full object-contain dark:invert" />
         </div>
         <div className="flex flex-col min-w-0">
-          <span className="font-outfit text-sm font-bold tracking-tight lg:text-xl leading-none truncate dark:text-white">Hilium</span>
-          <span className="text-[7px] font-black uppercase tracking-[0.2em] text-black/60 dark:text-white/60 lg:text-[10px]">Portal</span>
+          <span className="font-outfit text-sm font-black tracking-tight lg:text-xl leading-none truncate text-black dark:text-white">Hilium</span>
+          <span className="text-[7px] font-black uppercase tracking-[0.2em] text-black/50 dark:text-white/50 lg:text-[10px]">Portal</span>
         </div>
       </div>
 
-      <div className="flex items-center gap-3 lg:gap-6">
+      <div className="flex items-center gap-2 lg:gap-6">
         <div className="hidden items-center gap-2 rounded-full lg:flex transition-all">
           <Search className="h-4 w-4 text-black/60 dark:text-white/60" />
           <input 
@@ -56,31 +56,39 @@ export function DashboardHeader({ user, notificationCount = 0 }: DashboardHeader
         
         <div className="flex items-center gap-2 lg:gap-3">
           <div className="relative">
-            <Button variant="ghost" size="icon" className="flex rounded-full hover:bg-black/5 dark:hover:bg-white/5 h-9 w-9 lg:h-10 lg:w-10 cursor-pointer">
+            <Button variant="ghost" size="icon" className="flex rounded-full hover:bg-black/5 dark:hover:bg-white/5 h-9 w-9 lg:h-10 lg:w-10 cursor-pointer justify-center items-center">
               <Bell className="h-5 w-5 text-black dark:text-white" />
             </Button>
             {notificationCount > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[8px] font-black text-white ring-2 ring-white animate-in zoom-in duration-300">
-                {notificationCount > 9 ? '9+' : notificationCount}
+              <span className="absolute top-1 right-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-[#FF3B30] text-[8px] font-black text-white ring-2 ring-white dark:ring-black animate-in zoom-in duration-300">
+                {notificationCount}
               </span>
             )}
           </div>
 
           <div className="hidden lg:block h-8 w-px bg-black/10 dark:bg-white/10 mx-2" />
           
-          <div className="flex items-center gap-3 lg:gap-6">
-            <div className="lg:block">
-              <EditProfileModal user={user || { id: "guest", name: "Guest", avatarUrl: null, coverImageUrl: null }} onUpdate={handleUpdate} />
+          <div className="flex items-center gap-2 lg:gap-6">
+            <div className="block">
+              <EditProfileModal 
+                user={user || { id: "guest", name: "Guest", avatarUrl: null, coverImageUrl: null }} 
+                onUpdate={handleUpdate}
+                customTrigger={
+                  <Button variant="outline" className="rounded-full border-black/5 dark:border-white/5 bg-neutral-100 dark:bg-neutral-900 font-extrabold text-[9px] uppercase tracking-widest hover:bg-black/10 dark:hover:bg-white/10 transition-all px-3 py-1.5 h-8 shadow-xs whitespace-nowrap shrink-0 text-neutral-800 dark:text-neutral-200 cursor-pointer">
+                    Edit Profile
+                  </Button>
+                }
+              />
             </div>
             
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <div className="hidden flex-col items-end sm:flex">
                 <span className="text-sm font-black leading-none text-black dark:text-white">{user?.name || "Patient"}</span>
                 <span className="text-[10px] font-bold text-black/60 dark:text-white/60 uppercase tracking-wider mt-1 cursor-pointer hover:text-red-600 transition-colors flex items-center gap-2" onClick={handleLogout}>
                    Log out
                 </span>
               </div>
-              <Avatar className="h-9 w-9 border-2 border-white/0 dark:border-white/5 shadow-lg lg:h-12 lg:w-12 relative overflow-hidden">
+              <Avatar className="h-8 w-8 border border-black/5 dark:border-white/5 shadow-xs lg:h-10 lg:w-10 relative overflow-hidden shrink-0">
                 <AvatarImage src={user?.avatarUrl || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&auto=format&fit=crop"} className="object-cover" />
                 <div className="absolute inset-0 bg-black/10 dark:bg-black/40 pointer-events-none" />
                 <AvatarFallback className="bg-primary text-white font-bold">{user?.name?.slice(0, 2).toUpperCase() || "PT"}</AvatarFallback>

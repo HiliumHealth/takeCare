@@ -46,12 +46,12 @@ export async function sendPushNotification(
     })
   );
 
-  // Clean up expired subscriptions
+  // Clean up expired or unauthorized subscriptions
   results.forEach((result, index) => {
     if (result.status === "rejected") {
       const err = result.reason;
-      if (err.statusCode === 404 || err.statusCode === 410) {
-        console.log(`[Push] Cleaning up expired subscription: ${subscriptions[index].endpoint}`);
+      if (err.statusCode === 404 || err.statusCode === 410 || err.statusCode === 400 || err.statusCode === 401 || err.statusCode === 403) {
+        console.log(`[Push] Cleaning up invalid subscription: ${subscriptions[index].endpoint}`);
         prisma.pushSubscription.delete({ where: { id: subscriptions[index].id } }).catch(console.error);
       }
     }

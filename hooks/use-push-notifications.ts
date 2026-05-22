@@ -3,8 +3,6 @@
 import { usePWA } from "@/hooks/use-pwa";
 import { useEffect, useState } from "react";
 
-const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
-
 export function usePushNotifications() {
   const { registration } = usePWA();
   const [subscription, setSubscription] = useState<PushSubscription | null>(null);
@@ -48,10 +46,19 @@ export function usePushNotifications() {
         return;
       }
 
+      // Fetch the latest VAPID public key from the server dynamically
+      // to avoid Next.js build-time caching of environment variables.
+      const vapidRes = await fetch("/api/notifications/vapid-key");
+      const { publicKey } = await vapidRes.json();
+      
+      if (!publicKey) {
+        throw new Error("Failed to get VAPID public key from server");
+      }
+
       // 2. Subscribe to push
       const sub = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY!),
+        applicationServerKey: urlBase64ToUint8Array(publicKey),
       });
 
       setSubscription(sub);

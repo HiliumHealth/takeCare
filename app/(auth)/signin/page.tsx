@@ -8,8 +8,9 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Mail, Lock, ArrowRight, Loader2, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2, Lock, Mail, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { syncPersonalizationCookie } from "@/app/actions/medical";
 
 function SignInForm() {
   const router = useRouter();
@@ -38,25 +39,25 @@ function SignInForm() {
         password: formData.password,
       });
 
-      if (res?.error) {
-        toast.error("Invalid email or password");
-      } else {
-        toast.success("Welcome back!");
-        
-        // Sync the personalization cookie server-side
-        const { syncPersonalizationCookie } = await import("@/app/actions/medical");
-        const { personalized } = await syncPersonalizationCookie();
-        
-        if (personalized) {
-          router.push(callbackUrl);
+        if (res?.error) {
+          toast.error("Invalid email or password");
         } else {
-          router.push("/personalization-choice");
+          toast.success("Welcome back!");
+          
+          // Sync the personalization cookie server-side
+          const { personalized } = await syncPersonalizationCookie();
+          
+          if (personalized) {
+            router.push(callbackUrl);
+          } else {
+            router.push("/personalization-choice");
+          }
+          router.refresh(); // Force middleware re-evaluation
         }
-        router.refresh(); // Force middleware re-evaluation
-      }
-    } catch (error) {
-      toast.error("Something went wrong");
-    } finally {
+      } catch (error: any) {
+        console.error("Login catch error:", error);
+        toast.error(error?.message || "Something went wrong");
+      } finally {
       setLoading(false);
     }
   };

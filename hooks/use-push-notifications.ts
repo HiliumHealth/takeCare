@@ -71,8 +71,23 @@ export function usePushNotifications() {
     }
   };
 
+  const unsubscribe = async () => {
+    if (!registration) return;
+    try {
+      const sub = await registration.pushManager.getSubscription();
+      if (sub) {
+        await sub.unsubscribe();
+        setSubscription(null);
+        console.log("[Push] Unsubscribed successfully");
+      }
+    } catch (err) {
+      console.error("[Push] Unsubscribe failed:", err);
+    }
+  };
+
   return {
     subscribe,
+    unsubscribe,
     subscription,
     permission,
   };

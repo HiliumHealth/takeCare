@@ -45,20 +45,31 @@ export function PushSubscriptionButton() {
           <Bell className="h-6 w-6" />
           <span className="font-bold text-sm tracking-tight">Mobile Alerts On</span>
         </div>
-        <button
-          onClick={async () => {
-            const res = await fetch("/api/notifications/test", { method: "POST" });
-            const data = await res.json();
-            if (data.success) {
-              toast.success("Test notification sent!");
-            } else {
-              toast.error(data.message || "Failed to send test");
-            }
-          }}
-          className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline px-4 text-left"
-        >
-          Send Test Notification
-        </button>
+        <div className="flex flex-row justify-between items-center px-2">
+          <button
+            onClick={async () => {
+              const res = await fetch("/api/notifications/test", { method: "POST" });
+              const data = await res.json();
+              if (data.success) {
+                toast.success("Test notification sent!");
+              } else {
+                toast.error(data.message || "Failed to send test");
+              }
+            }}
+            className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline"
+          >
+            Send Test
+          </button>
+          <button
+            onClick={async () => {
+              await unsubscribe();
+              toast.info("Alerts reset. You can now re-enable them.");
+            }}
+            className="text-[10px] font-black uppercase tracking-widest text-red-500 hover:underline"
+          >
+            Reset Alerts
+          </button>
+        </div>
       </div>
     );
   }

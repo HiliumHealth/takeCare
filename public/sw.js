@@ -148,7 +148,9 @@ self.addEventListener('fetch', (event) => {
 
 // ─── PUSH NOTIFICATIONS ────────────────────────────────────
 self.addEventListener('push', (event) => {
-  console.log('[Hilium SW] Push notification received');
+  console.log('[Hilium SW] ✓ Push event RECEIVED at', new Date().toISOString());
+  console.log('[Hilium SW] Push event object:', event);
+  console.log('[Hilium SW] Registration state:', self.registration.scope);
 
   let data = {
     title: 'Hilium Health',
@@ -161,14 +163,22 @@ self.addEventListener('push', (event) => {
 
   try {
     if (event.data) {
+      console.log('[Hilium SW] Raw push data:', event.data);
       const payload = event.data.json();
+      console.log('[Hilium SW] Parsed push payload:', payload);
       data = { ...data, ...payload };
+    } else {
+      console.warn('[Hilium SW] No data in push event, using defaults');
     }
   } catch (e) {
+    console.error('[Hilium SW] Failed to parse JSON:', e);
     if (event.data) {
       data.body = event.data.text();
+      console.log('[Hilium SW] Fallback to text data:', data.body);
     }
   }
+
+  console.log('[Hilium SW] Final notification data:', data);
 
   const options = {
     body: data.body,
@@ -187,7 +197,24 @@ self.addEventListener('push', (event) => {
     requireInteraction: data.requireInteraction || false,
   };
 
-  event.waitUntil(self.registration.showNotification(data.title, options));
+  console.log('[Hilium SW] Notification options:', options);
+  console.log('[Hilium SW] About to call showNotification with title:', data.title);
+
+  event.waitUntil(
+    self.registration
+      .showNotification(data.title, options)
+      .then(() => {
+        console.log('[Hilium SW] ✓ Notification shown successfully!');
+      })
+      .catch((error) => {
+        console.error('[Hilium SW] ✗ Failed to show notification:', error);
+        console.error('[Hilium SW] Error details:', {
+          name: error.name,
+          message: error.message,
+          stack: error.stack,
+        });
+      })
+  );
 });
 
 // ─── NOTIFICATION CLICK ────────────────────────────────────

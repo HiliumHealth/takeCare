@@ -432,3 +432,23 @@
 [2026-05-18T08:50:08.461Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
 [2026-05-18T08:50:13.716Z] TOOL: getDoctorNotes | User: cmnm9stin000038v5uo82ijcs | Limit: undefined
 [2026-05-18T08:50:14.769Z] TOOL: getDoctorNotes | Notes found: 4
+[2026-05-22T11:29:43.075Z] --- POST REQUEST START ---
+[2026-05-22T11:29:43.077Z] API Key present: true, Length: 39
+[2026-05-22T11:29:43.128Z] Auth User: cmnm9stin000038v5uo82ijcs
+[2026-05-22T11:29:43.130Z] Messages count: 2
+[2026-05-22T11:29:43.420Z] Starting streamText with gemini-2.5-flash...
+[2026-05-22T11:29:43.424Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-05-22T11:30:07.803Z] --- POST REQUEST START ---
+[2026-05-22T11:30:07.804Z] API Key present: true, Length: 39
+[2026-05-22T11:30:07.835Z] Auth User: cmnm9stin000038v5uo82ijcs
+[2026-05-22T11:30:07.838Z] Messages count: 4
+[2026-05-22T11:30:08.114Z] Starting streamText with gemini-2.5-flash...
+[2026-05-22T11:30:08.115Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-05-22T11:30:09.823Z] TOOL: getDoctorNotes | User: cmnm9stin000038v5uo82ijcs | Limit: undefined
+[2026-05-22T11:30:10.099Z] TOOL: getDoctorNotes | Notes found: 4
+[2026-05-22T11:30:25.115Z] --- POST REQUEST START ---
+[2026-05-22T11:30:25.116Z] API Key present: true, Length: 39
+[2026-05-22T11:30:25.130Z] Auth User: cmnm9stin000038v5uo82ijcs
+[2026-05-22T11:30:25.131Z] Messages count: 6
+[2026-05-22T11:30:25.411Z] Starting streamText with gemini-2.5-flash...
+[2026-05-22T11:30:25.413Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).

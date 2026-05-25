@@ -6,7 +6,7 @@ import { usePushNotifications } from "@/hooks/use-push-notifications";
 import { toast } from "sonner";
 
 export function PushSubscriptionButton() {
-  const { subscribe, permission, subscription } = usePushNotifications();
+  const { subscribe, unsubscribe, permission, subscription } = usePushNotifications();
   const [loading, setLoading] = useState(false);
   const [isSupported, setIsSupported] = useState(true);
 
@@ -48,12 +48,28 @@ export function PushSubscriptionButton() {
         <div className="flex flex-row justify-between items-center px-2">
           <button
             onClick={async () => {
-              const res = await fetch("/api/notifications/test", { method: "POST" });
-              const data = await res.json();
-              if (data.success) {
-                toast.success("Test notification sent!");
-              } else {
-                toast.error(data.message || "Failed to send test");
+              setLoading(true);
+              try {
+                const res = await fetch("/api/notifications/test", { method: "POST" });
+                const data = await res.json();
+                if (data.success) {
+                  toast.success("Test notification sent!");
+                } else if (data.code === "NO_SUBSCRIPTIONS") {
+                  toast.error("No subscriptions found. Please enable notifications first.");
+                } else if (data.code === "ALL_FAILED") {
+                  toast.error("All push attempts failed. Attempting recovery...", {
+                    description: "Clearing subscriptions. Please re-enable notifications.",
+                  });
+                  // Auto-cleanup failed subscriptions
+                  await fetch("/api/notifications/cleanup", { method: "POST" });
+                  await unsubscribe();
+                } else {
+                  toast.error(data.message || "Failed to send test");
+                }
+              } catch (err) {
+                toast.error("Failed to send test notification");
+              } finally {
+                setLoading(false);
               }
             }}
             className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline"

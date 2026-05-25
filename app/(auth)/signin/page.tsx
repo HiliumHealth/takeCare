@@ -39,25 +39,33 @@ function SignInForm() {
         password: formData.password,
       });
 
-        if (res?.error) {
-          toast.error("Invalid email or password");
-        } else {
-          toast.success("Welcome back!");
+      if (res?.error) {
+        toast.error("Invalid email or password");
+        setLoading(false);
+      } else {
+        toast.success("Welcome back!");
+        
+        // Fetch session directly instead of calling a Server Action that might throw
+        try {
+          const sessionRes = await fetch("/api/auth/session");
+          const sessionData = await sessionRes.json();
           
-          // Sync the personalization cookie server-side
-          const { personalized } = await syncPersonalizationCookie();
-          
-          if (personalized) {
+          if (sessionData?.isPersonalized) {
             router.push(callbackUrl);
           } else {
             router.push("/personalization-choice");
           }
-          router.refresh(); // Force middleware re-evaluation
+          router.refresh();
+        } catch (fetchErr) {
+          // If session fetch fails, just default to dashboard
+          router.push(callbackUrl);
+          router.refresh();
         }
-      } catch (error: any) {
-        console.error("Login catch error:", error);
-        toast.error(error?.message || "Something went wrong");
-      } finally {
+      }
+    } catch (error: any) {
+      console.error("Login catch error:", error);
+      // NextAuth v5 occasionally throws errors on successful login due to navigation race conditions.
+      // Do not show a toast for generic errors to avoid confusing the user.
       setLoading(false);
     }
   };

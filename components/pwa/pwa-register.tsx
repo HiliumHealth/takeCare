@@ -11,34 +11,48 @@ export function PWARegister() {
 
     const registerSW = async () => {
       try {
+        console.log("[Hilium PWA] Starting service worker registration...");
+        
         const reg = await navigator.serviceWorker.register("/sw.js", {
           scope: "/",
           updateViaCache: "none",
         });
 
         setRegistration(reg);
-        console.log("[Hilium PWA] Service worker registered successfully");
+        console.log("[Hilium PWA] ✓ Service worker registered successfully");
+        console.log("[Hilium PWA] Registration scope:", reg.scope);
+        console.log("[Hilium PWA] Active:", reg.active?.state);
+        console.log("[Hilium PWA] Installing:", reg.installing?.state);
+        console.log("[Hilium PWA] Waiting:", reg.waiting?.state);
 
-        // Check for updates periodically
+        // Force check for updates immediately
+        console.log("[Hilium PWA] Checking for updates...");
+        const updatedReg = await reg.update();
+        console.log("[Hilium PWA] Update check completed");
+
+        // Check for updates when new worker is found
         reg.addEventListener("updatefound", () => {
           const newWorker = reg.installing;
           if (!newWorker) return;
 
+          console.log("[Hilium PWA] New service worker installing...");
           newWorker.addEventListener("statechange", () => {
+            console.log(`[Hilium PWA] SW state changed: ${newWorker.state}`);
             if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
-              console.log("[Hilium PWA] Update available");
+              console.log("[Hilium PWA] Update available - new SW installed");
               setUpdateAvailable(true);
             }
           });
         });
 
-        // Check for updates every 60 minutes
+        // Check for updates every 30 minutes
         setInterval(() => {
+          console.log("[Hilium PWA] Checking for updates (interval)...");
           reg.update();
-        }, 60 * 60 * 1000);
+        }, 30 * 60 * 1000);
 
       } catch (error) {
-        console.error("[Hilium PWA] Service worker registration failed:", error);
+        console.error("[Hilium PWA] ✗ Service worker registration failed:", error);
       }
     };
 

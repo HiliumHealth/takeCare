@@ -1,7 +1,7 @@
 /// Hilium PWA Service Worker
 /// Handles offline caching, push notifications, and background sync
 
-const CACHE_VERSION = 'hilium-v1';
+const CACHE_VERSION = 'hilium-v2-push-fix';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const DYNAMIC_CACHE = `${CACHE_VERSION}-dynamic`;
 const IMAGE_CACHE = `${CACHE_VERSION}-images`;

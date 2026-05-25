@@ -128,6 +128,7 @@ import { AuthProvider } from "@/components/providers/session-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { PWAProvider } from "@/hooks/use-pwa";
 import { CustomInstallPrompt } from "@/components/pwa/custom-install-prompt";
+import { NotificationListener } from "@/components/pwa/notification-listener";
 
 export default function RootLayout({
   children,
@@ -146,6 +147,7 @@ export default function RootLayout({
           <PWAProvider>
             <AuthProvider>
               <BackgroundGrid />
+              <NotificationListener />
 
               {children}
               <Toaster closeButton position="top-center" expand visibleToasts={1} />

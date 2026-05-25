@@ -194,7 +194,7 @@ self.addEventListener('push', (event) => {
       { action: 'open', title: 'Open Hilium', icon: '/icons/icon-96x96.png' },
       { action: 'dismiss', title: 'Dismiss' },
     ],
-    requireInteraction: data.requireInteraction || false,
+    requireInteraction: data.requireInteraction || true,
   };
 
   console.log('[Hilium SW] Notification options:', options);
@@ -205,6 +205,16 @@ self.addEventListener('push', (event) => {
       .showNotification(data.title, options)
       .then(() => {
         console.log('[Hilium SW] ✓ Notification shown successfully!');
+        // Send confirmation to all clients
+        self.clients.matchAll().then(clients => {
+          clients.forEach(client => {
+            client.postMessage({
+              type: 'NOTIFICATION_SHOWN',
+              data: data,
+              timestamp: Date.now()
+            });
+          });
+        });
       })
       .catch((error) => {
         console.error('[Hilium SW] ✗ Failed to show notification:', error);
@@ -212,6 +222,19 @@ self.addEventListener('push', (event) => {
           name: error.name,
           message: error.message,
           stack: error.stack,
+        });
+        
+        // Send fallback notification to all clients (in-app display)
+        console.log('[Hilium SW] Sending fallback notification to clients...');
+        self.clients.matchAll().then(clients => {
+          clients.forEach(client => {
+            client.postMessage({
+              type: 'NOTIFICATION_FALLBACK',
+              data: data,
+              error: error.message,
+              timestamp: Date.now()
+            });
+          });
         });
       })
   );

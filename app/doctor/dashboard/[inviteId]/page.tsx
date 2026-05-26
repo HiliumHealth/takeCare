@@ -254,7 +254,7 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
                              value={formData.diagnosis}
                              onChange={(e) => setFormData((prev: any) => ({ ...prev, diagnosis: e.target.value }))}
                              placeholder="Enter the main diagnosis..."
-                             className="h-12 rounded-xl bg-slate-50 border-black/5 text-base font-bold px-4"
+                             className="h-12 rounded-xl bg-slate-50 border-black/5 text-base font-bold px-4 text-black/90 placeholder:text-black/30"
                            />
                          </div>
                          <div className="space-y-2">
@@ -263,7 +263,7 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
                              value={formData.notes}
                              onChange={(e) => setFormData((prev: any) => ({ ...prev, notes: e.target.value }))}
                              placeholder="Describe symptoms, findings, and general impressions..."
-                             className="min-h-[120px] rounded-2xl bg-slate-50 border-black/5 p-4 font-medium text-sm"
+                             className="min-h-[120px] rounded-2xl bg-slate-50 border-black/5 p-4 font-medium text-sm text-black/90 placeholder:text-black/30"
                            />
                          </div>
                        </div>
@@ -320,7 +320,7 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
                            type="date"
                            value={formData.followUpDate}
                            onChange={(e) => setFormData((prev: any) => ({ ...prev, followUpDate: e.target.value }))}
-                           className="h-12 rounded-xl bg-slate-50 border-black/5 font-bold px-4"
+                           className="h-12 rounded-xl bg-slate-50 border-black/5 font-bold px-4 text-black/90"
                          />
                        </div>
                      </motion.section>

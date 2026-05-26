@@ -197,7 +197,7 @@ export function PrescriptionForm({
                               updateMedication(med.id, { name: e.target.value })
                             }
                             placeholder="e.g., Paracetamol"
-                            className="h-11 rounded-lg bg-white border-black/5 font-bold px-4 text-sm"
+                            className="h-11 rounded-lg bg-white border-black/5 font-bold px-4 text-sm text-black/90 placeholder:text-black/30"
                           />
                         </div>
                         <div className="space-y-2">
@@ -210,7 +210,7 @@ export function PrescriptionForm({
                               updateMedication(med.id, { dosage: e.target.value })
                             }
                             placeholder="e.g., 500mg"
-                            className="h-11 rounded-lg bg-white border-black/5 font-bold px-4 text-sm"
+                            className="h-11 rounded-lg bg-white border-black/5 font-bold px-4 text-sm text-black/90 placeholder:text-black/30"
                           />
                         </div>
                       </div>
@@ -275,7 +275,7 @@ export function PrescriptionForm({
                                   newTimes[idx] = e.target.value;
                                   updateMedication(med.id, { times: newTimes });
                                 }}
-                                className="w-full px-3 py-2.5 rounded-lg bg-white border border-black/5 font-bold text-sm focus:ring-1 focus:ring-black/10 focus:border-transparent"
+                                className="w-full px-3 py-2.5 rounded-lg bg-white border border-black/5 font-bold text-sm text-black/90 focus:ring-1 focus:ring-black/10 focus:border-transparent"
                               />
                               {med.times.length > 1 && (
                                 <button
@@ -304,7 +304,7 @@ export function PrescriptionForm({
                             })
                           }
                           placeholder="e.g., Take with water, avoid dairy..."
-                          className="w-full h-20 px-4 py-2.5 rounded-lg bg-white border border-black/5 font-medium text-sm resize-none focus:ring-1 focus:ring-black/10"
+                          className="w-full h-20 px-4 py-2.5 rounded-lg bg-white border border-black/5 font-medium text-sm text-black/90 placeholder:text-black/30 resize-none focus:ring-1 focus:ring-black/10"
                         />
                       </div>
 

@@ -12,7 +12,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { getDoctorInvitation } from "@/app/actions/medical";
-import { HospitalBookForm } from "@/components/doctor/hospital-book-form";
+import { PrescriptionForm } from "@/components/doctor/prescription-form";
+import { MedicationSchedule } from "@/components/doctor/medication-schedule";
 
 export default function DoctorDashboardPage({ params }: { params: Promise<{ inviteId: string }> }) {
   const { inviteId } = React.use(params);
@@ -58,13 +59,24 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
+      // Convert medications to API format (remove id, keep only necessary fields)
+      const medicationsForAPI = formData.medications.map((med: any) => ({
+        name: med.name,
+        dosage: med.dosage,
+        frequency: med.frequency,
+        times: med.times,
+        instructions: med.instructions,
+        enableReminders: med.enableReminders ?? true,
+        reminderSound: med.reminderSound ?? "soft-bell",
+      }));
+
       const submission = new FormData();
       submission.append("inviteId", inviteId);
       submission.append("diagnosis", formData.diagnosis);
       submission.append("notes", formData.notes);
-      submission.append("medications", JSON.stringify(formData.medications));
-      submission.append("labRequests", JSON.stringify(formData.labRequests));
-      submission.append("vitalTargets", JSON.stringify(formData.vitalTargets));
+      submission.append("medications", JSON.stringify(medicationsForAPI));
+      submission.append("labRequests", JSON.stringify(formData.labRequests || []));
+      submission.append("vitalTargets", JSON.stringify(formData.vitalTargets || []));
       submission.append("vitals", JSON.stringify(formData.vitals));
       submission.append("lifestyle", JSON.stringify(formData.lifestyle));
       submission.append("followUpDate", formData.followUpDate);
@@ -228,10 +240,91 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
                       </div>
                    </div>
 
-                   <HospitalBookForm 
-                     onDataChange={(data) => setFormData((prev: any) => ({ ...prev, ...data }))}
-                     onFilesChange={setSelectedFiles}
-                   />
+                   <div className="space-y-16">
+                     {/* Assessment Section */}
+                     <motion.section className="space-y-6">
+                       <div className="space-y-1">
+                         <h3 className="text-2xl font-bricolage font-black tracking-tighter">Checkup Summary</h3>
+                         <p className="text-xs text-black/40 font-medium">Record primary diagnosis and supporting observations.</p>
+                       </div>
+                       <div className="space-y-4">
+                         <div className="space-y-2">
+                           <Label className="text-xs font-black uppercase tracking-widest text-black/30">Main Condition Found</Label>
+                           <Input 
+                             value={formData.diagnosis}
+                             onChange={(e) => setFormData((prev: any) => ({ ...prev, diagnosis: e.target.value }))}
+                             placeholder="Enter the main diagnosis..."
+                             className="h-12 rounded-xl bg-slate-50 border-black/5 text-base font-bold px-4"
+                           />
+                         </div>
+                         <div className="space-y-2">
+                           <Label className="text-xs font-black uppercase tracking-widest text-black/30">Clinical Notes</Label>
+                           <Textarea 
+                             value={formData.notes}
+                             onChange={(e) => setFormData((prev: any) => ({ ...prev, notes: e.target.value }))}
+                             placeholder="Describe symptoms, findings, and general impressions..."
+                             className="min-h-[120px] rounded-2xl bg-slate-50 border-black/5 p-4 font-medium text-sm"
+                           />
+                         </div>
+                       </div>
+                     </motion.section>
+
+                     {/* Prescription Form */}
+                     <PrescriptionForm 
+                       medications={formData.medications}
+                       onMedicationsChange={(meds) => setFormData((prev: any) => ({ ...prev, medications: meds }))}
+                       onAddMedication={() => {
+                         const newMed = {
+                           id: Date.now().toString(),
+                           name: "",
+                           dosage: "",
+                           frequency: "Once Daily" as const,
+                           times: ["08:00"],
+                           instructions: "",
+                           enableReminders: true,
+                           reminderSound: "soft-bell" as const,
+                         };
+                         setFormData((prev: any) => ({ 
+                           ...prev, 
+                           medications: [...prev.medications, newMed] 
+                         }));
+                       }}
+                       onRemoveMedication={(id) => {
+                         setFormData((prev: any) => ({ 
+                           ...prev, 
+                           medications: prev.medications.filter((m: any) => m.id !== id) 
+                         }));
+                       }}
+                     />
+
+                     {/* Medication Schedule Visualization */}
+                     {formData.medications.length > 0 && (
+                       <MedicationSchedule 
+                         medications={formData.medications}
+                         readOnly={true}
+                       />
+                     )}
+
+                     {/* Follow-up Date */}
+                     <motion.section className="space-y-6 pt-8 border-t border-black/5">
+                       <div className="space-y-1">
+                         <h3 className="text-2xl font-bricolage font-black tracking-tighter flex items-center gap-2">
+                           <CalendarIcon className="w-6 h-6 text-emerald-500" />
+                           Follow-up Appointment
+                         </h3>
+                         <p className="text-xs text-black/40 font-medium">Schedule patient's next checkup date.</p>
+                       </div>
+                       <div className="space-y-2">
+                         <Label className="text-xs font-black uppercase tracking-widest text-black/30">Follow-up Date</Label>
+                         <Input 
+                           type="date"
+                           value={formData.followUpDate}
+                           onChange={(e) => setFormData((prev: any) => ({ ...prev, followUpDate: e.target.value }))}
+                           className="h-12 rounded-xl bg-slate-50 border-black/5 font-bold px-4"
+                         />
+                       </div>
+                     </motion.section>
+                   </div>
 
                    <div className="pt-16 flex items-center justify-between">
                       <div className="flex items-center gap-3">

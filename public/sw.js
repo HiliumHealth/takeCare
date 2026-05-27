@@ -265,6 +265,51 @@ self.addEventListener('notificationclick', (event) => {
   );
 });
 
+// ─── MEDICATION REMINDERS ──────────────────────────────────
+self.addEventListener('message', (event) => {
+  console.log('[Hilium SW] Message received:', event.data.type);
+
+  // Handle medication reminder request from client
+  if (event.data.type === 'PLAY_MEDICATION_REMINDER') {
+    const { medicationName, dosage, time, reminderSound, instructions } = event.data;
+    
+    console.log('[Hilium SW] Playing medication reminder:', medicationName);
+
+    // Send message to all clients to trigger client-side TTS
+    self.clients.matchAll().then((clients) => {
+      clients.forEach((client) => {
+        client.postMessage({
+          type: 'MEDICATION_REMINDER',
+          data: {
+            medicationName,
+            dosage,
+            time,
+            reminderSound,
+            instructions,
+          },
+          timestamp: Date.now(),
+        });
+      });
+    });
+  }
+
+  // Handle test notification request
+  if (event.data.type === 'TEST_MEDICATION_SOUND') {
+    const { reminderSound } = event.data;
+    console.log('[Hilium SW] Test sound requested:', reminderSound);
+    
+    self.clients.matchAll().then((clients) => {
+      clients.forEach((client) => {
+        client.postMessage({
+          type: 'TEST_SOUND',
+          data: { reminderSound },
+          timestamp: Date.now(),
+        });
+      });
+    });
+  }
+});
+
 // ─── BACKGROUND SYNC (for offline form submissions) ────────
 self.addEventListener('sync', (event) => {
   console.log('[Hilium SW] Background sync:', event.tag);
@@ -272,11 +317,21 @@ self.addEventListener('sync', (event) => {
   if (event.tag === 'sync-health-data') {
     event.waitUntil(syncHealthData());
   }
+  
+  // Handle medication reminder sync
+  if (event.tag === 'sync-medication-reminders') {
+    event.waitUntil(syncMedicationReminders());
+  }
 });
 
 async function syncHealthData() {
   // Future: replay queued offline health record submissions
   console.log('[Hilium SW] Syncing queued health data...');
+}
+
+async function syncMedicationReminders() {
+  // Future: sync medication reminders when back online
+  console.log('[Hilium SW] Syncing medication reminders...');
 }
 
 // ─── PERIODIC BACKGROUND SYNC ──────────────────────────────

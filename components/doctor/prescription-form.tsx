@@ -43,6 +43,7 @@ const FREQUENCY_OPTIONS = {
   "Twice Daily": ["08:00", "20:00"],
   "Thrice Daily": ["08:00", "14:00", "20:00"],
   "Four Times": ["08:00", "12:00", "16:00", "20:00"],
+  "Custom": [],
 };
 
 export function PrescriptionForm({
@@ -65,8 +66,8 @@ export function PrescriptionForm({
 
   const addTime = (id: string) => {
     const med = medications.find((m) => m.id === id);
-    if (med && med.times.length < 6) {
-      const lastTime = med.times[med.times.length - 1] || "08:00";
+    if (med) {
+      const lastTime = med.times.length > 0 ? med.times[med.times.length - 1] : "08:00";
       const newTime = new Date();
       const [hours, minutes] = lastTime.split(":");
       newTime.setHours(parseInt(hours) + 2, 0, 0);
@@ -79,7 +80,7 @@ export function PrescriptionForm({
 
   const removeTime = (id: string, idx: number) => {
     const med = medications.find((m) => m.id === id);
-    if (med && med.times.length > 1) {
+    if (med) {
       updateMedication(id, { times: med.times.filter((_, i) => i !== idx) });
     }
   };
@@ -197,7 +198,7 @@ export function PrescriptionForm({
                               updateMedication(med.id, { name: e.target.value })
                             }
                             placeholder="e.g., Paracetamol"
-                            className="h-11 rounded-lg bg-white border-black/5 font-bold px-4 text-sm text-black/90 placeholder:text-black/30"
+                            className="h-11 rounded-lg bg-white border border-black/[0.12] font-bold px-4 text-sm text-black/90 placeholder:text-black/30 focus:border-black/30 focus:ring-0"
                           />
                         </div>
                         <div className="space-y-2">
@@ -210,7 +211,7 @@ export function PrescriptionForm({
                               updateMedication(med.id, { dosage: e.target.value })
                             }
                             placeholder="e.g., 500mg"
-                            className="h-11 rounded-lg bg-white border-black/5 font-bold px-4 text-sm text-black/90 placeholder:text-black/30"
+                            className="h-11 rounded-lg bg-white border border-black/[0.12] font-bold px-4 text-sm text-black/90 placeholder:text-black/30 focus:border-black/30 focus:ring-0"
                           />
                         </div>
                       </div>
@@ -246,48 +247,49 @@ export function PrescriptionForm({
                         </div>
                       </div>
 
-                      {/* Time Picker */}
+                      {/* Time Picker - Fully Dynamic */}
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                          <Label className="text-xs font-black uppercase tracking-widest text-black/30 flex items-center gap-2">
-                            <Clock size={12} /> Daily Dose Times
+                          <Label className="text-xs font-black uppercase tracking-widest text-black/50 flex items-center gap-2">
+                            <Clock size={12} /> Medication Times
                           </Label>
-                          {med.times.length < 6 && (
-                            <button
-                              onClick={() => addTime(med.id)}
-                              className="text-xs font-black text-blue-500 hover:text-blue-600 transition-colors flex items-center gap-1"
-                            >
-                              <Plus size={12} /> Add Time
-                            </button>
-                          )}
+                          <button
+                            onClick={() => addTime(med.id)}
+                            className="text-xs font-black text-blue-500 hover:text-blue-600 transition-colors flex items-center gap-1"
+                          >
+                            <Plus size={12} /> Add Time
+                          </button>
                         </div>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                          {med.times.map((time, idx) => (
-                            <div
-                              key={idx}
-                              className="relative group/time"
-                            >
-                              <input
-                                type="time"
-                                value={time}
-                                onChange={(e) => {
-                                  const newTimes = [...med.times];
-                                  newTimes[idx] = e.target.value;
-                                  updateMedication(med.id, { times: newTimes });
-                                }}
-                                className="w-full px-3 py-2.5 rounded-lg bg-white border border-black/5 font-bold text-sm text-black/90 focus:ring-1 focus:ring-black/10 focus:border-transparent"
-                              />
-                              {med.times.length > 1 && (
-                                <button
-                                  onClick={() => removeTime(med.id, idx)}
-                                  className="absolute -top-2 -right-2 w-5 h-5 bg-rose-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover/time:opacity-100 transition-opacity"
-                                  title="Remove time"
-                                >
-                                  <X size={12} />
-                                </button>
-                              )}
+                        <div className="space-y-2">
+                          {med.times.length === 0 ? (
+                            <div className="text-center py-6 text-black/40 bg-slate-50 rounded-lg border border-black/[0.08]">
+                              <p className="text-sm font-medium">No times added. Click "Add Time" to set medication schedule.</p>
                             </div>
-                          ))}
+                          ) : (
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                              {med.times.map((time, idx) => (
+                                <div key={idx} className="relative group/time">
+                                  <input
+                                    type="time"
+                                    value={time}
+                                    onChange={(e) => {
+                                      const newTimes = [...med.times];
+                                      newTimes[idx] = e.target.value;
+                                      updateMedication(med.id, { times: newTimes });
+                                    }}
+                                    className="w-full px-3 py-2.5 rounded-lg bg-white border border-black/[0.12] font-bold text-sm text-black/90 focus:ring-1 focus:ring-black/20 focus:border-transparent"
+                                  />
+                                  <button
+                                    onClick={() => removeTime(med.id, idx)}
+                                    className="absolute -top-2 -right-2 w-5 h-5 bg-rose-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover/time:opacity-100 transition-opacity"
+                                    title="Remove time"
+                                  >
+                                    <X size={12} />
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -304,7 +306,7 @@ export function PrescriptionForm({
                             })
                           }
                           placeholder="e.g., Take with water, avoid dairy..."
-                          className="w-full h-20 px-4 py-2.5 rounded-lg bg-white border border-black/5 font-medium text-sm text-black/90 placeholder:text-black/30 resize-none focus:ring-1 focus:ring-black/10"
+                          className="w-full h-20 px-4 py-2.5 rounded-lg bg-white border border-black/[0.12] font-medium text-sm text-black/90 placeholder:text-black/30 resize-none focus:ring-1 focus:ring-black/20 focus:border-transparent"
                         />
                       </div>
 

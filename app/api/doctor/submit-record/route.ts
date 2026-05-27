@@ -37,6 +37,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "This invitation link is no longer valid or has expired." }, { status: 401 });
     }
 
+    // Validate and filter medications - only include complete medications
+    const validMedications = medications.filter((med: any) => {
+      // Check that all required fields are filled
+      if (!med.name || !med.name.trim()) return false;
+      if (!med.dosage || !med.dosage.trim()) return false;
+      if (!med.frequency || !med.frequency.trim()) return false;
+      // Check that at least one time is scheduled
+      if (!Array.isArray(med.times) || med.times.length === 0) return false;
+      return true;
+    });
+
     // Create the structured Prescription record
     const prescription = await prisma.prescription.create({
       data: {
@@ -50,12 +61,12 @@ export async function POST(req: Request) {
         lifestyle,
         followUpDate,
         medications: {
-          create: medications.map((med: any) => ({
-            name: med.name,
-            dosage: med.dosage,
+          create: validMedications.map((med: any) => ({
+            name: med.name.trim(),
+            dosage: med.dosage.trim(),
             frequency: med.frequency,
             times: med.times,
-            instructions: med.instructions,
+            instructions: med.instructions || "",
           })),
         },
       },
@@ -82,7 +93,7 @@ DIAGNOSIS: ${diagnosis}
 CONSULTATION NOTES: ${notes}
 
 PRESCRIPTIONS:
-${medications.map((m: any) => `- ${m.name} (${m.dosage}) - [Times: ${m.times.join(", ")}]`).join("\n")}
+${validMedications.map((m: any) => `- ${m.name} (${m.dosage}) - [Times: ${m.times.join(", ")}]`).join("\n")}
 
 LABORATORY INVESTIGATIONS:
 ${labRequests.map((l: any) => `- ${l.testName} (${l.urgency}): ${l.instructions}`).join("\n") || "None requested"}

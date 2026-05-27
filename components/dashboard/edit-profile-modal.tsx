@@ -26,11 +26,16 @@ interface EditProfileModalProps {
 }
 
 export function EditProfileModal({ user, onUpdate, customTrigger }: EditProfileModalProps) {
+  // Return early if user is null
+  if (!user) {
+    return null;
+  }
+
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: user.name || "",
-    avatarUrl: user.avatarUrl || "",
-    coverImageUrl: user.coverImageUrl || "",
+    name: user?.name || "",
+    avatarUrl: user?.avatarUrl || "",
+    coverImageUrl: user?.coverImageUrl || "",
   });
 
   const avatarInputRef = React.useRef<HTMLInputElement>(null);

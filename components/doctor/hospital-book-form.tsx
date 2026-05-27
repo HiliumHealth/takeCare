@@ -150,7 +150,7 @@ export function HospitalBookForm({ onDataChange }: HospitalBookFormProps) {
                       notifyChange({ diagnosis: e.target.value });
                     }}
                     placeholder="Enter the main diagnosis..."
-                    className="h-12 rounded-xl bg-slate-50 border-none text-base font-bold px-4 focus-visible:ring-1 focus-visible:ring-black/5"
+                    className="h-12 rounded-xl bg-slate-50  text-black font-bold px-4 focus-visible:ring-1 focus-visible:ring-black/5 border-blue-600"
                   />
                 </div>
 

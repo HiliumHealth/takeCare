@@ -452,3 +452,24 @@
 [2026-05-22T11:30:25.131Z] Messages count: 6
 [2026-05-22T11:30:25.411Z] Starting streamText with gemini-2.5-flash...
 [2026-05-22T11:30:25.413Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-05-25T10:50:25.179Z] --- POST REQUEST START ---
+[2026-05-25T10:50:25.182Z] API Key present: true, Length: 39
+[2026-05-25T10:50:25.252Z] Auth User: cmnm9stin000038v5uo82ijcs
+[2026-05-25T10:50:25.256Z] Messages count: 2
+[2026-05-25T10:50:26.475Z] Starting streamText with gemini-2.5-flash...
+[2026-05-25T10:50:26.491Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-05-25T10:51:21.939Z] --- POST REQUEST START ---
+[2026-05-25T10:51:21.940Z] API Key present: true, Length: 39
+[2026-05-25T10:51:21.989Z] Auth User: cmnm9stin000038v5uo82ijcs
+[2026-05-25T10:51:21.991Z] Messages count: 4
+[2026-05-25T10:51:22.298Z] Starting streamText with gemini-2.5-flash...
+[2026-05-25T10:51:22.301Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-05-25T10:51:27.220Z] TOOL: searchMedicalHistory | User: cmnm9stin000038v5uo82ijcs | Query: undefined
+[2026-05-25T10:51:31.197Z] TOOL ERROR: searchMedicalHistory | * EmbedContentRequest.content.parts[0].data: required oneof field 'data' must have one initialized field
+
+[2026-05-25T10:51:52.090Z] --- POST REQUEST START ---
+[2026-05-25T10:51:52.092Z] API Key present: true, Length: 39
+[2026-05-25T10:51:52.117Z] Auth User: cmnm9stin000038v5uo82ijcs
+[2026-05-25T10:51:52.119Z] Messages count: 6
+[2026-05-25T10:51:53.106Z] Starting streamText with gemini-2.5-flash...
+[2026-05-25T10:51:53.122Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).

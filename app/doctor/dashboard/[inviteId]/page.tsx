@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { User, FileText, Send, CheckCircle2, ShieldCheck, FileUp, Loader2, XCircle, LogOut, ChevronLeft, Calendar as CalendarIcon, BookOpen, Clock, Activity } from "lucide-react";
+import { User, FileText, Send, CheckCircle2, ShieldCheck, FileUp, Loader2, XCircle, LogOut, ChevronLeft, Calendar as CalendarIcon, BookOpen, Clock, Activity, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
@@ -33,6 +33,7 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [currentTab, setCurrentTab] = useState<"assessment" | "vitals" | "medications" | "labs" | "targets" | "lifestyle" | "followup">("assessment");
 
   useEffect(() => {
     // Force Light Mode for Doctor Dashboard
@@ -142,7 +143,7 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
           <div className="flex items-center gap-6">
             <Button 
               variant="ghost" 
-              className="rounded-xl hover:bg-black/5 text-black/30 hover:text-black transition-all"
+              className="rounded-xl hover:bg-black/5 text-black/30 hover:text-black transition-all cursor-pointer"
               onClick={() => {
                 localStorage.removeItem("takecare_doctor_invite");
                 router.push("/");
@@ -197,7 +198,7 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
                </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-black text-white shadow-2xl shadow-black/10">
+            <div className="p-6 rounded-3xl bg-blue-700 text-white shadow-2xl shadow-black/10">
                <div className="flex items-center gap-3 mb-4">
                   <ShieldCheck size={16} className="text-emerald-400" />
                   <span className="text-[9px] font-black uppercase tracking-[0.3em] opacity-50">Secure Vault</span>
@@ -209,7 +210,7 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
           </aside>
 
           {/* Clinical Assessment Canvas */}
-          <div className="bg-white rounded-[2.5rem] border border-black/[0.05] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.05)] p-12 lg:p-16 relative overflow-hidden">
+          <div className="bg-white rounded-[2.5rem] border border-black/[0.08] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.05)] p-12 lg:p-16 relative overflow-hidden">
              <AnimatePresence mode="wait">
                {isSuccess ? (
                  <motion.div 
@@ -220,121 +221,378 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
                     <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-500 mb-4">
                        <CheckCircle2 size={32} />
                     </div>
-                    <h2 className="text-3xl font-bricolage font-black tracking-tighter">Report Sent Successfully!</h2>
+                    <h2 className="text-3xl font-bricolage font-black tracking-tighter text-black">Report Sent Successfully!</h2>
                     <p className="text-xs font-medium text-black/40 max-w-xs mx-auto leading-relaxed">
                       The medical report has been saved to the patient's health booklet.
                     </p>
                  </motion.div>
                ) : (
-                 <div className="space-y-12">
-                   <div className="flex items-center justify-between pb-10 border-b border-black/[0.03]">
-                      <div className="space-y-3">
-                         <div className="flex items-center gap-2">
-                            <Badge variant="outline" className="text-[9px] font-black uppercase tracking-widest border-black/10 text-black/40 px-3">Case ID: {inviteId.slice(0, 10).toUpperCase()}</Badge>
-                         </div>
-                         <h1 className="text-3xl font-bricolage font-black tracking-tighter">Clinical Consultation <span className="text-black/30 font-light italic">Report</span></h1>
+                 <div className="space-y-8">
+                   <div className="flex items-center justify-between pb-8 border-b border-black/[0.08]">
+                      <div className="space-y-2">
+                         <h1 className="text-3xl font-bricolage font-black tracking-tighter text-black">Clinical Consultation</h1>
+                         <p className="text-xs text-black/40 font-medium">Case ID: {inviteId.slice(0, 10).toUpperCase()}</p>
                       </div>
-                      <div className="flex items-center gap-3 px-6 py-3 bg-slate-50/50 rounded-2xl border border-black/[0.03]">
-                        <CalendarIcon size={14} className="text-black/20" />
-                        <span className="text-xs font-black tracking-tight">{new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                      <div className="flex items-center gap-3 px-6 py-3 bg-slate-50/80 rounded-2xl border border-black/[0.08]">
+                        <CalendarIcon size={14} className="text-black/40" />
+                        <span className="text-xs font-black tracking-tight text-black">{new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                       </div>
                    </div>
 
-                   <div className="space-y-16">
-                     {/* Assessment Section */}
-                     <motion.section className="space-y-6">
-                       <div className="space-y-1">
-                         <h3 className="text-2xl font-bricolage font-black tracking-tighter">Checkup Summary</h3>
-                         <p className="text-xs text-black/40 font-medium">Record primary diagnosis and supporting observations.</p>
-                       </div>
-                       <div className="space-y-4">
-                         <div className="space-y-2">
-                           <Label className="text-xs font-black uppercase tracking-widest text-black/30">Main Condition Found</Label>
-                           <Input 
-                             value={formData.diagnosis}
-                             onChange={(e) => setFormData((prev: any) => ({ ...prev, diagnosis: e.target.value }))}
-                             placeholder="Enter the main diagnosis..."
-                             className="h-12 rounded-xl bg-slate-50 border-black/5 text-base font-bold px-4 text-black/90 placeholder:text-black/30"
-                           />
-                         </div>
-                         <div className="space-y-2">
-                           <Label className="text-xs font-black uppercase tracking-widest text-black/30">Clinical Notes</Label>
-                           <Textarea 
-                             value={formData.notes}
-                             onChange={(e) => setFormData((prev: any) => ({ ...prev, notes: e.target.value }))}
-                             placeholder="Describe symptoms, findings, and general impressions..."
-                             className="min-h-[120px] rounded-2xl bg-slate-50 border-black/5 p-4 font-medium text-sm text-black/90 placeholder:text-black/30"
-                           />
-                         </div>
-                       </div>
-                     </motion.section>
+                   {/* Tab Navigation */}
+                   <div className="flex gap-2 overflow-x-auto pb-4 border-b border-black/[0.05]">
+                     {[
+                       { id: "assessment", label: "Assessment", icon: "📋" },
+                       { id: "vitals", label: "Vital Signs", icon: "❤️" },
+                       { id: "medications", label: "Medications", icon: "💊" },
+                       { id: "labs", label: "Lab Requests", icon: "🔬" },
+                       { id: "targets", label: "Vital Targets", icon: "🎯" },
+                       { id: "lifestyle", label: "Care & Lifestyle", icon: "🏃" },
+                       { id: "followup", label: "Follow-up", icon: "📅" }
+                     ].map((tab) => (
+                       <button
+                         key={tab.id}
+                         onClick={() => setCurrentTab(tab.id as any)}
+                         className={cn(
+                           "px-4 py-2.5 rounded-lg font-black text-xs uppercase tracking-widest whitespace-nowrap transition-all border cursor-pointer",
+                           currentTab === tab.id
+                             ? "bg-black text-white border-black shadow-md"
+                             : "bg-slate-50 text-black/60 border-black/[0.08] hover:border-black/20 hover:text-black"
+                         )}
+                       >
+                         <span className="mr-2">{tab.icon}</span>{tab.label}
+                       </button>
+                     ))}
+                   </div>
 
-                     {/* Prescription Form */}
-                     <PrescriptionForm 
-                       medications={formData.medications}
-                       onMedicationsChange={(meds) => setFormData((prev: any) => ({ ...prev, medications: meds }))}
-                       onAddMedication={() => {
-                         const newMed = {
-                           id: Date.now().toString(),
-                           name: "",
-                           dosage: "",
-                           frequency: "Once Daily" as const,
-                           times: ["08:00"],
-                           instructions: "",
-                           enableReminders: true,
-                           reminderSound: "soft-bell" as const,
-                         };
-                         setFormData((prev: any) => ({ 
-                           ...prev, 
-                           medications: [...prev.medications, newMed] 
-                         }));
-                       }}
-                       onRemoveMedication={(id) => {
-                         setFormData((prev: any) => ({ 
-                           ...prev, 
-                           medications: prev.medications.filter((m: any) => m.id !== id) 
-                         }));
-                       }}
-                     />
-
-                     {/* Medication Schedule Visualization */}
-                     {formData.medications.length > 0 && (
-                       <MedicationSchedule 
-                         medications={formData.medications}
-                         readOnly={true}
-                       />
+                   {/* Tab Content */}
+                   <motion.div
+                     key={currentTab}
+                     initial={{ opacity: 0, y: 10 }}
+                     animate={{ opacity: 1, y: 0 }}
+                     exit={{ opacity: 0, y: -10 }}
+                     transition={{ duration: 0.2 }}
+                     className="space-y-8"
+                   >
+                     {/* Assessment Tab */}
+                     {currentTab === "assessment" && (
+                       <section className="space-y-6">
+                         <div className="space-y-1">
+                           <h3 className="text-2xl font-bricolage font-black tracking-tighter text-black">Checkup Summary</h3>
+                           <p className="text-xs text-black/40 font-medium">Record primary diagnosis and supporting observations.</p>
+                         </div>
+                         <div className="space-y-4">
+                           <div className="space-y-2">
+                             <Label className="text-xs font-black uppercase tracking-widest text-black/50">Main Condition Found</Label>
+                             <Input 
+                               value={formData.diagnosis}
+                               onChange={(e) => setFormData((prev: any) => ({ ...prev, diagnosis: e.target.value }))}
+                               placeholder="Enter the main diagnosis..."
+                               className="h-12 rounded-xl bg-white border-2 border-black/40 text-base font-bold px-4 text-black placeholder:text-black/50 focus:border-black/60 focus:ring-2 focus:ring-black/10"
+                             />
+                           </div>
+                           <div className="space-y-2">
+                             <Label className="text-xs font-black uppercase tracking-widest text-black/50">Clinical Notes</Label>
+                             <Textarea 
+                               value={formData.notes}
+                               onChange={(e) => setFormData((prev: any) => ({ ...prev, notes: e.target.value }))}
+                               placeholder="Describe symptoms, findings, and general impressions..."
+                               className="min-h-[120px] rounded-2xl bg-white border-2 border-black/40 p-4 font-medium text-sm text-black placeholder:text-black/50 focus:border-black/60 focus:ring-2 focus:ring-black/10"
+                             />
+                           </div>
+                         </div>
+                       </section>
                      )}
 
-                     {/* Follow-up Date */}
-                     <motion.section className="space-y-6 pt-8 border-t border-black/5">
-                       <div className="space-y-1">
-                         <h3 className="text-2xl font-bricolage font-black tracking-tighter flex items-center gap-2">
-                           <CalendarIcon className="w-6 h-6 text-emerald-500" />
-                           Follow-up Appointment
-                         </h3>
-                         <p className="text-xs text-black/40 font-medium">Schedule patient's next checkup date.</p>
-                       </div>
-                       <div className="space-y-2">
-                         <Label className="text-xs font-black uppercase tracking-widest text-black/30">Follow-up Date</Label>
-                         <Input 
-                           type="date"
-                           value={formData.followUpDate}
-                           onChange={(e) => setFormData((prev: any) => ({ ...prev, followUpDate: e.target.value }))}
-                           className="h-12 rounded-xl bg-slate-50 border-black/5 font-bold px-4 text-black/90"
-                         />
-                       </div>
-                     </motion.section>
-                   </div>
+                     {/* Vital Signs Tab */}
+                     {currentTab === "vitals" && (
+                       <section className="space-y-6">
+                         <div className="space-y-1">
+                           <h3 className="text-2xl font-bricolage font-black tracking-tighter text-black">Vital Signs</h3>
+                           <p className="text-xs text-black/40 font-medium">Record patient's vital measurements.</p>
+                         </div>
+                         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                           {[
+                             { key: "bp", label: "Blood Pressure", placeholder: "e.g., 120/80" },
+                             { key: "pulse", label: "Pulse (bpm)", placeholder: "e.g., 72" },
+                             { key: "temp", label: "Temperature (°C)", placeholder: "e.g., 37.5" },
+                             { key: "weight", label: "Weight (kg)", placeholder: "e.g., 70" },
+                             { key: "spo2", label: "SPO2 (%)", placeholder: "e.g., 98" }
+                           ].map((vital) => (
+                             <div key={vital.key} className="space-y-2">
+                               <Label className="text-xs font-black uppercase tracking-widest text-black/50">{vital.label}</Label>
+                               <Input 
+                                 value={formData.vitals[vital.key as keyof typeof formData.vitals]}
+                                 onChange={(e) => setFormData((prev: any) => ({ 
+                                   ...prev, 
+                                   vitals: { ...prev.vitals, [vital.key]: e.target.value } 
+                                 }))}
+                                 placeholder={vital.placeholder}
+                                 className="h-11 rounded-lg bg-white border-2 border-black/40 font-bold px-4 text-black placeholder:text-black/50 focus:border-black/60 focus:ring-2 focus:ring-black/10"
+                               />
+                             </div>
+                           ))}
+                         </div>
+                       </section>
+                     )}
 
-                   <div className="pt-16 flex items-center justify-between">
+                     {/* Medications Tab */}
+                     {currentTab === "medications" && (
+                       <section className="space-y-6">
+                         <PrescriptionForm 
+                           medications={formData.medications}
+                           onMedicationsChange={(meds) => setFormData((prev: any) => ({ ...prev, medications: meds }))}
+                           onAddMedication={() => {
+                             const newMed = {
+                               id: Date.now().toString(),
+                               name: "",
+                               dosage: "",
+                               frequency: "Custom",
+                               times: [],
+                               instructions: "",
+                               enableReminders: true,
+                               reminderSound: "soft-bell" as const,
+                             };
+                             setFormData((prev: any) => ({ 
+                               ...prev, 
+                               medications: [...prev.medications, newMed] 
+                             }));
+                           }}
+                           onRemoveMedication={(id) => {
+                             setFormData((prev: any) => ({ 
+                               ...prev, 
+                               medications: prev.medications.filter((m: any) => m.id !== id) 
+                             }));
+                           }}
+                         />
+                         {formData.medications.length > 0 && (
+                           <MedicationSchedule 
+                             medications={formData.medications}
+                             readOnly={true}
+                           />
+                         )}
+                       </section>
+                     )}
+
+                     {/* Lab Requests Tab */}
+                     {currentTab === "labs" && (
+                       <section className="space-y-6">
+                         <div className="space-y-1">
+                           <h3 className="text-2xl font-bricolage font-black tracking-tighter text-black">Lab Requests</h3>
+                           <p className="text-xs text-black/40 font-medium">Request laboratory tests for patient.</p>
+                         </div>
+                         <div className="space-y-4">
+                           {formData.labRequests && formData.labRequests.length > 0 ? (
+                             formData.labRequests.map((lab: any, idx: number) => (
+                               <div key={idx} className="p-4 rounded-lg border border-black/[0.08] bg-slate-50/50 space-y-3">
+                                 <div className="grid sm:grid-cols-2 gap-3">
+                                   <Input 
+                                     value={lab.testName}
+                                     onChange={(e) => {
+                                       const updated = [...formData.labRequests];
+                                       updated[idx].testName = e.target.value;
+                                       setFormData((prev: any) => ({ ...prev, labRequests: updated }));
+                                     }}
+                                     placeholder="Test name (e.g., Blood Test)"
+                                     className="h-11 rounded-lg bg-white border-2 border-black/40 font-bold px-4 text-black placeholder:text-black/50 focus:border-black/60 focus:ring-2 focus:ring-black/10"
+                                   />
+                                   <Input 
+                                     value={lab.urgency}
+                                     onChange={(e) => {
+                                       const updated = [...formData.labRequests];
+                                       updated[idx].urgency = e.target.value;
+                                       setFormData((prev: any) => ({ ...prev, labRequests: updated }));
+                                     }}
+                                     placeholder="Urgency (e.g., Routine)"
+                                     className="h-11 rounded-lg bg-white border-2 border-black/40 font-bold px-4 text-black placeholder:text-black/50 focus:border-black/60 focus:ring-2 focus:ring-black/10"
+                                   />
+                                 </div>
+                                 <Textarea 
+                                   value={lab.instructions}
+                                   onChange={(e) => {
+                                     const updated = [...formData.labRequests];
+                                     updated[idx].instructions = e.target.value;
+                                     setFormData((prev: any) => ({ ...prev, labRequests: updated }));
+                                   }}
+                                   placeholder="Instructions (e.g., Fasting required)"
+                                   className="h-20 rounded-lg bg-white border-2 border-black/40 font-medium px-4 py-3 text-black placeholder:text-black/50 focus:border-black/60 focus:ring-2 focus:ring-black/10 resize-none"
+                                 />
+                                 <button
+                                   onClick={() => {
+                                     setFormData((prev: any) => ({
+                                       ...prev,
+                                       labRequests: prev.labRequests.filter((_: any, i: number) => i !== idx)
+                                     }));
+                                   }}
+                                   className="text-xs font-black text-rose-500 hover:text-rose-600 uppercase tracking-widest"
+                                 >
+                                   Remove Test
+                                 </button>
+                               </div>
+                             ))
+                           ) : (
+                             <div className="text-center py-8 text-black/40">
+                               <p className="text-sm font-medium">No lab requests added yet</p>
+                             </div>
+                           )}
+                           <Button
+                             onClick={() => {
+                               setFormData((prev: any) => ({
+                                 ...prev,
+                                 labRequests: [...(prev.labRequests || []), { testName: "", urgency: "Routine", instructions: "" }]
+                               }));
+                             }}
+                             className="w-full rounded-lg h-11 bg-blue-500 hover:bg-blue-600 text-white font-black text-xs gap-2 shadow-lg shadow-blue-500/20 cursor-pointer"
+                           >
+                             <Plus size={16} /> Add Lab Request
+                           </Button>
+                         </div>
+                       </section>
+                     )}
+
+                     {/* Vital Targets Tab */}
+                     {currentTab === "targets" && (
+                       <section className="space-y-6">
+                         <div className="space-y-1">
+                           <h3 className="text-2xl font-bricolage font-black tracking-tighter text-black">Vital Targets</h3>
+                           <p className="text-xs text-black/40 font-medium">Set target vital sign goals for patient.</p>
+                         </div>
+                         <div className="space-y-4">
+                           {formData.vitalTargets && formData.vitalTargets.length > 0 ? (
+                             formData.vitalTargets.map((target: any, idx: number) => (
+                               <div key={idx} className="p-4 rounded-lg border border-black/[0.08] bg-slate-50/50 space-y-3">
+                                 <div className="grid sm:grid-cols-2 gap-3">
+                                   <Input 
+                                     value={target.label}
+                                     onChange={(e) => {
+                                       const updated = [...formData.vitalTargets];
+                                       updated[idx].label = e.target.value;
+                                       setFormData((prev: any) => ({ ...prev, vitalTargets: updated }));
+                                     }}
+                                     placeholder="Target name (e.g., BP)"
+                                     className="h-11 rounded-lg bg-white border-2 border-black/40 font-bold px-4 text-black placeholder:text-black/50 focus:border-black/60 focus:ring-2 focus:ring-black/10"
+                                   />
+                                   <Input 
+                                     value={target.target}
+                                     onChange={(e) => {
+                                       const updated = [...formData.vitalTargets];
+                                       updated[idx].target = e.target.value;
+                                       setFormData((prev: any) => ({ ...prev, vitalTargets: updated }));
+                                     }}
+                                     placeholder="Target value (e.g., <130/80)"
+                                     className="h-11 rounded-lg bg-white border-2 border-black/40 font-bold px-4 text-black placeholder:text-black/50 focus:border-black/60 focus:ring-2 focus:ring-black/10"
+                                   />
+                                 </div>
+                                 <button
+                                   onClick={() => {
+                                     setFormData((prev: any) => ({
+                                       ...prev,
+                                       vitalTargets: prev.vitalTargets.filter((_: any, i: number) => i !== idx)
+                                     }));
+                                   }}
+                                   className="text-xs font-black text-rose-500 hover:text-rose-600 uppercase tracking-widest"
+                                 >
+                                   Remove Target
+                                 </button>
+                               </div>
+                             ))
+                           ) : (
+                             <div className="text-center py-8 text-black/40">
+                               <p className="text-sm font-medium">No vital targets added yet</p>
+                             </div>
+                           )}
+                           <Button
+                             onClick={() => {
+                               setFormData((prev: any) => ({
+                                 ...prev,
+                                 vitalTargets: [...(prev.vitalTargets || []), { label: "", target: "" }]
+                               }));
+                             }}
+                             className="w-full rounded-lg h-11 bg-blue-500 hover:bg-blue-600 text-white font-black text-xs gap-2 shadow-lg shadow-blue-500/20 cursor-pointer"
+                           >
+                             <Plus size={16} /> Add Vital Target
+                           </Button>
+                         </div>
+                       </section>
+                     )}
+
+                     {/* Care & Lifestyle Tab */}
+                     {currentTab === "lifestyle" && (
+                       <section className="space-y-6">
+                         <div className="space-y-1">
+                           <h3 className="text-2xl font-bricolage font-black tracking-tighter text-black">Care & Lifestyle</h3>
+                           <p className="text-xs text-black/40 font-medium">Provide lifestyle and care recommendations.</p>
+                         </div>
+                         <div className="space-y-4">
+                           <div className="space-y-2">
+                             <Label className="text-xs font-black uppercase tracking-widest text-black/50">Diet Recommendations</Label>
+                             <Textarea 
+                               value={formData.lifestyle.diet}
+                               onChange={(e) => setFormData((prev: any) => ({ 
+                                 ...prev, 
+                                 lifestyle: { ...prev.lifestyle, diet: e.target.value } 
+                               }))}
+                               placeholder="e.g., Avoid salt, increase fiber intake..."
+                               className="h-24 rounded-lg bg-white border-2 border-black/40 p-4 font-medium text-sm text-black placeholder:text-black/50 focus:border-black/60 focus:ring-2 focus:ring-black/10 resize-none"
+                             />
+                           </div>
+                           <div className="space-y-2">
+                             <Label className="text-xs font-black uppercase tracking-widest text-black/50">Exercise & Activity</Label>
+                             <Textarea 
+                               value={formData.lifestyle.exercise}
+                               onChange={(e) => setFormData((prev: any) => ({ 
+                                 ...prev, 
+                                 lifestyle: { ...prev.lifestyle, exercise: e.target.value } 
+                               }))}
+                               placeholder="e.g., 30 mins walking daily, avoid strenuous activity..."
+                               className="h-24 rounded-lg bg-white border-2 border-black/40 p-4 font-medium text-sm text-black placeholder:text-black/50 focus:border-black/60 focus:ring-2 focus:ring-black/10 resize-none"
+                             />
+                           </div>
+                           <div className="space-y-2">
+                             <Label className="text-xs font-black uppercase tracking-widest text-black/50">Rest & Sleep</Label>
+                             <Textarea 
+                               value={formData.lifestyle.rest}
+                               onChange={(e) => setFormData((prev: any) => ({ 
+                                 ...prev, 
+                                 lifestyle: { ...prev.lifestyle, rest: e.target.value } 
+                               }))}
+                               placeholder="e.g., 7-8 hours sleep, avoid stress..."
+                               className="h-24 rounded-lg bg-white border-2 border-black/40 p-4 font-medium text-sm text-black placeholder:text-black/50 focus:border-black/60 focus:ring-2 focus:ring-black/10 resize-none"
+                             />
+                           </div>
+                         </div>
+                       </section>
+                     )}
+
+                     {/* Follow-up Tab */}
+                     {currentTab === "followup" && (
+                       <section className="space-y-6">
+                         <div className="space-y-1">
+                           <h3 className="text-2xl font-bricolage font-black tracking-tighter text-black">Follow-up Appointment</h3>
+                           <p className="text-xs text-black/40 font-medium">Schedule patient's next checkup date.</p>
+                         </div>
+                         <div className="space-y-2">
+                           <Label className="text-xs font-black uppercase tracking-widest text-black/50">Follow-up Date</Label>
+                           <Input 
+                             type="date"
+                             value={formData.followUpDate}
+                             onChange={(e) => setFormData((prev: any) => ({ ...prev, followUpDate: e.target.value }))}
+                             className="h-12 rounded-xl bg-white border-2 border-black/40 font-bold px-4 text-black focus:border-black/60 focus:ring-2 focus:ring-black/10"
+                           />
+                         </div>
+                       </section>
+                     )}
+                   </motion.div>
+
+                   <div className="pt-8 border-t border-black/[0.08] flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className={cn("w-1.5 h-1.5 rounded-full bg-emerald-500", isSubmitting ? "animate-pulse" : "opacity-30")} />
-                        <span className="text-[9px] font-black uppercase tracking-widest text-black/30">{isSubmitting ? "Sending to patient..." : "Ready to send"}</span>
+                        <span className="text-[9px] font-black uppercase tracking-widest text-black/40">{isSubmitting ? "Sending to patient..." : "Ready to send"}</span>
                       </div>
                       <Button 
                         onClick={handleSubmit}
                         disabled={isSubmitting || !formData.diagnosis}
-                        className="h-14 px-10 bg-black hover:bg-slate-900 text-white rounded-2xl font-black text-sm tracking-widest uppercase transition-all shadow-xl shadow-black/10 active:scale-95 disabled:opacity-30"
+                        className="h-14 px-10 bg-black hover:bg-slate-900 text-white rounded-2xl font-black text-sm tracking-widest uppercase transition-all shadow-xl shadow-black/10 active:scale-95 disabled:opacity-30 cursor-pointer"
                       >
                         {isSubmitting ? "Sending..." : "Send to Patient"}
                         <Send size={16} className="ml-3" />

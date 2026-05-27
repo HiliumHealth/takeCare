@@ -141,17 +141,35 @@ model Prescription {
 }
 
 model Medication {
-  id             String       @id @default(cuid())
-  prescriptionId String
-  prescription   Prescription @relation(fields: [prescriptionId], references: [id], onDelete: Cascade)
-  name           String
-  dosage         String
-  frequency      String       // e.g. "3 times a day"
-  times          String[]     // e.g. ["08:00", "14:00", "20:00"]
-  startDate      DateTime?
-  endDate        DateTime?
-  instructions   String?
-  createdAt      DateTime     @default(now())
+  id               String                  @id @default(cuid())
+  prescriptionId   String
+  prescription     Prescription            @relation(fields: [prescriptionId], references: [id], onDelete: Cascade)
+  name             String
+  dosage           String
+  frequency        String                  // e.g. "Once Daily", "Custom"
+  times            String[]                // e.g. ["08:00", "14:00", "20:00"] - fully dynamic
+  startDate        DateTime?
+  endDate          DateTime?
+  instructions     String?
+  enableReminders  Boolean                 @default(true)
+  reminderSound    String                  @default("soft-bell") // "soft-bell" | "gentle-chime" | "medical-alert" | "voice-only"
+  schedule         MedicationSchedule[]    // One-to-many to schedule entries
+  createdAt        DateTime                @default(now())
+  updatedAt        DateTime                @updatedAt
+}
+
+model MedicationSchedule {
+  id              String    @id @default(cuid())
+  medicationId    String
+  medication      Medication @relation(fields: [medicationId], references: [id], onDelete: Cascade)
+  time            String    // HH:mm format (e.g. "08:00", "14:30", "22:15")
+  dayOfWeek       String?   // If null, applies to every day; otherwise "MON", "TUE", etc
+  isActive        Boolean   @default(true)
+  lastReminderSent DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@unique([medicationId, time, dayOfWeek])
 }
 
 model PushSubscription {

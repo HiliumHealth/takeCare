@@ -72,7 +72,7 @@ export function PushSubscriptionButton() {
                 setLoading(false);
               }
             }}
-            className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline"
+            className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline cursor-pointer"
           >
             Send Test
           </button>
@@ -81,7 +81,7 @@ export function PushSubscriptionButton() {
               await unsubscribe();
               toast.info("Alerts reset. You can now re-enable them.");
             }}
-            className="text-[10px] font-black uppercase tracking-widest text-red-500 hover:underline"
+            className="text-[10px] font-black uppercase tracking-widest text-red-500 hover:underline cursor-pointer"
           >
             Reset Alerts
           </button>
@@ -94,7 +94,7 @@ export function PushSubscriptionButton() {
     <button
       onClick={handleSubscribe}
       disabled={loading}
-      className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-black/40 dark:text-white/40 hover:text-primary dark:hover:text-primary hover:bg-primary/5 transition-all group"
+      className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-black/40 dark:text-white/40 hover:text-primary dark:hover:text-primary hover:bg-primary/5 transition-all group cursor-pointer"
     >
       {loading ? (
         <Loader2 className="h-6 w-6 animate-spin text-primary" />

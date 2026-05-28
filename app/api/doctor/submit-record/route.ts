@@ -55,6 +55,7 @@ export async function POST(req: Request) {
 
     // Create the structured Prescription record
     try {
+      // Create prescription without medications first
       const prescription = await prisma.prescription.create({
         data: {
           userId: invitation.userId,
@@ -66,18 +67,23 @@ export async function POST(req: Request) {
           vitalTargets: Array.isArray(vitalTargets) ? vitalTargets : [],
           lifestyle: lifestyle && Object.keys(lifestyle).length > 0 ? lifestyle : {},
           followUpDate: finalFollowUpDate,
-          medications: {
-            create: validMedications.map((med: any) => ({
-              name: med.name.trim(),
-              dosage: med.dosage.trim(),
-              frequency: med.frequency,
-              times: med.times,
-              instructions: med.instructions || "",
-              createdAt: new Date(),
-            })),
-          },
         },
       });
+
+      // Create medications separately to ensure timestamps are set correctly
+      if (validMedications.length > 0) {
+        await prisma.medication.createMany({
+          data: validMedications.map((med: any) => ({
+            prescriptionId: prescription.id,
+            name: med.name.trim(),
+            dosage: med.dosage.trim(),
+            frequency: med.frequency,
+            times: med.times,
+            instructions: med.instructions || "",
+            createdAt: new Date(),
+          })),
+        });
+      }
 
       // Enable AI Push Notifications
       try {

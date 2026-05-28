@@ -74,7 +74,6 @@ export async function POST(req: Request) {
               times: med.times,
               instructions: med.instructions || "",
               createdAt: new Date(),
-              updatedAt: new Date(),
             })),
           },
         },

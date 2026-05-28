@@ -2,7 +2,7 @@
 // Server-side medication scheduling and reminder logic
 
 import { prisma } from "@/lib/prisma";
-import { webpush } from "web-push";
+import webpush from "web-push";
 
 interface MedicationReminder {
   medicationName: string;

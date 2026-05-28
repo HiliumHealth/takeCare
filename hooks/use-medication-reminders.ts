@@ -55,7 +55,7 @@ export function useMedicationReminders(
   useEffect(() => {
     if (!enabled || !isListening) return;
 
-    const handleMessage = async (event: ExtendableMessageEvent) => {
+    const handleMessage = async (event: any) => {
       try {
         const { type, data } = event.data;
 

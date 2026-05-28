@@ -145,39 +145,40 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
     <div className="min-h-screen bg-[#FDFDFF] font-sans selection:bg-black selection:text-white pb-12">
       {/* Ultra-Clean Minimal Header */}
       <header className="bg-white/70 backdrop-blur-2xl border-b border-black/[0.03] sticky top-0 z-50">
-        <div className="max-w-[1600px] mx-auto px-10 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-10">
-            <div className="h-16 w-16 flex items-center justify-center overflow-hidden shrink-0 cursor-pointer" onClick={() => router.push("/")}>
+        <div className="max-w-[1600px] mx-auto px-4 md:px-10 h-16 md:h-20 flex items-center justify-between">
+          <div className="flex items-center gap-3 md:gap-10">
+            <div className="h-12 w-12 md:h-16 md:w-16 flex items-center justify-center overflow-hidden shrink-0 cursor-pointer" onClick={() => router.push("/")}>
                <img src="/hilium.png" alt="Hilium Logo" className="w-full h-full object-contain" />
             </div>
-            <div className="h-8 w-px bg-black/[0.05]" />
-            <div className="flex items-center gap-3">
+            <div className="hidden md:block h-8 w-px bg-black/[0.05]" />
+            <div className="hidden md:flex items-center gap-3">
                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-black/40">Connected to Patient</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3 md:gap-6">
             <Button 
               variant="ghost" 
-              className="rounded-xl hover:bg-black/5 text-black/30 hover:text-black transition-all cursor-pointer"
+              className="rounded-lg md:rounded-xl hover:bg-black/5 text-black/30 hover:text-black transition-all cursor-pointer p-2 md:p-3"
               onClick={() => {
                 localStorage.removeItem("takecare_doctor_invite");
                 router.push("/");
               }}
             >
-              <LogOut size={16} className="mr-2" />
-              <span className="text-[11px] font-black uppercase tracking-widest">Terminate</span>
+              <LogOut size={14} className="hidden md:inline mr-2" />
+              <LogOut size={16} className="md:hidden" />
+              <span className="hidden md:inline text-[11px] font-black uppercase tracking-widest">Terminate</span>
             </Button>
           </div>
         </div>
       </header>
 
-      <main className="max-w-[1600px] mx-auto px-10 mt-10">
-        <div className="grid lg:grid-cols-[340px_1fr] gap-12 items-start scale-[0.98] origin-top">
+      <main className="max-w-[1600px] mx-auto px-4 md:px-8 lg:px-10 mt-6 md:mt-10">
+        <div className="grid lg:grid-cols-[300px_1fr] gap-6 md:gap-10 lg:gap-12 items-start">
           
           {/* Minimal Patient Context */}
-          <aside className="sticky top-28 space-y-8">
+          <aside className="sticky top-20 md:top-28 space-y-6 md:space-y-8 hidden lg:block">
             <div className="space-y-6">
                <div className="flex items-center gap-5">
                   <div className="w-14 h-14 rounded-2xl bg-slate-50 border border-black/5 overflow-hidden ring-4 ring-slate-50/50">
@@ -227,7 +228,7 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
           </aside>
 
           {/* Clinical Assessment Canvas */}
-          <div className="bg-white rounded-[2.5rem] border border-black/[0.08] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.05)] p-12 lg:p-16 relative overflow-hidden">
+          <div className="bg-white rounded-2xl md:rounded-[2.5rem] border border-black/[0.08] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.05)] p-4 md:p-8 lg:p-12 xl:p-16 relative overflow-hidden">
              <AnimatePresence mode="wait">
                {isSuccess ? (
                  <motion.div 
@@ -238,26 +239,26 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
                     <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-500 mb-4">
                        <CheckCircle2 size={32} />
                     </div>
-                    <h2 className="text-3xl font-bricolage font-black tracking-tighter text-black">Report Sent Successfully!</h2>
-                    <p className="text-xs font-medium text-black/40 max-w-xs mx-auto leading-relaxed">
+                    <h2 className="text-2xl md:text-3xl font-bricolage font-black tracking-tighter text-black">Report Sent Successfully!</h2>
+                    <p className="text-xs md:text-sm font-medium text-black/40 max-w-xs mx-auto leading-relaxed">
                       The medical report has been saved to the patient's health booklet.
                     </p>
                  </motion.div>
                ) : (
                  <div className="space-y-8">
-                   <div className="flex items-center justify-between pb-8 border-b border-black/[0.08]">
-                      <div className="space-y-2">
-                         <h1 className="text-3xl font-bricolage font-black tracking-tighter text-black">Clinical Consultation</h1>
+                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 md:pb-8 border-b border-black/[0.08]">
+                      <div className="space-y-1 md:space-y-2">
+                         <h1 className="text-2xl md:text-3xl font-bricolage font-black tracking-tighter text-black">Clinical Consultation</h1>
                          <p className="text-xs text-black/40 font-medium">Case ID: {inviteId.slice(0, 10).toUpperCase()}</p>
                       </div>
-                      <div className="flex items-center gap-3 px-6 py-3 bg-slate-50/80 rounded-2xl border border-black/[0.08]">
-                        <CalendarIcon size={14} className="text-black/40" />
+                      <div className="flex items-center gap-2 md:gap-3 px-3 md:px-6 py-2 md:py-3 bg-slate-50/80 rounded-lg md:rounded-2xl border border-black/[0.08] shrink-0">
+                        <CalendarIcon size={12} className="md:w-3.5 md:h-3.5 text-black/40" />
                         <span className="text-xs font-black tracking-tight text-black">{new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                       </div>
                    </div>
 
                    {/* Tab Navigation */}
-                   <div className="flex gap-2 overflow-x-auto pb-4 border-b border-black/[0.05]">
+                   <div className="flex gap-1 md:gap-2 overflow-x-auto pb-3 md:pb-4 border-b border-black/[0.05] -mx-4 md:mx-0 px-4 md:px-0 md:border-none md:pb-0">
                      {[
                        { id: "assessment", label: "Assessment", icon: "📋" },
                        { id: "vitals", label: "Vital Signs", icon: "❤️" },
@@ -271,13 +272,13 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
                          key={tab.id}
                          onClick={() => setCurrentTab(tab.id as any)}
                          className={cn(
-                           "px-4 py-2.5 rounded-lg font-black text-xs uppercase tracking-widest whitespace-nowrap transition-all border cursor-pointer",
+                           "px-2 md:px-4 py-2 md:py-2.5 rounded-lg font-black text-xs uppercase tracking-widest whitespace-nowrap transition-all border cursor-pointer flex items-center gap-1",
                            currentTab === tab.id
                              ? "bg-black text-white border-black shadow-md"
                              : "bg-slate-50 text-black/60 border-black/[0.08] hover:border-black/20 hover:text-black"
                          )}
                        >
-                         <span className="mr-2">{tab.icon}</span>{tab.label}
+                         <span className="text-sm md:text-base">{tab.icon}</span><span className="hidden md:inline">{tab.label}</span>
                        </button>
                      ))}
                    </div>
@@ -289,32 +290,32 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
                      animate={{ opacity: 1, y: 0 }}
                      exit={{ opacity: 0, y: -10 }}
                      transition={{ duration: 0.2 }}
-                     className="space-y-8"
+                     className="space-y-6 md:space-y-8"
                    >
                      {/* Assessment Tab */}
                      {currentTab === "assessment" && (
-                       <section className="space-y-6">
-                         <div className="space-y-1">
-                           <h3 className="text-2xl font-bricolage font-black tracking-tighter text-black">Checkup Summary</h3>
-                           <p className="text-xs text-black/40 font-medium">Record primary diagnosis and supporting observations.</p>
+                       <section className="space-y-4 md:space-y-6">
+                         <div className="space-y-1 md:space-y-2">
+                           <h3 className="text-xl md:text-2xl font-bricolage font-black tracking-tighter text-black">Checkup Summary</h3>
+                           <p className="text-xs md:text-sm text-black/40 font-medium">Record primary diagnosis and supporting observations.</p>
                          </div>
                          <div className="space-y-4">
-                           <div className="space-y-2">
-                             <Label className="text-xs font-black uppercase tracking-widest text-black/50">Main Condition Found</Label>
+                           <div className="space-y-2 md:space-y-3">
+                             <Label className="text-xs md:text-sm font-black uppercase tracking-widest text-black/50">Main Condition Found</Label>
                              <Input 
                                value={formData.diagnosis}
                                onChange={(e) => setFormData((prev: any) => ({ ...prev, diagnosis: e.target.value }))}
                                placeholder="Enter the main diagnosis..."
-                               className="h-12 rounded-xl bg-white border-2 border-black/40 text-base font-bold px-4 text-black placeholder:text-black/50 focus:border-black/60 focus:ring-2 focus:ring-black/10"
+                               className="h-10 md:h-12 rounded-lg md:rounded-xl bg-white border-2 border-black/40 text-sm md:text-base font-bold px-3 md:px-4 text-black placeholder:text-black/50 focus:border-black/60 focus:ring-2 focus:ring-black/10"
                              />
                            </div>
-                           <div className="space-y-2">
-                             <Label className="text-xs font-black uppercase tracking-widest text-black/50">Clinical Notes</Label>
+                           <div className="space-y-2 md:space-y-3">
+                             <Label className="text-xs md:text-sm font-black uppercase tracking-widest text-black/50">Clinical Notes</Label>
                              <Textarea 
                                value={formData.notes}
                                onChange={(e) => setFormData((prev: any) => ({ ...prev, notes: e.target.value }))}
                                placeholder="Describe symptoms, findings, and general impressions..."
-                               className="min-h-[120px] rounded-2xl bg-white border-2 border-black/40 p-4 font-medium text-sm text-black placeholder:text-black/50 focus:border-black/60 focus:ring-2 focus:ring-black/10"
+                               className="min-h-[100px] md:min-h-[120px] rounded-lg md:rounded-2xl bg-white border-2 border-black/40 p-3 md:p-4 font-medium text-sm md:text-base text-black placeholder:text-black/50 focus:border-black/60 focus:ring-2 focus:ring-black/10"
                              />
                            </div>
                          </div>
@@ -323,10 +324,10 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
 
                      {/* Vital Signs Tab */}
                      {currentTab === "vitals" && (
-                       <section className="space-y-6">
-                         <div className="space-y-1">
-                           <h3 className="text-2xl font-bricolage font-black tracking-tighter text-black">Vital Signs</h3>
-                           <p className="text-xs text-black/40 font-medium">Record patient's vital measurements.</p>
+                       <section className="space-y-4 md:space-y-6">
+                         <div className="space-y-1 md:space-y-2">
+                           <h3 className="text-xl md:text-2xl font-bricolage font-black tracking-tighter text-black">Vital Signs</h3>
+                           <p className="text-xs md:text-sm text-black/40 font-medium">Record patient vital measurements.</p>
                          </div>
                          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                            {[
@@ -601,7 +602,7 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
                      )}
                    </motion.div>
 
-                   <div className="pt-8 border-t border-black/[0.08] flex items-center justify-between">
+                   <div className="pt-6 md:pt-8 border-t border-black/[0.08] flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                       <div className="flex items-center gap-3">
                         <div className={cn("w-1.5 h-1.5 rounded-full bg-emerald-500", isSubmitting ? "animate-pulse" : "opacity-30")} />
                         <span className="text-[9px] font-black uppercase tracking-widest text-black/40">{isSubmitting ? "Sending to patient..." : "Ready to send"}</span>

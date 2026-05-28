@@ -7,7 +7,7 @@ export function NotificationListener() {
   useEffect(() => {
     if (typeof window === "undefined" || !("serviceWorker" in navigator)) return;
 
-    const handleServiceWorkerMessage = (event: ExtendableMessageEvent) => {
+    const handleServiceWorkerMessage = (event: any) => {
       console.log("[Notification Listener] Received message from SW:", event.data);
 
       if (event.data.type === "NOTIFICATION_SHOWN") {

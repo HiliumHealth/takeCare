@@ -73,6 +73,8 @@ export async function POST(req: Request) {
               frequency: med.frequency,
               times: med.times,
               instructions: med.instructions || "",
+              createdAt: new Date(),
+              updatedAt: new Date(),
             })),
           },
         },

@@ -473,3 +473,17 @@
 [2026-05-25T10:51:52.119Z] Messages count: 6
 [2026-05-25T10:51:53.106Z] Starting streamText with gemini-2.5-flash...
 [2026-05-25T10:51:53.122Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-05-28T02:24:18.658Z] --- POST REQUEST START ---
+[2026-05-28T02:24:18.660Z] API Key present: true, Length: 39
+[2026-05-28T02:24:18.847Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-05-28T02:24:18.854Z] Messages count: 2
+[2026-05-28T02:24:19.369Z] Starting streamText with gemini-2.5-flash...
+[2026-05-28T02:24:19.378Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-05-28T02:29:23.779Z] --- POST REQUEST START ---
+[2026-05-28T02:29:23.780Z] API Key present: true, Length: 39
+[2026-05-28T02:29:23.813Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-05-28T02:29:23.815Z] Messages count: 4
+[2026-05-28T02:29:25.036Z] Starting streamText with gemini-2.5-flash...
+[2026-05-28T02:29:25.043Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-05-28T02:29:27.960Z] TOOL: getLatestVitals | User: cmpmfji660003h4v5mpz6w9da | Field: ALL
+[2026-05-28T02:29:29.129Z] TOOL: getLatestVitals | No analysis found

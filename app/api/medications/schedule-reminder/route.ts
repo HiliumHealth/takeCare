@@ -17,6 +17,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const userId = session.user.id;
     const { patientId, medications, reminders } = await request.json();
 
     if (!patientId) {
@@ -50,7 +51,7 @@ export async function POST(request: NextRequest) {
           reminderSound: med.reminderSound || "soft-bell",
           active: true,
           createdAt: new Date(),
-          createdBy: session.user.id,
+          createdBy: userId,
         }))
       );
 

@@ -48,49 +48,55 @@ export async function POST(req: Request) {
       return true;
     });
 
+    // Ensure all required fields have values
+    const finalDiagnosis = diagnosis && diagnosis.trim() ? diagnosis : "To be determined";
+    const finalNotes = notes && notes.trim() ? notes : "";
+    const finalFollowUpDate = followUpDate && followUpDate.trim() ? followUpDate : null;
+
     // Create the structured Prescription record
-    const prescription = await prisma.prescription.create({
-      data: {
-        userId: invitation.userId,
-        doctorName: invitation.doctorName,
-        diagnosis,
-        notes,
-        vitals,
-        labRequests,
-        vitalTargets,
-        lifestyle,
-        followUpDate,
-        medications: {
-          create: validMedications.map((med: any) => ({
-            name: med.name.trim(),
-            dosage: med.dosage.trim(),
-            frequency: med.frequency,
-            times: med.times,
-            instructions: med.instructions || "",
-          })),
-        },
-      },
-    });
-
-    // Enable AI Push Notifications
     try {
-      await scheduleMedicationReminders(prescription.id);
-      
-      // Immediate Push Alert to Patient
-      await sendPushNotification(invitation.userId, {
-        title: "New Doctor Assessment",
-        body: `Dr. ${invitation.doctorName} has just submitted your medical report and treatment plan.`,
-        url: "/dashboard",
-        icon: "/icons/icon-192x192.png"
+      const prescription = await prisma.prescription.create({
+        data: {
+          userId: invitation.userId,
+          doctorName: invitation.doctorName,
+          diagnosis: finalDiagnosis,
+          notes: finalNotes,
+          vitals: vitals && Object.keys(vitals).length > 0 ? vitals : {},
+          labRequests: Array.isArray(labRequests) ? labRequests : [],
+          vitalTargets: Array.isArray(vitalTargets) ? vitalTargets : [],
+          lifestyle: lifestyle && Object.keys(lifestyle).length > 0 ? lifestyle : {},
+          followUpDate: finalFollowUpDate,
+          medications: {
+            create: validMedications.map((med: any) => ({
+              name: med.name.trim(),
+              dosage: med.dosage.trim(),
+              frequency: med.frequency,
+              times: med.times,
+              instructions: med.instructions || "",
+            })),
+          },
+        },
       });
-    } catch (pushError) {
-      console.error("Failed to schedule push notifications:", pushError);
-    }
 
-    // Save a rich summary in MedicalRecord
-    const summaryText = `
-DIAGNOSIS: ${diagnosis}
-CONSULTATION NOTES: ${notes}
+      // Enable AI Push Notifications
+      try {
+        await scheduleMedicationReminders(prescription.id);
+        
+        // Immediate Push Alert to Patient
+        await sendPushNotification(invitation.userId, {
+          title: "New Doctor Assessment",
+          body: `Dr. ${invitation.doctorName} has just submitted your medical report and treatment plan.`,
+          url: "/dashboard",
+          icon: "/icons/icon-192x192.png"
+        });
+      } catch (pushError) {
+        console.error("Failed to schedule push notifications:", pushError);
+      }
+
+      // Save a rich summary in MedicalRecord
+      const summaryText = `
+DIAGNOSIS: ${finalDiagnosis}
+CONSULTATION NOTES: ${finalNotes}
 
 PRESCRIPTIONS:
 ${validMedications.map((m: any) => `- ${m.name} (${m.dosage}) - [Times: ${m.times.join(", ")}]`).join("\n")}
@@ -161,6 +167,20 @@ FOLLOW-UP: ${followUpDate || "Not specified"}
       recordId: noteRecord.id,
       filesUploaded: fileRecords.length 
     });
+
+    } catch (prescriptionError: any) {
+      console.error("[Doctor Prescription Creation Error]", {
+        code: prescriptionError.code,
+        message: prescriptionError.message,
+        meta: prescriptionError.meta,
+        inviteId,
+        diagnosis: finalDiagnosis,
+        medicationCount: validMedications.length
+      });
+      return NextResponse.json({ 
+        error: "Failed to save prescription. Please ensure all required fields are filled correctly." 
+      }, { status: 500 });
+    }
 
   } catch (error: any) {
     console.error("[Doctor Submit Record Error]", error);

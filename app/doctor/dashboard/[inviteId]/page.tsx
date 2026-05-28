@@ -58,6 +58,23 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
   }, [inviteId, router]);
 
   const handleSubmit = async () => {
+    // Validate required fields
+    if (!formData.diagnosis || !formData.diagnosis.trim()) {
+      toast.error("Please enter a diagnosis", {
+        description: "The main condition/diagnosis is required to submit the report."
+      });
+      setCurrentTab("assessment");
+      return;
+    }
+
+    if (formData.medications.length === 0 || formData.medications.every((m: any) => !m.name?.trim())) {
+      toast.error("Please add at least one medication", {
+        description: "Add medication details to complete the prescription."
+      });
+      setCurrentTab("medications");
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       // Convert medications to API format (remove id, keep only necessary fields)
@@ -591,7 +608,7 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
                       </div>
                       <Button 
                         onClick={handleSubmit}
-                        disabled={isSubmitting || !formData.diagnosis}
+                        disabled={isSubmitting || !formData.diagnosis || formData.medications.length === 0 || formData.medications.every((m: any) => !m.name?.trim())}
                         className="h-14 px-10 bg-black hover:bg-slate-900 text-white rounded-2xl font-black text-sm tracking-widest uppercase transition-all shadow-xl shadow-black/10 active:scale-95 disabled:opacity-30 cursor-pointer"
                       >
                         {isSubmitting ? "Sending..." : "Send to Patient"}

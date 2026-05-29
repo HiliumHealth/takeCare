@@ -50,7 +50,7 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
           });
           // Give user time to see the error message before redirecting
           setTimeout(() => {
-            router.push("/doctor/verify");
+            window.location.href = "https://hilium.vercel.app/doctor/verify";
           }, 1500);
           return;
         }
@@ -61,7 +61,7 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
           description: error?.message || "Please try again."
         });
         setTimeout(() => {
-          router.push("/doctor/verify");
+          window.location.href = "https://hilium.vercel.app/doctor/verify";
         }, 1500);
       } finally {
         setIsLoading(false);
@@ -133,7 +133,9 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
         description: "Your assessment has been securely added to the patient's record."
       });
       setIsSuccess(true);
-      setTimeout(() => router.push("/"), 3000);
+      setTimeout(() => {
+        window.location.href = "https://hilium.vercel.app";
+      }, 3000);
     } catch (error: any) {
       console.error("Submission failed:", error);
       toast.error("We couldn't send the report", {

@@ -37,9 +37,10 @@ export default function DoctorVerifyPage() {
       localStorage.setItem("takecare_doctor_invite", data.inviteId);
       localStorage.setItem("takecare_doctor_verified", "true");
       
-      // Navigate to patient context dashboard immediately
+      // Navigate to Hilium doctor dashboard immediately
       setTimeout(() => {
-        router.push(`/doctor/dashboard/${data.inviteId}`);
+        const dashboardUrl = `${window.location.protocol}//hilium.vercel.app/doctor/dashboard/${data.inviteId}`;
+        window.location.href = dashboardUrl;
       }, 100);
     } catch (err: any) {
       setError(err.message);

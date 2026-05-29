@@ -528,7 +528,7 @@ export default function DashboardPage() {
                   {/* Clean Welcoming Header */}
                   <div className="flex flex-col items-start text-left pt-4 md:pt-2 border-b border-neutral-100 dark:border-neutral-800 pb-4">
                     <h1 className="font-bricolage text-2xl md:text-4xl font-black tracking-tight text-black dark:text-white leading-none">
-                      {getGreeting()}, <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">{userData?.name?.split(' ')[0] || "Patient"}.</span>
+                      {getGreeting()}, <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">{userData?.username || userData?.name?.split(' ')[0] || "Patient"}.</span>
                     </h1>
                     <p className="mt-2 text-xs md:text-sm font-extrabold text-neutral-900 dark:text-neutral-200">
                       Your complete health profile is fully compiled, verified, and secured.

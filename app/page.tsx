@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,8 +13,12 @@ export default function OnboardingPage() {
   const router = useRouter();
   const { data: session, status } = useSession();
 
-  // If signed in + personalized, middleware handles redirect.
-  // But if they land here while loading, show the page anyway.
+  // Redirect authenticated users to dashboard
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.id) {
+      router.push("/dashboard");
+    }
+  }, [status, session, router]);
 
   return (
     <main className="relative h-screen w-full overflow-hidden bg-white font-sans text-black selection:bg-black selection:text-white transition-colors duration-500">

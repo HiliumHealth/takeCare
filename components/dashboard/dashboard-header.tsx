@@ -83,7 +83,7 @@ export function DashboardHeader({ user, notificationCount = 0 }: DashboardHeader
             
             <div className="flex items-center gap-2">
               <div className="hidden flex-col items-end sm:flex">
-                <span className="text-sm font-black leading-none text-black dark:text-white">{user?.name || "Patient"}</span>
+                <span className="text-sm font-black leading-none text-black dark:text-white">{user?.username || user?.name || "Patient"}</span>
                 <span className="text-[10px] font-bold text-black/60 dark:text-white/60 uppercase tracking-wider mt-1 cursor-pointer hover:text-red-600 transition-colors flex items-center gap-2" onClick={handleLogout}>
                    Log out
                 </span>
@@ -91,7 +91,7 @@ export function DashboardHeader({ user, notificationCount = 0 }: DashboardHeader
               <Avatar className="h-8 w-8 border border-black/5 dark:border-white/5 shadow-xs lg:h-10 lg:w-10 relative overflow-hidden shrink-0">
                 <AvatarImage src={user?.avatarUrl || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&auto=format&fit=crop"} className="object-cover" />
                 <div className="absolute inset-0 bg-black/10 dark:bg-black/40 pointer-events-none" />
-                <AvatarFallback className="bg-primary text-white font-bold">{user?.name?.slice(0, 2).toUpperCase() || "PT"}</AvatarFallback>
+                <AvatarFallback className="bg-primary text-white font-bold">{(user?.username || user?.name || "Patient")?.slice(0, 2).toUpperCase()}</AvatarFallback>
               </Avatar>
             </div>
           </div>

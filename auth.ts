@@ -43,6 +43,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           id: user.id,
           email: user.email,
           name: user.username || user.name,
+          username: user.username,
+          avatarUrl: user.avatarUrl,
           isPersonalized: !!user.personalization,
         };
       },
@@ -52,6 +54,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
+        token.username = (user as any).username;
+        token.avatarUrl = (user as any).avatarUrl;
         token.isPersonalized = (user as any).isPersonalized ?? false;
       }
 
@@ -67,6 +71,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id as string;
+        (session.user as any).username = token.username as string;
+        (session.user as any).avatarUrl = token.avatarUrl as string;
         (session as any).isPersonalized = token.isPersonalized as boolean;
       }
       return session;

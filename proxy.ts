@@ -12,13 +12,19 @@ export function proxy(request: NextRequest) {
 
   const isPersonalized = request.cookies.get('takecare-personalized')?.value === 'true'
 
-  // 1. Protect /dashboard — must be signed in
-  if (pathname.startsWith('/dashboard')) {
+  // Protected routes that require authentication
+  const protectedRoutes = ['/dashboard', '/doctor/dashboard', '/offline']
+  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route))
+
+  // 1. Protect dashboard routes — must be signed in
+  if (isProtectedRoute) {
     if (!hasSession) {
-      return NextResponse.redirect(new URL('/signin', request.url))
+      const url = new URL('/signin', request.url)
+      url.searchParams.set('callbackUrl', pathname)
+      return NextResponse.redirect(url)
     }
-    // If signed in but NOT personalized, send to onboarding
-    if (!isPersonalized) {
+    // If signed in but NOT personalized (for patient dashboard only), send to onboarding
+    if (pathname.startsWith('/dashboard') && !isPersonalized) {
       return NextResponse.redirect(new URL('/personalization-choice', request.url))
     }
   }

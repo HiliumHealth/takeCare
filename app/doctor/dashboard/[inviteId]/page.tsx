@@ -44,17 +44,33 @@ export default function DoctorDashboardPage({ params }: { params: Promise<{ invi
       try {
         const data = await getDoctorInvitation(inviteId);
         if (!data) {
-          router.push("/doctor/verify");
+          console.error("Doctor invitation not found for inviteId:", inviteId);
+          toast.error("Invitation not found", {
+            description: "Please verify your credentials again."
+          });
+          // Give user time to see the error message before redirecting
+          setTimeout(() => {
+            router.push("/doctor/verify");
+          }, 1500);
           return;
         }
         setInvitation(data);
-      } catch (error) {
+      } catch (error: any) {
         console.error("Failed to load patient data:", error);
+        toast.error("Error loading patient data", {
+          description: error?.message || "Please try again."
+        });
+        setTimeout(() => {
+          router.push("/doctor/verify");
+        }, 1500);
       } finally {
         setIsLoading(false);
       }
     }
-    loadData();
+    
+    if (inviteId) {
+      loadData();
+    }
   }, [inviteId, router]);
 
   const handleSubmit = async () => {

@@ -26,24 +26,21 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "OTP has expired" }, { status: 401 });
     }
 
-    // Mark as accepted (optional, depending on flow. For now, just authenticate)
-    await prisma.doctorInvitation.update({
+    // Mark as accepted
+    const updatedInvitation = await prisma.doctorInvitation.update({
       where: { id: invitation.id },
       data: { status: "ACCEPTED" },
     });
 
-    // We can set an HTTP-only cookie to maintain the doctor session, or just return the ID
-    // Next.js convention is to use NextAuth or simple JWT. Since this is an external doctor portal, 
-    // a basic signed stateless cookie or simply allowing them through based on the invite ID is common, 
-    // but the most secure is setting a session cookie.
-    
-    // For simplicity, we just return the invitation ID, and the frontend will route to /doctor/dashboard/[inviteId]
-    // The frontend should store this inviteId in localStorage to ensure the doctor can refresh.
+    // Return the invitation ID and patient info
+    // The frontend will route to /doctor/dashboard/[inviteId]
+    // The frontend stores this inviteId in localStorage for session persistence
     
     return NextResponse.json({ 
       success: true, 
-      inviteId: invitation.id,
-      patientId: invitation.userId 
+      inviteId: updatedInvitation.id,
+      patientId: updatedInvitation.userId,
+      message: "Doctor verified successfully"
     });
 
   } catch (error: any) {

@@ -35,9 +35,12 @@ export default function DoctorVerifyPage() {
 
       // Save credentials/invite access in local storage for session
       localStorage.setItem("takecare_doctor_invite", data.inviteId);
+      localStorage.setItem("takecare_doctor_verified", "true");
       
-      // Navigate to patient context dashboard
-      router.push(`/doctor/dashboard/${data.inviteId}`);
+      // Navigate to patient context dashboard immediately
+      setTimeout(() => {
+        router.push(`/doctor/dashboard/${data.inviteId}`);
+      }, 100);
     } catch (err: any) {
       setError(err.message);
     } finally {

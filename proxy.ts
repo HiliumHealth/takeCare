@@ -12,8 +12,14 @@ export function proxy(request: NextRequest) {
 
   const isPersonalized = request.cookies.get('takecare-personalized')?.value === 'true'
 
+  // Allow doctor routes without authentication
+  // Doctor access is verified via OTP at /doctor/verify, not through NextAuth
+  if (pathname.startsWith('/doctor')) {
+    return NextResponse.next()
+  }
+
   // Protected routes that require authentication
-  const protectedRoutes = ['/dashboard', '/doctor/dashboard', '/offline']
+  const protectedRoutes = ['/dashboard', '/offline']
   const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route))
 
   // 1. Protect dashboard routes — must be signed in

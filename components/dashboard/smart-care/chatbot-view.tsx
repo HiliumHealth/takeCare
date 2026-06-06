@@ -154,7 +154,7 @@ ${userQuery}
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col flex-1 min-h-[420px] lg:h-[540px] w-full bg-[#fcfcfc] dark:bg-[#0a0a0a] rounded-none md:rounded-2xl border-x-0 md:border border-black/10 dark:border-white/10 overflow-hidden relative shadow-none antialiased"
+      className="flex flex-col flex-1 w-full h-full bg-[#fcfcfc] dark:bg-[#0a0a0a] rounded-none md:rounded-2xl border-x-0 md:border border-black/10 dark:border-white/10 overflow-hidden relative shadow-none antialiased"
     >
       {/* Dynamic Chat Header */}
       <div className="px-3.5 md:px-5 py-2.5 md:py-3 border-b border-black/[0.03] dark:border-white/[0.03] bg-white/40 dark:bg-black/40 backdrop-blur-3xl flex items-center justify-between shrink-0 sticky top-0 z-20">
@@ -270,7 +270,7 @@ ${userQuery}
                   </div>
 
                   {(() => {
-                    const isGenerating = isLoading && msg.role === "assistant" && i === messages.length - 1;
+                    const isGenerating = isLoading && msg.role === "assistant" && idx === messages.length - 1;
                     return (
                       <div
                         className={cn(
@@ -448,15 +448,13 @@ ${userQuery}
             className="relative bg-white/85 dark:bg-[#0f0f0f]/85 backdrop-blur-3xl border border-black/10 dark:border-white/10 p-1.5 rounded-2xl flex items-center gap-2 group-focus-within:border-primary/40 transition-all duration-500 shadow-none"
           >
             <DropdownMenu open={isToolMenuOpen} onOpenChange={setIsToolMenuOpen}>
-              <DropdownMenuTrigger>
-                <Button 
+              <DropdownMenuTrigger asChild>
+                <button 
                   type="button"
-                  variant="ghost" 
-                  size="icon" 
-                  className="h-10.5 w-10.5 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-all shrink-0 cursor-pointer"
+                  className="h-10.5 w-10.5 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-all shrink-0 cursor-pointer flex items-center justify-center"
                 >
                   <Plus className={cn("h-4.5 w-4.5 text-black/40 dark:text-white/40 transition-transform duration-500", isToolMenuOpen && "rotate-45 text-primary")} />
-                </Button>
+                </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
                 align="start" 

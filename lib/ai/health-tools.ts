@@ -26,9 +26,10 @@ export function createHealthTools(userId: string) {
         limit: z.number().optional().default(3),
       }),
       execute: async ({ query, limit }: any) => {
-        logToFile(`TOOL: searchMedicalHistory | User: ${userId} | Query: ${query}`);
+        const safeQuery = (query && typeof query === 'string' && query.trim()) ? query.trim() : 'patient medical history summary';
+        logToFile(`TOOL: searchMedicalHistory | User: ${userId} | Query: ${safeQuery} (raw: ${query})`);
         try {
-          const records = await searchMedicalRecords(userId, query, limit);
+          const records = await searchMedicalRecords(userId, safeQuery, limit || 3);
           logToFile(`TOOL: searchMedicalHistory | Records found: ${records.length}`);
           
           if (!records.length) return { found: false, message: 'No matching records found.' };
@@ -100,7 +101,8 @@ export function createHealthTools(userId: string) {
         query: z.string().describe('Medical search query'),
       }),
       execute: async ({ query }: any) => {
-        logToFile(`TOOL: searchMedicalLiterature | Query: ${query}`);
+        const safeQuery = (query && typeof query === 'string' && query.trim()) ? query.trim() : 'general health guidance';
+        logToFile(`TOOL: searchMedicalLiterature | Query: ${safeQuery} (raw: ${query})`);
         try {
           const apiKey = process.env.SERPAPI_API_KEY;
           if (!apiKey) {
@@ -110,7 +112,7 @@ export function createHealthTools(userId: string) {
 
           const resp = await getJson({
             engine: 'google',
-            q: `${query} medical research`,
+            q: `${safeQuery} medical research`,
             api_key: apiKey,
           });
 
@@ -171,9 +173,10 @@ export function createHealthTools(userId: string) {
         'Use when the patient refers to something discussed in a previous voice call.',
       parameters: z.object({ query: z.string().describe('Search query for voice transcripts') }),
       execute: async ({ query }: any) => {
-        logToFile(`TOOL: searchVoiceHistory | User: ${userId} | Query: ${query}`);
+        const safeQuery = (query && typeof query === 'string' && query.trim()) ? query.trim() : 'patient consultation history';
+        logToFile(`TOOL: searchVoiceHistory | User: ${userId} | Query: ${safeQuery} (raw: ${query})`);
         try {
-          const results = await searchVapiTranscripts(userId, query, 2);
+          const results = await searchVapiTranscripts(userId, safeQuery, 2);
           logToFile(`TOOL: searchVoiceHistory | Results found: ${results.length}`);
           
           if (!results.length) return { found: false };

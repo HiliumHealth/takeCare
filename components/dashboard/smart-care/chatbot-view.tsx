@@ -277,11 +277,11 @@ ${userQuery}
                         : "bg-white dark:bg-[#0f0f0f] text-black/85 dark:text-white/85 rounded-tl-none md:rounded-tl-none border border-black/10 dark:border-white/10"
                     )}
                   >
-                    {/* Check for parts (AI SDK v6) */}
-                    {msg.parts && msg.parts.length > 0 ? (
-                      <div className="flex flex-col gap-3">
-                        {msg.parts.map((part: any, i: number) => {
-                          if (part.type === "text") {
+                    <div className="flex flex-col gap-3">
+                      {/* Render text content */}
+                      {msg.parts && msg.parts.length > 0 ? (
+                        msg.parts.map((part: any, i: number) => {
+                          if (part.type === "text" && part.text) {
                             return (
                               <div
                                 key={i}
@@ -305,117 +305,71 @@ ${userQuery}
                               </div>
                             );
                           }
-                          if (part.type === "tool-invocation") {
-                            const call = part.toolInvocation;
-                            return (
-                              <div
-                                key={i}
-                                className="bg-black/5 dark:bg-white/5 backdrop-blur-xl rounded-2xl p-3 border border-black/5 dark:border-white/5 flex items-center gap-3 group/tool overflow-hidden relative"
-                              >
-                                <div className="h-8.5 w-8.5 rounded-xl bg-white dark:bg-black flex items-center justify-center shadow-sm relative z-10 shrink-0">
-                                  {call.toolName.toLowerCase().includes("history") ? (
-                                    <History className="h-4.5 w-4.5 text-primary" />
-                                  ) : call.toolName.toLowerCase().includes("vital") ? (
-                                    <Activity className="h-4.5 w-4.5 text-primary" />
-                                  ) : (
-                                    <Search className="h-4.5 w-4.5 text-primary" />
-                                  )}
-                                </div>
-                                <div className="flex flex-col relative z-10">
-                                  <span className="text-[8px] font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30 mb-0.5">
-                                    {call.state === "result" ? "Query Completed" : "Medical Logic Step"}
-                                  </span>
-                                  <span className="text-xs font-black text-black/75 dark:text-white/75">
-                                    {call.toolName === "searchMedicalHistory" && "Scanning Clinical Archives"}
-                                    {call.toolName === "getLatestVitals" && "Accessing Vital Telemetry"}
-                                    {call.toolName === "searchMedicalLiterature" && "Consulting Research Nodes"}
-                                    {call.toolName === "getDoctorNotes" && "Decoding Clinical Insights"}
-                                    {call.toolName === "searchVoiceHistory" && "Analyzing Audio Transcripts"}
-                                    {call.toolName === "getDoctorIntelligence" && "Synthesizing Clinical Intelligence"}
-                                  </span>
-                                </div>
-                                {call.state === "result" ? (
-                                  <div className="ml-auto relative z-10">
-                                    <div className="h-6.5 w-6.5 rounded-full bg-green-500/10 flex items-center justify-center border border-green-500/20">
-                                      <ShieldCheck className="h-3.5 w-3.5 text-green-600" />
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <div className="ml-auto relative z-10">
-                                    <Loader2 className="h-4 w-4 text-primary animate-spin" />
-                                  </div>
-                                )}
-                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] animate-[shimmer_2s_infinite]" />
-                              </div>
-                            );
-                          }
                           return null;
-                        })}
-                      </div>
-                    ) : (
-                      <div className="flex flex-col gap-3">
-                        {msg.content && (
-                          <div
-                            className={cn(
-                              "prose prose-xs md:prose-sm max-w-none font-bold tracking-tight text-xs md:text-sm leading-relaxed",
-                              msg.role === "user" ? "prose-invert text-white/95" : "text-black/80 dark:text-white/80"
-                            )}
+                        })
+                      ) : msg.content ? (
+                        <div
+                          className={cn(
+                            "prose prose-xs md:prose-sm max-w-none font-bold tracking-tight text-xs md:text-sm leading-relaxed",
+                            msg.role === "user" ? "prose-invert text-white/95" : "text-black/80 dark:text-white/80"
+                          )}
+                        >
+                          <ReactMarkdown
+                            components={{
+                              p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+                              strong: ({node, ...props}) => <strong className="font-black" {...props} />,
+                              ul: ({node, ...props}) => <ul className="list-disc pl-4 mb-2" {...props} />,
+                              li: ({node, ...props}) => <li className="mb-1" {...props} />,
+                            }}
                           >
-                            <ReactMarkdown
-                              components={{
-                                p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
-                                strong: ({node, ...props}) => <strong className="font-black" {...props} />,
-                                ul: ({node, ...props}) => <ul className="list-disc pl-4 mb-2" {...props} />,
-                                li: ({node, ...props}) => <li className="mb-1" {...props} />,
-                              }}
-                            >
-                              {msg.content}
-                            </ReactMarkdown>
-                          </div>
-                        )}
-                        {msg.toolInvocations && msg.toolInvocations.map((call: any, i: number) => (
-                          <div
-                            key={i}
-                            className="bg-black/5 dark:bg-white/5 backdrop-blur-xl rounded-2xl p-3 border border-black/5 dark:border-white/5 flex items-center gap-3 group/tool overflow-hidden relative"
-                          >
-                            <div className="h-8.5 w-8.5 rounded-xl bg-white dark:bg-black flex items-center justify-center shadow-sm relative z-10 shrink-0">
-                              {call.toolName.toLowerCase().includes("history") ? (
-                                <History className="h-4.5 w-4.5 text-primary" />
-                              ) : call.toolName.toLowerCase().includes("vital") ? (
-                                <Activity className="h-4.5 w-4.5 text-primary" />
-                              ) : (
-                                <Search className="h-4.5 w-4.5 text-primary" />
-                              )}
-                            </div>
-                            <div className="flex flex-col relative z-10">
-                              <span className="text-[8px] font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30 mb-0.5">
-                                {call.state === "result" ? "Query Completed" : "Medical Logic Step"}
-                              </span>
-                              <span className="text-xs font-black text-black/75 dark:text-white/75">
-                                {call.toolName === "searchMedicalHistory" && "Scanning Clinical Archives"}
-                                {call.toolName === "getLatestVitals" && "Accessing Vital Telemetry"}
-                                {call.toolName === "searchMedicalLiterature" && "Consulting Research Nodes"}
-                                {call.toolName === "getDoctorNotes" && "Decoding Clinical Insights"}
-                                {call.toolName === "searchVoiceHistory" && "Analyzing Audio Transcripts"}
-                                {call.toolName === "getDoctorIntelligence" && "Synthesizing Clinical Intelligence"}
-                              </span>
-                            </div>
-                            {call.state === "result" ? (
-                              <div className="ml-auto relative z-10">
-                                <div className="h-6.5 w-6.5 rounded-full bg-green-500/10 flex items-center justify-center border border-green-500/20">
-                                  <ShieldCheck className="h-3.5 w-3.5 text-green-600" />
-                                </div>
-                              </div>
+                            {msg.content}
+                          </ReactMarkdown>
+                        </div>
+                      ) : null}
+
+                      {/* Render Tool Invocations globally */}
+                      {msg.toolInvocations && msg.toolInvocations.map((call: any, i: number) => (
+                        <div
+                          key={`tool-${i}`}
+                          className="bg-black/5 dark:bg-white/5 backdrop-blur-xl rounded-2xl p-3 border border-black/5 dark:border-white/5 flex items-center gap-3 group/tool overflow-hidden relative"
+                        >
+                          <div className="h-8.5 w-8.5 rounded-xl bg-white dark:bg-black flex items-center justify-center shadow-sm relative z-10 shrink-0">
+                            {call.toolName.toLowerCase().includes("history") ? (
+                              <History className="h-4.5 w-4.5 text-primary" />
+                            ) : call.toolName.toLowerCase().includes("vital") ? (
+                              <Activity className="h-4.5 w-4.5 text-primary" />
                             ) : (
-                              <div className="ml-auto relative z-10">
-                                <Loader2 className="h-4 w-4 text-primary animate-spin" />
-                              </div>
+                              <Search className="h-4.5 w-4.5 text-primary" />
                             )}
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] animate-[shimmer_2s_infinite]" />
                           </div>
-                        ))}
-                      </div>
-                    )}
+                          <div className="flex flex-col relative z-10">
+                            <span className="text-[8px] font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30 mb-0.5">
+                              {call.state === "result" ? "Query Completed" : "Medical Logic Step"}
+                            </span>
+                            <span className="text-xs font-black text-black/75 dark:text-white/75">
+                              {call.toolName === "searchMedicalHistory" && "Scanning Clinical Archives"}
+                              {call.toolName === "getLatestVitals" && "Accessing Vital Telemetry"}
+                              {call.toolName === "searchMedicalLiterature" && "Consulting Research Nodes"}
+                              {call.toolName === "getDoctorNotes" && "Decoding Clinical Insights"}
+                              {call.toolName === "searchVoiceHistory" && "Analyzing Audio Transcripts"}
+                              {call.toolName === "getDoctorIntelligence" && "Synthesizing Clinical Intelligence"}
+                            </span>
+                          </div>
+                          {call.state === "result" ? (
+                            <div className="ml-auto relative z-10">
+                              <div className="h-6.5 w-6.5 rounded-full bg-green-500/10 flex items-center justify-center border border-green-500/20">
+                                <ShieldCheck className="h-3.5 w-3.5 text-green-600" />
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="ml-auto relative z-10">
+                              <Loader2 className="h-4 w-4 text-primary animate-spin" />
+                            </div>
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] animate-[shimmer_2s_infinite]" />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                   
                   <div className={cn(

@@ -487,3 +487,101 @@
 [2026-05-28T02:29:25.043Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
 [2026-05-28T02:29:27.960Z] TOOL: getLatestVitals | User: cmpmfji660003h4v5mpz6w9da | Field: ALL
 [2026-05-28T02:29:29.129Z] TOOL: getLatestVitals | No analysis found
+[2026-06-06T09:54:31.342Z] --- POST REQUEST START ---
+[2026-06-06T09:54:31.350Z] API Key present: true, Length: 39
+[2026-06-06T09:54:31.380Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-06T09:54:31.382Z] Messages count: 2
+[2026-06-06T09:54:31.677Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T09:54:31.685Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T09:54:34.671Z] TOOL: getLatestVitals | User: cmpmfji660003h4v5mpz6w9da | Field: ALL
+[2026-06-06T09:54:34.960Z] TOOL: getLatestVitals | No analysis found
+[2026-06-06T09:54:49.452Z] --- POST REQUEST START ---
+[2026-06-06T09:54:49.453Z] API Key present: true, Length: 39
+[2026-06-06T09:54:49.475Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-06T09:54:49.477Z] Messages count: 4
+[2026-06-06T09:54:50.589Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T09:54:50.593Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T09:54:52.214Z] TOOL: getDoctorNotes | User: cmpmfji660003h4v5mpz6w9da | Limit: undefined
+[2026-06-06T09:54:52.468Z] TOOL: getDoctorNotes | Notes found: 0
+[2026-06-06T09:55:00.806Z] --- POST REQUEST START ---
+[2026-06-06T09:55:00.807Z] API Key present: true, Length: 39
+[2026-06-06T09:55:00.823Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-06T09:55:00.828Z] Messages count: 6
+[2026-06-06T09:55:01.125Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T09:55:01.127Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T09:55:20.578Z] --- POST REQUEST START ---
+[2026-06-06T09:55:20.579Z] API Key present: true, Length: 39
+[2026-06-06T09:55:20.594Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-06T09:55:20.596Z] Messages count: 8
+[2026-06-06T09:55:22.793Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T09:55:22.796Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T09:55:29.883Z] TOOL: getLatestVitals | User: cmpmfji660003h4v5mpz6w9da | Field: ALL
+[2026-06-06T09:55:29.894Z] TOOL: getDoctorNotes | User: cmpmfji660003h4v5mpz6w9da | Limit: undefined
+[2026-06-06T09:55:30.856Z] TOOL: getDoctorNotes | Notes found: 0
+[2026-06-06T09:55:30.862Z] TOOL: getLatestVitals | No analysis found
+[2026-06-06T09:55:53.005Z] --- POST REQUEST START ---
+[2026-06-06T09:55:53.006Z] API Key present: true, Length: 39
+[2026-06-06T09:55:53.031Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-06T09:55:53.036Z] Messages count: 10
+[2026-06-06T09:55:53.323Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T09:55:53.325Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T09:55:57.809Z] TOOL: getDoctorNotes | User: cmpmfji660003h4v5mpz6w9da | Limit: undefined
+[2026-06-06T09:55:58.117Z] TOOL: getDoctorNotes | Notes found: 0
+[2026-06-06T09:59:56.425Z] --- POST REQUEST START ---
+[2026-06-06T09:59:56.426Z] API Key present: true, Length: 39
+[2026-06-06T09:59:56.439Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-06T09:59:56.440Z] Messages count: 12
+[2026-06-06T09:59:56.689Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T09:59:56.690Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:00:28.802Z] --- POST REQUEST START ---
+[2026-06-06T10:00:28.803Z] API Key present: true, Length: 39
+[2026-06-06T10:00:28.824Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-06T10:00:28.826Z] Messages count: 14
+[2026-06-06T10:00:30.113Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T10:00:30.114Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:00:31.792Z] TOOL: getDoctorNotes | User: cmpmfji660003h4v5mpz6w9da | Limit: undefined
+[2026-06-06T10:00:32.030Z] TOOL: getDoctorNotes | Notes found: 0
+[2026-06-06T10:07:23.065Z] --- POST REQUEST START ---
+[2026-06-06T10:07:23.065Z] API Key present: true, Length: 39
+[2026-06-06T10:07:23.087Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-06T10:07:23.089Z] Messages count: 2
+[2026-06-06T10:07:23.694Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T10:07:23.697Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:07:25.414Z] TOOL: getDoctorNotes | User: cmpmfji660003h4v5mpz6w9da | Limit: undefined
+[2026-06-06T10:07:25.680Z] TOOL: getDoctorNotes | Notes found: 0
+[2026-06-06T10:17:04.276Z] --- POST REQUEST START ---
+[2026-06-06T10:17:04.277Z] API Key present: true, Length: 39
+[2026-06-06T10:17:04.307Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-06T10:17:04.314Z] Messages count: 2
+[2026-06-06T10:17:04.594Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T10:17:04.603Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:17:06.372Z] TOOL: getDoctorNotes | User: cmpmfji660003h4v5mpz6w9da | Limit: undefined
+[2026-06-06T10:17:06.632Z] TOOL: getDoctorNotes | Notes found: 0
+[2026-06-06T10:18:01.252Z] --- POST REQUEST START ---
+[2026-06-06T10:18:01.253Z] API Key present: true, Length: 39
+[2026-06-06T10:18:01.265Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-06T10:18:01.266Z] Messages count: 2
+[2026-06-06T10:18:01.551Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T10:18:01.553Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:18:03.898Z] TOOL: searchVoiceHistory | User: cmpmfji660003h4v5mpz6w9da | Query: undefined
+[2026-06-06T10:18:03.909Z] TOOL: getDoctorIntelligence | User: cmpmfji660003h4v5mpz6w9da
+[2026-06-06T10:18:04.159Z] TOOL: getDoctorIntelligence | No intel found
+[2026-06-06T10:18:04.860Z] TOOL ERROR: searchVoiceHistory | * EmbedContentRequest.content.parts[0].data: required oneof field 'data' must have one initialized field
+
+[2026-06-06T10:18:18.671Z] --- POST REQUEST START ---
+[2026-06-06T10:18:18.673Z] API Key present: true, Length: 39
+[2026-06-06T10:18:18.714Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-06T10:18:18.715Z] Messages count: 4
+[2026-06-06T10:18:18.981Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T10:18:18.984Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:18:21.465Z] TOOL: searchMedicalHistory | User: cmpmfji660003h4v5mpz6w9da | Query: undefined
+[2026-06-06T10:18:22.499Z] TOOL ERROR: searchMedicalHistory | * EmbedContentRequest.content.parts[0].data: required oneof field 'data' must have one initialized field
+
+[2026-06-06T10:18:29.451Z] --- POST REQUEST START ---
+[2026-06-06T10:18:29.452Z] API Key present: true, Length: 39
+[2026-06-06T10:18:29.483Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-06T10:18:29.486Z] Messages count: 6
+[2026-06-06T10:18:30.621Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T10:18:30.623Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:18:34.167Z] TOOL: getLatestVitals | User: cmpmfji660003h4v5mpz6w9da | Field: ALL
+[2026-06-06T10:18:34.439Z] TOOL: getLatestVitals | No analysis found

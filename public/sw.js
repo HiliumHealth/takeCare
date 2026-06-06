@@ -1,7 +1,7 @@
 /// Hilium PWA Service Worker
 /// Handles offline caching, push notifications, and background sync
 
-const CACHE_VERSION = 'hilium-v3-push-fix';
+const CACHE_VERSION = 'hilium-v4-push-fix';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const DYNAMIC_CACHE = `${CACHE_VERSION}-dynamic`;
 const IMAGE_CACHE = `${CACHE_VERSION}-images`;
@@ -190,7 +190,7 @@ self.addEventListener('push', (event) => {
       url: data.url || '/dashboard',
       dateOfArrival: Date.now(),
     },
-    actions: ('maxActions' in Notification && Notification.maxActions > 0) ? [
+    actions: (self.Notification && self.Notification.maxActions > 0) ? [
       { action: 'open', title: 'Open Hilium', icon: '/icons/icon-96x96.png' },
       { action: 'dismiss', title: 'Dismiss' },
     ] : [],

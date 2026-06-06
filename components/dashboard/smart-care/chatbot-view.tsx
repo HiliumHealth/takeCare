@@ -269,15 +269,31 @@ ${userQuery}
                     </span>
                   </div>
 
-                  <div
-                    className={cn(
-                      "w-[99%] md:max-w-[80%] px-4 md:px-5.5 py-3 md:py-4.5 rounded-2xl relative group shadow-none",
-                      msg.role === "user"
-                        ? "bg-gradient-to-br from-primary via-primary to-[#0047FF] text-white rounded-tr-none md:rounded-tr-none"
-                        : "bg-white dark:bg-[#0f0f0f] text-black/85 dark:text-white/85 rounded-tl-none md:rounded-tl-none border border-black/10 dark:border-white/10"
-                    )}
-                  >
-                    <div className="flex flex-col gap-3">
+                  {(() => {
+                    const isGenerating = isLoading && msg.role === "assistant" && i === messages.length - 1;
+                    return (
+                      <div
+                        className={cn(
+                          "w-[99%] md:max-w-[80%] relative group shadow-none overflow-hidden",
+                          msg.role === "user"
+                            ? "bg-gradient-to-br from-primary via-primary to-[#0047FF] text-white rounded-2xl rounded-tr-none md:rounded-tr-none px-4 md:px-5.5 py-3 md:py-4.5"
+                            : cn(
+                                "rounded-2xl rounded-tl-none md:rounded-tl-none",
+                                isGenerating ? "p-[2px]" : "px-4 md:px-5.5 py-3 md:py-4.5 bg-white dark:bg-[#0f0f0f] text-black/85 dark:text-white/85 border border-black/10 dark:border-white/10"
+                              )
+                        )}
+                      >
+                        {isGenerating && (
+                          <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_340deg,#00f3ff_360deg)] animate-[spin_2s_linear_infinite] z-0" />
+                        )}
+                        <div
+                          className={cn(
+                            "flex flex-col gap-3 relative z-10",
+                            isGenerating
+                              ? "bg-white dark:bg-[#0f0f0f] text-black/85 dark:text-white/85 px-4 md:px-5.5 py-3 md:py-4.5 rounded-[calc(1rem-2px)] rounded-tl-none md:rounded-tl-none w-full h-full"
+                              : ""
+                          )}
+                        >
                       {/* Render text content */}
                       {msg.parts && msg.parts.length > 0 ? (
                         msg.parts.map((part: any, i: number) => {
@@ -371,6 +387,8 @@ ${userQuery}
                       ))}
                     </div>
                   </div>
+                  );
+                })()}
                   
                   <div className={cn(
                     "flex items-center gap-2 px-3",
@@ -387,90 +405,7 @@ ${userQuery}
                 </motion.div>
               )})}
             
-            {isLoading && (
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="w-[99%] md:max-w-[80%] bg-white/50 dark:bg-black/50 backdrop-blur-xl border border-black/10 dark:border-white/10 rounded-xl p-3 space-y-2 shadow-none"
-              >
-                <div className="flex items-center gap-2">
-                  <div className="relative flex h-1.5 w-1.5 shrink-0">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary"></span>
-                  </div>
-                  <span className="text-[8px] font-black uppercase tracking-[0.2em] text-primary">Dr. Gita's Insight Engine</span>
-                  <span className="text-[8px] font-bold text-black/40 dark:text-white/40 uppercase tracking-wider ml-auto">Active Reasoning</span>
-                </div>
-
-                <div className="space-y-1.5 pl-2 border-l border-black/[0.08] dark:border-white/[0.08]">
-                  {/* Step 1: Tool scan */}
-                  <motion.div 
-                    initial={{ opacity: 0, x: -4 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="flex items-center gap-1.5 text-[9px] font-bold text-black/45 dark:text-white/45"
-                  >
-                    {thinkingStep === 0 ? (
-                      <Loader2 className="h-3 w-3 text-primary animate-spin shrink-0" />
-                    ) : (
-                      <ShieldCheck className="h-3 w-3 text-green-500 shrink-0" />
-                    )}
-                    <span className={cn(thinkingStep === 0 && "text-primary font-black")}>
-                      {thinkingStep === 0 ? "Accessing secure patient medical history booklet..." : "Accessed medical records booklet successfully"}
-                    </span>
-                  </motion.div>
-
-                  {/* Step 2: Telemetry analysis */}
-                  {thinkingStep >= 1 && (
-                    <motion.div 
-                      initial={{ opacity: 0, x: -4 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="flex items-center gap-1.5 text-[9px] font-bold text-black/45 dark:text-white/45"
-                    >
-                      {thinkingStep === 1 ? (
-                        <Loader2 className="h-3 w-3 text-primary animate-spin shrink-0" />
-                      ) : (
-                        <ShieldCheck className="h-3 w-3 text-green-500 shrink-0" />
-                      )}
-                      <span className={cn(thinkingStep === 1 && "text-primary font-black")}>
-                        {thinkingStep === 1 ? "Examining clinical vital signs and doctor consultations..." : "Extracted vital telemetry and expert consultations"}
-                      </span>
-                    </motion.div>
-                  )}
-
-                  {/* Step 3: Medical Literature scan */}
-                  {thinkingStep >= 2 && (
-                    <motion.div 
-                      initial={{ opacity: 0, x: -4 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="flex items-center gap-1.5 text-[9px] font-bold text-black/45 dark:text-white/45"
-                    >
-                      {thinkingStep === 2 ? (
-                        <Loader2 className="h-3 w-3 text-primary animate-spin shrink-0" />
-                      ) : (
-                        <ShieldCheck className="h-3 w-3 text-green-500 shrink-0" />
-                      )}
-                      <span className={cn(thinkingStep === 2 && "text-primary font-black")}>
-                        {thinkingStep === 2 ? "Querying peer-reviewed medical research literature..." : "Synthesized medical research node insights"}
-                      </span>
-                    </motion.div>
-                  )}
-
-                  {/* Step 4: Final clinical guidance synthesis */}
-                  {thinkingStep >= 3 && (
-                    <motion.div 
-                      initial={{ opacity: 0, x: -4 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="flex items-center gap-1.5 text-[9px] font-bold text-black/45 dark:text-white/45"
-                    >
-                      <Loader2 className="h-3 w-3 text-primary animate-spin shrink-0" />
-                      <span className="text-primary font-black">
-                        Formulating verified evidence-based health guidance...
-                      </span>
-                    </motion.div>
-                  )}
-                </div>
-              </motion.div>
-            )}
+            {/* The old Insight Engine loading UI has been removed as per user request to use the neon blue border instead. */}
           </div>
         </ScrollArea>
         {/* Subtle Bottom Fade */}

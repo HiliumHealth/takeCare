@@ -114,10 +114,14 @@ export function ChatbotView({
 
     // Construct a structured message
     const instructions = selectedTools.map(t => t.prompt).join("\n");
+    const userQuery = localInput.trim() === "" && selectedTools.length > 0 
+      ? "Please analyze my medical context using the tools provided." 
+      : localInput.trim();
+      
     const messageToSend = `
 ${selectedTools.length > 0 ? "### SYSTEM INSTRUCTIONS\n" + instructions + "\n\n" : ""}
 ### USER QUERY
-${localInput.trim()}
+${userQuery}
 `.trim();
     
     setLocalInput("");
@@ -222,10 +226,11 @@ ${localInput.trim()}
             )}
 
             {messages.map((msg, idx) => {
-              // Avoid rendering empty assistant messages (e.g. while tool is executing but before stream has text/parts)
+              // Avoid rendering empty assistant messages (e.g. while tool is executing but before stream has text/parts/tools)
               const hasParts = msg.parts && msg.parts.length > 0;
               const hasContent = msg.content && msg.content.trim().length > 0;
-              if (msg.role === "assistant" && !hasContent && !hasParts) {
+              const hasTools = msg.toolInvocations && msg.toolInvocations.length > 0;
+              if (msg.role === "assistant" && !hasContent && !hasParts && !hasTools) {
                 return null;
               }
               return (

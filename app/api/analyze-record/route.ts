@@ -1,5 +1,6 @@
 import { generateText } from "ai";
 import { google } from "@ai-sdk/google";
+import { groq } from "@ai-sdk/groq";
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
@@ -84,7 +85,7 @@ Do not include any text outside of the JSON object.
 
     // Request analysis using Gemini 1.5 Flash from Google AI SDK
     const result = await generateText({
-      model: google("gemini-1.5-flash"),
+      model: groq("qwen/qwen3-32b"),
       messages: [
         {
           role: "user",

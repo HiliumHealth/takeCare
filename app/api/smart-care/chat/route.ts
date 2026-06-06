@@ -1,5 +1,5 @@
 import { streamText, convertToModelMessages, UIMessage } from 'ai';
-import { google } from '@ai-sdk/google';
+import { groq } from '@ai-sdk/groq';
 import { NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
 
     logToFile("Starting streamText with gemini-2.5-flash...");
     const result = streamText({
-      model: google('gemini-1.5-flash'),
+      model: groq("qwen/qwen3-32b"),
       system: `You are Dr. Leo, a compassionate and precise AI health assistant for Hilium. 
       Your mission is to provide evidence-based medical guidance by integrating the patient's personal history with current clinical research.
 

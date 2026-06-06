@@ -1,5 +1,5 @@
 import { getJson } from "serpapi";
-import { google } from "@ai-sdk/google";
+import { groq } from "@ai-sdk/groq";
 import { generateText } from "ai";
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
@@ -75,7 +75,7 @@ export async function POST(req: Request) {
     `;
 
     const { text } = await generateText({
-      model: google("gemini-1.5-flash"),
+      model: groq("qwen/qwen3-32b"),
       prompt,
     });
 

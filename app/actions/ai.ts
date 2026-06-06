@@ -1,7 +1,7 @@
 "use server";
 
 import { generateText } from "ai";
-import { google } from "@ai-sdk/google";
+import { groq } from "@ai-sdk/groq";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
@@ -58,7 +58,7 @@ export async function generateSmartSummary(recordId: string) {
     }
 
     const { text } = await generateText({
-      model: google("gemini-1.5-flash"),
+      model: groq("qwen/qwen3-32b"),
       prompt: prompt,
     });
 

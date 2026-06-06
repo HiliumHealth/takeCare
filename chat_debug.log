@@ -602,3 +602,67 @@
 [2026-06-06T10:22:13.703Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
 [2026-06-06T10:22:15.348Z] TOOL: getDoctorNotes | User: cmpmfji660003h4v5mpz6w9da | Limit: undefined
 [2026-06-06T10:22:15.615Z] TOOL: getDoctorNotes | Notes found: 0
+[2026-06-06T10:25:15.222Z] --- POST REQUEST START ---
+[2026-06-06T10:25:15.222Z] API Key present: true, Length: 39
+[2026-06-06T10:25:15.314Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-06T10:25:15.353Z] Messages count: 2
+[2026-06-06T10:25:15.637Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T10:25:15.646Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:25:18.038Z] TOOL: searchVoiceHistory | User: cmpmfji660003h4v5mpz6w9da | Query: undefined
+[2026-06-06T10:25:18.862Z] TOOL ERROR: searchVoiceHistory | * EmbedContentRequest.content.parts[0].data: required oneof field 'data' must have one initialized field
+
+[2026-06-06T10:26:25.240Z] --- POST REQUEST START ---
+[2026-06-06T10:26:25.241Z] API Key present: true, Length: 39
+[2026-06-06T10:26:25.255Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-06T10:26:25.256Z] Messages count: 2
+[2026-06-06T10:26:25.532Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T10:26:25.533Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:26:27.241Z] TOOL: searchMedicalHistory | User: cmpmfji660003h4v5mpz6w9da | Query: undefined
+[2026-06-06T10:26:28.090Z] TOOL ERROR: searchMedicalHistory | * EmbedContentRequest.content.parts[0].data: required oneof field 'data' must have one initialized field
+
+[2026-06-06T10:30:14.659Z] --- POST REQUEST START ---
+[2026-06-06T10:30:14.660Z] API Key present: true, Length: 39
+[2026-06-06T10:30:14.771Z] Auth User: cmppklw06000ht8v5mcystfql
+[2026-06-06T10:30:14.772Z] Messages count: 2
+[2026-06-06T10:30:14.984Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T10:30:14.992Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:30:17.433Z] TOOL: searchVoiceHistory | User: cmppklw06000ht8v5mcystfql | Query: patient consultation history (raw: undefined)
+[2026-06-06T10:30:18.217Z] TOOL ERROR: searchVoiceHistory | models/text-embedding-004 is not found for API version v1beta, or is not supported for embedContent. Call ModelService.ListModels to see the list of available models and their supported methods.
+[2026-06-06T10:31:09.851Z] --- POST REQUEST START ---
+[2026-06-06T10:31:09.851Z] API Key present: true, Length: 39
+[2026-06-06T10:31:09.876Z] Auth User: cmppklw06000ht8v5mcystfql
+[2026-06-06T10:31:09.877Z] Messages count: 2
+[2026-06-06T10:31:10.127Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T10:31:10.131Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:31:11.758Z] TOOL: searchMedicalHistory | User: cmppklw06000ht8v5mcystfql | Query: patient medical history summary (raw: undefined)
+[2026-06-06T10:31:13.473Z] TOOL ERROR: searchMedicalHistory | models/text-embedding-004 is not found for API version v1beta, or is not supported for embedContent. Call ModelService.ListModels to see the list of available models and their supported methods.
+[2026-06-06T10:31:33.728Z] --- POST REQUEST START ---
+[2026-06-06T10:31:33.729Z] API Key present: true, Length: 39
+[2026-06-06T10:31:33.742Z] Auth User: cmppklw06000ht8v5mcystfql
+[2026-06-06T10:31:33.743Z] Messages count: 4
+[2026-06-06T10:31:33.946Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T10:31:33.947Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:31:35.594Z] TOOL: searchMedicalHistory | User: cmppklw06000ht8v5mcystfql | Query: patient medical history summary (raw: undefined)
+[2026-06-06T10:31:36.695Z] TOOL ERROR: searchMedicalHistory | models/text-embedding-004 is not found for API version v1beta, or is not supported for embedContent. Call ModelService.ListModels to see the list of available models and their supported methods.
+[2026-06-06T10:45:57.983Z] --- POST REQUEST START ---
+[2026-06-06T10:45:57.984Z] API Key present: true, Length: 39
+[2026-06-06T10:45:58.051Z] Auth User: cmppklw06000ht8v5mcystfql
+[2026-06-06T10:45:58.052Z] Messages count: 2
+[2026-06-06T10:45:58.667Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T10:45:58.670Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:46:07.486Z] TOOL: searchMedicalHistory | User: cmppklw06000ht8v5mcystfql | Query: patient medical history summary (raw: undefined)
+[2026-06-06T10:46:17.981Z] TOOL: searchMedicalHistory | Records found: 3
+[2026-06-06T10:46:38.057Z] --- POST REQUEST START ---
+[2026-06-06T10:46:38.059Z] API Key present: true, Length: 39
+[2026-06-06T10:46:38.071Z] Auth User: cmppklw06000ht8v5mcystfql
+[2026-06-06T10:46:38.072Z] Messages count: 4
+[2026-06-06T10:46:38.287Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T10:46:38.288Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:46:46.102Z] STREAM ERROR: {"error":{}}
+[2026-06-06T10:48:15.262Z] --- POST REQUEST START ---
+[2026-06-06T10:48:15.263Z] API Key present: true, Length: 39
+[2026-06-06T10:48:15.406Z] Auth User: cmppklw06000ht8v5mcystfql
+[2026-06-06T10:48:15.409Z] Messages count: 5
+[2026-06-06T10:48:17.433Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T10:48:17.438Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:48:21.043Z] STREAM ERROR: {"error":{}}

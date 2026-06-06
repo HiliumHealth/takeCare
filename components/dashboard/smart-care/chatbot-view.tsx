@@ -64,8 +64,6 @@ export function ChatbotView({
   
   const [localInput, setLocalInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const [isToolMenuOpen, setIsToolMenuOpen] = useState(false);
-  const [selectedTools, setSelectedTools] = useState<any[]>([]);
   const [thinkingStep, setThinkingStep] = useState(0);
 
   useEffect(() => {
@@ -83,13 +81,6 @@ export function ChatbotView({
     };
   }, [isLoading]);
 
-  const tools = [
-    { id: "records", label: "Medical History", icon: History, prompt: "[DIRECTIVE: Access and analyze Hilium medical records for relevant patient history.]" },
-    { id: "vitals", label: "Check Vitals", icon: Activity, prompt: "[DIRECTIVE: Retrieve and interpret latest vitals from the patient profile.]" },
-    { id: "notes", label: "Doctor Notes", icon: FileSearch, prompt: "[DIRECTIVE: Examine clinical consultation notes and doctor observations.]" },
-    { id: "literature", label: "Medical Research", icon: Microscope, prompt: "[DIRECTIVE: Research medical literature for current evidence-based guidance on this topic.]" },
-  ];
-
   const suggestions = [
     "Analyze my latest blood work",
     "Compare my vitals to last month",
@@ -97,43 +88,18 @@ export function ChatbotView({
     "Explain my current medications"
   ];
 
-  const handleToolSelect = (tool: any) => {
-    setSelectedTools(prev => {
-      const exists = prev.find(t => t.id === tool.id);
-      if (exists) return prev.filter(t => t.id !== tool.id);
-      return [...prev, tool];
+  const handleSend = () => {
+    if (!localInput.trim()) return;
+    
+    sendMessage({
+      text: localInput.trim(),
     });
-    setIsToolMenuOpen(false);
-    setTimeout(() => inputRef.current?.focus(), 100);
+    setLocalInput("");
   };
 
   const onFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!localInput.trim() && selectedTools.length === 0) return;
-    if (isLoading) return;
-
-    // Construct a structured message
-    const instructions = selectedTools.map(t => t.prompt).join("\n");
-    const userQuery = localInput.trim() === "" && selectedTools.length > 0 
-      ? "Please analyze my medical context using the tools provided." 
-      : localInput.trim();
-      
-    const messageToSend = `
-${selectedTools.length > 0 ? "### SYSTEM INSTRUCTIONS\n" + instructions + "\n\n" : ""}
-### USER QUERY
-${userQuery}
-`.trim();
-    
-    setLocalInput("");
-    // We do NOT clear selectedTools anymore, as requested by user
-
-    try {
-      if (typeof sendMessage === "function") {
-        sendMessage({ text: messageToSend });
-      }
-    } catch (error) {
-      setLocalInput(localInput);
-    }
+    handleSend();
   };
 
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -390,88 +356,7 @@ ${userQuery}
 
       {/* Persistent Smart Input Dock - Fixed on mobile, sticky at bottom on desktop */}
       <div className="fixed bottom-[90px] left-2 right-2 z-40 md:relative md:bottom-auto md:left-auto md:right-auto px-2 md:px-6 pb-3 md:pb-4.5 pt-3 bg-white/95 dark:bg-[#0a0a0a]/95 backdrop-blur-2xl md:border-t md:border-black/[0.03] md:dark:border-white/[0.03] shadow-none">
-        
-        {/* Selected Tool Indicator - Floats above the input dock */}
-        <div className="absolute -top-10 left-6 right-6 flex justify-center z-30 pointer-events-none">
-          <div className="flex flex-wrap items-center justify-center gap-1.5 pointer-events-auto">
-            <AnimatePresence>
-              {selectedTools.map((tool) => (
-                <motion.div
-                  key={tool.id}
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  className="flex items-center gap-1.5 px-2.5 py-1 bg-primary text-white rounded-full border border-white/20 whitespace-nowrap shadow-sm"
-                >
-                  <tool.icon className="h-3.5 w-3.5" />
-                  <span className="text-[8px] font-black uppercase tracking-widest">{tool.label}</span>
-                  <button 
-                    onClick={() => setSelectedTools(prev => prev.filter(t => t.id !== tool.id))}
-                    className="ml-0.5 h-3.5 w-3.5 rounded-full hover:bg-white/20 flex items-center justify-center transition-colors cursor-pointer"
-                  >
-                    <X className="h-2.5 w-2.5" />
-                  </button>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-        </div>
-
-        <div className="relative group max-w-5xl mx-auto">
-          
-          <form 
-            onSubmit={onFormSubmit}
-            className="relative bg-white/85 dark:bg-[#0f0f0f]/85 backdrop-blur-3xl border border-black/10 dark:border-white/10 p-1.5 rounded-2xl flex items-center gap-2 group-focus-within:border-primary/40 transition-all duration-500 shadow-none"
-          >
-            <DropdownMenu open={isToolMenuOpen} onOpenChange={setIsToolMenuOpen}>
-              <DropdownMenuTrigger asChild>
-                <button 
-                  type="button"
-                  className="h-10.5 w-10.5 rounded-xl bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-all shrink-0 cursor-pointer flex items-center justify-center"
-                >
-                  <Plus className={cn("h-4.5 w-4.5 text-black/40 dark:text-white/40 transition-transform duration-500", isToolMenuOpen && "rotate-45 text-primary")} />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent 
-                align="start" 
-                className="w-64 p-2 rounded-2xl border-black/5 dark:border-white/5 bg-white/95 dark:bg-[#0f0f0f]/95 backdrop-blur-xl shadow-2xl mb-3"
-              >
-                <DropdownMenuLabel className="px-3 py-2 text-[9px] font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30">Diagnostic Tools</DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-black/5 dark:bg-white/5" />
-                <div className="grid gap-1.5 p-1">
-                  {tools.map((tool) => {
-                    const isActive = selectedTools.find(t => t.id === tool.id);
-                    return (
-                      <DropdownMenuItem 
-                        key={tool.id} 
-                        onClick={() => handleToolSelect(tool)}
-                        className={cn(
-                          "flex items-center gap-3 p-2.5 rounded-xl cursor-pointer transition-colors group/item",
-                          isActive ? "bg-primary text-white" : "hover:bg-primary/5"
-                        )}
-                      >
-                        <div className={cn(
-                          "h-8.5 w-8.5 rounded-lg flex items-center justify-center transition-all shrink-0",
-                          isActive ? "bg-white/20 text-white" : "bg-black/5 dark:bg-white/5 group-hover/item:bg-primary group-hover/item:text-white"
-                        )}>
-                          <tool.icon className="h-4.5 w-4.5" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs font-black tracking-tight">{tool.label}</p>
-                          <p className={cn(
-                            "text-[9px] font-medium opacity-60 truncate",
-                            isActive ? "text-white" : "text-black/40 dark:text-white/40"
-                          )}>
-                            {tool.prompt.slice(0, 24)}...
-                          </p>
-                        </div>
-                        {isActive && <X className="h-3.5 w-3.5 shrink-0" />}
-                      </DropdownMenuItem>
-                    );
-                  })}
-                </div>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  {/* Removed manual tool selection. Tools are now called automatically by the AI. */}u>
 
             <input
               ref={inputRef}
@@ -493,10 +378,10 @@ ${userQuery}
               </Button>
               <Button 
                 type="submit" 
-                disabled={(!localInput.trim() && selectedTools.length === 0) || isLoading}
+                disabled={!localInput.trim() || isLoading}
                 className={cn(
                   "h-9.5 w-9.5 rounded-full font-black flex items-center justify-center transition-all duration-500 cursor-pointer shadow-none shrink-0",
-                  (localInput.trim() || selectedTools.length > 0) ? "bg-primary text-white scale-100 hover:bg-primary/95" : "bg-black/5 dark:bg-white/5 text-black/20 dark:text-white/20 scale-95 opacity-50"
+                  (localInput.trim()) ? "bg-primary text-white scale-100 hover:bg-primary/95" : "bg-black/5 dark:bg-white/5 text-black/20 dark:text-white/20 scale-95 opacity-50"
                 )}
               >
                 {isLoading ? (

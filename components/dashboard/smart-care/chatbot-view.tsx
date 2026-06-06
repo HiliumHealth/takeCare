@@ -356,8 +356,11 @@ export function ChatbotView({
 
       {/* Persistent Smart Input Dock - Fixed on mobile, sticky at bottom on desktop */}
       <div className="fixed bottom-[90px] left-2 right-2 z-40 md:relative md:bottom-auto md:left-auto md:right-auto px-2 md:px-6 pb-3 md:pb-4.5 pt-3 bg-white/95 dark:bg-[#0a0a0a]/95 backdrop-blur-2xl md:border-t md:border-black/[0.03] md:dark:border-white/[0.03] shadow-none">
-                  {/* Removed manual tool selection. Tools are now called automatically by the AI. */}u>
-
+        <div className="relative group max-w-5xl mx-auto">
+          <form 
+            onSubmit={onFormSubmit}
+            className="relative bg-white/85 dark:bg-[#0f0f0f]/85 backdrop-blur-3xl border border-black/10 dark:border-white/10 p-1.5 rounded-2xl flex items-center gap-2 group-focus-within:border-primary/40 transition-all duration-500 shadow-none"
+          >
             <input
               ref={inputRef}
               value={localInput}

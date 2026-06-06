@@ -18,22 +18,42 @@ export async function searchMedicalRecords(
   query: string,
   limit: number = 3
 ): Promise<SearchResult[]> {
-  // Embed the user's query into the same vector space as the stored records
-  const { embedding } = await embed({ model: embeddingModel, value: query });
-  const vectorString = JSON.stringify(embedding);
+  try {
+    // Embed the user's query into the same vector space as the stored records
+    const { embedding } = await embed({ model: embeddingModel, value: query });
+    const vectorString = JSON.stringify(embedding);
 
-  // <=> is the pgvector cosine distance operator (lower = more similar)
-  // We filter by userId first so the vector search only touches this patient's data
-  return prisma.$queryRaw<SearchResult[]>`
-    SELECT
-      id, "fileName", type, "extractedText", "createdAt",
-      1 - (embedding <=> ${vectorString}::vector) AS similarity
-    FROM "MedicalRecord"
-    WHERE "userId" = ${userId}
-    AND embedding IS NOT NULL
-    ORDER BY embedding <=> ${vectorString}::vector
-    LIMIT ${limit}
-  `;
+    // <=> is the pgvector cosine distance operator (lower = more similar)
+    return await prisma.$queryRaw<SearchResult[]>`
+      SELECT
+        id, "fileName", type, "extractedText", "createdAt",
+        1 - (embedding <=> ${vectorString}::vector) AS similarity
+      FROM "MedicalRecord"
+      WHERE "userId" = ${userId}
+      AND embedding IS NOT NULL
+      ORDER BY embedding <=> ${vectorString}::vector
+      LIMIT ${limit}
+    `;
+  } catch (error) {
+    console.error("Embedding API failed, falling back to chronological search:", error);
+    // Fallback if embedding API is unavailable
+    const records = await prisma.medicalRecord.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+      take: limit,
+      select: {
+        id: true,
+        fileName: true,
+        type: true,
+        extractedText: true,
+        createdAt: true
+      }
+    });
+    return records.map(r => ({
+      ...r,
+      similarity: 1.0 // Mock similarity for fallback
+    })) as SearchResult[];
+  }
 }
 
 export async function searchVapiTranscripts(
@@ -41,15 +61,34 @@ export async function searchVapiTranscripts(
   query: string,
   limit: number = 2
 ): Promise<any[]> {
-  const { embedding } = await embed({ model: embeddingModel, value: query });
-  const vectorString = JSON.stringify(embedding);
+  try {
+    const { embedding } = await embed({ model: embeddingModel, value: query });
+    const vectorString = JSON.stringify(embedding);
 
-  return prisma.$queryRaw`
-    SELECT id, transcript, summary, "createdAt",
-    1 - (embedding <=> ${vectorString}::vector) AS similarity
-    FROM "VapiTranscript"
-    WHERE "userId" = ${userId} AND embedding IS NOT NULL
-    ORDER BY embedding <=> ${vectorString}::vector
-    LIMIT ${limit}
-  `;
+    return await prisma.$queryRaw`
+      SELECT id, transcript, summary, "createdAt",
+      1 - (embedding <=> ${vectorString}::vector) AS similarity
+      FROM "VapiTranscript"
+      WHERE "userId" = ${userId} AND embedding IS NOT NULL
+      ORDER BY embedding <=> ${vectorString}::vector
+      LIMIT ${limit}
+    `;
+  } catch (error) {
+    console.error("Embedding API failed for transcripts, falling back to chronological:", error);
+    const transcripts = await prisma.vapiTranscript.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+      take: limit,
+      select: {
+        id: true,
+        transcript: true,
+        summary: true,
+        createdAt: true
+      }
+    });
+    return transcripts.map(t => ({
+      ...t,
+      similarity: 1.0
+    }));
+  }
 }

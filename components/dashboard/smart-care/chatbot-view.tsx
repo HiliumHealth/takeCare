@@ -154,7 +154,7 @@ ${userQuery}
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col flex-1 w-full h-full bg-[#fcfcfc] dark:bg-[#0a0a0a] rounded-none md:rounded-2xl border-x-0 md:border border-black/10 dark:border-white/10 overflow-hidden relative shadow-none antialiased"
+      className="flex flex-col flex-1 w-full h-full bg-[#fcfcfc] dark:bg-[#0a0a0a] overflow-hidden relative shadow-none antialiased"
     >
       {/* Dynamic Chat Header */}
       <div className="px-3.5 md:px-5 py-2.5 md:py-3 border-b border-black/[0.03] dark:border-white/[0.03] bg-white/40 dark:bg-black/40 backdrop-blur-3xl flex items-center justify-between shrink-0 sticky top-0 z-20">
@@ -274,26 +274,13 @@ ${userQuery}
                     return (
                       <div
                         className={cn(
-                          "w-[99%] md:max-w-[80%] relative group shadow-none overflow-hidden",
+                          "w-fit md:max-w-[80%] relative group shadow-sm",
                           msg.role === "user"
-                            ? "bg-gradient-to-br from-primary via-primary to-[#0047FF] text-white rounded-2xl rounded-tr-none md:rounded-tr-none px-4 md:px-5.5 py-3 md:py-4.5"
-                            : cn(
-                                "rounded-2xl rounded-tl-none md:rounded-tl-none",
-                                isGenerating ? "p-[2px]" : "px-4 md:px-5.5 py-3 md:py-4.5 bg-white dark:bg-[#0f0f0f] text-black/85 dark:text-white/85 border border-black/10 dark:border-white/10"
-                              )
+                            ? "bg-[#0047FF] text-white rounded-2xl rounded-tr-[4px] px-4 md:px-5 py-2.5 md:py-3.5"
+                            : "bg-white dark:bg-[#1a1a1a] text-black/90 dark:text-white/90 rounded-2xl rounded-tl-[4px] px-4 md:px-5 py-2.5 md:py-3.5 border border-black/5 dark:border-white/5"
                         )}
                       >
-                        {isGenerating && (
-                          <div className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_0_340deg,#00f3ff_360deg)] animate-[spin_2s_linear_infinite] z-0" />
-                        )}
-                        <div
-                          className={cn(
-                            "flex flex-col gap-3 relative z-10",
-                            isGenerating
-                              ? "bg-white dark:bg-[#0f0f0f] text-black/85 dark:text-white/85 px-4 md:px-5.5 py-3 md:py-4.5 rounded-[calc(1rem-2px)] rounded-tl-none md:rounded-tl-none w-full h-full"
-                              : ""
-                          )}
-                        >
+                        <div className="flex flex-col gap-2 relative z-10 w-full h-full">
                       {/* Render text content */}
                       {msg.parts && msg.parts.length > 0 ? (
                         msg.parts.map((part: any, i: number) => {
@@ -343,48 +330,37 @@ ${userQuery}
                         </div>
                       ) : null}
 
-                      {/* Render Tool Invocations globally */}
+                      {/* Render Tool Invocations globally (ChatGPT Style) */}
                       {msg.toolInvocations && msg.toolInvocations.map((call: any, i: number) => (
                         <div
                           key={`tool-${i}`}
-                          className="bg-black/5 dark:bg-white/5 backdrop-blur-xl rounded-2xl p-3 border border-black/5 dark:border-white/5 flex items-center gap-3 group/tool overflow-hidden relative"
+                          className="flex items-center gap-2.5 text-[13px] text-black/50 dark:text-white/50 mb-1 last:mb-0 font-medium"
                         >
-                          <div className="h-8.5 w-8.5 rounded-xl bg-white dark:bg-black flex items-center justify-center shadow-sm relative z-10 shrink-0">
-                            {call.toolName.toLowerCase().includes("history") ? (
-                              <History className="h-4.5 w-4.5 text-primary" />
-                            ) : call.toolName.toLowerCase().includes("vital") ? (
-                              <Activity className="h-4.5 w-4.5 text-primary" />
-                            ) : (
-                              <Search className="h-4.5 w-4.5 text-primary" />
-                            )}
-                          </div>
-                          <div className="flex flex-col relative z-10">
-                            <span className="text-[8px] font-black uppercase tracking-[0.2em] text-black/30 dark:text-white/30 mb-0.5">
-                              {call.state === "result" ? "Query Completed" : "Medical Logic Step"}
-                            </span>
-                            <span className="text-xs font-black text-black/75 dark:text-white/75">
-                              {call.toolName === "searchMedicalHistory" && "Scanning Clinical Archives"}
-                              {call.toolName === "getLatestVitals" && "Accessing Vital Telemetry"}
-                              {call.toolName === "searchMedicalLiterature" && "Consulting Research Nodes"}
-                              {call.toolName === "getDoctorNotes" && "Decoding Clinical Insights"}
-                              {call.toolName === "searchVoiceHistory" && "Analyzing Audio Transcripts"}
-                              {call.toolName === "getDoctorIntelligence" && "Synthesizing Clinical Intelligence"}
-                            </span>
-                          </div>
                           {call.state === "result" ? (
-                            <div className="ml-auto relative z-10">
-                              <div className="h-6.5 w-6.5 rounded-full bg-green-500/10 flex items-center justify-center border border-green-500/20">
-                                <ShieldCheck className="h-3.5 w-3.5 text-green-600" />
-                              </div>
-                            </div>
+                            <ShieldCheck className="h-4 w-4 text-green-500" />
                           ) : (
-                            <div className="ml-auto relative z-10">
-                              <Loader2 className="h-4 w-4 text-primary animate-spin" />
-                            </div>
+                            <Loader2 className="h-4 w-4 animate-spin text-black/40 dark:text-white/40" />
                           )}
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] animate-[shimmer_2s_infinite]" />
+                          <span>
+                            {call.toolName === "searchMedicalHistory" && "Searching your medical records..."}
+                            {call.toolName === "getLatestVitals" && "Checking latest vitals..."}
+                            {call.toolName === "searchMedicalLiterature" && "Researching medical literature..."}
+                            {call.toolName === "getDoctorNotes" && "Reading doctor's notes..."}
+                            {call.toolName === "searchVoiceHistory" && "Analyzing consultation history..."}
+                            {call.toolName === "getDoctorIntelligence" && "Synthesizing clinical intelligence..."}
+                            {!["searchMedicalHistory", "getLatestVitals", "searchMedicalLiterature", "getDoctorNotes", "searchVoiceHistory", "getDoctorIntelligence"].includes(call.toolName) && `Using ${call.toolName}...`}
+                          </span>
                         </div>
                       ))}
+
+                      {/* Clean Loading Indicator when waiting for text */}
+                      {!msg.content && (!msg.toolInvocations || msg.toolInvocations.length === 0) && isGenerating && (
+                        <div className="flex items-center gap-1.5 h-6 px-1">
+                          <span className="w-1.5 h-1.5 bg-black/30 dark:bg-white/30 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                          <span className="w-1.5 h-1.5 bg-black/30 dark:bg-white/30 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                          <span className="w-1.5 h-1.5 bg-black/30 dark:bg-white/30 rounded-full animate-bounce"></span>
+                        </div>
+                      )}
                     </div>
                   </div>
                   );
@@ -413,7 +389,7 @@ ${userQuery}
       </div>
 
       {/* Persistent Smart Input Dock - Fixed on mobile, sticky at bottom on desktop */}
-      <div className="fixed bottom-[90px] left-2 right-2 z-40 md:relative md:bottom-auto md:left-auto md:right-auto px-2 md:px-6 pb-3 md:pb-4.5 pt-3 bg-white/95 dark:bg-[#0a0a0a]/95 backdrop-blur-2xl border border-black/10 dark:border-white/10 md:border-x-0 md:border-b-0 md:border-t md:border-black/[0.03] md:dark:border-white/[0.03] rounded-2xl md:rounded-none shadow-none">
+      <div className="fixed bottom-[90px] left-2 right-2 z-40 md:relative md:bottom-auto md:left-auto md:right-auto px-2 md:px-6 pb-3 md:pb-4.5 pt-3 bg-white/95 dark:bg-[#0a0a0a]/95 backdrop-blur-2xl md:border-t md:border-black/[0.03] md:dark:border-white/[0.03] shadow-none">
         
         {/* Selected Tool Indicator - Floats above the input dock */}
         <div className="absolute -top-10 left-6 right-6 flex justify-center z-30 pointer-events-none">

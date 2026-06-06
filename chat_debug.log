@@ -666,3 +666,37 @@
 [2026-06-06T10:48:17.433Z] Starting streamText with gemini-2.5-flash...
 [2026-06-06T10:48:17.438Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
 [2026-06-06T10:48:21.043Z] STREAM ERROR: {"error":{}}
+[2026-06-06T10:56:24.106Z] --- POST REQUEST START ---
+[2026-06-06T10:56:24.107Z] API Key present: true, Length: 39
+[2026-06-06T10:56:24.212Z] Auth User: cmppklw06000ht8v5mcystfql
+[2026-06-06T10:56:24.215Z] Messages count: 2
+[2026-06-06T10:56:24.724Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T10:56:24.741Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:56:34.125Z] STREAM ERROR: {"error":{}}
+[2026-06-06T10:56:56.493Z] --- POST REQUEST START ---
+[2026-06-06T10:56:56.493Z] API Key present: true, Length: 39
+[2026-06-06T10:56:56.509Z] Auth User: cmppklw06000ht8v5mcystfql
+[2026-06-06T10:56:56.511Z] Messages count: 3
+[2026-06-06T10:56:56.711Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T10:56:56.713Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:57:05.175Z] STREAM ERROR: {"error":{}}
+[2026-06-06T10:58:04.305Z] --- POST REQUEST START ---
+[2026-06-06T10:58:04.306Z] API Key present: true, Length: 39
+[2026-06-06T10:58:04.320Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-06T10:58:04.322Z] Messages count: 2
+[2026-06-06T10:58:04.820Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T10:58:04.823Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:58:20.197Z] --- POST REQUEST START ---
+[2026-06-06T10:58:20.198Z] API Key present: true, Length: 39
+[2026-06-06T10:58:20.255Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-06T10:58:20.258Z] Messages count: 2
+[2026-06-06T10:58:22.286Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T10:58:22.289Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:58:31.435Z] STREAM ERROR: {"error":{}}
+[2026-06-06T10:58:41.582Z] --- POST REQUEST START ---
+[2026-06-06T10:58:41.584Z] API Key present: true, Length: 39
+[2026-06-06T10:58:41.609Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-06T10:58:41.615Z] Messages count: 3
+[2026-06-06T10:58:42.131Z] Starting streamText with gemini-2.5-flash...
+[2026-06-06T10:58:42.135Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-06T10:59:00.811Z] STREAM ERROR: {"error":{}}

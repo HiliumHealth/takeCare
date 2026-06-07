@@ -721,3 +721,41 @@
 [2026-06-06T11:20:52.417Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
 [2026-06-06T11:20:54.403Z] TOOL: searchMedicalHistory | User: cmpmfji660003h4v5mpz6w9da | Query: patient medical history summary (raw: undefined)
 [2026-06-06T11:20:56.366Z] TOOL: searchMedicalHistory | Records found: 3
+[2026-06-07T07:50:25.612Z] --- POST REQUEST START ---
+[2026-06-07T07:50:25.614Z] API Key present: true, Length: 39
+[2026-06-07T07:50:25.650Z] Auth User: cmppklw06000ht8v5mcystfql
+[2026-06-07T07:50:25.653Z] Messages count: 2
+[2026-06-07T07:50:27.415Z] Starting streamText with gemini-2.5-flash...
+[2026-06-07T07:50:27.437Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-07T07:51:08.830Z] --- POST REQUEST START ---
+[2026-06-07T07:51:08.831Z] API Key present: true, Length: 39
+[2026-06-07T07:51:08.854Z] Auth User: cmppklw06000ht8v5mcystfql
+[2026-06-07T07:51:08.856Z] Messages count: 4
+[2026-06-07T07:51:19.526Z] Starting streamText with gemini-2.5-flash...
+[2026-06-07T07:51:19.532Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-07T07:51:33.986Z] TOOL: getDoctorNotes | User: cmppklw06000ht8v5mcystfql | Limit: undefined
+[2026-06-07T07:51:34.213Z] TOOL: getDoctorNotes | Notes found: 0
+[2026-06-07T11:58:13.802Z] --- POST REQUEST START ---
+[2026-06-07T11:58:13.803Z] API Key present: true, Length: 39
+[2026-06-07T11:58:13.820Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-07T11:58:13.822Z] Messages count: 6
+[2026-06-07T11:58:14.123Z] Starting streamText with gemini-2.5-flash...
+[2026-06-07T11:58:14.127Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-07T11:58:33.366Z] --- POST REQUEST START ---
+[2026-06-07T11:58:33.366Z] API Key present: true, Length: 39
+[2026-06-07T11:58:33.376Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-07T11:58:33.377Z] Messages count: 8
+[2026-06-07T11:58:33.654Z] Starting streamText with gemini-2.5-flash...
+[2026-06-07T11:58:33.655Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-07T11:58:59.249Z] --- POST REQUEST START ---
+[2026-06-07T11:58:59.250Z] API Key present: true, Length: 39
+[2026-06-07T11:58:59.260Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-07T11:58:59.261Z] Messages count: 10
+[2026-06-07T11:58:59.552Z] Starting streamText with gemini-2.5-flash...
+[2026-06-07T11:58:59.557Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-07T12:00:09.723Z] --- POST REQUEST START ---
+[2026-06-07T12:00:09.724Z] API Key present: true, Length: 39
+[2026-06-07T12:00:09.763Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-07T12:00:09.765Z] Messages count: 12
+[2026-06-07T12:00:10.053Z] Starting streamText with gemini-2.5-flash...
+[2026-06-07T12:00:10.056Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).

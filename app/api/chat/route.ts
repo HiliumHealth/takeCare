@@ -56,18 +56,20 @@ export async function POST(req: Request) {
     // AI SDK v6: convertToModelMessages
     const modelMessages = await convertToModelMessages(messages);
 
-    logToFile("Starting streamText with gemini-2.5-flash...");
+    logToFile("Starting streamText with groq qwen/qwen3-32b...");
 
     // In AI SDK v6, we get the result object immediately (not awaited)
     const result = streamText({
       model: groq("qwen/qwen3-32b"),
-      system: `You are Dr. Leo, a compassionate and precise AI health assistant for Hilium. 
+      system: `You are Dr. Gita, a compassionate and precise AI health assistant for Hilium. 
       Your mission is to provide evidence-based medical guidance by integrating the patient's personal history with current clinical research.
 
-      Operational Guidelines:
-      1. INTEGRATION: When multiple instructions are provided (e.g., searching records AND researching literature), perform both tasks and synthesize the findings.
-      2. PROACTIVITY: Always check the patient's medical records if the query relates to their specific condition or history.
-      3. CLARITY: Distinguish between the patient's actual data and general medical research.
+      CRITICAL RULES:
+      1. Do NOT wrap your response in <think> tags. Respond directly and conversationally.
+      2. ALWAYS use tools when the patient asks about their health history, records, vitals, or medications.
+      3. After receiving tool results, synthesize them into a clear, helpful response. Never leave the response empty.
+      4. If a tool returns no results, tell the patient clearly (e.g., "I couldn't find any doctor notes in your records yet.")
+      5. Distinguish between the patient's actual data and general medical knowledge.
 
       Patient Profile:
       ${context.profile}
@@ -76,9 +78,16 @@ export async function POST(req: Request) {
       messages: modelMessages,
       tools,
       maxSteps: 5,
+      onStepFinish: (step: any) => {
+        logToFile(`STEP FINISHED: type=${step.stepType} | finishReason=${step.finishReason} | toolCalls=${JSON.stringify(step.toolCalls?.map((tc: any) => tc.toolName) || [])} | textLength=${step.text?.length || 0}`);
+      },
+      onFinish: (result: any) => {
+        logToFile(`STREAM FINISHED: finishReason=${result.finishReason} | steps=${result.steps?.length || 0} | textLength=${result.text?.length || 0}`);
+      },
       onError: (err: any) => {
-        const errMsg = err instanceof Error ? err.message : JSON.stringify(err, Object.getOwnPropertyNames(err));
-        logToFile(`STREAM ERROR: ${errMsg}`);
+        const realErr = err?.error || err;
+        const errMsg = realErr?.message || realErr?.cause?.message || JSON.stringify(realErr, null, 2);
+        logToFile(`STREAM ERROR (detailed): ${errMsg}`);
       }
     } as any);
 
@@ -86,9 +95,10 @@ export async function POST(req: Request) {
     return result.toUIMessageStreamResponse();
 
   } catch (err: any) {
-    logToFile(`FATAL ERROR: ${err.message}`);
+    const errDetail = err?.message || JSON.stringify(err);
+    logToFile(`FATAL ERROR: ${errDetail}`);
     console.error("[ChatAPI] Error:", err);
-    return new Response(JSON.stringify({ error: err.message }), {
+    return new Response(JSON.stringify({ error: errDetail }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });

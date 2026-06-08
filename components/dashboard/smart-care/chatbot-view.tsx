@@ -5,13 +5,21 @@ import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { 
   ArrowUp,
+  Plus,
   Paperclip,
   ShieldCheck,
   Loader2,
   Globe,
   ArrowUpRight,
   Trash2,
-  Sparkles
+  Sparkles,
+  Stethoscope,
+  Microscope,
+  FileSearch,
+  Brain,
+  Activity,
+  History,
+  X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -48,6 +56,29 @@ export function ChatbotView({
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [toolMenuOpen, setToolMenuOpen] = useState(false);
+  const toolMenuRef = useRef<HTMLDivElement>(null);
+
+  // ChatGPT-style tool options
+  const toolOptions = [
+    { id: "records", icon: FileSearch, label: "Search Records", description: "Search your medical history", prompt: "Search my medical records for " },
+    { id: "vitals", icon: Activity, label: "Check Vitals", description: "Latest vitals & lab results", prompt: "What are my latest vitals and lab results?" },
+    { id: "doctor", icon: Stethoscope, label: "Doctor Notes", description: "Notes from your doctors", prompt: "Do I have any notes or messages from my doctor?" },
+    { id: "research", icon: Microscope, label: "Medical Research", description: "Search medical literature", prompt: "Research the latest findings on " },
+    { id: "voice", icon: History, label: "Past Consultations", description: "Previous voice call summaries", prompt: "Summarize my past voice consultations" },
+    { id: "intelligence", icon: Brain, label: "Clinical Summary", description: "AI-synthesized health overview", prompt: "Give me a full synthesized clinical intelligence summary" },
+  ];
+
+  // Close tool menu on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (toolMenuRef.current && !toolMenuRef.current.contains(e.target as Node)) {
+        setToolMenuOpen(false);
+      }
+    };
+    if (toolMenuOpen) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [toolMenuOpen]);
 
   // Thinking step animation phases
   const [thinkingPhase, setThinkingPhase] = useState(0);
@@ -422,12 +453,70 @@ export function ChatbotView({
             onSubmit={onFormSubmit}
             className="relative bg-white dark:bg-[#111] border border-black/10 dark:border-white/10 p-1 md:p-1.5 rounded-xl md:rounded-2xl flex items-center gap-1.5 focus-within:border-primary/40 transition-all duration-300 shadow-sm focus-within:shadow-md focus-within:shadow-primary/5"
           >
+            {/* Tool Selector Button (+) */}
+            <div className="relative pl-0.5 md:pl-1" ref={toolMenuRef}>
+              <button
+                type="button"
+                onClick={() => setToolMenuOpen(!toolMenuOpen)}
+                className={cn(
+                  "h-8 w-8 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer shrink-0",
+                  toolMenuOpen
+                    ? "bg-primary/10 text-primary rotate-45"
+                    : "bg-black/5 dark:bg-white/5 text-black/40 dark:text-white/40 hover:bg-black/10 dark:hover:bg-white/10 hover:text-black/60 dark:hover:text-white/60"
+                )}
+              >
+                {toolMenuOpen ? <X className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+              </button>
+
+              {/* Tool Popover Menu */}
+              <AnimatePresence>
+                {toolMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
+                    className="absolute bottom-full left-0 mb-2 w-[260px] md:w-[280px] bg-white dark:bg-[#141414] border border-black/10 dark:border-white/10 rounded-xl shadow-xl shadow-black/10 dark:shadow-black/40 overflow-hidden z-50"
+                  >
+                    <div className="px-3 py-2 border-b border-black/[0.04] dark:border-white/[0.04]">
+                      <p className="text-[9px] font-black text-black/30 dark:text-white/30 uppercase tracking-[0.15em]">Tools & Capabilities</p>
+                    </div>
+                    <div className="py-1 max-h-[280px] overflow-y-auto">
+                      {toolOptions.map((tool) => (
+                        <button
+                          key={tool.id}
+                          type="button"
+                          onClick={() => {
+                            setLocalInput(tool.prompt);
+                            setToolMenuOpen(false);
+                            inputRef.current?.focus();
+                          }}
+                          className="w-full flex items-center gap-2.5 px-3 py-2 hover:bg-black/[0.03] dark:hover:bg-white/[0.03] transition-colors text-left group"
+                        >
+                          <div className="h-7 w-7 rounded-lg bg-primary/8 dark:bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-all">
+                            <tool.icon className="h-3.5 w-3.5" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs font-bold text-black/80 dark:text-white/80 group-hover:text-black dark:group-hover:text-white truncate">{tool.label}</p>
+                            <p className="text-[10px] font-medium text-black/35 dark:text-white/35 truncate">{tool.description}</p>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                    <div className="px-3 py-1.5 border-t border-black/[0.04] dark:border-white/[0.04] bg-black/[0.01] dark:bg-white/[0.01]">
+                      <p className="text-[8px] font-semibold text-black/25 dark:text-white/25 text-center">Tools are also invoked automatically by AI</p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             <input
               ref={inputRef}
               value={localInput}
               onChange={(e) => setLocalInput(e.target.value)}
               placeholder="Ask Dr. Gita anything..."
-              className="flex-1 bg-transparent border-none focus:ring-0 focus:outline-none focus-visible:outline-none px-2.5 md:px-3.5 py-2 md:py-2.5 text-[13px] md:text-sm font-semibold placeholder:text-black/25 dark:placeholder:text-white/25 text-black dark:text-white min-w-0"
+              className="flex-1 bg-transparent border-none focus:ring-0 focus:outline-none focus-visible:outline-none px-1.5 md:px-2.5 py-2 md:py-2.5 text-[13px] md:text-sm font-semibold placeholder:text-black/25 dark:placeholder:text-white/25 text-black dark:text-white min-w-0"
               disabled={isLoading}
             />
 

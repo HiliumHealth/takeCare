@@ -194,8 +194,8 @@ export function ChatbotView({
       </header>
 
       {/* ═══════ SCROLLABLE MESSAGES ═══════ */}
-      <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto overscroll-contain scroll-smooth">
-        <div className="max-w-4xl mx-auto w-full px-3 md:px-6 pt-4 pb-6 flex flex-col gap-4 md:gap-5">
+      <div ref={scrollContainerRef} className="flex-1 min-h-0 overflow-y-auto overscroll-contain scroll-smooth chat-bg-pattern">
+        <div className="max-w-4xl mx-auto w-full px-3 md:px-6 pt-4 pb-6 flex flex-col gap-4 md:gap-5 relative z-10">
 
           {/* ── Welcome / Suggestions ── */}
           {messages.length <= 1 && (
@@ -424,8 +424,26 @@ export function ChatbotView({
         </div>
       </div>
 
-      {/* ═══════ NEON CSS ═══════ */}
+      {/* ═══════ NEON CSS + CHAT BG ═══════ */}
       <style jsx global>{`
+        /* WhatsApp-style chat background */
+        .chat-bg-pattern {
+          background-color: #edf6fc;
+          background-image:
+            radial-gradient(circle, rgba(59,130,246,0.07) 1px, transparent 1px),
+            radial-gradient(circle, rgba(99,102,241,0.05) 1px, transparent 1px);
+          background-size: 24px 24px, 36px 36px;
+          background-position: 0 0, 12px 12px;
+        }
+        :is(.dark) .chat-bg-pattern {
+          background-color: #060a10;
+          background-image:
+            radial-gradient(circle, rgba(59,130,246,0.08) 1px, transparent 1px),
+            radial-gradient(circle, rgba(99,102,241,0.05) 1px, transparent 1px);
+          background-size: 24px 24px, 36px 36px;
+          background-position: 0 0, 12px 12px;
+        }
+
         @property --glow-angle {
           syntax: '<angle>';
           initial-value: 0deg;

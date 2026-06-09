@@ -306,7 +306,7 @@ export function SmartCareSection({
                   />
                 </TabsContent>
 
-                <TabsContent value="text" key="text" className="flex-1 m-0 focus-visible:ring-0 min-h-[calc(100vh-160px)] -mx-4 lg:-mx-6">
+                <TabsContent value="text" key="text" className="flex-1 m-0 focus-visible:ring-0 h-[calc(100vh-160px)] overflow-hidden -mx-4 lg:-mx-6">
                   <ChatbotView 
                     userName={userName} 
                     messages={messages}

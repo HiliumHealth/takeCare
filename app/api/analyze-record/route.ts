@@ -50,6 +50,7 @@ Please carefully review the attached medical records (images, scans, or text). E
 
 IMPORTANT: Your response MUST be a valid JSON object with the following structure:
 {
+  "title": "A short, professional, and clear title for this medical record (e.g., 'Blood Test Results', 'Clinical Consultation - July 2026', 'ECG Report'). Do not use the original filename.",
   "analysis": "A rich, comprehensively markdown-formatted clinical summary. Use # for main headers, ## for subheaders, and bullet points. Break the summary into logical sections (e.g., Patient Overview, Key Findings, Action Items).",
   "structuredData": {
     "patient_summary": {
@@ -117,15 +118,23 @@ Do not include any text outside of the JSON object.
       
       // Fallback: aggressively extract the analysis string using regex if JSON parse fails
       let extractedAnalysis = result.text;
+      let extractedTitle = null;
+      
+      const titleMatch = result.text.match(/"title"\s*:\s*"([\s\S]*?)",?\s*"analysis"/);
+      if (titleMatch && titleMatch[1]) {
+        extractedTitle = titleMatch[1].replace(/\\n/g, "\n").replace(/\\"/g, "\"");
+      }
+      
       const analysisMatch = result.text.match(/"analysis"\s*:\s*"([\s\S]*?)",?\s*"structuredData"/);
       if (analysisMatch && analysisMatch[1]) {
         extractedAnalysis = analysisMatch[1].replace(/\\n/g, "\n").replace(/\\"/g, "\"");
       } else {
         // If it's wrapped in JSON but couldn't parse, just strip the outer brackets and quotes
-        extractedAnalysis = result.text.replace(/```json\n?/, "").replace(/\n?```/, "").replace(/\{\s*"analysis"\s*:\s*"/, "").replace(/"\s*,\s*"structuredData"[\s\S]*\}\s*$/, "").replace(/\\n/g, "\n").trim();
+        extractedAnalysis = result.text.replace(/```json\n?/, "").replace(/\n?```/, "").replace(/\{\s*"title"\s*:\s*"[^"]*",?\s*"analysis"\s*:\s*"/, "").replace(/\{\s*"analysis"\s*:\s*"/, "").replace(/"\s*,\s*"structuredData"[\s\S]*\}\s*$/, "").replace(/\\n/g, "\n").trim();
       }
 
       parsedResult = {
+        title: extractedTitle,
         analysis: extractedAnalysis,
         structuredData: null,
         error: "Structural parsing failed"
@@ -146,8 +155,8 @@ Do not include any text outside of the JSON object.
             userId: session.user.id,
             type: file.type.startsWith("image") ? "IMAGE" : "PDF",
             url: "local-blob",
-            fileName: file.name,
-            description: parsedResult.structuredData?.diagnosis || "Patient uploaded medical record",
+            fileName: parsedResult.title || file.name,
+            description: parsedResult.structuredData?.patient_summary?.diagnosis || "Patient uploaded medical record",
             extractedText: result.text
           }
         });

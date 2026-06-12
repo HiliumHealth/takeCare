@@ -225,7 +225,7 @@ export function ChatbotView({
           {/* ── Message Bubbles ── */}
           {messages.map((msg, idx) => {
             const displayText = getDisplayText(msg);
-            const hasTools = msg.toolInvocations?.length > 0;
+            const hasTools = msg.toolInvocations?.length > 0 || msg.parts?.some((p: any) => p.type === 'tool-invocation');
             const isLastAssistant = isLoading && msg.role === "assistant" && idx === messages.length - 1;
             if (msg.role === "assistant" && !displayText && !hasTools && !isLastAssistant) return null;
 
@@ -285,7 +285,7 @@ export function ChatbotView({
                   {/* Tool invocations */}
                   {hasTools && (
                     <div className={cn("flex flex-col gap-1.5", displayText && "mt-2.5 pt-2.5 border-t border-black/[0.04] dark:border-white/[0.04]")}>
-                      {msg.toolInvocations.map((call: any, i: number) => (
+                      {(msg.toolInvocations || msg.parts?.filter((p: any) => p.type === 'tool-invocation').map((p: any) => p.toolInvocation) || []).map((call: any, i: number) => (
                         <div key={`t-${i}`} className="flex items-center gap-2 text-[11px] md:text-xs text-black/45 dark:text-white/45 font-medium">
                           {call.state === "result" ? <ShieldCheck className="h-3.5 w-3.5 text-green-500 shrink-0" /> : <Loader2 className="h-3.5 w-3.5 animate-spin text-primary/60 shrink-0" />}
                           <span className="truncate">

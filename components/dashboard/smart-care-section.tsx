@@ -132,19 +132,19 @@ export function SmartCareSection({
     if (messages.length > 0) {
       const lastMsg = messages[messages.length - 1];
       
-      const hasToolResult = 
-        lastMsg.toolInvocations?.some((t: any) => t.state === 'result') || 
-        lastMsg.parts?.some((p: any) => p.type === 'tool-invocation' && p.toolInvocation?.state === 'result');
+      const hasToolInvocations = 
+        lastMsg.toolInvocations?.length > 0 || 
+        lastMsg.parts?.some((p: any) => p.type === 'tool-invocation');
 
-      if (lastMsg.role === 'assistant' && lastMsg.id !== processedMessageRef.current && hasToolResult) {
+      if (chatStatus !== 'streaming' && lastMsg.role === 'assistant' && lastMsg.id !== processedMessageRef.current && hasToolInvocations) {
         setTimeout(() => {
           processedMessageRef.current = lastMsg.id;
           console.log("SmartCareSection: Auto-continuing after tool execution.");
-          sdkSendMessage({ text: "[HIDDEN] Please continue and provide your summary based on the tool results." });
+          sdkSendMessage({ text: "[HIDDEN] Please provide your final response to the user based on the tool results above. If the tool returned no records or an error, tell the user gracefully." });
         }, 500);
       }
     }
-  }, [messages, sdkSendMessage]);
+  }, [messages, sdkSendMessage, chatStatus]);
 
   const visibleMessages = messages.filter((msg: any) => {
     if (msg.parts?.length) {

@@ -115,6 +115,14 @@ export function SmartCareSection({
     onError: (error) => {
       console.error("useChat SDK Error Details:", error);
       toast.error(`Chat Communication Error: ${error.message || "Something went wrong"}`);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `error-${Date.now()}`,
+          role: "assistant",
+          content: "I'm sorry, I ran into a technical issue processing your request. Could you please try asking me again?",
+        } as any
+      ]);
     },
   });
 

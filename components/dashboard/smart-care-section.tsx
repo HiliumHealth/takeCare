@@ -678,7 +678,14 @@ function VoiceAgentView({
                             )}
                           </div>
                           <p className="text-[10px] font-black uppercase tracking-widest truncate w-[85%]">
-                            {record.type === "CLINICAL_NOTE" ? "Doctor Assessment" : record.fileName}
+                            {(() => {
+                              if (record.type === "CLINICAL_NOTE") return "Doctor Assessment";
+                              let title = record.fileName || "Unnamed Clinical Record";
+                              if (title.match(/\.(jpeg|jpg|png|pdf)$/i) || title.includes("WhatsApp Image")) {
+                                title = record.description && record.description !== "Patient uploaded medical record" ? record.description : "Clinical Observation";
+                              }
+                              return title;
+                            })()}
                           </p>
                         </div>
                         <div>

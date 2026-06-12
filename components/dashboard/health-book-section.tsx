@@ -322,7 +322,10 @@ export function HealthBookSection({ prescriptions = [], clinicalRecords = [] }: 
       const extractedVitals = parseVitals(r);
       const extractedLabs = parseLabRequests(r);
       
-      const diagnosisText = r.description || r.fileName.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
+      let diagnosisText = r.description || r.fileName.replace(/\.[^/.]+$/, "").replace(/[-_]/g, " ");
+      if (diagnosisText.match(/\.(jpeg|jpg|png|pdf)$/i) || diagnosisText.includes("WhatsApp Image")) {
+        diagnosisText = r.description && r.description !== "Patient uploaded medical record" ? r.description : "Clinical Observation";
+      }
       const severityPrefix = r.analysis?.severity ? `[${r.analysis.severity}] ` : "";
 
       const dietText = extractLifestyle(r, "diet");

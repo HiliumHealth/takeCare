@@ -124,7 +124,13 @@ export function RecordDetailsModal({
 
               <div className="space-y-4">
                 <h2 className="font-bricolage text-2xl md:text-4xl font-extrabold tracking-tight text-foreground leading-tight">
-                  {record.fileName}
+                  {(() => {
+                    let title = record.fileName || "Unnamed Clinical Record";
+                    if (title.match(/\.(jpeg|jpg|png|pdf)$/i) || title.includes("WhatsApp Image")) {
+                      title = record.description && record.description !== "Patient uploaded medical record" ? record.description : "Clinical Observation";
+                    }
+                    return title;
+                  })()}
                 </h2>
 
                 <div className="flex flex-wrap items-center gap-6 text-neutral-800 dark:text-neutral-200 font-extrabold text-xs md:text-sm">

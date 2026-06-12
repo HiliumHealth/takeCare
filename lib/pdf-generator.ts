@@ -138,8 +138,24 @@ export const generateHospitalBook = (data: HospitalBookData) => {
 
   let yPos = 45;
 
+  const getDisplayTitle = (r: any) => {
+    let title = r.fileName || "Unnamed Clinical Record";
+    if (title.match(/\.(jpeg|jpg|png|pdf)$/i) || title.includes("WhatsApp Image")) {
+      title = r.description && r.description !== "Patient uploaded medical record" ? r.description : "Clinical Observation";
+    }
+    return title;
+  };
+
   records.forEach((record, index) => {
-    if (yPos > 230) {
+    const summary = record.analysis?.summary || record.fallbackSummary || "Clinical synthesis in progress.";
+    const splitSummary = doc.splitTextToSize(summary, 155);
+    
+    // Dynamic height calculation
+    const textHeight = splitSummary.length * 4; // approx 4mm per line
+    const boxHeight = textHeight + 10;
+    const cardHeight = boxHeight + 30;
+
+    if (yPos + cardHeight > 280) {
       addNewPage();
       yPos = 30;
     }
@@ -147,7 +163,7 @@ export const generateHospitalBook = (data: HospitalBookData) => {
     // Record Card
     doc.setDrawColor(240, 240, 240);
     doc.setLineWidth(0.2);
-    doc.roundedRect(15, yPos, 180, 50, 1, 1, "D");
+    doc.roundedRect(15, yPos, 180, cardHeight, 1, 1, "D");
 
     // Header within card
     doc.setFillColor(250, 252, 255);
@@ -161,11 +177,11 @@ export const generateHospitalBook = (data: HospitalBookData) => {
 
     doc.setTextColor(0, 0, 0);
     doc.setFontSize(10);
-    doc.text(record.fileName || "Unnamed Clinical Record", 22, yPos + 18);
+    doc.text(getDisplayTitle(record), 22, yPos + 18);
     
     // AI Summary Section
     doc.setFillColor(250, 250, 250);
-    doc.rect(22, yPos + 22, 166, 22, "F");
+    doc.rect(22, yPos + 22, 166, boxHeight, "F");
     
     doc.setFontSize(7);
     doc.setTextColor(120, 120, 120);
@@ -174,11 +190,9 @@ export const generateHospitalBook = (data: HospitalBookData) => {
     doc.setTextColor(60, 60, 60);
     doc.setFont("helvetica", "normal");
     doc.setFontSize(8.5);
-    const summary = record.analysis?.summary || record.fallbackSummary || "Clinical synthesis in progress.";
-    const splitSummary = doc.splitTextToSize(summary, 160);
     doc.text(splitSummary, 25, yPos + 32);
 
-    yPos += 58;
+    yPos += cardHeight + 8;
   });
 
   // --- PAGE 3: PRESCRIPTIONS ---

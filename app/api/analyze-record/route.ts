@@ -84,17 +84,8 @@ Do not include any text outside of the JSON object.
     // Initialize content array with the prompt
     const content: any[] = [{ type: "text", text: promptText }, ...validParts];
 
-    const hasPdfs = validParts.some((p: any) => p?.mimeType === "application/pdf");
-    const hasImages = validParts.some((p: any) => p?.type === "image");
-
-    let aiModel;
-    if (hasPdfs) {
-       aiModel = google("gemini-1.5-pro"); // Groq does not support PDFs, we MUST use Gemini.
-    } else if (hasImages) {
-       aiModel = groq("llama-3.2-90b-vision-preview");
-    } else {
-       aiModel = groq("qwen/qwen3-32b"); // fallback
-    }
+    // As requested, use gemini-2.5-flash for all modalities to solve compatibility issues
+    const aiModel = google("gemini-2.5-flash");
 
     // Request analysis
     const result = await generateText({

@@ -832,3 +832,47 @@
 [2026-06-12T04:13:32.048Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
 [2026-06-12T04:13:35.748Z] STEP FINISHED: type=undefined | finishReason=stop | toolCalls=[] | textLength=652
 [2026-06-12T04:13:35.752Z] STREAM FINISHED: finishReason=stop | steps=1 | textLength=652
+[2026-06-12T04:14:35.494Z] --- POST REQUEST START ---
+[2026-06-12T04:14:35.495Z] API Key present: true, Length: 39
+[2026-06-12T04:14:35.527Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-12T04:14:35.529Z] Messages count: 8
+[2026-06-12T04:14:35.780Z] Starting streamText with groq qwen/qwen3-32b...
+[2026-06-12T04:14:35.782Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-12T04:14:38.607Z] TOOL: getDoctorNotes | User: cmpmfji660003h4v5mpz6w9da | Limit: undefined
+[2026-06-12T04:14:38.825Z] TOOL: getDoctorNotes | Notes found: 0
+[2026-06-12T04:14:38.830Z] STEP FINISHED: type=undefined | finishReason=tool-calls | toolCalls=["getDoctorNotes"] | textLength=0
+[2026-06-12T04:14:38.833Z] STREAM FINISHED: finishReason=tool-calls | steps=1 | textLength=0
+[2026-06-12T04:15:11.700Z] --- POST REQUEST START ---
+[2026-06-12T04:15:11.704Z] API Key present: true, Length: 39
+[2026-06-12T04:15:11.738Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-12T04:15:11.740Z] Messages count: 10
+[2026-06-12T04:15:11.985Z] Starting streamText with groq qwen/qwen3-32b...
+[2026-06-12T04:15:11.988Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-12T04:15:15.362Z] STEP FINISHED: type=undefined | finishReason=stop | toolCalls=[] | textLength=489
+[2026-06-12T04:15:15.368Z] STREAM FINISHED: finishReason=stop | steps=1 | textLength=489
+[2026-06-12T04:16:46.479Z] --- POST REQUEST START ---
+[2026-06-12T04:16:46.481Z] API Key present: true, Length: 39
+[2026-06-12T04:16:46.522Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-12T04:16:46.524Z] Messages count: 12
+[2026-06-12T04:16:46.784Z] Starting streamText with groq qwen/qwen3-32b...
+[2026-06-12T04:16:46.801Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-12T04:16:49.549Z] STEP FINISHED: type=undefined | finishReason=stop | toolCalls=[] | textLength=218
+[2026-06-12T04:16:49.552Z] STREAM FINISHED: finishReason=stop | steps=1 | textLength=218
+[2026-06-12T04:17:11.935Z] --- POST REQUEST START ---
+[2026-06-12T04:17:11.939Z] API Key present: true, Length: 39
+[2026-06-12T04:17:11.977Z] Auth User: cmnm9stin000038v5uo82ijcs
+[2026-06-12T04:17:11.980Z] Messages count: 2
+[2026-06-12T04:17:27.403Z] Starting streamText with groq qwen/qwen3-32b...
+[2026-06-12T04:17:27.414Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-12T04:17:29.888Z] TOOL: searchMedicalHistory | User: cmnm9stin000038v5uo82ijcs | Query: patient medical history summary (raw: undefined)
+[2026-06-12T04:17:32.038Z] TOOL: searchMedicalHistory | Records found: 0
+[2026-06-12T04:17:32.044Z] STEP FINISHED: type=undefined | finishReason=tool-calls | toolCalls=["searchMedicalHistory"] | textLength=0
+[2026-06-12T04:17:32.050Z] STREAM FINISHED: finishReason=tool-calls | steps=1 | textLength=0
+[2026-06-12T04:18:25.863Z] --- POST REQUEST START ---
+[2026-06-12T04:18:25.866Z] API Key present: true, Length: 39
+[2026-06-12T04:18:25.901Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-12T04:18:25.903Z] Messages count: 14
+[2026-06-12T04:18:26.173Z] Starting streamText with groq qwen/qwen3-32b...
+[2026-06-12T04:18:26.184Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-12T04:18:29.749Z] STEP FINISHED: type=undefined | finishReason=stop | toolCalls=[] | textLength=489
+[2026-06-12T04:18:29.762Z] STREAM FINISHED: finishReason=stop | steps=1 | textLength=489

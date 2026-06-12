@@ -123,7 +123,12 @@ export function SmartCareSection({
   useEffect(() => {
     if (messages.length > 0) {
       const lastMsg = messages[messages.length - 1];
-      if (lastMsg.role === 'assistant' && lastMsg.id !== processedMessageRef.current && lastMsg.parts?.some((p: any) => p.type === 'tool-invocation' && p.toolInvocation?.state === 'result')) {
+      
+      const hasToolResult = 
+        lastMsg.toolInvocations?.some((t: any) => t.state === 'result') || 
+        lastMsg.parts?.some((p: any) => p.type === 'tool-invocation' && p.toolInvocation?.state === 'result');
+
+      if (lastMsg.role === 'assistant' && lastMsg.id !== processedMessageRef.current && hasToolResult) {
         setTimeout(() => {
           processedMessageRef.current = lastMsg.id;
           console.log("SmartCareSection: Auto-continuing after tool execution.");

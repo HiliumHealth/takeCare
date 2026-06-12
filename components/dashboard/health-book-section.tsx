@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import ReactMarkdown from "react-markdown";
 
 interface HealthBookSectionProps {
   prescriptions: any[];
@@ -509,9 +510,22 @@ export function HealthBookSection({ prescriptions = [], clinicalRecords = [] }: 
                       <p className="text-[10px] font-black text-black/30 dark:text-white/30 uppercase tracking-[0.3em]">
                         {activePrescription.type === "extracted" ? "CLINICAL SUMMARY" : "CLINICAL NOTES"}
                       </p>
-                      <p className="text-lg font-medium text-black/60 dark:text-white/60 leading-relaxed italic font-semibold">
-                        "{activePrescription.notes}"
-                      </p>
+                      <div className="text-lg font-medium text-black/60 dark:text-white/60 leading-relaxed italic font-semibold prose dark:prose-invert max-w-none">
+                        <ReactMarkdown>
+                          {(() => {
+                            let text = activePrescription.notes;
+                            if (text && typeof text === 'string' && text.includes('"analysis":')) {
+                              const match = text.match(/"analysis"\s*:\s*"([\s\S]*?)",?\s*"structuredData"/);
+                              if (match && match[1]) {
+                                return match[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
+                              } else {
+                                return text.replace(/```json\n?/, "").replace(/\n?```/, "").replace(/\{\s*"title"\s*:\s*"[^"]*",?\s*"analysis"\s*:\s*"/, "").replace(/\{\s*"analysis"\s*:\s*"/, "").replace(/"\s*,\s*"structuredData"[\s\S]*\}\s*$/, "").replace(/\\n/g, "\n").trim();
+                              }
+                            }
+                            return text;
+                          })()}
+                        </ReactMarkdown>
+                      </div>
                     </div>
                   </div>
 

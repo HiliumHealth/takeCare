@@ -5,8 +5,6 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { embed } from "ai";
-import pdfParse from "pdf-parse";
-
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
@@ -16,8 +14,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No files provided" }, { status: 400 });
     }
 
-    let parsedTextFromPdf = "";
-    
     // Convert uploaded files to the AI SDK content parts format
     const parts = await Promise.all(
       files.map(async (file) => {
@@ -31,15 +27,6 @@ export async function POST(req: Request) {
             image: buffer,
             mimeType: file.type,
           };
-        } else if (file.type === "application/pdf") {
-          try {
-             // We use pdf-parse because Groq Qwen/Llama doesn't natively support PDF file parts
-             const data = await pdfParse(buffer);
-             parsedTextFromPdf += `\n[Extracted from PDF ${file.name}]:\n${data.text}\n`;
-          } catch(e) {
-             console.error("PDF Parsing Error:", e);
-          }
-          return null; // Return null so we don't pass the raw buffer to Groq
         } else {
           return {
             type: "file" as const,
@@ -94,16 +81,21 @@ IMPORTANT: Your response MUST be a valid JSON object with the following structur
 Do not include any text outside of the JSON object.
 `;
 
-    if (parsedTextFromPdf) {
-      promptText += `\n\n### EXTRACTED PDF TEXT TO ANALYZE ###\n${parsedTextFromPdf}`;
-    }
-
     // Initialize content array with the prompt
     const content: any[] = [{ type: "text", text: promptText }, ...validParts];
 
-    // Determine model based on attachments (Llama 3.2 Vision for images, Qwen for text/PDFs)
+    // Determine model based on attachments (Gemini for PDFs, Llama Vision for images, Qwen for text)
+    const hasPdfs = validParts.some((p: any) => p?.mimeType === "application/pdf");
     const hasImages = validParts.some((p: any) => p?.type === "image");
-    const aiModel = hasImages ? groq("llama-3.2-90b-vision-preview") : groq("qwen/qwen3-32b");
+    
+    let aiModel;
+    if (hasPdfs) {
+       aiModel = google("gemini-2.5-pro"); // Google natively supports PDF files
+    } else if (hasImages) {
+       aiModel = groq("llama-3.2-90b-vision-preview");
+    } else {
+       aiModel = groq("qwen/qwen3-32b");
+    }
 
     // Request analysis
     const result = await generateText({

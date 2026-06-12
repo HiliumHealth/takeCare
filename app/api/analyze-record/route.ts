@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { embed } from "ai";
+
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
@@ -14,13 +15,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No files provided" }, { status: 400 });
     }
 
-    // Convert uploaded files to the AI SDK content parts format
     const parts = await Promise.all(
       files.map(async (file) => {
         const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
 
-        // Use type: "file" for PDFs, and "image" for images
         if (file.type.startsWith("image/")) {
           return {
             type: "image" as const,
@@ -28,6 +27,7 @@ export async function POST(req: Request) {
             mimeType: file.type,
           };
         } else {
+          // For PDFs, we must pass it to a model that supports file inputs (like Gemini)
           return {
             type: "file" as const,
             data: buffer,
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     let promptText = `
 You are a highly capable AI medical data extraction and analysis specialist acting as the knowledge ingestion engine for the 'Hilium' healthcare RAG system.
 
-Please carefully review the attached medical records (images, scans, or extracted text). Execute the following tasks:
+Please carefully review the attached medical records (images, scans, or text). Execute the following tasks:
 
 1. **Extract All Raw Text:** Transcribe the medical data verbatim for RAG indexing.
 2. **Clinical Summary:** Provide a highly structured, comprehensively formatted breakdown of the patient's condition. You MUST use rich Markdown formatting (e.g., # Headings, ## Subheadings, bullet points, bold text for emphasis) in your analysis output. DO NOT output a single plain paragraph.
@@ -84,17 +84,16 @@ Do not include any text outside of the JSON object.
     // Initialize content array with the prompt
     const content: any[] = [{ type: "text", text: promptText }, ...validParts];
 
-    // Determine model based on attachments (Gemini for PDFs, Llama Vision for images, Qwen for text)
     const hasPdfs = validParts.some((p: any) => p?.mimeType === "application/pdf");
     const hasImages = validParts.some((p: any) => p?.type === "image");
-    
+
     let aiModel;
     if (hasPdfs) {
-       aiModel = google("gemini-2.5-pro"); // Google natively supports PDF files
+       aiModel = google("gemini-1.5-pro"); // Groq does not support PDFs, we MUST use Gemini.
     } else if (hasImages) {
        aiModel = groq("llama-3.2-90b-vision-preview");
     } else {
-       aiModel = groq("qwen/qwen3-32b");
+       aiModel = groq("qwen/qwen3-32b"); // fallback
     }
 
     // Request analysis

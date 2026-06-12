@@ -1,5 +1,4 @@
 import { generateText } from "ai";
-import { google } from "@ai-sdk/google";
 import { groq } from "@ai-sdk/groq";
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
@@ -83,9 +82,9 @@ Do not include any text outside of the JSON object.
     // Initialize content array with the prompt
     const content: any[] = [{ type: "text", text: promptText }, ...parts];
 
-    // Request analysis using Gemini 1.5 Flash from Google AI SDK
+    // Request analysis using Groq Qwen
     const result = await generateText({
-      model: google("gemini-2.5-flash"),
+      model: groq("qwen/qwen3-32b"),
       messages: [
         {
           role: "user",

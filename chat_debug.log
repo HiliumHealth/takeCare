@@ -890,3 +890,43 @@
 [2026-06-12T04:23:53.523Z] Messages count: 2
 [2026-06-12T04:23:55.751Z] Starting streamText with groq qwen/qwen3-32b...
 [2026-06-12T04:23:55.765Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-12T04:33:09.461Z] --- POST REQUEST START ---
+[2026-06-12T04:33:09.461Z] API Key present: true, Length: 39
+[2026-06-12T04:33:09.517Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-12T04:33:09.520Z] Messages count: 2
+[2026-06-12T04:33:09.760Z] Starting streamText with groq qwen/qwen3-32b...
+[2026-06-12T04:33:09.767Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-12T04:33:10.568Z] STREAM ERROR (detailed): models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods.
+[2026-06-12T04:33:48.867Z] --- POST REQUEST START ---
+[2026-06-12T04:33:48.871Z] API Key present: true, Length: 39
+[2026-06-12T04:33:48.896Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-12T04:33:48.898Z] Messages count: 3
+[2026-06-12T04:33:49.134Z] Starting streamText with groq qwen/qwen3-32b...
+[2026-06-12T04:33:49.140Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-12T04:33:49.976Z] STREAM ERROR (detailed): models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods.
+[2026-06-12T04:41:06.593Z] --- POST REQUEST START ---
+[2026-06-12T04:41:06.594Z] API Key present: true, Length: 39
+[2026-06-12T04:41:07.011Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-12T04:41:07.022Z] Messages count: 4
+[2026-06-12T04:41:08.387Z] Starting streamText with groq qwen/qwen3-32b...
+[2026-06-12T04:41:08.398Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-12T04:41:10.315Z] STEP FINISHED: type=undefined | finishReason=stop | toolCalls=[] | textLength=174
+[2026-06-12T04:41:10.324Z] STREAM FINISHED: finishReason=stop | steps=1 | textLength=174
+[2026-06-12T04:42:48.787Z] --- POST REQUEST START ---
+[2026-06-12T04:42:48.789Z] API Key present: true, Length: 39
+[2026-06-12T04:42:48.836Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-12T04:42:48.838Z] Messages count: 2
+[2026-06-12T04:42:50.245Z] Starting streamText with groq qwen/qwen3-32b...
+[2026-06-12T04:42:50.250Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-12T04:42:52.781Z] TOOL: searchMedicalHistory | User: cmpmfji660003h4v5mpz6w9da | Query: patient medical history summary (raw: undefined)
+[2026-06-12T04:43:00.149Z] TOOL: searchMedicalHistory | Records found: 3
+[2026-06-12T04:43:00.171Z] STEP FINISHED: type=undefined | finishReason=tool-calls | toolCalls=["searchMedicalHistory"] | textLength=0
+[2026-06-12T04:43:00.181Z] STREAM FINISHED: finishReason=tool-calls | steps=1 | textLength=0
+[2026-06-12T04:43:17.053Z] --- POST REQUEST START ---
+[2026-06-12T04:43:17.055Z] API Key present: true, Length: 39
+[2026-06-12T04:43:17.082Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-12T04:43:17.084Z] Messages count: 4
+[2026-06-12T04:43:17.314Z] Starting streamText with groq qwen/qwen3-32b...
+[2026-06-12T04:43:17.319Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-12T04:43:22.672Z] STEP FINISHED: type=undefined | finishReason=stop | toolCalls=[] | textLength=969
+[2026-06-12T04:43:22.678Z] STREAM FINISHED: finishReason=stop | steps=1 | textLength=969

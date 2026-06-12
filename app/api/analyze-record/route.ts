@@ -1,5 +1,6 @@
 import { generateText } from "ai";
 import { groq } from "@ai-sdk/groq";
+import { google } from "@ai-sdk/google";
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";

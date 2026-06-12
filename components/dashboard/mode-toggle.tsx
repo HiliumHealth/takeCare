@@ -24,7 +24,7 @@ export function ModeToggle() {
     <Button
       variant="ghost"
       size="icon"
-      className="relative rounded-full h-10 w-10 hover:bg-black/5 dark:hover:bg-white/10 transition-colors group overflow-hidden"
+      className="relative rounded-full h-10 w-10 hover:bg-black/5 dark:hover:bg-white/10 transition-colors group overflow-hidden cursor-pointer"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
     >
       <AnimatePresence mode="wait" initial={false}>

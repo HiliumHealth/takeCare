@@ -22,6 +22,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import ReactMarkdown from "react-markdown";
 
 interface RecordDetailsPanelProps {
   isOpen: boolean;
@@ -318,10 +319,25 @@ export function RecordDetailsModal({
                             })()}
                           </div>
                         ) : (
-                          <div className="p-6 md:p-8 bg-black/[0.02] dark:bg-white/[0.02] rounded-3xl border border-black/[0.03] dark:border-white/[0.03] relative">
-                            <p className="text-sm md:text-lg text-neutral-950 dark:text-neutral-50 font-bold leading-relaxed font-serif italic">
-                              {record.extractedText || "No clinical text available for this record."}
-                            </p>
+                          <div className="p-6 md:p-8 bg-black/[0.02] dark:bg-white/[0.02] rounded-3xl border border-black/[0.03] dark:border-white/[0.03] relative prose dark:prose-invert max-w-none">
+                            {(() => {
+                              let textToRender = record.analysis?.summary || record.extractedText || "No clinical text available for this record.";
+                              // Strip raw JSON wrapping for backward compatibility with old records
+                              if (textToRender.includes('"analysis":')) {
+                                const match = textToRender.match(/"analysis"\s*:\s*"([\s\S]*?)",?\s*"structuredData"/);
+                                if (match && match[1]) {
+                                  textToRender = match[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
+                                } else {
+                                  textToRender = textToRender.replace(/```json\n?/, "").replace(/\n?```/, "").replace(/\{\s*"analysis"\s*:\s*"/, "").replace(/"\s*,\s*"structuredData"[\s\S]*\}\s*$/, "").replace(/\\n/g, "\n").trim();
+                                }
+                              }
+
+                              return (
+                                <ReactMarkdown className="text-sm md:text-base text-neutral-800 dark:text-neutral-200 leading-relaxed font-serif prose dark:prose-invert max-w-none prose-headings:font-bricolage prose-headings:font-black">
+                                  {textToRender}
+                                </ReactMarkdown>
+                              );
+                            })()}
                           </div>
                         )}
                       </div>

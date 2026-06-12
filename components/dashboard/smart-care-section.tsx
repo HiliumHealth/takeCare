@@ -1879,7 +1879,20 @@ function AnalysisView({
                             className="prose prose-sm font-medium text-black/80 dark:text-white/80 max-w-none prose-p:leading-relaxed prose-headings:font-bricolage prose-headings:font-extrabold dark:prose-invert"
                           >
                             <div className="prose prose-sm max-w-none">
-                              <ReactMarkdown>{analysisResult}</ReactMarkdown>
+                              <ReactMarkdown>
+                                {(() => {
+                                  let text = analysisResult;
+                                  if (text.includes('"analysis":')) {
+                                    const match = text.match(/"analysis"\s*:\s*"([\s\S]*?)",?\s*"structuredData"/);
+                                    if (match && match[1]) {
+                                      return match[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
+                                    } else {
+                                      return text.replace(/```json\n?/, "").replace(/\n?```/, "").replace(/\{\s*"analysis"\s*:\s*"/, "").replace(/"\s*,\s*"structuredData"[\s\S]*\}\s*$/, "").replace(/\\n/g, "\n").trim();
+                                    }
+                                  }
+                                  return text;
+                                })()}
+                              </ReactMarkdown>
                             </div>
                           </motion.div>
                         ) : analysisError ? (
@@ -2274,7 +2287,18 @@ function AnalysisView({
                         h3: ({ node, children, ...props }) => <h3 className="text-lg font-bold mb-2" {...props}>{children}</h3>,
                       }}
                     >
-                      {fullAnalysisResult}
+                      {(() => {
+                        let text = fullAnalysisResult;
+                        if (text.includes('"analysis":')) {
+                          const match = text.match(/"analysis"\s*:\s*"([\s\S]*?)",?\s*"structuredData"/);
+                          if (match && match[1]) {
+                            return match[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
+                          } else {
+                            return text.replace(/```json\n?/, "").replace(/\n?```/, "").replace(/\{\s*"analysis"\s*:\s*"/, "").replace(/"\s*,\s*"structuredData"[\s\S]*\}\s*$/, "").replace(/\\n/g, "\n").trim();
+                          }
+                        }
+                        return text;
+                      })()}
                     </ReactMarkdown>
                   </div>
                 )}

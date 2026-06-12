@@ -114,8 +114,19 @@ Do not include any text outside of the JSON object.
       }
     } catch (parseError) {
       console.error("Failed to parse AI response as JSON. Raw text:", result.text);
+      
+      // Fallback: aggressively extract the analysis string using regex if JSON parse fails
+      let extractedAnalysis = result.text;
+      const analysisMatch = result.text.match(/"analysis"\s*:\s*"([\s\S]*?)",?\s*"structuredData"/);
+      if (analysisMatch && analysisMatch[1]) {
+        extractedAnalysis = analysisMatch[1].replace(/\\n/g, "\n").replace(/\\"/g, "\"");
+      } else {
+        // If it's wrapped in JSON but couldn't parse, just strip the outer brackets and quotes
+        extractedAnalysis = result.text.replace(/```json\n?/, "").replace(/\n?```/, "").replace(/\{\s*"analysis"\s*:\s*"/, "").replace(/"\s*,\s*"structuredData"[\s\S]*\}\s*$/, "").replace(/\\n/g, "\n").trim();
+      }
+
       parsedResult = {
-        analysis: result.text,
+        analysis: extractedAnalysis,
         structuredData: null,
         error: "Structural parsing failed"
       };

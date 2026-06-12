@@ -89,6 +89,7 @@ export function SmartCareSection({
   const [selectedRecordId, setSelectedRecordId] = useState<string | null>(null);
   const [patientId, setPatientId] = useState<string | null>(null);
   const [showSelection, setShowSelection] = useState(true);
+  const processedMessageRef = useRef<string | null>(null);
 
   const { data: session, status } = useSession();
 
@@ -115,6 +116,28 @@ export function SmartCareSection({
       console.error("useChat SDK Error Details:", error);
       toast.error(`Chat Communication Error: ${error.message || "Something went wrong"}`);
     },
+  });
+
+  // --- Auto-Continuation Hack ---
+  // If the stream finishes and the last assistant message has tool results, send a hidden continuation message.
+  useEffect(() => {
+    if (messages.length > 0) {
+      const lastMsg = messages[messages.length - 1];
+      if (lastMsg.role === 'assistant' && lastMsg.id !== processedMessageRef.current && lastMsg.parts?.some((p: any) => p.type === 'tool-invocation' && p.toolInvocation?.state === 'result')) {
+        setTimeout(() => {
+          processedMessageRef.current = lastMsg.id;
+          console.log("SmartCareSection: Auto-continuing after tool execution.");
+          sdkSendMessage({ text: "[HIDDEN] Please continue and provide your summary based on the tool results." });
+        }, 500);
+      }
+    }
+  }, [messages, sdkSendMessage]);
+
+  const visibleMessages = messages.filter((msg: any) => {
+    if (msg.parts?.length) {
+      return !msg.parts.some((p: any) => p.type === 'text' && p.text?.startsWith('[HIDDEN]'));
+    }
+    return !msg.content?.startsWith('[HIDDEN]');
   });
 
   // Sync with prop updates from parent
@@ -309,7 +332,7 @@ export function SmartCareSection({
                 <TabsContent value="text" key="text" className="flex-1 m-0 focus-visible:ring-0 h-[calc(100vh-160px)] overflow-hidden -mx-4 lg:-mx-6">
                   <ChatbotView 
                     userName={userName} 
-                    messages={messages}
+                    messages={visibleMessages}
                     sendMessage={sendMessage}
                     status={chatStatus}
                     setMessages={setMessages}

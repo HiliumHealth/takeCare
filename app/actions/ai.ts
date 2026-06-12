@@ -66,7 +66,10 @@ export async function generateSmartSummary(recordId: string) {
       return "Hilium AI could not extract meaningful insights from this specific record. Manual review recommended.";
     }
 
-    return text.trim();
+    let cleanText = text.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+    // Also remove any trailing word counts that the AI might add (e.g., *(60 words)*)
+    cleanText = cleanText.replace(/\*?\(\d+\s*words\)\*?/gi, '').trim();
+    return cleanText;
   } catch (error: any) {
     console.error("[AI-SUMMARY-ERROR]", error.message || error);
     return `Hilium AI encountered a temporary synchronization issue. (Error: ${error.message?.substring(0, 50)}...)`;

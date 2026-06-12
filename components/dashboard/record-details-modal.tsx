@@ -333,9 +333,11 @@ export function RecordDetailsModal({
                               }
 
                               return (
-                                <ReactMarkdown className="text-sm md:text-base text-neutral-800 dark:text-neutral-200 leading-relaxed font-serif prose dark:prose-invert max-w-none prose-headings:font-bricolage prose-headings:font-black">
-                                  {textToRender}
-                                </ReactMarkdown>
+                                <div className="text-sm md:text-base text-neutral-800 dark:text-neutral-200 leading-relaxed font-serif prose dark:prose-invert max-w-none prose-headings:font-bricolage prose-headings:font-black">
+                                  <ReactMarkdown>
+                                    {textToRender}
+                                  </ReactMarkdown>
+                                </div>
                               );
                             })()}
                           </div>

@@ -130,7 +130,7 @@ export function SmartCareSection({
   // If the stream finishes and the last assistant message has tool results, send a hidden continuation message.
   useEffect(() => {
     if (messages.length > 0) {
-      const lastMsg = messages[messages.length - 1];
+      const lastMsg = messages[messages.length - 1] as any;
       
       const hasToolInvocations = 
         lastMsg.toolInvocations?.length > 0 || 

@@ -876,3 +876,17 @@
 [2026-06-12T04:18:26.184Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
 [2026-06-12T04:18:29.749Z] STEP FINISHED: type=undefined | finishReason=stop | toolCalls=[] | textLength=489
 [2026-06-12T04:18:29.762Z] STREAM FINISHED: finishReason=stop | steps=1 | textLength=489
+[2026-06-12T04:22:42.244Z] --- POST REQUEST START ---
+[2026-06-12T04:22:42.247Z] API Key present: true, Length: 39
+[2026-06-12T04:22:42.303Z] Auth User: cmnm9stin000038v5uo82ijcs
+[2026-06-12T04:22:42.305Z] Messages count: 4
+[2026-06-12T04:22:53.989Z] Starting streamText with groq qwen/qwen3-32b...
+[2026-06-12T04:22:54.003Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).
+[2026-06-12T04:23:03.064Z] STEP FINISHED: type=undefined | finishReason=stop | toolCalls=[] | textLength=472
+[2026-06-12T04:23:03.068Z] STREAM FINISHED: finishReason=stop | steps=1 | textLength=472
+[2026-06-12T04:23:53.474Z] --- POST REQUEST START ---
+[2026-06-12T04:23:53.476Z] API Key present: true, Length: 39
+[2026-06-12T04:23:53.519Z] Auth User: cmpmfji660003h4v5mpz6w9da
+[2026-06-12T04:23:53.523Z] Messages count: 2
+[2026-06-12T04:23:55.751Z] Starting streamText with groq qwen/qwen3-32b...
+[2026-06-12T04:23:55.765Z] Returning stream response via toUIMessageStreamResponse (AI SDK v6).

@@ -1,5 +1,5 @@
 import { streamText, convertToModelMessages, UIMessage } from 'ai';
-import { groq } from '@ai-sdk/groq';
+import { google } from '@ai-sdk/google';
 import { NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
@@ -60,7 +60,7 @@ export async function POST(req: Request) {
 
     // In AI SDK v6, we get the result object immediately (not awaited)
     const result = streamText({
-      model: groq("qwen/qwen3-32b"),
+      model: google("gemini-1.5-flash"),
       system: `You are Dr. Gita, a compassionate and precise AI health assistant for Hilium. 
       Your mission is to provide evidence-based medical guidance by integrating the patient's personal history with current clinical research.
 

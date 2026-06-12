@@ -24,7 +24,7 @@ export async function searchMedicalRecords(
     const vectorString = JSON.stringify(embedding);
 
     // <=> is the pgvector cosine distance operator (lower = more similar)
-    return await prisma.$queryRaw<SearchResult[]>`
+    const records = await prisma.$queryRaw<SearchResult[]>`
       SELECT
         id, "fileName", type, "extractedText", "createdAt",
         1 - (embedding <=> ${vectorString}::vector) AS similarity
@@ -34,6 +34,12 @@ export async function searchMedicalRecords(
       ORDER BY embedding <=> ${vectorString}::vector
       LIMIT ${limit}
     `;
+
+    if (records.length === 0) {
+      throw new Error("No records with embeddings found, falling back to chronological.");
+    }
+
+    return records;
   } catch (error) {
     console.error("Embedding API failed, falling back to chronological search:", error);
     // Fallback if embedding API is unavailable
@@ -65,7 +71,7 @@ export async function searchVapiTranscripts(
     const { embedding } = await embed({ model: embeddingModel, value: query });
     const vectorString = JSON.stringify(embedding);
 
-    return await prisma.$queryRaw`
+    const transcripts = await prisma.$queryRaw<any[]>`
       SELECT id, transcript, summary, "createdAt",
       1 - (embedding <=> ${vectorString}::vector) AS similarity
       FROM "VapiTranscript"
@@ -73,6 +79,12 @@ export async function searchVapiTranscripts(
       ORDER BY embedding <=> ${vectorString}::vector
       LIMIT ${limit}
     `;
+
+    if (transcripts.length === 0) {
+      throw new Error("No transcripts with embeddings found, falling back to chronological.");
+    }
+
+    return transcripts;
   } catch (error) {
     console.error("Embedding API failed for transcripts, falling back to chronological:", error);
     const transcripts = await prisma.vapiTranscript.findMany({

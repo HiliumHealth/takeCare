@@ -146,19 +146,36 @@ export const generateHospitalBook = (data: HospitalBookData) => {
     return title;
   };
 
+  const stripMarkdown = (text: string) => {
+    if (!text) return "";
+    return text
+      .replace(/\*\*(.*?)\*\*/g, '$1') // bold
+      .replace(/\*(.*?)\*/g, '$1')     // italic
+      .replace(/_{1,2}(.*?)_{1,2}/g, '$1') // underline/italic
+      .replace(/#+\s?/g, '')           // headers
+      .replace(/\[(.*?)\]\(.*?\)/g, '$1') // links
+      .replace(/`{1,3}(.*?)`{1,3}/g, '$1') // code
+      .replace(/\n\s*-\s/g, '\n• ')    // lists
+      .replace(/\n\s*\*\s/g, '\n• ')   // lists
+      .replace(/<[^>]*>?/gm, '')       // html tags
+      .trim();
+  };
+
   records.forEach((record, index) => {
-    const summary = record.analysis?.summary || record.fallbackSummary || "Clinical synthesis in progress.";
+    // Each record on a new page (except the first one which starts on the initial overview page)
+    if (index > 0) {
+      addNewPage();
+      yPos = 30;
+    }
+
+    const rawSummary = record.analysis?.summary || record.fallbackSummary || "Clinical synthesis in progress.";
+    const summary = stripMarkdown(rawSummary);
     const splitSummary = doc.splitTextToSize(summary, 155);
     
     // Dynamic height calculation
     const textHeight = splitSummary.length * 4; // approx 4mm per line
     const boxHeight = textHeight + 10;
     const cardHeight = boxHeight + 30;
-
-    if (yPos + cardHeight > 280) {
-      addNewPage();
-      yPos = 30;
-    }
 
     // Record Card
     doc.setDrawColor(240, 240, 240);

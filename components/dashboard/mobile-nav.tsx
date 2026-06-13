@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LayoutDashboard, MessageSquare, Bell, Plus, Brain } from "lucide-react";
+import { LayoutDashboard, MessageSquare, Bell, Plus, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
@@ -10,7 +10,7 @@ const NAV_ITEMS = [
   { id: "messenger", label: "Care", icon: MessageSquare },
   { id: "smart-care", label: "Analyze", icon: Plus, isAction: true },
   { id: "notifications", label: "Alerts", icon: Bell },
-  { id: "ai", label: "Assistant", icon: Brain },
+  { id: "download", label: "Download", icon: Download },
 ];
 
 interface MobileNavProps {

@@ -23,6 +23,13 @@ import { Search, Filter, XCircle, CheckCircle2, BellRing, ArrowRight, ArrowLeft,
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { MobileNav } from "@/components/dashboard/mobile-nav";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 function DashboardLoading() {
   return (
@@ -174,6 +181,7 @@ export default function DashboardPage() {
   const [unreadNotifications, setUnreadNotifications] = useState(3);
   const [messengerUnreadCount, setMessengerUnreadCount] = useState(0);
   const [userData, setUserData] = useState<any>(null);
+  const [showDownloadMenu, setShowDownloadMenu] = useState(false);
   const userDataRef = useRef<any>(null);
 
   useEffect(() => {
@@ -844,9 +852,68 @@ export default function DashboardPage() {
         <div className="h-32 lg:hidden" />
       </main>
 
+      <Dialog open={showDownloadMenu} onOpenChange={setShowDownloadMenu}>
+        <DialogContent className="w-[90vw] max-w-sm rounded-[2rem] p-6 bg-white dark:bg-[#111] border border-black/5 dark:border-white/10 shadow-2xl">
+          <DialogHeader className="mb-4">
+            <DialogTitle className="font-bricolage text-2xl font-black text-center text-black dark:text-white">Health Booklet</DialogTitle>
+            <DialogDescription className="text-center text-xs font-bold uppercase tracking-widest text-black/40 dark:text-white/40">
+              Choose an action for your medical history
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex flex-col gap-3">
+            <Button
+              onClick={async () => {
+                setShowDownloadMenu(false);
+                const { generateHospitalBook } = await import("@/lib/pdf-generator");
+                const url = generateHospitalBook({
+                  user: userData,
+                  records: userData.medicalRecords,
+                  prescriptions: userData.prescriptions,
+                  personalization: userData.personalization,
+                  preview: true
+                });
+                if (url) window.open(url.toString(), "_blank");
+              }}
+              className="h-14 rounded-2xl bg-primary/10 hover:bg-primary/20 text-primary font-black text-xs uppercase tracking-[0.2em] w-full flex items-center justify-center gap-2"
+            >
+              <Eye className="h-5 w-5" />
+              Preview Booklet
+            </Button>
+
+            <Button
+              onClick={async () => {
+                setShowDownloadMenu(false);
+                const { generateHospitalBook } = await import("@/lib/pdf-generator");
+                generateHospitalBook({
+                  user: userData,
+                  records: userData.medicalRecords,
+                  prescriptions: userData.prescriptions,
+                  personalization: userData.personalization
+                });
+                toast.success("Downloading Booklet...", {
+                  description: "Compiling and signing your official health ledger.",
+                  icon: <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+                });
+              }}
+              className="h-14 rounded-2xl bg-primary hover:bg-primary/95 text-white font-black text-xs uppercase tracking-[0.2em] w-full flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
+            >
+              <Download className="h-5 w-5" />
+              Download PDF
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <MobileNav 
         activeTab={activeTab} 
-        onTabChange={setActiveTab} 
+        onTabChange={(id) => {
+          if (id === "download") {
+            setShowDownloadMenu(true);
+          } else {
+            setActiveTab(id);
+          }
+        }} 
         messengerCount={messengerUnreadCount}
         notificationCount={unreadNotifications}
       />

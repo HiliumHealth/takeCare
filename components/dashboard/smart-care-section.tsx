@@ -139,7 +139,7 @@ export function SmartCareSection({
       if (chatStatus !== 'streaming' && lastMsg.role === 'assistant' && lastMsg.id !== processedMessageRef.current && hasToolInvocations) {
         setTimeout(() => {
           processedMessageRef.current = lastMsg.id;
-          console.log("SmartCareSection: Auto-continuing after tool execution.");
+
           sdkSendMessage({ text: "[HIDDEN] Please provide your final response to the user based on the tool results above. If the tool returned no records or an error, tell the user gracefully." });
         }, 500);
       }
@@ -174,7 +174,7 @@ export function SmartCareSection({
     if (!text) return;
 
     try {
-      console.log("SmartCareSection: Sending message:", text);
+
       // AI SDK v6: sendMessage expects an object with a 'text' property
       await sdkSendMessage({ text });
     } catch (err: any) {
@@ -798,7 +798,7 @@ function AnalysisView({
     
     try {
       setIsDownloading(true);
-      console.log("Initializing stable PDF capture sequence...");
+
       
       const element = reportRef.current;
       if (!element) {
@@ -970,7 +970,7 @@ function AnalysisView({
       try {
         attempts++;
         await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempts - 1)));
-        console.log(`Reconnection attempt ${attempts}...`);
+
 
         await setupGattServer(device);
         setConnectionError(null);
@@ -1094,7 +1094,7 @@ function AnalysisView({
     selectedFiles.forEach(file => formData.append("file", file));
 
     try {
-      console.log("[SmartCare] Analysis requested. Session status:", status);
+
       
       if (status === "unauthenticated") {
         toast.error("Session expired. Please log in again.");

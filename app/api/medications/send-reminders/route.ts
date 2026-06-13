@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log("[Send Reminders Cron] Starting medication reminder check...");
+
 
     // Execute the reminder sending logic
     await checkAndSendDueReminders();

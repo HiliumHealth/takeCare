@@ -8,15 +8,15 @@ export function NotificationListener() {
     if (typeof window === "undefined" || !("serviceWorker" in navigator)) return;
 
     const handleServiceWorkerMessage = (event: any) => {
-      console.log("[Notification Listener] Received message from SW:", event.data);
+
 
       if (event.data.type === "NOTIFICATION_SHOWN") {
-        console.log("[Notification Listener] Notification shown in system tray");
+
         toast.success(event.data.data.title, {
           description: event.data.data.body,
         });
       } else if (event.data.type === "NOTIFICATION_FALLBACK") {
-        console.log("[Notification Listener] Showing fallback in-app notification");
+
         // If window is focused and system notification failed, show in-app toast
         toast.info(event.data.data.title, {
           description: event.data.data.body,
@@ -32,7 +32,7 @@ export function NotificationListener() {
     navigator.serviceWorker.getRegistrations().then((registrations) => {
       registrations.forEach((reg) => {
         if (reg.active) {
-          console.log("[Notification Listener] Listening to active SW");
+
         }
       });
     });

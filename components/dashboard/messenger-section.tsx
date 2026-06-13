@@ -285,7 +285,7 @@ export function MessengerSection({ onNotificationSync, onInviteSuccess, invitedD
           setLastSeenTimestamp(data.latestTimestamp);
           playNotificationSound();
 
-          console.log("[FAANG Ingestion] Multi-modal Data Ready for AI:", incoming);
+
         }
       } catch (err) {
         console.error("Polling error:", err);

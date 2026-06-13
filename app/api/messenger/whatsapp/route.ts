@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
 
     try {
-      console.log(`[WhatsApp Debug] Normalized Number: ${formattedNumber}`);
+
 
       // Mapping the "Cart" template variables to "Medical Consultation" context:
       // {{1}} -> Doctor Name
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
         buttonText: "Join Dashboard"
       };
 
-      console.log("[WhatsApp Debug] Final Medical Payload:", JSON.stringify(payload, null, 2));
+
 
       const response = await fetch(url, {
         method: "POST",
@@ -67,7 +67,7 @@ export async function POST(req: Request) {
 
       clearTimeout(timeoutId);
       const data = await response.json();
-      console.log("[WhatsApp Response]", JSON.stringify(data, null, 2));
+
 
       // Handle Sandesh AI's specific error responses
       if (!response.ok || data.success === false) {

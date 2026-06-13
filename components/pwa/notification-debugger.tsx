@@ -21,22 +21,22 @@ export function NotificationDebugger() {
       // Check SW
       if ("serviceWorker" in navigator) {
         const registrations = await navigator.serviceWorker.getRegistrations();
-        console.log(`[Debug] Service Workers registered: ${registrations.length}`);
+
         setSwRegistered(registrations.length > 0);
         registrations.forEach(reg => {
-          console.log(`[Debug] SW scope: ${reg.scope}`);
+
         });
       }
 
       // Check push support
       const hasSupport = "Notification" in window && "serviceWorker" in navigator && "PushManager" in window;
       setPushSupported(hasSupport);
-      console.log(`[Debug] Push supported: ${hasSupport}`);
+
 
       // Check permission
       if ("Notification" in window) {
         setPermission(Notification.permission);
-        console.log(`[Debug] Notification permission: ${Notification.permission}`);
+
       }
 
       // Check subscription
@@ -46,9 +46,9 @@ export function NotificationDebugger() {
           const reg = registrations[0];
           const sub = await reg.pushManager.getSubscription();
           setHasSubscription(!!sub);
-          console.log(`[Debug] Has subscription: ${!!sub}`);
+
           if (sub) {
-            console.log(`[Debug] Subscription endpoint: ${sub.endpoint.substring(0, 50)}...`);
+
           }
         }
       }
@@ -61,7 +61,7 @@ export function NotificationDebugger() {
     try {
       const res = await fetch("/api/notifications/diagnose");
       const data = await res.json();
-      console.log("[Debug] Diagnostics:", data);
+
       
       let message = `Subscriptions: ${data.subscriptionCount}\n`;
       if (data.issues.length > 0) {

@@ -9,10 +9,10 @@ export async function POST() {
   }
 
   try {
-    console.log(`\n[Test Push] ============================================`);
-    console.log(`[Test Push] Starting test for user ${session.user.id}`);
-    console.log(`[Test Push] Timestamp: ${new Date().toISOString()}`);
-    console.log(`[Test Push] ============================================\n`);
+
+
+
+
 
     const testPayload = {
       title: "Test Notification 🚀",
@@ -21,7 +21,7 @@ export async function POST() {
       icon: "/icons/icon-192x192.png",
     };
 
-    console.log(`[Test Push] Sending payload:`, testPayload);
+
     const result = await sendPushNotification(session.user.id, testPayload);
 
     if (!result || result.length === 0) {
@@ -40,10 +40,10 @@ export async function POST() {
     const successful = result.filter(r => r.status === "fulfilled");
     const failed = result.filter(r => r.status === "rejected");
 
-    console.log(`[Test Push] Results Summary:`);
-    console.log(`[Test Push] - Total attempts: ${result.length}`);
-    console.log(`[Test Push] - Successful: ${successful.length}`);
-    console.log(`[Test Push] - Failed: ${failed.length}`);
+
+
+
+
 
     if (failed.length > 0) {
       console.log(`[Test Push] Failed details:`, failed.map((f: any) => ({
@@ -71,8 +71,8 @@ export async function POST() {
       });
     }
 
-    console.log(`[Test Push] ✓ Test successful! ${successful.length} of ${result.length} notifications sent`);
-    console.log(`[Test Push] ============================================\n`);
+
+
 
     return NextResponse.json({
       success: true,

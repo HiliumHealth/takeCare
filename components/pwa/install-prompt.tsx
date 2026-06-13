@@ -58,7 +58,7 @@ export function InstallPrompt() {
       const { outcome } = await deferredPrompt.userChoice;
 
       if (outcome === "accepted") {
-        console.log("[Hilium PWA] User accepted install prompt");
+
         setIsInstalled(true);
       }
 

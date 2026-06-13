@@ -170,7 +170,7 @@ Do not include any text outside of the JSON object.
           }
         });
 
-        console.log("[Route] Successfully saved medical record and analysis for user:", session.user.id);
+
 
         // INDEXING: Embed record for RAG
         try {
@@ -194,7 +194,7 @@ Do not include any text outside of the JSON object.
             SET embedding = ${vectorString}::vector
             WHERE id = ${record.id}
           `;
-          console.log("[RAG] Indexing complete for record:", record.id);
+
         } catch (indexingError) {
           console.error("[RAG] Indexing failed:", indexingError);
         }

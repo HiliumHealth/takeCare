@@ -16,7 +16,7 @@ export async function GET(req: Request) {
 
     // Test 1: Send a test notification to a specific user
     if (action === "send-test" && userId) {
-      console.log(`[TEST] Sending test notification to user: ${userId}`);
+
       
       const user = await prisma.user.findUnique({ where: { id: userId } });
       if (!user) {
@@ -41,7 +41,7 @@ export async function GET(req: Request) {
 
     // Test 2: Process medication queue (CRON job)
     if (action === "process-queue") {
-      console.log("[TEST] Processing medication queue");
+
       
       const result = await processMedicationQueue();
       
@@ -55,7 +55,7 @@ export async function GET(req: Request) {
 
     // Test 3: Create a test medication reminder for NOW and trigger immediately
     if (action === "create-test-reminder" && userId) {
-      console.log(`[TEST] Creating test reminder for user: ${userId}`);
+
       
       const user = await prisma.user.findUnique({ where: { id: userId } });
       if (!user) {
@@ -66,7 +66,7 @@ export async function GET(req: Request) {
       const now = new Date();
       const currentTime = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
       
-      console.log(`[TEST] Current time: ${currentTime}`);
+
 
       // Create prescription
       const prescription = await prisma.prescription.create({
@@ -90,10 +90,10 @@ export async function GET(req: Request) {
         include: { medications: true }
       });
 
-      console.log(`[TEST] Created test prescription:`, prescription);
+
 
       // Now trigger the medication queue to send the reminder
-      console.log(`[TEST] Triggering medication queue to send reminder...`);
+
       const queueResult = await processMedicationQueue();
 
       return NextResponse.json({
@@ -118,7 +118,7 @@ export async function GET(req: Request) {
       const now = new Date();
       const currentTime = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
 
-      console.log(`[TEST] Finding medications due at ${currentTime}`);
+
 
       const medications = await prisma.medication.findMany({
         where: {

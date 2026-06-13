@@ -7,14 +7,14 @@ export async function POST(req: Request) {
     // Step 1: Authenticate user
     const session = await auth();
     if (!session?.user?.id) {
-      console.log("[Push Subscribe] No authenticated session");
+
       return NextResponse.json(
         { error: "Unauthorized - Please log in" },
         { status: 401 }
       );
     }
 
-    console.log("[Push Subscribe] Authenticated user:", session.user.id);
+
 
     // Step 2: Parse subscription from request
     let subscription;
@@ -45,21 +45,21 @@ export async function POST(req: Request) {
     }
 
     // Step 4: Check if subscription already exists
-    console.log("[Push Subscribe] Checking for existing subscription...");
+
     const existing = await prisma.pushSubscription.findUnique({
       where: { endpoint: subscription.endpoint },
     });
 
     if (existing) {
-      console.log("[Push Subscribe] Subscription exists, updating userId...");
+
       await prisma.pushSubscription.update({
         where: { id: existing.id },
         data: { userId: session.user.id },
       });
-      console.log("[Push Subscribe] ✓ Updated existing subscription");
+
     } else {
       // Step 5: Create new subscription
-      console.log("[Push Subscribe] Creating new subscription...");
+
       await prisma.pushSubscription.create({
         data: {
           userId: session.user.id,
@@ -68,12 +68,12 @@ export async function POST(req: Request) {
           auth: subscription.keys.auth,
         },
       });
-      console.log("[Push Subscribe] ✓ Created new subscription");
+
     }
 
     // Step 6: Send success response
     const response = { success: true };
-    console.log("[Push Subscribe] Sending success response");
+
     return NextResponse.json(response, { status: 200 });
   } catch (error) {
     console.error("[Push Subscribe] ✗ Unexpected error:", error);

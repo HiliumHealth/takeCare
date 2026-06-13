@@ -65,7 +65,7 @@ export async function POST(req: Request) {
     history.push(doctorMsg);
     fs.writeFileSync(MESSAGES_FILE, JSON.stringify(history, null, 2));
 
-    console.log(`[Webhook] Captured ${type} from ${from} for User ${userId}. Ready for AI context.`);
+
     
     return NextResponse.json({ success: true, messageId: doctorMsg.id });
   } catch (error: any) {

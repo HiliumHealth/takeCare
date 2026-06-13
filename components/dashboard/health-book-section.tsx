@@ -379,7 +379,7 @@ export function HealthBookSection({ prescriptions = [], clinicalRecords = [] }: 
       const diag = (p.diagnosis || "").toLowerCase().replace(/^\[.*?\]\s*/i, "").trim();
       
       if (seenFormalKeys.has(`${dateStr}|${docName}`) || seenFormalKeys.has(`${dateStr}|${diag}`)) {
-        console.log(`Deduplicated duplicate extracted consultation entry: "${p.diagnosis}" on ${dateStr}`);
+
         return false; // Exclude
       }
     }
